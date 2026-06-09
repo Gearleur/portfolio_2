@@ -1,0 +1,166 @@
+.education-resume {
+  min-height: 100%;
+  padding: 28px 32px 30px;
+  border: 1px solid rgba(21, 21, 21, 0.22);
+  background: #fffdf7;
+  color: #171717;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  box-shadow:
+    inset 0 0 0 1px rgba(21, 21, 21, 0.05),
+    0 6px 18px rgba(21, 21, 21, 0.12);
+}
+
+.education-resume__header {
+  display: grid;
+  gap: 7px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #171717;
+  text-align: center;
+}
+
+.education-resume__eyebrow {
+  color: #5a5148;
+  font-family:
+    Geneva, "Lucida Grande", "Trebuchet MS", Verdana, ui-sans-serif, system-ui,
+    sans-serif;
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.education-resume h1 {
+  font-size: 25px;
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.education-resume__entries {
+  display: grid;
+  gap: 20px;
+  padding-top: 20px;
+}
+
+.education-resume__entry {
+  display: grid;
+  gap: 9px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(21, 21, 21, 0.18);
+}
+
+.education-resume__entry:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.education-resume__entry-header {
+  display: grid;
+  grid-template-columns: 104px minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: start;
+}
+
+.education-resume__logo-frame {
+  display: grid;
+  width: 92px;
+  height: 58px;
+  place-items: center;
+  border: 1px solid rgba(21, 21, 21, 0.18);
+  background: #fff;
+  box-shadow: inset 0 0 0 4px #fffdf7;
+}
+
+.education-resume__logo-frame img {
+  display: block;
+  max-width: 78px;
+  max-height: 46px;
+  object-fit: contain;
+}
+
+.education-resume__entry h2 {
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.22;
+}
+
+.education-resume__institution,
+.education-resume__period,
+.education-resume__coursework {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.education-resume__institution {
+  margin-top: 3px;
+  color: #2f2d2b;
+  font-style: italic;
+}
+
+.education-resume__period {
+  color: #171717;
+  font-weight: 700;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.education-resume__coursework {
+  color: #2f2d2b;
+}
+
+.education-resume__coursework span {
+  font-weight: 700;
+}
+
+.education-resume__coursework ul {
+  display: inline;
+  padding: 0;
+  list-style: none;
+}
+
+.education-resume__coursework li {
+  display: inline;
+}
+
+.education-resume__coursework li::after {
+  content: ", ";
+}
+
+.education-resume__coursework li:last-child::after {
+  content: ".";
+}
+
+@media (max-width: 640px) {
+  .education-resume {
+    padding: 22px 18px 24px;
+  }
+
+  .education-resume h1 {
+    font-size: 22px;
+  }
+
+  .education-resume__entry-header {
+    grid-template-columns: 72px 1fr;
+    gap: 12px;
+  }
+
+  .education-resume__period {
+    grid-column: 2;
+    text-align: left;
+    white-space: normal;
+  }
+
+  .education-resume__logo-frame {
+    width: 64px;
+    height: 46px;
+  }
+
+  .education-resume__logo-frame img {
+    max-width: 54px;
+    max-height: 34px;
+  }
+
+  .education-resume__entry h2 {
+    font-size: 16px;
+  }
+}

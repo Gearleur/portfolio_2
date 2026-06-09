@@ -1,0 +1,50 @@
+:root {
+  color: #151515;
+  background: #9fb5ae;
+  --cursor-default: url("/assets/cursors/wii-cursor.cur"), default;
+  --cursor-hand: url("/assets/cursors/wii-open.cur"), pointer;
+  font-family:
+    Geneva, "Lucida Grande", "Trebuchet MS", Verdana, ui-sans-serif, system-ui,
+    sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-width: 320px;
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  min-height: 100vh;
+  cursor: var(--cursor-default);
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  color: inherit;
+  cursor: var(--cursor-hand);
+}
+
+h1,
+h2,
+p,
+ul {
+  margin: 0;
+}

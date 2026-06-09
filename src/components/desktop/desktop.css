@@ -1,0 +1,258 @@
+.app-shell {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+  overflow: hidden;
+  background: #9fb5ae;
+}
+
+.wallpaper-layer {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  overflow: hidden;
+  background:
+    linear-gradient(90deg, rgba(21, 21, 21, 0.06) 1px, transparent 1px),
+    linear-gradient(rgba(21, 21, 21, 0.06) 1px, transparent 1px),
+    image-set(url("/assets/wallpapper.png") type("image/png"));
+  background-position: 0 0, 0 0, center;
+  background-size: 24px 24px, 24px 24px, cover;
+  image-rendering: pixelated;
+  pointer-events: none;
+}
+
+.wallpaper-layer::before,
+.wallpaper-layer::after {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+}
+
+.wallpaper-layer::before {
+  mix-blend-mode: multiply;
+  opacity: 0.36;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.18) 0,
+      rgba(255, 255, 255, 0.18) 1px,
+      rgba(21, 21, 21, 0.2) 2px,
+      transparent 4px
+    );
+  animation: scanline-roll 7s linear infinite;
+}
+
+.wallpaper-layer::after {
+  opacity: 0.2;
+  background:
+    linear-gradient(90deg, rgba(217, 72, 63, 0.18), transparent 22%, rgba(46, 111, 178, 0.16)),
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.12) 0,
+      rgba(255, 255, 255, 0.12) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+  animation: crt-jitter 900ms steps(2, end) infinite;
+}
+
+@keyframes scanline-roll {
+  from {
+    background-position-y: 0;
+  }
+
+  to {
+    background-position-y: 18px;
+  }
+}
+
+@keyframes crt-jitter {
+  0%,
+  100% {
+    opacity: 0.16;
+    transform: translate3d(0, 0, 0);
+  }
+
+  35% {
+    opacity: 0.24;
+    transform: translate3d(1px, 0, 0);
+  }
+
+  70% {
+    opacity: 0.18;
+    transform: translate3d(-1px, 1px, 0);
+  }
+}
+
+.desktop-surface {
+  position: absolute;
+  z-index: 2;
+  inset: 34px 0 0;
+  min-height: 760px;
+  overflow: auto;
+}
+
+.desktop-file {
+  position: absolute;
+  display: grid;
+  width: 124px;
+  min-height: 116px;
+  place-items: center;
+  align-content: start;
+  gap: 8px;
+  padding: 4px;
+  border: 0;
+  background: transparent;
+  cursor: var(--cursor-hand);
+  user-select: none;
+}
+
+.education-file {
+  top: 24px;
+  left: 28px;
+}
+
+.system-file {
+  cursor: var(--cursor-default);
+}
+
+.system-file--interactive {
+  cursor: var(--cursor-hand);
+}
+
+.system-file--professional {
+  top: 146px;
+  left: 28px;
+}
+
+.system-file--projects {
+  top: 268px;
+  left: 28px;
+}
+
+.system-file--skills {
+  top: 24px;
+  right: 28px;
+}
+
+.system-file--languages {
+  top: 146px;
+  right: 28px;
+}
+
+.system-file--extracurricular {
+  top: 268px;
+  right: 28px;
+}
+
+.system-file--trash {
+  right: 28px;
+  bottom: 28px;
+}
+
+.system-file--browser {
+  bottom: 28px;
+  left: 28px;
+}
+
+.desktop-file__icon {
+  display: block;
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  filter: drop-shadow(4px 4px 0 #151515);
+}
+
+.desktop-file__label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 116px;
+  min-height: 23px;
+  padding: 3px 6px;
+  border: 1px solid #151515;
+  border-radius: 2px;
+  background: #f7f0df;
+  box-shadow: 2px 2px 0 #151515;
+  font-size: 13px;
+  line-height: 1.12;
+  text-align: center;
+  overflow-wrap: normal;
+}
+
+.desktop-file:hover .desktop-file__label,
+.desktop-file:focus-visible .desktop-file__label {
+  background: #1f5fa8;
+  color: #fffdf6;
+}
+
+.system-file:not(.system-file--interactive):hover .desktop-file__label {
+  background: #f7f0df;
+  color: #151515;
+}
+
+.desktop-file:focus-visible {
+  outline: 2px solid #151515;
+  outline-offset: 3px;
+}
+
+@media (max-width: 640px) {
+  .desktop-surface {
+    inset: 32px 0 0;
+  }
+
+  .desktop-file {
+    width: 104px;
+    min-height: 114px;
+  }
+
+  .education-file {
+    top: 18px;
+    left: 14px;
+  }
+
+  .system-file--professional {
+    top: 140px;
+    left: 14px;
+  }
+
+  .system-file--projects {
+    top: 262px;
+    left: 14px;
+  }
+
+  .system-file--skills {
+    top: 18px;
+    right: 14px;
+    left: auto;
+  }
+
+  .system-file--languages {
+    top: 140px;
+    right: 14px;
+    left: auto;
+  }
+
+  .system-file--extracurricular {
+    top: 262px;
+    right: 14px;
+    left: auto;
+  }
+
+  .system-file--browser {
+    bottom: 18px;
+    left: 14px;
+  }
+
+  .system-file--trash {
+    right: 14px;
+    bottom: 18px;
+  }
+
+  .desktop-file__label {
+    width: 96px;
+    font-size: 12px;
+  }
+}
