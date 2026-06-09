@@ -3,7 +3,7 @@ import { selectedProjects } from '../../data/projects';
 import { useProjectCarousel } from './useProjectCarousel';
 import './projects.css';
 
-const EMPTY_CHANNEL_COUNT = 4;
+const EMPTY_CHANNEL_COUNT = 3;
 
 export function ProjectsPanel() {
   const [isProjectChannelOpen, setIsProjectChannelOpen] = useState(false);
@@ -89,17 +89,6 @@ export function ProjectsPanel() {
               <span className="projects-wii-channel__title">{project.title}</span>
             </button>
           ))}
-
-          <button
-            className="projects-wii-shop-channel"
-            type="button"
-            onClick={() => setIsProjectChannelOpen(true)}
-          >
-            <span className="projects-wii-shop-channel__bags" aria-hidden="true">
-              <span>OUI</span>
-            </span>
-            <strong>OUI Portfolio Channel</strong>
-          </button>
 
           {Array.from({ length: EMPTY_CHANNEL_COUNT }).map((_, index) => (
             <div className="projects-wii-empty-channel" aria-hidden="true" key={index} />

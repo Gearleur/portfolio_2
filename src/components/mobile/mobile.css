@@ -1,4 +1,6 @@
 .mobile-shell {
+  --iphone-chrome-top-height: clamp(90px, 28vw, 182px);
+  --iphone-chrome-bottom-height: clamp(96px, 30vw, 194px);
   position: fixed;
   inset: 0;
   min-width: 320px;
@@ -12,6 +14,32 @@
   font-family:
     "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui,
     sans-serif;
+}
+
+.mobile-shell::before,
+.mobile-shell::after {
+  position: fixed;
+  left: 50%;
+  z-index: 8;
+  width: 100vw;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: auto 100%;
+  content: "";
+  pointer-events: none;
+  transform: translateX(-50%);
+}
+
+.mobile-shell::before {
+  top: 0;
+  height: var(--iphone-chrome-top-height);
+  background-image: url("/assets/iphone6_top.svg");
+}
+
+.mobile-shell::after {
+  bottom: 0;
+  height: var(--iphone-chrome-bottom-height);
+  background-image: url("/assets/iphone6_bottom.svg");
 }
 
 .mobile-wallpaper {
