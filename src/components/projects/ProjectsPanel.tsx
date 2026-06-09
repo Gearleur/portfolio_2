@@ -1,12 +1,12 @@
+import { useState } from 'react';
 import { selectedProjects } from '../../data/projects';
-import { ProjectDossier } from './ProjectDossier';
-import { ProjectWheel } from './ProjectWheel';
-import { ProjectsFooter } from './ProjectsFooter';
-import { ProjectsTopbar } from './ProjectsTopbar';
 import { useProjectCarousel } from './useProjectCarousel';
 import './projects.css';
 
+const EMPTY_CHANNEL_COUNT = 4;
+
 export function ProjectsPanel() {
+  const [isProjectChannelOpen, setIsProjectChannelOpen] = useState(false);
   const {
     beginSwipe,
     cancelSwipe,
@@ -23,27 +23,139 @@ export function ProjectsPanel() {
     return null;
   }
 
+  const openProjectChannel = (projectId: string) => {
+    selectProject(projectId);
+    setIsProjectChannelOpen(true);
+  };
+
   return (
-    <section className="projects-ds" aria-labelledby="projects-heading">
-      <ProjectsTopbar projectCount={selectedProjects.length} selectedIndex={selectedIndex} />
+    <section
+      className={`projects-wii${isProjectChannelOpen ? ' projects-wii--channel-open' : ''}`}
+      aria-labelledby="projects-heading"
+    >
+      <h1 className="visually-hidden" id="projects-heading">
+        Selected projects
+      </h1>
 
-      <div className="projects-ds__layout">
-        <ProjectWheel
-          onCancelSwipe={cancelSwipe}
-          onEndSwipe={endSwipe}
-          onNextProject={selectNextProject}
-          onPreviousProject={selectPreviousProject}
-          onSelectProject={selectProject}
-          onStartSwipe={beginSwipe}
-          projects={selectedProjects}
-          selectedIndex={selectedIndex}
-          selectedProjectId={selectedProjectId}
-        />
+      {isProjectChannelOpen ? (
+        <article className={`projects-wii-play projects-wii-play--${selectedProject.tone}`}>
+          <header className="projects-wii-play__tab">
+            <span>OUI Project Channel</span>
+          </header>
 
-        <ProjectDossier project={selectedProject} />
-      </div>
+          <section className="projects-wii-play__description" aria-label={selectedProject.title}>
+            <p className="projects-wii-play__eyebrow">
+              Project Channel {String(selectedIndex + 1).padStart(2, '0')}
+            </p>
+            <h2>{selectedProject.title}</h2>
+            <p className="projects-wii-play__meta">
+              {selectedProject.affiliation ? `${selectedProject.affiliation} | ` : ''}
+              {selectedProject.period}
+            </p>
+            <p className="projects-wii-play__summary">{selectedProject.summary}</p>
 
-      <ProjectsFooter />
+            <ul className="projects-wii-play__bullets">
+              {selectedProject.bullets.map((bullet) => (
+                <li key={bullet}>{bullet}</li>
+              ))}
+            </ul>
+
+            <ul className="projects-wii-play__stack" aria-label="Project stack">
+              {selectedProject.stack.map((technology) => (
+                <li key={technology}>{technology}</li>
+              ))}
+            </ul>
+          </section>
+        </article>
+      ) : (
+        <div
+          className="projects-wii__channels"
+          onPointerDown={beginSwipe}
+          onPointerUp={endSwipe}
+          onPointerCancel={cancelSwipe}
+        >
+          {selectedProjects.map((project, index) => (
+            <button
+              className={`projects-wii-channel projects-wii-channel--${project.tone}${
+                project.id === selectedProjectId ? ' is-active' : ''
+              }`}
+              type="button"
+              onClick={() => openProjectChannel(project.id)}
+              key={project.id}
+            >
+              <span className="projects-wii-channel__visual" aria-hidden="true">
+                <span>{String(index + 1).padStart(2, '0')}</span>
+              </span>
+              <span className="projects-wii-channel__title">{project.title}</span>
+            </button>
+          ))}
+
+          <button
+            className="projects-wii-shop-channel"
+            type="button"
+            onClick={() => setIsProjectChannelOpen(true)}
+          >
+            <span className="projects-wii-shop-channel__bags" aria-hidden="true">
+              <span>OUI</span>
+            </span>
+            <strong>OUI Portfolio Channel</strong>
+          </button>
+
+          {Array.from({ length: EMPTY_CHANNEL_COUNT }).map((_, index) => (
+            <div className="projects-wii-empty-channel" aria-hidden="true" key={index} />
+          ))}
+        </div>
+      )}
+
+      <button
+        className="projects-wii__page-arrow projects-wii__page-arrow--previous"
+        type="button"
+        onClick={selectPreviousProject}
+        aria-label="Previous project"
+      />
+      <button
+        className="projects-wii__page-arrow projects-wii__page-arrow--next"
+        type="button"
+        onClick={selectNextProject}
+        aria-label="Next project"
+      />
+
+      {isProjectChannelOpen ? (
+        <footer className="projects-wii__channel-bar" aria-label="OUI project controls">
+          <button
+            className="projects-wii__menu-pill"
+            type="button"
+            onClick={() => setIsProjectChannelOpen(false)}
+          >
+            OUI Menu
+          </button>
+          <button className="projects-wii__start-pill" type="button" disabled>
+            Start
+          </button>
+        </footer>
+      ) : (
+        <footer className="projects-wii__system-bar" aria-label="OUI system menu">
+          <button
+            className="projects-wii__oui-button"
+            type="button"
+            onClick={() => setIsProjectChannelOpen(true)}
+          >
+            OUI
+          </button>
+          <div className="projects-wii__sd-card" aria-hidden="true">
+            SD
+          </div>
+          <div className="projects-wii__clock" aria-hidden="true">
+            <strong>12:00</strong>
+            <span>AM</span>
+            <p>Fri 1/1</p>
+          </div>
+          <button className="projects-wii__mail-button" type="button" onClick={selectNextProject}>
+            <span aria-hidden="true" />
+            <span className="visually-hidden">Next project</span>
+          </button>
+        </footer>
+      )}
     </section>
   );
 }

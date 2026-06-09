@@ -14,10 +14,10 @@
   background:
     linear-gradient(90deg, rgba(21, 21, 21, 0.06) 1px, transparent 1px),
     linear-gradient(rgba(21, 21, 21, 0.06) 1px, transparent 1px),
-    image-set(url("/assets/wallpapper.png") type("image/png"));
+    image-set(url("/assets/wallpapper_desktop2.png") type("image/png"));
   background-position: 0 0, 0 0, center;
   background-size: 24px 24px, 24px 24px, cover;
-  image-rendering: pixelated;
+  /* image-rendering: pixelated; */
   pointer-events: none;
 }
 
