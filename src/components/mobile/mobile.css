@@ -1,8 +1,8 @@
 .mobile-shell {
   --iphone-chrome-top-height: clamp(90px, 28vw, 182px);
   --iphone-chrome-bottom-height: clamp(96px, 30vw, 194px);
-  --iphone-chrome-top-offset: calc(var(--iphone-chrome-top-height) * -0.58);
-  --iphone-chrome-bottom-offset: calc(var(--iphone-chrome-bottom-height) * -0.52);
+  --iphone-chrome-top-offset: calc(var(--iphone-chrome-top-height) * -0.99);
+  --iphone-chrome-bottom-offset: calc(var(--iphone-chrome-bottom-height) * -0.99);
   position: fixed;
   inset: 0;
   min-width: 320px;
@@ -12,7 +12,7 @@
   height: 100dvh;
   overflow: hidden;
   overscroll-behavior: none;
-  background: #f3f6fb;
+  background: #000000;
   color: #fff;
   font-family:
     "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui,
