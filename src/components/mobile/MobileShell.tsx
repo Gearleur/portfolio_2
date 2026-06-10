@@ -21,7 +21,7 @@ export function MobileShell() {
       {activeApp ? (
         <section className="mobile-app" aria-label={activeApp.label}>
           <div className="mobile-app__content">
-            <MobileAppContent appId={activeApp.action} />
+            <MobileAppContent appId={activeApp.action} onClose={() => setActiveAppId(null)} />
           </div>
 
           <button

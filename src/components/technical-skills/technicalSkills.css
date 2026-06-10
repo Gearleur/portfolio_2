@@ -266,7 +266,7 @@
 
 .ios-settings-panel__bar {
   display: grid;
-  height: 34px;
+  height: 40px;
   place-items: center;
   border-bottom: 1px solid #737b86;
   background:
@@ -278,7 +278,7 @@
 
 .ios-settings-panel__bar h1 {
   color: #626873;
-  font-size: 15px;
+  font-size: 18px;
   font-weight: 700;
   line-height: 1;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.72);
@@ -286,8 +286,8 @@
 
 .ios-settings-panel__content {
   display: block;
-  min-height: calc(100vh - 34px);
-  min-height: calc(100svh - 34px);
+  min-height: calc(100vh - 40px);
+  min-height: calc(100svh - 40px);
   padding-bottom: 82px;
   background: #c9ced6;
 }
@@ -312,11 +312,11 @@
 
 .ios-settings-row {
   display: grid;
-  grid-template-columns: 30px minmax(0, 1fr) auto;
-  gap: 8px;
+  grid-template-columns: 40px minmax(0, 1fr) auto;
+  gap: 11px;
   align-items: center;
-  min-height: 44px;
-  padding: 6px 9px;
+  min-height: 58px;
+  padding: 9px 11px;
   background: linear-gradient(180deg, #eef0f4 0%, #c8ced7 100%);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.76);
   cursor: pointer;
@@ -339,9 +339,9 @@
 
 .ios-settings-row img {
   display: block;
-  width: 26px;
-  height: 26px;
-  border-radius: 6px;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
   object-fit: cover;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.22);
 }
@@ -349,28 +349,16 @@
 .ios-settings-row h2 {
   overflow: hidden;
   color: inherit;
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 700;
   line-height: 1.15;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.ios-settings-row p {
-  margin-top: 2px;
-  color: #596678;
-  font-size: 10px;
-  font-weight: 600;
-  line-height: 1;
-}
-
-.ios-settings-category[open] > .ios-settings-row p {
-  color: rgba(255, 255, 255, 0.82);
-}
-
 .ios-settings-row__chevron {
   color: #6d7480;
-  font-size: 18px;
+  font-size: 24px;
   font-weight: 800;
   line-height: 1;
   transition: transform 160ms ease;
@@ -382,16 +370,16 @@
 }
 
 .ios-settings-dropdown {
-  padding: 10px 10px 13px 47px;
+  padding: 13px 12px 16px 62px;
   border-top: 1px solid rgba(255, 255, 255, 0.85);
   background:
     linear-gradient(180deg, #f8f9fb, #eef2f7);
 }
 
 .ios-settings-dropdown p {
-  margin-bottom: 9px;
+  margin-bottom: 11px;
   color: #566376;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 600;
   line-height: 1.35;
 }
@@ -399,17 +387,17 @@
 .ios-settings-dropdown ul {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 7px;
   list-style: none;
 }
 
 .ios-settings-dropdown li {
-  padding: 6px 8px;
+  padding: 7px 10px;
   border: 1px solid #d2d8e1;
   border-radius: 999px;
   background: #eef2f7;
   color: #354154;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
   line-height: 1;
 }

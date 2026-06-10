@@ -21,7 +21,6 @@ export function TechnicalSkillsMobilePanel() {
                   <img src={category.mobileIconSrc} alt="" />
                   <div>
                     <h2>{category.title}</h2>
-                    <p>{category.skills.length} tools</p>
                   </div>
                   <span className="ios-settings-row__chevron" aria-hidden="true">
                     ›

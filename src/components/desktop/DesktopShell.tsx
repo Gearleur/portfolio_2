@@ -3,6 +3,7 @@ import { DEFAULT_EXTRACURRICULAR_FRAME } from '../../data/extracurricular';
 import { DEFAULT_LANGUAGES_FRAME } from '../../data/languages';
 import { DEFAULT_PROFESSIONAL_FRAME } from '../../data/professionalExperience';
 import { DEFAULT_PROJECTS_FRAME } from '../../data/projects';
+import { DEFAULT_RESUME_FRAME } from '../../data/resume';
 import { systemItems } from '../../data/systemItems';
 import { DEFAULT_TECHNICAL_SKILLS_FRAME } from '../../data/technicalSkills';
 import { useDesktopWindow } from '../../hooks/useDesktopWindow';
@@ -13,6 +14,7 @@ import { ExtracurricularWindow } from '../extracurricular/ExtracurricularWindow'
 import { LanguagesWindow } from '../languages/LanguagesWindow';
 import { ProfessionalExperienceWindow } from '../professional-experience/ProfessionalExperienceWindow';
 import { ProjectsWindow } from '../projects/ProjectsWindow';
+import { ResumeWindow } from '../resume/ResumeWindow';
 import { TechnicalSkillsWindow } from '../technical-skills/TechnicalSkillsWindow';
 import { MenuBar } from './MenuBar';
 import { SystemIcon } from './SystemIcon';
@@ -25,6 +27,7 @@ const DESKTOP_WINDOW_IDS = [
   'skills',
   'languages',
   'extracurricular',
+  'resume',
 ] as const;
 type DesktopWindowId = (typeof DESKTOP_WINDOW_IDS)[number];
 
@@ -35,6 +38,7 @@ export function DesktopShell() {
   const skillsWindow = useDesktopWindow(DEFAULT_TECHNICAL_SKILLS_FRAME);
   const languagesWindow = useDesktopWindow(DEFAULT_LANGUAGES_FRAME);
   const extracurricularWindow = useDesktopWindow(DEFAULT_EXTRACURRICULAR_FRAME);
+  const resumeWindow = useDesktopWindow(DEFAULT_RESUME_FRAME);
   const windowStack = useWindowStack<DesktopWindowId>(DESKTOP_WINDOW_IDS);
 
   const openWindow = (windowId: DesktopWindowId, open: () => void) => {
@@ -66,7 +70,9 @@ export function DesktopShell() {
                       ? () => openWindow('languages', languagesWindow.open)
                       : item.variant === 'extracurricular'
                         ? () => openWindow('extracurricular', extracurricularWindow.open)
-                        : undefined
+                        : item.variant === 'resume'
+                          ? () => openWindow('resume', resumeWindow.open)
+                          : undefined
             }
           />
         ))}
@@ -146,6 +152,19 @@ export function DesktopShell() {
             onToggleMaximize={extracurricularWindow.toggleMaximize}
             onActivate={() => windowStack.bringToFront('extracurricular')}
             zIndex={windowStack.getZIndex('extracurricular')}
+          />
+        ) : null}
+
+        {resumeWindow.isOpen ? (
+          <ResumeWindow
+            frame={resumeWindow.frame}
+            isMaximized={resumeWindow.isMaximized}
+            onClose={resumeWindow.close}
+            onFrameChange={resumeWindow.updateFrame}
+            onMinimize={resumeWindow.minimize}
+            onToggleMaximize={resumeWindow.toggleMaximize}
+            onActivate={() => windowStack.bringToFront('resume')}
+            zIndex={windowStack.getZIndex('resume')}
           />
         ) : null}
       </div>

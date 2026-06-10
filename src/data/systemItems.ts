@@ -4,6 +4,7 @@ export type SystemItemVariant =
   | 'skills'
   | 'languages'
   | 'extracurricular'
+  | 'resume'
   | 'browser'
   | 'trash';
 
@@ -32,6 +33,11 @@ export const systemItems: SystemItem[] = [
     label: 'Extracurricular Experience',
     variant: 'extracurricular',
     iconSrc: '/assets/icons/desktop/extracurricular-experience.ico',
+  },
+  {
+    label: 'Download CV',
+    variant: 'resume',
+    iconSrc: '/assets/icons/desktop/CV.ico',
   },
   {
     label: 'Internet Explorer',

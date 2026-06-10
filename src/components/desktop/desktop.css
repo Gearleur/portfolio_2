@@ -146,6 +146,11 @@
   right: 28px;
 }
 
+.system-file--resume {
+  top: 390px;
+  right: 28px;
+}
+
 .system-file--trash {
   right: 28px;
   bottom: 28px;
@@ -237,6 +242,12 @@
 
   .system-file--extracurricular {
     top: 262px;
+    right: 14px;
+    left: auto;
+  }
+
+  .system-file--resume {
+    top: 384px;
     right: 14px;
     left: auto;
   }

@@ -14,6 +14,9 @@ export { ProfessionalExperiencePanel } from './professional-experience/Professio
 export { ProfessionalExperienceWindow } from './professional-experience/ProfessionalExperienceWindow';
 export { ProjectsPanel } from './projects/ProjectsPanel';
 export { ProjectsWindow } from './projects/ProjectsWindow';
+export { ResumeIosPanel } from './resume/ResumeIosPanel';
+export { ResumeWindow } from './resume/ResumeWindow';
+export { ResumeWindowsPanel } from './resume/ResumeWindowsPanel';
 export { TechnicalSkillsPanel } from './technical-skills/TechnicalSkillsPanel';
 export { TechnicalSkillsMobilePanel } from './technical-skills/TechnicalSkillsMobilePanel';
 export { TechnicalSkillsWindow } from './technical-skills/TechnicalSkillsWindow';
