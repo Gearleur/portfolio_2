@@ -1,6 +1,8 @@
 .mobile-shell {
   --iphone-chrome-top-height: clamp(90px, 28vw, 182px);
   --iphone-chrome-bottom-height: clamp(96px, 30vw, 194px);
+  --iphone-chrome-top-offset: calc(var(--iphone-chrome-top-height) * -0.99);
+  --iphone-chrome-bottom-offset: calc(var(--iphone-chrome-bottom-height) * -0.99);
   position: fixed;
   inset: 0;
   min-width: 320px;
@@ -31,13 +33,13 @@
 }
 
 .mobile-shell::before {
-  top: 0;
+  top: var(--iphone-chrome-top-offset);
   height: var(--iphone-chrome-top-height);
   background-image: url("/assets/iphone6_top.svg");
 }
 
 .mobile-shell::after {
-  bottom: 0;
+  bottom: var(--iphone-chrome-bottom-offset);
   height: var(--iphone-chrome-bottom-height);
   background-image: url("/assets/iphone6_bottom.svg");
 }
