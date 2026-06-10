@@ -1,4 +1,5 @@
 import { EducationResume } from '../education/EducationResume';
+import { ExtracurricularPanel } from '../extracurricular/ExtracurricularPanel';
 import { LanguagesPanel } from '../languages/LanguagesPanel';
 import { ProfessionalExperiencePanel } from '../professional-experience/ProfessionalExperiencePanel';
 import { ProjectsPanel } from '../projects/ProjectsPanel';
@@ -24,6 +25,10 @@ export function MobileAppContent({ appId }: MobileAppContentProps) {
 
   if (appId === 'languages') {
     return <LanguagesPanel />;
+  }
+
+  if (appId === 'extracurricular') {
+    return <ExtracurricularPanel />;
   }
 
   return <ProjectsPanel />;

@@ -5,6 +5,8 @@ export { SystemIcon } from './desktop/SystemIcon';
 export { EducationIcon } from './education/EducationIcon';
 export { EducationResume } from './education/EducationResume';
 export { EducationWindow } from './education/EducationWindow';
+export { ExtracurricularPanel } from './extracurricular/ExtracurricularPanel';
+export { ExtracurricularWindow } from './extracurricular/ExtracurricularWindow';
 export { LanguagesPanel } from './languages/LanguagesPanel';
 export { LanguagesWindow } from './languages/LanguagesWindow';
 export { MobileShell } from './mobile/MobileShell';

@@ -1,4 +1,10 @@
-export type MobileAppId = 'education' | 'professional' | 'projects' | 'skills' | 'languages';
+export type MobileAppId =
+  | 'education'
+  | 'professional'
+  | 'projects'
+  | 'skills'
+  | 'languages'
+  | 'extracurricular';
 
 export type MobileApp = {
   action?: MobileAppId;
@@ -42,6 +48,12 @@ export const homeApps: MobileApp[] = [
     id: 'languages',
     iconSrc: '/assets/icons/mobile/languages.png',
     label: 'Languages',
+  },
+  {
+    action: 'extracurricular',
+    id: 'extracurricular',
+    iconSrc: '/assets/icons/mobile/extracurricular-experience.png',
+    label: 'Activities',
   },
   {
     id: 'browser',

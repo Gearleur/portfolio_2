@@ -1,4 +1,5 @@
 import { DEFAULT_EDUCATION_FRAME } from '../../data/education';
+import { DEFAULT_EXTRACURRICULAR_FRAME } from '../../data/extracurricular';
 import { DEFAULT_LANGUAGES_FRAME } from '../../data/languages';
 import { DEFAULT_PROFESSIONAL_FRAME } from '../../data/professionalExperience';
 import { DEFAULT_PROJECTS_FRAME } from '../../data/projects';
@@ -8,6 +9,7 @@ import { useDesktopWindow } from '../../hooks/useDesktopWindow';
 import { useWindowStack } from '../../hooks/useWindowStack';
 import { EducationIcon } from '../education/EducationIcon';
 import { EducationWindow } from '../education/EducationWindow';
+import { ExtracurricularWindow } from '../extracurricular/ExtracurricularWindow';
 import { LanguagesWindow } from '../languages/LanguagesWindow';
 import { ProfessionalExperienceWindow } from '../professional-experience/ProfessionalExperienceWindow';
 import { ProjectsWindow } from '../projects/ProjectsWindow';
@@ -22,6 +24,7 @@ const DESKTOP_WINDOW_IDS = [
   'projects',
   'skills',
   'languages',
+  'extracurricular',
 ] as const;
 type DesktopWindowId = (typeof DESKTOP_WINDOW_IDS)[number];
 
@@ -31,6 +34,7 @@ export function DesktopShell() {
   const projectsWindow = useDesktopWindow(DEFAULT_PROJECTS_FRAME);
   const skillsWindow = useDesktopWindow(DEFAULT_TECHNICAL_SKILLS_FRAME);
   const languagesWindow = useDesktopWindow(DEFAULT_LANGUAGES_FRAME);
+  const extracurricularWindow = useDesktopWindow(DEFAULT_EXTRACURRICULAR_FRAME);
   const windowStack = useWindowStack<DesktopWindowId>(DESKTOP_WINDOW_IDS);
 
   const openWindow = (windowId: DesktopWindowId, open: () => void) => {
@@ -60,7 +64,9 @@ export function DesktopShell() {
                     ? () => openWindow('skills', skillsWindow.open)
                     : item.variant === 'languages'
                       ? () => openWindow('languages', languagesWindow.open)
-                      : undefined
+                      : item.variant === 'extracurricular'
+                        ? () => openWindow('extracurricular', extracurricularWindow.open)
+                        : undefined
             }
           />
         ))}
@@ -127,6 +133,19 @@ export function DesktopShell() {
             onToggleMaximize={languagesWindow.toggleMaximize}
             onActivate={() => windowStack.bringToFront('languages')}
             zIndex={windowStack.getZIndex('languages')}
+          />
+        ) : null}
+
+        {extracurricularWindow.isOpen ? (
+          <ExtracurricularWindow
+            frame={extracurricularWindow.frame}
+            isMaximized={extracurricularWindow.isMaximized}
+            onClose={extracurricularWindow.close}
+            onFrameChange={extracurricularWindow.updateFrame}
+            onMinimize={extracurricularWindow.minimize}
+            onToggleMaximize={extracurricularWindow.toggleMaximize}
+            onActivate={() => windowStack.bringToFront('extracurricular')}
+            zIndex={windowStack.getZIndex('extracurricular')}
           />
         ) : null}
       </div>
