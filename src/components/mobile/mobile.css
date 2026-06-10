@@ -3,6 +3,7 @@
   --iphone-chrome-bottom-height: clamp(96px, 30vw, 194px);
   --iphone-chrome-top-offset: clamp(-182px, -28vw, -90px);
   --iphone-chrome-bottom-offset: clamp(-194px, -30vw, -96px);
+  --mobile-wallpaper-bleed: clamp(120px, 26dvh, 260px);
   position: fixed;
   inset: 0;
   min-width: 320px;
@@ -13,7 +14,13 @@
   height: var(--mobile-viewport-height, 100dvh);
   overflow: hidden;
   overscroll-behavior: none;
-  background: #000000;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.06)),
+    image-set(url("/assets/wallpapper_mobile3.jpg") type("image/png")),
+    #000000;
+  background-position: center;
+  background-size: cover;
+  background-blend-mode: screen, normal;
   color: #fff;
   font-family:
     "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui,
@@ -59,8 +66,11 @@
 }
 
 .mobile-wallpaper {
-  position: absolute;
-  inset: 0;
+  position: fixed;
+  top: calc(var(--mobile-wallpaper-bleed) * -1);
+  right: 0;
+  bottom: calc(var(--mobile-wallpaper-bleed) * -1);
+  left: 0;
   z-index: 0;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.08)),
