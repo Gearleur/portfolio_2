@@ -1,8 +1,8 @@
 .mobile-shell {
   --iphone-chrome-top-height: clamp(90px, 28vw, 182px);
   --iphone-chrome-bottom-height: clamp(96px, 30vw, 194px);
-  --iphone-chrome-top-offset: calc(var(--iphone-chrome-top-height) * -0.99);
-  --iphone-chrome-bottom-offset: calc(var(--iphone-chrome-bottom-height) * -0.99);
+  --iphone-chrome-top-offset: clamp(-182px, -28vw, -90px);
+  --iphone-chrome-bottom-offset: clamp(-194px, -30vw, -96px);
   position: fixed;
   inset: 0;
   min-width: 320px;
@@ -17,6 +17,18 @@
   font-family:
     "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui,
     sans-serif;
+}
+
+.mobile-shell--standalone {
+  --iphone-chrome-top-offset: clamp(-24px, -4vw, -10px);
+  --iphone-chrome-bottom-offset: clamp(-28px, -5vw, -12px);
+}
+
+@media (display-mode: standalone), (display-mode: fullscreen) {
+  .mobile-shell {
+    --iphone-chrome-top-offset: clamp(-24px, -4vw, -10px);
+    --iphone-chrome-bottom-offset: clamp(-28px, -5vw, -12px);
+  }
 }
 
 .mobile-shell::before,

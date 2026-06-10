@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title id="title">Portfolio app icon</title>
+  <defs>
+    <linearGradient id="sky" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#6ed6d1" />
+      <stop offset="0.48" stop-color="#75bcae" />
+      <stop offset="1" stop-color="#e5bf86" />
+    </linearGradient>
+    <linearGradient id="glass" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.88" />
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0.18" />
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="#0b1010" />
+  <rect x="34" y="34" width="444" height="444" rx="88" fill="url(#sky)" />
+  <path d="M34 300c54-42 115-50 184-24 70 26 132 18 260-54v256H34Z" fill="#f5efe2" opacity="0.84" />
+  <path d="M74 74h364v132c-86 14-145 8-202-17-61-26-111-28-162-6Z" fill="url(#glass)" />
+  <text x="256" y="287" text-anchor="middle" font-family="Trebuchet MS, Arial, sans-serif" font-size="128" font-weight="800" fill="#ef4052">AT</text>
+  <path d="M168 350c41 44 120 43 176-2" fill="none" stroke="#ef4052" stroke-linecap="round" stroke-width="24" />
+</svg>

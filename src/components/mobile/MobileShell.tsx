@@ -5,17 +5,26 @@ import { MobileStatusBar } from './MobileStatusBar';
 import { dockApps, homeApps, mobileIconSources } from './mobileApps';
 import type { LaunchableMobileApp, MobileAppId } from './mobileApps';
 import { usePreloadImages } from './usePreloadImages';
+import { useStandaloneDisplayMode } from './useStandaloneDisplayMode';
 import './mobile.css';
 
 export function MobileShell() {
   usePreloadImages(mobileIconSources);
 
   const [activeAppId, setActiveAppId] = useState<MobileAppId | null>(null);
+  const isStandalone = useStandaloneDisplayMode();
   const activeApp =
     homeApps.find((app): app is LaunchableMobileApp => app.action === activeAppId) ?? null;
+  const shellClassName = [
+    'mobile-shell',
+    activeApp ? 'mobile-shell--app-open' : '',
+    isStandalone ? 'mobile-shell--standalone' : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   return (
-    <main className={`mobile-shell${activeApp ? ' mobile-shell--app-open' : ''}`}>
+    <main className={shellClassName}>
       <div className="mobile-wallpaper" aria-hidden="true" />
 
       {activeApp ? (
