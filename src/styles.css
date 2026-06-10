@@ -30,6 +30,22 @@ body {
   cursor: var(--cursor-default);
 }
 
+html.mobile-viewport-lock,
+body.mobile-viewport-lock,
+body.mobile-viewport-lock #root {
+  height: var(--mobile-viewport-height, 100dvh);
+  min-height: var(--mobile-viewport-height, 100dvh);
+  overflow: hidden;
+  overscroll-behavior: none;
+  background: #000;
+}
+
+body.mobile-viewport-lock {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+}
+
 button,
 input,
 textarea,

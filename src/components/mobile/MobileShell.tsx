@@ -4,11 +4,13 @@ import { MobileIcon } from './MobileIcon';
 import { MobileStatusBar } from './MobileStatusBar';
 import { dockApps, homeApps, mobileIconSources } from './mobileApps';
 import type { LaunchableMobileApp, MobileAppId } from './mobileApps';
+import { useLockedMobileViewport } from './useLockedMobileViewport';
 import { usePreloadImages } from './usePreloadImages';
 import { useStandaloneDisplayMode } from './useStandaloneDisplayMode';
 import './mobile.css';
 
 export function MobileShell() {
+  useLockedMobileViewport();
   usePreloadImages(mobileIconSources);
 
   const [activeAppId, setActiveAppId] = useState<MobileAppId | null>(null);
