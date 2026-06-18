@@ -243,6 +243,32 @@
   transform: translate(21px, -10px) rotate(7deg);
 }
 
+.projects-wii-channel--green .projects-wii-channel__visual {
+  background:
+    radial-gradient(circle at 25% 28%, rgba(89, 236, 176, 0.95) 0 5px, transparent 6px),
+    radial-gradient(circle at 70% 31%, rgba(118, 215, 255, 0.95) 0 5px, transparent 6px),
+    radial-gradient(circle at 48% 66%, rgba(255, 255, 255, 0.95) 0 6px, transparent 7px),
+    linear-gradient(135deg, #14202c, #26394a 58%, #dfeef0);
+}
+
+.projects-wii-channel--green .projects-wii-channel__visual::before {
+  width: 112px;
+  height: 78px;
+  border-top: 2px solid rgba(155, 244, 216, 0.76);
+  border-right: 2px solid rgba(126, 217, 246, 0.72);
+  border-radius: 50%;
+  transform: rotate(-12deg);
+}
+
+.projects-wii-channel--green .projects-wii-channel__visual::after {
+  width: 86px;
+  height: 52px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.66);
+  border-left: 2px solid rgba(88, 232, 171, 0.72);
+  border-radius: 50%;
+  transform: rotate(23deg);
+}
+
 .projects-wii-channel__title {
   display: -webkit-box;
   min-height: 35px;
@@ -410,6 +436,10 @@
 
 .projects-wii-play--gold {
   --wii-accent: #efa94b;
+}
+
+.projects-wii-play--green {
+  --wii-accent: #36bf88;
 }
 
 .projects-wii-play__tab {
@@ -692,8 +722,16 @@
   opacity: 0.68;
 }
 
+.projects-wii__start-pill--ready {
+  border-color: var(--wii-border-strong);
+  color: #20a9df;
+  opacity: 1;
+}
+
 .projects-wii__menu-pill:hover,
-.projects-wii__menu-pill:focus-visible {
+.projects-wii__menu-pill:focus-visible,
+.projects-wii__start-pill--ready:hover,
+.projects-wii__start-pill--ready:focus-visible {
   border-color: var(--wii-accent-strong);
   box-shadow:
     var(--wii-control-shadow),
@@ -701,12 +739,232 @@
   outline: 0;
 }
 
-.projects-wii__menu-pill:active {
+.projects-wii__menu-pill:active,
+.projects-wii__start-pill--ready:active {
   transform: translateY(1px);
 }
 
 .projects-wii__start-pill:disabled {
   cursor: not-allowed;
+}
+
+.projects-wii-presentation {
+  --wii-accent: #35bde8;
+  min-height: 100%;
+  padding: 48px min(6vw, 72px) 132px;
+  overflow-y: auto;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.44) 0 1px,
+      rgba(203, 211, 217, 0.16) 1px 4px
+    ),
+    linear-gradient(180deg, #fbfcfc 0%, #eef2f3 56%, #d8dee3 100%);
+}
+
+.projects-wii-presentation--pink {
+  --wii-accent: #f078bc;
+}
+
+.projects-wii-presentation--gold {
+  --wii-accent: #efa94b;
+}
+
+.projects-wii-presentation--green {
+  --wii-accent: #36bf88;
+}
+
+.projects-wii-presentation__hero {
+  display: grid;
+  gap: 30px;
+  max-width: 1120px;
+  margin: 0 auto 28px;
+}
+
+.projects-wii-presentation__intro {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+
+.projects-wii-presentation__eyebrow,
+.projects-wii-presentation__meta {
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.projects-wii-presentation__eyebrow {
+  color: var(--wii-accent);
+}
+
+.projects-wii-presentation__meta {
+  color: #89929b;
+  line-height: 1.25;
+}
+
+.projects-wii-presentation h2 {
+  color: #515961;
+  font-size: clamp(27px, 3.3vw, 44px);
+  line-height: 1.02;
+}
+
+.projects-wii-presentation h3 {
+  color: #56616a;
+  font-size: clamp(17px, 1.7vw, 22px);
+  line-height: 1.1;
+}
+
+.projects-wii-presentation p,
+.projects-wii-presentation li {
+  color: #58636d;
+  font-size: 14px;
+  line-height: 1.48;
+}
+
+.projects-wii-presentation__intro > p:last-of-type {
+  max-width: 62ch;
+  font-weight: 800;
+}
+
+.projects-wii-presentation__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.projects-wii-presentation__links a {
+  display: inline-flex;
+  min-height: 38px;
+  align-items: center;
+  padding: 8px 14px;
+  border: 1px solid rgba(72, 184, 224, 0.58);
+  border-radius: 999px;
+  background: #ffffff;
+  box-shadow: 0 2px 5px rgba(82, 94, 105, 0.14);
+  color: #209bd0;
+  font-size: 13px;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.projects-wii-presentation__links a:hover,
+.projects-wii-presentation__links a:focus-visible {
+  border-color: var(--wii-accent);
+  outline: 0;
+  box-shadow:
+    0 2px 5px rgba(82, 94, 105, 0.14),
+    0 0 0 3px rgba(54, 191, 136, 0.16);
+}
+
+.projects-wii-presentation__architecture,
+.projects-wii-presentation__sections,
+.projects-wii-presentation__predictions {
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+.projects-wii-presentation__architecture {
+  display: grid;
+  gap: 14px;
+  padding: 22px 0 24px;
+  border-top: 1px solid rgba(139, 149, 158, 0.26);
+  border-bottom: 1px solid rgba(139, 149, 158, 0.26);
+}
+
+.projects-wii-presentation__diagram {
+  margin: 0;
+}
+
+.projects-wii-presentation__diagram img {
+  display: block;
+  width: 100%;
+  max-height: 460px;
+  padding: 14px;
+  border: 1px solid rgba(83, 99, 113, 0.26);
+  border-radius: 24px / 18px;
+  background: #ffffff;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    0 12px 26px rgba(47, 64, 76, 0.18);
+  object-fit: contain;
+}
+
+.projects-wii-presentation__architecture ol {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+  padding: 0;
+  list-style: none;
+  counter-reset: rag-step;
+}
+
+.projects-wii-presentation__architecture li {
+  position: relative;
+  min-height: 124px;
+  padding: 42px 12px 12px;
+  border: 1px solid rgba(134, 146, 156, 0.24);
+  border-radius: 20px / 16px;
+  background:
+    radial-gradient(circle at 50% 0, rgba(255, 255, 255, 0.94), transparent 58%),
+    rgba(255, 255, 255, 0.66);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 2px 5px rgba(78, 88, 98, 0.1);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.projects-wii-presentation__architecture li::before {
+  position: absolute;
+  top: 11px;
+  left: 12px;
+  display: grid;
+  width: 24px;
+  height: 24px;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--wii-accent);
+  color: #ffffff;
+  content: counter(rag-step);
+  counter-increment: rag-step;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.projects-wii-presentation__sections {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+  padding: 28px 0;
+}
+
+.projects-wii-presentation__section {
+  display: grid;
+  align-content: start;
+  gap: 9px;
+  min-width: 0;
+}
+
+.projects-wii-presentation__section ul,
+.projects-wii-presentation__predictions ul {
+  display: grid;
+  gap: 6px;
+  padding-left: 18px;
+}
+
+.projects-wii-presentation__section li::marker,
+.projects-wii-presentation__predictions li::marker {
+  color: var(--wii-accent);
+}
+
+.projects-wii-presentation__predictions {
+  display: grid;
+  gap: 12px;
+  padding: 22px 0 8px;
+  border-top: 1px solid rgba(139, 149, 158, 0.26);
 }
 
 .projects-wii__oui-button,
@@ -882,6 +1140,24 @@
     margin-right: 34px;
     margin-left: 34px;
   }
+
+  .projects-wii-presentation {
+    padding-right: 34px;
+    padding-left: 34px;
+  }
+
+  .projects-wii-presentation__hero {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 22px;
+  }
+
+  .projects-wii-presentation__architecture ol {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .projects-wii-presentation__sections {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 @media (max-width: 640px) {
@@ -967,6 +1243,46 @@
   .projects-wii-play__summary,
   .projects-wii-play__bullets {
     font-size: 12px;
+  }
+
+  .projects-wii-presentation {
+    padding: 42px 18px 108px;
+  }
+
+  .projects-wii-presentation__hero {
+    gap: 18px;
+    margin-bottom: 18px;
+  }
+
+  .projects-wii-presentation h2 {
+    font-size: 24px;
+  }
+
+  .projects-wii-presentation h3 {
+    font-size: 17px;
+  }
+
+  .projects-wii-presentation p,
+  .projects-wii-presentation li {
+    font-size: 12px;
+  }
+
+  .projects-wii-presentation__architecture {
+    padding: 18px 0;
+  }
+
+  .projects-wii-presentation__architecture ol {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .projects-wii-presentation__architecture li {
+    min-height: 0;
+    padding: 12px 12px 12px 48px;
+  }
+
+  .projects-wii-presentation__sections {
+    gap: 18px;
+    padding: 20px 0;
   }
 
   .projects-wii-empty-channel {

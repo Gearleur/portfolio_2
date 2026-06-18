@@ -5,9 +5,27 @@ export type SelectedProject = {
   affiliation?: string;
   bullets: string[];
   period: string;
+  presentation?: {
+    architecture: string[];
+    diagram?: {
+      alt: string;
+      src: string;
+    };
+    intro: string;
+    links: {
+      href: string;
+      label: string;
+    }[];
+    predictions: string[];
+    sections: {
+      body: string;
+      items: string[];
+      title: string;
+    }[];
+  };
   stack: string[];
   summary: string;
-  tone: 'cyan' | 'pink' | 'gold';
+  tone: 'cyan' | 'pink' | 'gold' | 'green';
   title: string;
 };
 
@@ -54,6 +72,81 @@ export const selectedProjects: SelectedProject[] = [
     ],
     stack: ['AlphaZero', 'MCTS', 'Self-play', 'Deep RL', 'PyTorch', 'Residual networks'],
     tone: 'gold',
+  },
+  {
+    id: 'tn09-rag-react',
+    affiliation: 'TN09 Internship',
+    period: '2022',
+    title: 'RAG & ReAct Knowledge Assistant',
+    summary:
+      'Professional experience focused on retrieval-augmented generation, agentic reasoning and the future of knowledge work.',
+    bullets: [
+      'Studied how an assistant could ground answers in internal documents instead of relying only on model memory.',
+      'Mapped the main RAG building blocks: document ingestion, chunking, embeddings, vector search, prompt assembly and cited answers.',
+      'Explored ReAct-style loops where the assistant alternates reasoning, retrieval/tool actions, observations and final synthesis.',
+      'Projected a shift toward source-grounded assistants connected to personal and team knowledge graphs.',
+    ],
+    stack: ['RAG', 'ReAct', 'Embeddings', 'Vector search', 'Prompt engineering', 'Obsidian', 'Knowledge graphs'],
+    tone: 'green',
+    presentation: {
+      intro:
+        'This TN09 project reframes my 2022 professional experience as an early RAG case study: how to turn scattered knowledge into a system that can retrieve, reason and answer with traceable context.',
+      links: [
+        {
+          href: '/Rapport_de_Stage_TN09.pdf',
+          label: 'Open TN09 report',
+        },
+      ],
+      diagram: {
+        src: '/assets/tn09_architecture.png',
+        alt: 'Schema of the TN09 generative AI architecture: ingestion process, embeddings, vector store, LLM serving and GitLab/Confluence sources feeding the clients.',
+      },
+      architecture: [
+        'Collect project documents, notes and domain references.',
+        'Clean and split content into reusable chunks with metadata.',
+        'Embed chunks and store them in a vector index.',
+        'Retrieve the most relevant context for each question.',
+        'Assemble a grounded prompt, generate an answer and keep source traces.',
+      ],
+      sections: [
+        {
+          title: 'What I did',
+          body:
+            'I translated a professional documentation problem into an assistant architecture: identify the knowledge sources, prepare them for retrieval, and define how a language model should use retrieved context before answering.',
+          items: [
+            'Structured the end-to-end pipeline from documents to answers.',
+            'Separated retrieval concerns from generation concerns.',
+            'Focused on traceability so answers could point back to their sources.',
+          ],
+        },
+        {
+          title: 'RAG architecture',
+          body:
+            'The core idea was to keep the model grounded. Instead of asking an LLM to improvise, the system retrieves context first, injects it into the prompt, then produces an answer constrained by the available evidence.',
+          items: [
+            'Ingestion and preprocessing for heterogeneous project material.',
+            'Chunking strategy designed around answerable units of knowledge.',
+            'Retriever plus prompt layer to connect vector search with generation.',
+          ],
+        },
+        {
+          title: 'ReAct layer',
+          body:
+            'The ReAct angle adds an agent loop on top of retrieval: reason about the task, choose an action, observe retrieved evidence, then continue until the final answer is grounded enough.',
+          items: [
+            'Reasoning steps make the assistant decide what to retrieve next.',
+            'Tool actions expose search, notes and document lookup as explicit operations.',
+            'Observations keep the response connected to verifiable context.',
+          ],
+        },
+      ],
+      predictions: [
+        'Internal search would move from keyword lookup to conversational, source-grounded assistants.',
+        'Personal knowledge bases such as Obsidian would become graph interfaces for AI memory and retrieval.',
+        'RAG would evolve toward agentic workflows: retrieve, inspect, act, verify and cite.',
+        'Trust would depend less on raw generation quality and more on provenance, evaluation and human-readable traces.',
+      ],
+    },
   },
 ];
 
