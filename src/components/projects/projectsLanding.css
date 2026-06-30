@@ -26,15 +26,20 @@
   font-family: 'Departure Mono', ui-monospace, 'Courier New', monospace;
   -webkit-font-smoothing: none;
   font-smooth: never;
-  clip-path: inset(0 0 100% 0);
-  will-change: clip-path;
-  transform: translateZ(0);
-  animation: yc-curtain-in 720ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transform: translateY(-100%);
+  will-change: transform;
+  transition: transform 620ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.yc-projects.is-exiting,
-.yc-immersive.is-exiting {
-  animation: yc-curtain-out 720ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+.yc-projects.is-open,
+.yc-immersive.is-open {
+  transform: translateY(0);
+}
+
+.yc-projects.is-closing,
+.yc-immersive.is-closing {
+  transform: translateY(-100%);
+  transition: transform 500ms cubic-bezier(0.5, 0, 0.75, 0.4);
 }
 
 .yc-projects {
@@ -47,23 +52,6 @@
   z-index: 2000;
 }
 
-@keyframes yc-curtain-in {
-  from {
-    clip-path: inset(0 0 100% 0);
-  }
-  to {
-    clip-path: inset(0 0 0 0);
-  }
-}
-
-@keyframes yc-curtain-out {
-  from {
-    clip-path: inset(0 0 0 0);
-  }
-  to {
-    clip-path: inset(0 0 100% 0);
-  }
-}
 
 /* shared back button ------------------------------------------------------ */
 .yc-back {
@@ -328,7 +316,7 @@
   animation-delay: var(--reveal-delay, 0ms);
 }
 
-.yc-immersive.is-exiting .yc-immersive__stagger {
+.yc-immersive.is-closing .yc-immersive__stagger {
   animation: none;
   opacity: 1;
   transform: none;
@@ -482,13 +470,14 @@
 @media (prefers-reduced-motion: reduce) {
   .yc-projects,
   .yc-immersive {
-    clip-path: none;
-    animation: none;
+    transform: none;
+    transition: opacity 150ms ease;
   }
 
-  .yc-projects.is-exiting,
-  .yc-immersive.is-exiting {
-    animation: yc-curtain-out 200ms ease forwards;
+  .yc-projects.is-closing,
+  .yc-immersive.is-closing {
+    transform: none;
+    opacity: 0;
   }
 
   .yc-list__row,

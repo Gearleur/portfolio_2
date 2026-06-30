@@ -1,24 +1,51 @@
-import { useCallback, useState } from 'react';
-import type { AnimationEvent } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import type { TransitionEvent } from 'react';
+
+type Phase = 'enter' | 'open' | 'closing';
 
 /**
- * Drives the curtain close transition shared by the projects surfaces:
- * a click flips `isExiting`, and `onExit` fires only once the curtain
- * animation on the surface element itself has finished.
+ * Drives the slide transition shared by the fullscreen projects surfaces.
+ *
+ * The surface mounts off-screen ('enter'), then a deferred rAF flips it to
+ * 'open' on a later frame — so the expensive first mount/paint happens BEFORE
+ * the transition starts, keeping the slide jank-free even the first time.
+ * `onExit` fires once the closing transition (or a safety timeout) completes.
  */
 export function useCurtainExit(onExit: () => void) {
-  const [isExiting, setIsExiting] = useState(false);
+  const [phase, setPhase] = useState<Phase>('enter');
 
-  const requestClose = useCallback(() => setIsExiting(true), []);
+  useEffect(() => {
+    let inner = 0;
+    const outer = requestAnimationFrame(() => {
+      inner = requestAnimationFrame(() => setPhase('open'));
+    });
+    return () => {
+      cancelAnimationFrame(outer);
+      cancelAnimationFrame(inner);
+    };
+  }, []);
 
-  const handleAnimationEnd = useCallback(
-    (event: AnimationEvent) => {
-      if (isExiting && event.target === event.currentTarget) {
+  const requestClose = useCallback(() => setPhase('closing'), []);
+
+  // Safety net in case the transitionend event never lands (e.g. reduced motion).
+  useEffect(() => {
+    if (phase !== 'closing') {
+      return;
+    }
+    const fallback = setTimeout(onExit, 700);
+    return () => clearTimeout(fallback);
+  }, [phase, onExit]);
+
+  const handleTransitionEnd = useCallback(
+    (event: TransitionEvent) => {
+      if (phase === 'closing' && event.target === event.currentTarget) {
         onExit();
       }
     },
-    [isExiting, onExit],
+    [phase, onExit],
   );
 
-  return { isExiting, requestClose, handleAnimationEnd };
+  const phaseClass = phase === 'open' ? 'is-open' : phase === 'closing' ? 'is-closing' : '';
+
+  return { phaseClass, requestClose, handleTransitionEnd };
 }

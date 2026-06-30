@@ -69,7 +69,7 @@ type ProjectsLandingProps = {
 export function ProjectsLanding({ onBack, onSelect }: ProjectsLandingProps) {
   const [activeId, setActiveId] = useState<string | null>(null);
   const [openId, setOpenId] = useState<string | null>(null);
-  const { isExiting, requestClose, handleAnimationEnd } = useCurtainExit(() => onBack?.());
+  const { phaseClass, requestClose, handleTransitionEnd } = useCurtainExit(() => onBack?.());
 
   const activeProject = selectedProjects.find((project) => project.id === activeId) ?? null;
   const openIndex = selectedProjects.findIndex((project) => project.id === openId);
@@ -82,8 +82,8 @@ export function ProjectsLanding({ onBack, onSelect }: ProjectsLandingProps) {
 
   return createPortal(
     <div
-      className={`yc-projects${isExiting ? ' is-exiting' : ''}`}
-      onAnimationEnd={handleAnimationEnd}
+      className={`yc-projects${phaseClass ? ` ${phaseClass}` : ''}`}
+      onTransitionEnd={handleTransitionEnd}
     >
       <header className="yc-projects__bar">
         <BackButton label="back" onClick={requestClose} />

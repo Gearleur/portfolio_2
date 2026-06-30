@@ -16,7 +16,7 @@ function revealDelay(step: number): CSSProperties {
 }
 
 export function ProjectImmersive({ project, index, onClose }: ProjectImmersiveProps) {
-  const { isExiting, requestClose, handleAnimationEnd } = useCurtainExit(onClose);
+  const { phaseClass, requestClose, handleTransitionEnd } = useCurtainExit(onClose);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -32,11 +32,11 @@ export function ProjectImmersive({ project, index, onClose }: ProjectImmersivePr
 
   return createPortal(
     <div
-      className={`yc-immersive${isExiting ? ' is-exiting' : ''}`}
+      className={`yc-immersive${phaseClass ? ` ${phaseClass}` : ''}`}
       role="dialog"
       aria-modal="true"
       aria-label={project.title}
-      onAnimationEnd={handleAnimationEnd}
+      onTransitionEnd={handleTransitionEnd}
     >
       <div className="yc-immersive__inner">
         <header className="yc-immersive__bar yc-immersive__stagger" style={revealDelay(0)}>
