@@ -2,7 +2,7 @@ import { EducationResume } from '../education/EducationResume';
 import { ExtracurricularPanel } from '../extracurricular/ExtracurricularPanel';
 import { LanguagesPanel } from '../languages/LanguagesPanel';
 import { ProfessionalExperiencePanel } from '../professional-experience/ProfessionalExperiencePanel';
-import { ProjectsPanel } from '../projects/ProjectsPanel';
+import { ProjectsLanding } from '../projects/ProjectsLanding';
 import { ResumeIosPanel } from '../resume/ResumeIosPanel';
 import { TechnicalSkillsMobilePanel } from '../technical-skills/TechnicalSkillsMobilePanel';
 import type { MobileAppId } from './mobileApps';
@@ -37,5 +37,5 @@ export function MobileAppContent({ appId, onClose }: MobileAppContentProps) {
     return <ResumeIosPanel onClose={onClose} />;
   }
 
-  return <ProjectsPanel />;
+  return <ProjectsLanding onBack={onClose} />;
 }

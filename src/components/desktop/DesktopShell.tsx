@@ -13,7 +13,7 @@ import { EducationWindow } from '../education/EducationWindow';
 import { ExtracurricularWindow } from '../extracurricular/ExtracurricularWindow';
 import { LanguagesWindow } from '../languages/LanguagesWindow';
 import { ProfessionalExperienceWindow } from '../professional-experience/ProfessionalExperienceWindow';
-import { ProjectsWindow } from '../projects/ProjectsWindow';
+import { ProjectsLanding } from '../projects/ProjectsLanding';
 import { ResumeWindow } from '../resume/ResumeWindow';
 import { TechnicalSkillsWindow } from '../technical-skills/TechnicalSkillsWindow';
 import { MenuBar } from './MenuBar';
@@ -103,18 +103,7 @@ export function DesktopShell() {
           />
         ) : null}
 
-        {projectsWindow.isOpen ? (
-          <ProjectsWindow
-            frame={projectsWindow.frame}
-            isMaximized={projectsWindow.isMaximized}
-            onClose={projectsWindow.close}
-            onFrameChange={projectsWindow.updateFrame}
-            onMinimize={projectsWindow.minimize}
-            onToggleMaximize={projectsWindow.toggleMaximize}
-            onActivate={() => windowStack.bringToFront('projects')}
-            zIndex={windowStack.getZIndex('projects')}
-          />
-        ) : null}
+        {projectsWindow.isOpen ? <ProjectsLanding onBack={projectsWindow.close} /> : null}
 
         {skillsWindow.isOpen ? (
           <TechnicalSkillsWindow
