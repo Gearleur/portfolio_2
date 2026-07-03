@@ -3,7 +3,7 @@ import './professionalExperience.css';
 
 export function ProfessionalExperiencePanel() {
   return (
-    <section className="experience-panel" aria-labelledby="experience-heading">
+    <section className="experience-panel yc-da" aria-labelledby="experience-heading">
       <header className="experience-panel__header">
         <p className="experience-panel__eyebrow">Professional dossier</p>
         <div>

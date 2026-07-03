@@ -1,0 +1,31 @@
+/* ============================================================
+   Shared "yc" dark art-direction tokens.
+   Mirrors the projects experience (projectsLanding.css) so other
+   surfaces can opt into the same palette + monospace type by adding
+   the `yc-da` class. Loaded globally from main.tsx.
+   ============================================================ */
+
+@font-face {
+  font-family: 'Departure Mono';
+  src:
+    url('/fonts/DepartureMono-Regular.woff2') format('woff2'),
+    url('/fonts/DepartureMono-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+.yc-da {
+  --yc-bg: #0a0a0a;
+  --yc-ink: #f5f5f5;
+  --yc-soft: #d8d8d8;
+  --yc-dim: #707070;
+  --yc-faint: #2e2e2e;
+  --yc-line: #161616;
+
+  background: var(--yc-bg);
+  color: var(--yc-ink);
+  font-family: 'Departure Mono', ui-monospace, 'Courier New', monospace;
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+}

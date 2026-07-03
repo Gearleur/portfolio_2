@@ -166,9 +166,10 @@
   padding: 20px;
 }
 
-.retro-window__body--experience {
+.retro-window__body--experience,
+.retro-window__body--education {
   padding: 0;
-  background: #efe8da;
+  background: #0a0a0a;
 }
 
 .window-resize-handle {
@@ -217,7 +218,8 @@
     padding: 16px;
   }
 
-  .retro-window__body--experience {
+  .retro-window__body--experience,
+  .retro-window__body--education {
     padding: 0;
   }
 }

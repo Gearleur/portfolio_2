@@ -33,7 +33,7 @@
 
 .yc-projects.is-open,
 .yc-immersive.is-open {
-  transform: translateY(0);
+  transform: none;
 }
 
 .yc-projects.is-closing,
@@ -50,6 +50,9 @@
 
 .yc-immersive {
   z-index: 2000;
+  /* full-bleed case-study section breaks out with negative margins; clip any
+     resulting sub-pixel horizontal overflow without touching vertical scroll. */
+  overflow-x: clip;
 }
 
 

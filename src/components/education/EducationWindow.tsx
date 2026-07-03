@@ -26,6 +26,7 @@ export function EducationWindow({
   return (
     <RetroWindow
       ariaLabel="Fenetre Education"
+      bodyClassName="retro-window__body--education"
       frame={frame}
       isMaximized={isMaximized}
       onClose={onClose}

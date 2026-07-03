@@ -3,7 +3,7 @@ import './education.css';
 
 export function EducationResume() {
   return (
-    <section className="education-resume" aria-labelledby="education-heading">
+    <section className="education-resume yc-da" aria-labelledby="education-heading">
       <header className="education-resume__header">
         <p className="education-resume__eyebrow">Academic record</p>
         <h1 id="education-heading">Education</h1>

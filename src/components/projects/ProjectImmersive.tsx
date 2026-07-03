@@ -1,9 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import type { CSSProperties } from 'react';
 import { createPortal } from 'react-dom';
 import type { SelectedProject } from '../../data/projects';
 import { BackButton } from './BackButton';
+import { ProjectCaseStudy } from './ProjectCaseStudy';
 import { useCurtainExit } from './useCurtainExit';
+import './caseStudy.css';
 
 type ProjectImmersiveProps = {
   project: SelectedProject;
@@ -17,6 +19,7 @@ function revealDelay(step: number): CSSProperties {
 
 export function ProjectImmersive({ project, index, onClose }: ProjectImmersiveProps) {
   const { phaseClass, requestClose, handleTransitionEnd } = useCurtainExit(onClose);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -32,6 +35,7 @@ export function ProjectImmersive({ project, index, onClose }: ProjectImmersivePr
 
   return createPortal(
     <div
+      ref={scrollRef}
       className={`yc-immersive${phaseClass ? ` ${phaseClass}` : ''}`}
       role="dialog"
       aria-modal="true"
@@ -52,18 +56,26 @@ export function ProjectImmersive({ project, index, onClose }: ProjectImmersivePr
           <h2 className="yc-immersive__title">{project.title}</h2>
         </div>
 
-        <p className="yc-immersive__lead yc-immersive__stagger" style={revealDelay(2)}>
-          {lead}
-        </p>
+        {project.caseStudy ? (
+          <div className="yc-immersive__fade" style={revealDelay(2)}>
+            <ProjectCaseStudy caseStudy={project.caseStudy} scrollRef={scrollRef} />
+          </div>
+        ) : (
+          <>
+            <p className="yc-immersive__lead yc-immersive__stagger" style={revealDelay(2)}>
+              {lead}
+            </p>
 
-        <section className="yc-immersive__block yc-immersive__stagger" style={revealDelay(3)}>
-          <h3 className="yc-immersive__label">Highlights</h3>
-          <ul className="yc-immersive__bullets">
-            {project.bullets.map((bullet) => (
-              <li key={bullet}>{bullet}</li>
-            ))}
-          </ul>
-        </section>
+            <section className="yc-immersive__block yc-immersive__stagger" style={revealDelay(3)}>
+              <h3 className="yc-immersive__label">Highlights</h3>
+              <ul className="yc-immersive__bullets">
+                {project.bullets.map((bullet) => (
+                  <li key={bullet}>{bullet}</li>
+                ))}
+              </ul>
+            </section>
+          </>
+        )}
 
         <section className="yc-immersive__block yc-immersive__stagger" style={revealDelay(4)}>
           <h3 className="yc-immersive__label">Stack</h3>
