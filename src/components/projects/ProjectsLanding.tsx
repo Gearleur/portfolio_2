@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { selectedProjects } from '../../data/projects';
+import { useFullscreenDialog } from '../../hooks/useFullscreenDialog';
 import { BackButton } from './BackButton';
 import { useCurtainExit } from './useCurtainExit';
 import { ProjectImmersive } from './ProjectImmersive';
@@ -13,7 +14,7 @@ function useScramble(text: string, active: boolean) {
   const [scrambled, setScrambled] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!active) {
+    if (!active || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       return;
     }
 
@@ -70,10 +71,17 @@ export function ProjectsLanding({ onBack, onSelect }: ProjectsLandingProps) {
   const [activeId, setActiveId] = useState<string | null>(null);
   const [openId, setOpenId] = useState<string | null>(null);
   const { phaseClass, requestClose, handleTransitionEnd } = useCurtainExit(() => onBack?.());
+  const dialogRef = useRef<HTMLDivElement>(null);
 
   const activeProject = selectedProjects.find((project) => project.id === activeId) ?? null;
   const openIndex = selectedProjects.findIndex((project) => project.id === openId);
   const openProject = openIndex >= 0 ? selectedProjects[openIndex] : null;
+  useFullscreenDialog({
+    backgroundSelector: '#portfolio-content',
+    enabled: !openProject,
+    onClose: requestClose,
+    ref: dialogRef,
+  });
 
   const handleSelect = (projectId: string) => {
     setOpenId(projectId);
@@ -82,12 +90,17 @@ export function ProjectsLanding({ onBack, onSelect }: ProjectsLandingProps) {
 
   return createPortal(
     <div
+      ref={dialogRef}
       className={`yc-projects${phaseClass ? ` ${phaseClass}` : ''}`}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="projects-dialog-title"
+      tabIndex={-1}
       onTransitionEnd={handleTransitionEnd}
     >
       <header className="yc-projects__bar">
         <BackButton label="back" onClick={requestClose} />
-        <p className="yc-projects__eyebrow">Selected work — 2022 / 2026</p>
+        <p className="yc-projects__eyebrow" id="projects-dialog-title">Selected work — 2022 / 2026</p>
       </header>
 
       <div className="yc-projects__body">

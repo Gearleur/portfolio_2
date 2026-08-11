@@ -1,17 +1,8 @@
-import type { WindowFrame } from '../../types/window';
 import { RetroWindow } from '../desktop/RetroWindow';
+import type { DesktopWindowControllerProps } from '../desktop/RetroWindow';
 import { EducationResume } from './EducationResume';
 
-type EducationWindowProps = {
-  frame: WindowFrame;
-  isMaximized: boolean;
-  onClose: () => void;
-  onFrameChange: (frame: WindowFrame) => void;
-  onMinimize: () => void;
-  onToggleMaximize: () => void;
-  onActivate: () => void;
-  zIndex: number;
-};
+type EducationWindowProps = DesktopWindowControllerProps;
 
 export function EducationWindow({
   frame,

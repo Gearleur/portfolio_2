@@ -1,6 +1,6 @@
-/* global caches, fetch, self */
+/* global URL, caches, fetch, self */
 
-const CACHE_NAME = 'portfolio-pwa-v1';
+const CACHE_NAME = 'portfolio-pwa-v2';
 
 const APP_SHELL_URLS = [
   '/',
@@ -26,7 +26,9 @@ const APP_SHELL_URLS = [
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL_URLS)),
+    caches.open(CACHE_NAME).then((cache) =>
+      Promise.allSettled(APP_SHELL_URLS.map((url) => cache.add(url))),
+    ),
   );
   self.skipWaiting();
 });
@@ -67,11 +69,10 @@ self.addEventListener('fetch', (event) => {
       }
 
       return fetch(request).then((networkResponse) => {
-        const responseToCache = networkResponse.clone();
-
-        caches.open(CACHE_NAME).then((cache) => {
-          cache.put(request, responseToCache);
-        });
+        if (networkResponse.ok && new URL(request.url).origin === self.location.origin) {
+          const responseToCache = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(request, responseToCache));
+        }
 
         return networkResponse;
       });

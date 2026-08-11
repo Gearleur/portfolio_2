@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import type { CSSProperties } from 'react';
 
 type PointLatticeProps = {
@@ -46,7 +47,7 @@ export function PointLattice({ depth, activeIndex }: PointLatticeProps) {
   const yaw = -34 + Math.max(0, activeIndex) * 8;
   const latticeStyle = { '--yaw': `${yaw}deg` } as CSSProperties;
 
-  const nodes = buildNodes(depth);
+  const nodes = useMemo(() => buildNodes(depth), [depth]);
 
   return (
     <div className="lattice-scene" aria-hidden="true">

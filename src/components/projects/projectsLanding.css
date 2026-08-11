@@ -501,3 +501,12 @@
     transform: none;
   }
 }
+@media (prefers-reduced-motion: reduce) {
+  .yc-projects,
+  .yc-immersive,
+  .yc-immersive__stagger,
+  .yc-immersive__fade {
+    animation: none;
+    transition-duration: 0.01ms;
+  }
+}

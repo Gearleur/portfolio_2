@@ -31,6 +31,10 @@ const DESKTOP_WINDOW_IDS = [
 ] as const;
 type DesktopWindowId = (typeof DESKTOP_WINDOW_IDS)[number];
 
+function isDesktopWindowId(value: string): value is DesktopWindowId {
+  return DESKTOP_WINDOW_IDS.includes(value as DesktopWindowId);
+}
+
 export function DesktopShell() {
   const educationWindow = useDesktopWindow(DEFAULT_EDUCATION_FRAME);
   const professionalWindow = useDesktopWindow(DEFAULT_PROFESSIONAL_FRAME);
@@ -46,6 +50,16 @@ export function DesktopShell() {
     open();
   };
 
+  const windowOpeners: Record<DesktopWindowId, () => void> = {
+    education: () => openWindow('education', educationWindow.open),
+    professional: () => openWindow('professional', professionalWindow.open),
+    projects: () => openWindow('projects', projectsWindow.open),
+    skills: () => openWindow('skills', skillsWindow.open),
+    languages: () => openWindow('languages', languagesWindow.open),
+    extracurricular: () => openWindow('extracurricular', extracurricularWindow.open),
+    resume: () => openWindow('resume', resumeWindow.open),
+  };
+
   return (
     <main className="app-shell">
       <div className="wallpaper-layer" aria-hidden="true" />
@@ -53,27 +67,13 @@ export function DesktopShell() {
       <MenuBar />
 
       <div className="desktop-surface" aria-label="Bureau portfolio">
-        <EducationIcon onOpen={() => openWindow('education', educationWindow.open)} />
+        <EducationIcon onOpen={windowOpeners.education} />
 
         {systemItems.map((item) => (
           <SystemIcon
             item={item}
             key={item.variant}
-            onOpen={
-              item.variant === 'professional'
-                ? () => openWindow('professional', professionalWindow.open)
-                : item.variant === 'projects'
-                  ? () => openWindow('projects', projectsWindow.open)
-                  : item.variant === 'skills'
-                    ? () => openWindow('skills', skillsWindow.open)
-                    : item.variant === 'languages'
-                      ? () => openWindow('languages', languagesWindow.open)
-                      : item.variant === 'extracurricular'
-                        ? () => openWindow('extracurricular', extracurricularWindow.open)
-                        : item.variant === 'resume'
-                          ? () => openWindow('resume', resumeWindow.open)
-                          : undefined
-            }
+            onOpen={isDesktopWindowId(item.variant) ? windowOpeners[item.variant] : undefined}
           />
         ))}
 

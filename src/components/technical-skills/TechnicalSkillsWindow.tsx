@@ -1,17 +1,8 @@
-import type { WindowFrame } from '../../types/window';
 import { RetroWindow } from '../desktop/RetroWindow';
+import type { DesktopWindowControllerProps } from '../desktop/RetroWindow';
 import { TechnicalSkillsPanel } from './TechnicalSkillsPanel';
 
-type TechnicalSkillsWindowProps = {
-  frame: WindowFrame;
-  isMaximized: boolean;
-  onClose: () => void;
-  onFrameChange: (frame: WindowFrame) => void;
-  onMinimize: () => void;
-  onToggleMaximize: () => void;
-  onActivate: () => void;
-  zIndex: number;
-};
+type TechnicalSkillsWindowProps = DesktopWindowControllerProps;
 
 export function TechnicalSkillsWindow(props: TechnicalSkillsWindowProps) {
   return (

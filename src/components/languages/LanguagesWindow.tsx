@@ -1,17 +1,8 @@
-import type { WindowFrame } from '../../types/window';
 import { RetroWindow } from '../desktop/RetroWindow';
+import type { DesktopWindowControllerProps } from '../desktop/RetroWindow';
 import { LanguagesPanel } from './LanguagesPanel';
 
-type LanguagesWindowProps = {
-  frame: WindowFrame;
-  isMaximized: boolean;
-  onClose: () => void;
-  onFrameChange: (frame: WindowFrame) => void;
-  onMinimize: () => void;
-  onToggleMaximize: () => void;
-  onActivate: () => void;
-  zIndex: number;
-};
+type LanguagesWindowProps = DesktopWindowControllerProps;
 
 export function LanguagesWindow(props: LanguagesWindowProps) {
   return (

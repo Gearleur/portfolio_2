@@ -1,3 +1,5 @@
+import { profile } from '../../data/profile';
+
 export type MobileAppId =
   | 'education'
   | 'professional'
@@ -64,7 +66,7 @@ export const homeApps: MobileApp[] = [
   },
   {
     id: 'browser',
-    href: 'https://www.linkedin.com/in/alexandre-teixeira-639636214/',
+    href: profile.linkedinUrl,
     iconSrc: '/assets/icons/mobile/internet-explorer.png',
     label: 'Linkedin',
   },
@@ -72,19 +74,19 @@ export const homeApps: MobileApp[] = [
 
 export const dockApps: MobileApp[] = [
   {
-    href: 'tel:+33786015504',
+    href: profile.phoneHref,
     id: 'phone',
     iconSrc: '/assets/icons/mobile/Phone.png',
     label: 'Phone',
   },
   {
-    href: 'sms:+33786015504',
+    href: profile.smsHref,
     id: 'messages',
     iconSrc: '/assets/icons/mobile/Messages.png',
     label: 'Messages',
   },
   {
-    href: 'mailto:alexandretei13@gmail.com',
+    href: `mailto:${profile.email}`,
     id: 'mail',
     iconSrc: '/assets/icons/mobile/Mail.png',
     label: 'Mail',

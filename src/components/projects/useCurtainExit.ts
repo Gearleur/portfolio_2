@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type { TransitionEvent } from 'react';
 
 type Phase = 'enter' | 'open' | 'closing';
@@ -13,6 +13,11 @@ type Phase = 'enter' | 'open' | 'closing';
  */
 export function useCurtainExit(onExit: () => void) {
   const [phase, setPhase] = useState<Phase>('enter');
+  const onExitRef = useRef(onExit);
+
+  useEffect(() => {
+    onExitRef.current = onExit;
+  }, [onExit]);
 
   useEffect(() => {
     let inner = 0;
@@ -32,17 +37,17 @@ export function useCurtainExit(onExit: () => void) {
     if (phase !== 'closing') {
       return;
     }
-    const fallback = setTimeout(onExit, 700);
+    const fallback = setTimeout(() => onExitRef.current(), 700);
     return () => clearTimeout(fallback);
-  }, [phase, onExit]);
+  }, [phase]);
 
   const handleTransitionEnd = useCallback(
     (event: TransitionEvent) => {
       if (phase === 'closing' && event.target === event.currentTarget) {
-        onExit();
+        onExitRef.current();
       }
     },
-    [phase, onExit],
+    [phase],
   );
 
   const phaseClass = phase === 'open' ? 'is-open' : phase === 'closing' ? 'is-closing' : '';

@@ -1,3 +1,5 @@
+import { profile } from './profile';
+
 export type SystemItemVariant =
   | 'professional'
   | 'projects'
@@ -43,7 +45,7 @@ export const systemItems: SystemItem[] = [
     label: 'Internet Explorer',
     variant: 'browser',
     iconSrc: '/assets/icons/desktop/internet-explorer.ico',
-    href: 'https://www.linkedin.com/in/alexandre-teixeira-639636214/',
+    href: profile.linkedinUrl,
   },
   {
     label: 'Trash',

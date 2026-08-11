@@ -13,29 +13,15 @@ type MobileAppContentProps = {
 };
 
 export function MobileAppContent({ appId, onClose }: MobileAppContentProps) {
-  if (appId === 'education') {
-    return <EducationResume />;
-  }
+  const appRenderers: Record<MobileAppId, () => React.ReactNode> = {
+    education: () => <EducationResume />,
+    professional: () => <ProfessionalExperiencePanel />,
+    projects: () => <ProjectsLanding onBack={onClose} />,
+    skills: () => <TechnicalSkillsMobilePanel />,
+    languages: () => <LanguagesPanel />,
+    extracurricular: () => <ExtracurricularPanel />,
+    resume: () => <ResumeIosPanel onClose={onClose} />,
+  };
 
-  if (appId === 'professional') {
-    return <ProfessionalExperiencePanel />;
-  }
-
-  if (appId === 'skills') {
-    return <TechnicalSkillsMobilePanel />;
-  }
-
-  if (appId === 'languages') {
-    return <LanguagesPanel />;
-  }
-
-  if (appId === 'extracurricular') {
-    return <ExtracurricularPanel />;
-  }
-
-  if (appId === 'resume') {
-    return <ResumeIosPanel onClose={onClose} />;
-  }
-
-  return <ProjectsLanding onBack={onClose} />;
+  return appRenderers[appId]();
 }

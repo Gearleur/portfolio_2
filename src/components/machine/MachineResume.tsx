@@ -1,71 +1,19 @@
-import { useEffect, useRef, useState } from 'react';
 import { professionalExperiences } from '../../data/professionalExperience';
+import { profile } from '../../data/profile';
+import { useCopyText } from '../../hooks/useCopyText';
 import { machineProjects, machineSkillGroups } from './machineResumeData';
 import { getMachineResumeMarkdown } from './machineResumeMarkdown';
 import './machineMode.css';
-
-const LINKEDIN_URL = 'https://www.linkedin.com/in/alexandre-teixeira-639636214/';
-const GITHUB_URL = 'https://github.com/Gearleur';
 
 function Prompt({ children = '>' }: { children?: string }) {
   return <span className="machine-prompt" aria-hidden="true">{children}</span>;
 }
 
-type CopyState = 'idle' | 'copied' | 'error';
-
-async function copyText(text: string) {
-  if (navigator.clipboard?.writeText) {
-    try {
-      await navigator.clipboard.writeText(text);
-      return;
-    } catch {
-      // Fall back to the selection-based API when clipboard permissions are restricted.
-    }
-  }
-
-  const textarea = document.createElement('textarea');
-  textarea.value = text;
-  textarea.setAttribute('readonly', '');
-  textarea.style.position = 'fixed';
-  textarea.style.opacity = '0';
-  document.body.appendChild(textarea);
-  textarea.select();
-  let didCopy: boolean;
-
-  try {
-    didCopy = document.execCommand('copy');
-  } finally {
-    textarea.remove();
-  }
-
-  if (!didCopy) {
-    throw new Error('Clipboard copy failed');
-  }
-}
-
 export function MachineResume() {
-  const [copyState, setCopyState] = useState<CopyState>('idle');
-  const resetCopyStateTimer = useRef<number | null>(null);
-
-  useEffect(() => () => {
-    if (resetCopyStateTimer.current !== null) {
-      window.clearTimeout(resetCopyStateTimer.current);
-    }
-  }, []);
+  const { copy, state: copyState } = useCopyText();
 
   const handleCopy = async () => {
-    if (resetCopyStateTimer.current !== null) {
-      window.clearTimeout(resetCopyStateTimer.current);
-    }
-
-    try {
-      await copyText(getMachineResumeMarkdown());
-      setCopyState('copied');
-    } catch {
-      setCopyState('error');
-    }
-
-    resetCopyStateTimer.current = window.setTimeout(() => setCopyState('idle'), 1800);
+    await copy(getMachineResumeMarkdown());
   };
 
   const copyLabel = copyState === 'copied' ? 'Copied' : copyState === 'error' ? 'Retry' : 'Copy all';
@@ -115,10 +63,10 @@ export function MachineResume() {
 }`}</code></pre>
 
           <nav className="machine-resume__links" aria-label="Contact links">
-            <a href="mailto:alexandretei13@gmail.com">[EMAIL]</a>
-            <a href="tel:+33786015504">[PHONE]</a>
-            <a href={LINKEDIN_URL} target="_blank" rel="noreferrer">[LINKEDIN]</a>
-            <a href={GITHUB_URL} target="_blank" rel="noreferrer">[GITHUB]</a>
+            <a href={`mailto:${profile.email}`}>[EMAIL]</a>
+            <a href={profile.phoneHref}>[PHONE]</a>
+            <a href={profile.linkedinUrl} target="_blank" rel="noreferrer">[LINKEDIN]</a>
+            <a href={profile.githubUrl} target="_blank" rel="noreferrer">[GITHUB]</a>
             <a href="/CV_en.pdf" download>[CV_EN.PDF]</a>
             <a href="/CV_fr.pdf" download>[CV_FR.PDF]</a>
           </nav>

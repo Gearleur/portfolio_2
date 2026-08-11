@@ -1,10 +1,10 @@
-import { useRef } from 'react';
+import { useId, useRef } from 'react';
 import type { PointerEvent, ReactNode } from 'react';
 import type { WindowFrame, WindowInteraction } from '../../types/window';
 import { clampFrameToDesktop, getDesktopBounds } from '../../utils/windowFrame';
 import './retroWindow.css';
 
-type RetroWindowProps = {
+export type RetroWindowProps = {
   ariaLabel: string;
   bodyClassName?: string;
   children: ReactNode;
@@ -18,6 +18,18 @@ type RetroWindowProps = {
   title: string;
   zIndex: number;
 };
+
+export type DesktopWindowControllerProps = Pick<
+  RetroWindowProps,
+  | 'frame'
+  | 'isMaximized'
+  | 'onClose'
+  | 'onFrameChange'
+  | 'onMinimize'
+  | 'onToggleMaximize'
+  | 'onActivate'
+  | 'zIndex'
+>;
 
 export function RetroWindow({
   ariaLabel,
@@ -34,6 +46,7 @@ export function RetroWindow({
   zIndex,
 }: RetroWindowProps) {
   const interactionRef = useRef<WindowInteraction | null>(null);
+  const titleId = useId();
 
   const beginDrag = (event: PointerEvent<HTMLDivElement>) => {
     if (event.button !== 0 || isMaximized) {
@@ -121,7 +134,9 @@ export function RetroWindow({
     <section
       className={`retro-window${isMaximized ? ' retro-window--maximized' : ''}`}
       style={{ left: frame.x, top: frame.y, width: frame.width, height: frame.height, zIndex }}
+      role="dialog"
       aria-label={ariaLabel}
+      aria-labelledby={titleId}
       onFocusCapture={onActivate}
       onPointerDownCapture={onActivate}
     >
@@ -132,7 +147,7 @@ export function RetroWindow({
         onPointerUp={endInteraction}
         onPointerCancel={endInteraction}
       >
-        <span className="retro-window__title">{title}</span>
+        <span className="retro-window__title" id={titleId}>{title}</span>
         <div
           className="window-controls"
           onPointerDown={(event) => event.stopPropagation()}

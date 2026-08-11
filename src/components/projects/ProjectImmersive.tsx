@@ -1,7 +1,8 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import type { CSSProperties } from 'react';
 import { createPortal } from 'react-dom';
 import type { SelectedProject } from '../../data/projects';
+import { useFullscreenDialog } from '../../hooks/useFullscreenDialog';
 import { BackButton } from './BackButton';
 import { ProjectCaseStudy } from './ProjectCaseStudy';
 import { useCurtainExit } from './useCurtainExit';
@@ -20,16 +21,11 @@ function revealDelay(step: number): CSSProperties {
 export function ProjectImmersive({ project, index, onClose }: ProjectImmersiveProps) {
   const { phaseClass, requestClose, handleTransitionEnd } = useCurtainExit(onClose);
   const scrollRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        requestClose();
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [requestClose]);
+  useFullscreenDialog({
+    backgroundSelector: '.yc-projects',
+    onClose: requestClose,
+    ref: scrollRef,
+  });
 
   const lead = project.presentation?.intro ?? project.summary;
 
@@ -40,6 +36,7 @@ export function ProjectImmersive({ project, index, onClose }: ProjectImmersivePr
       role="dialog"
       aria-modal="true"
       aria-label={project.title}
+      tabIndex={-1}
       onTransitionEnd={handleTransitionEnd}
     >
       <div className="yc-immersive__inner">

@@ -47,7 +47,7 @@ export function TechnicalSkillsPanel() {
           </section>
         </aside>
 
-        <main className="xp-main" aria-labelledby="technical-skills-heading">
+        <div className="xp-main" aria-labelledby="technical-skills-heading">
           <div className="xp-main__heading">
             <h1 id="technical-skills-heading">Technical Skills</h1>
             <p>Select an item to view installed technologies and engineering capabilities.</p>
@@ -86,7 +86,7 @@ export function TechnicalSkillsPanel() {
               </article>
             ))}
           </div>
-        </main>
+        </div>
       </div>
     </section>
   );

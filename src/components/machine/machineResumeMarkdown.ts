@@ -1,4 +1,5 @@
 import { professionalExperiences } from '../../data/professionalExperience';
+import { profile } from '../../data/profile';
 import { machineProjects, machineSkillGroups } from './machineResumeData';
 
 function renderList(items: string[]) {
@@ -46,18 +47,18 @@ function renderSkillsTable() {
 }
 
 export function getMachineResumeMarkdown() {
-  return `# ALEXANDRE TEIXEIRA
-AI Engineer · GenAI & Production LLM Systems
+  return `# ${profile.name.toUpperCase()}
+${profile.role}
 
 \`\`\`json
 {
-  "email": "alexandretei13@gmail.com",
-  "phone": "+33 7 86 01 55 04",
-  "location": "Paris, France",
-  "linkedin": "alexandre-teixeira-639636214",
-  "github": "Gearleur",
+  "email": "${profile.email}",
+  "phone": "${profile.phoneDisplay}",
+  "location": "${profile.location}",
+  "linkedin": "${profile.linkedinHandle}",
+  "github": "${profile.githubHandle}",
   "portfolio": "current_document",
-  "availability": "open"
+  "availability": "${profile.availability}"
 }
 \`\`\`
 

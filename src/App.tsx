@@ -20,7 +20,9 @@ export default function App() {
 
   return (
     <div className={`portfolio-app portfolio-app--${mode}`}>
-      {mode === 'machine' ? <MachineResume /> : isMobile ? <MobileShell /> : <DesktopShell />}
+      <div id="portfolio-content">
+        {mode === 'machine' ? <MachineResume /> : isMobile ? <MobileShell /> : <DesktopShell />}
+      </div>
       <PortfolioModeToggle mode={mode} onChange={setMode} />
     </div>
   );

@@ -36,7 +36,7 @@ export function ResumeWindowsPanel() {
           </section>
         </aside>
 
-        <main className="resume-windows-main">
+        <div className="resume-windows-main">
           <div>
             <p className="resume-windows-kicker">Resume Downloader</p>
             <h1 id="resume-windows-heading">Choose a CV version</h1>
@@ -64,7 +64,7 @@ export function ResumeWindowsPanel() {
               </article>
             ))}
           </div>
-        </main>
+        </div>
       </div>
     </section>
   );

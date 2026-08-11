@@ -82,7 +82,7 @@ export function ExtracurricularPanel() {
           </div>
         </aside>
 
-        <main className="facebook-main">
+        <div className="facebook-main">
           <section className="facebook-box facebook-picture-box" aria-labelledby="facebook-picture-heading">
             <h2 id="facebook-picture-heading">Picture</h2>
             <div className="facebook-picture">
@@ -121,7 +121,7 @@ export function ExtracurricularPanel() {
             <h2>Access</h2>
             <p>Alexandre is currently logged in from a non-residential location.</p>
           </section>
-        </main>
+        </div>
 
         <aside className="facebook-info" aria-label="Profile information">
           <section className="facebook-box">

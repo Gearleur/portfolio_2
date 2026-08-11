@@ -5,7 +5,6 @@ export type TechnicalSkillCategory = {
   description: string;
   iconSrc: string;
   mobileIconSrc: string;
-  treeLabel: string;
   skills: string[];
   tone: 'blue' | 'green' | 'pink' | 'violet' | 'amber';
   title: string;
@@ -17,7 +16,6 @@ export const technicalSkillCategories: TechnicalSkillCategory[] = [
     title: 'AI / LLM Engineering',
     iconSrc: '/assets/icons/desktop/technical-skills.ico',
     mobileIconSrc: '/assets/icons/mobile/technical-skills.png',
-    treeLabel: 'AI / LLM',
     description: 'Production-oriented tooling for language models, embeddings and inference.',
     skills: [
       'PyTorch',
@@ -35,7 +33,6 @@ export const technicalSkillCategories: TechnicalSkillCategory[] = [
     title: 'Data Science & Scientific Computing',
     iconSrc: '/assets/icons/desktop/notes.ico',
     mobileIconSrc: '/assets/icons/mobile/education.png',
-    treeLabel: 'Data',
     description: 'Python-based analysis workflows, data processing and scientific visualization.',
     skills: [
       'Python',
@@ -52,7 +49,6 @@ export const technicalSkillCategories: TechnicalSkillCategory[] = [
     title: 'Machine Learning / Deep Learning',
     iconSrc: '/assets/icons/desktop/professional-experience.ico',
     mobileIconSrc: '/assets/icons/mobile/experience.png',
-    treeLabel: 'ML / DL',
     description: 'Model design, training, evaluation and preprocessing pipelines.',
     skills: [
       'CNNs',
@@ -71,7 +67,6 @@ export const technicalSkillCategories: TechnicalSkillCategory[] = [
     title: 'Cloud / DevOps',
     iconSrc: '/assets/icons/desktop/projects.ico',
     mobileIconSrc: '/assets/icons/mobile/projects.png',
-    treeLabel: 'Cloud',
     description: 'Deployment and delivery stack for AI systems and internal platforms.',
     skills: [
       'Azure AI Services',
@@ -90,7 +85,6 @@ export const technicalSkillCategories: TechnicalSkillCategory[] = [
     title: 'Web / Backend',
     iconSrc: '/assets/icons/desktop/internet-explorer.ico',
     mobileIconSrc: '/assets/icons/mobile/internet-explorer.png',
-    treeLabel: 'Backend',
     description: 'API, backend and interface development for data-heavy products.',
     skills: ['React', 'FastAPI', 'Flask', 'Pydantic', 'PostgreSQL', 'REST APIs', 'SQL'],
     tone: 'amber',

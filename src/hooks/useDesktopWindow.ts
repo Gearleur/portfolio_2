@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { WindowFrame } from '../types/window';
 import {
   clampFrameToDesktop,
@@ -18,6 +18,26 @@ export function useDesktopWindow(defaultFrame: WindowFrame) {
   const [frame, setFrame] = useState<WindowFrame>(defaultFrame);
   const previousFrame = useRef<WindowFrame>(defaultFrame);
   const hasOpened = useRef(false);
+
+  useEffect(() => {
+    if (!isOpen) {
+      return;
+    }
+
+    const desktop = getDesktopElement();
+    if (!desktop) {
+      return;
+    }
+
+    const resizeObserver = new ResizeObserver(() => {
+      setFrame((currentFrame) =>
+        isMaximized ? getMaximizedFrame(desktop) : clampFrameToDesktop(currentFrame, desktop),
+      );
+    });
+
+    resizeObserver.observe(desktop);
+    return () => resizeObserver.disconnect();
+  }, [isMaximized, isOpen]);
 
   const open = () => {
     const desktop = getDesktopElement();

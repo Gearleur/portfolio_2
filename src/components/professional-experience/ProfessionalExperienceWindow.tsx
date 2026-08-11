@@ -1,17 +1,8 @@
-import type { WindowFrame } from '../../types/window';
 import { RetroWindow } from '../desktop/RetroWindow';
+import type { DesktopWindowControllerProps } from '../desktop/RetroWindow';
 import { ProfessionalExperiencePanel } from './ProfessionalExperiencePanel';
 
-type ProfessionalExperienceWindowProps = {
-  frame: WindowFrame;
-  isMaximized: boolean;
-  onClose: () => void;
-  onFrameChange: (frame: WindowFrame) => void;
-  onMinimize: () => void;
-  onToggleMaximize: () => void;
-  onActivate: () => void;
-  zIndex: number;
-};
+type ProfessionalExperienceWindowProps = DesktopWindowControllerProps;
 
 export function ProfessionalExperienceWindow(props: ProfessionalExperienceWindowProps) {
   return (
