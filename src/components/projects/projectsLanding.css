@@ -458,6 +458,18 @@
     grid-template-columns: auto 1fr;
     gap: 14px;
     padding: 20px;
+    color: var(--yc-ink);
+  }
+
+  .yc-item::before {
+    display: none;
+  }
+
+  .yc-item__index,
+  .yc-item:hover .yc-item__index,
+  .yc-item:focus-visible .yc-item__index,
+  .yc-item.is-active .yc-item__index {
+    color: var(--yc-ink);
   }
 
   .yc-item__year {
@@ -466,6 +478,15 @@
 
   .yc-item__title {
     font-size: clamp(1.25rem, 6vw, 1.8rem);
+    color: var(--yc-ink);
+    transform: none;
+  }
+
+  .yc-item:hover .yc-item__title,
+  .yc-item:focus-visible .yc-item__title,
+  .yc-item.is-active .yc-item__title {
+    color: var(--yc-ink);
+    transform: none;
   }
 }
 

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { selectedProjects } from '../../data/projects';
+import { useMediaQuery } from '../../hooks/useMediaQuery';
 import { useFullscreenDialog } from '../../hooks/useFullscreenDialog';
 import { BackButton } from './BackButton';
 import { useCurtainExit } from './useCurtainExit';
@@ -10,12 +11,40 @@ import './projectsLanding.css';
 const SCRAMBLE_GLYPHS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%*+=<>/';
 
 /** Airport split-flap / departure-board reveal: glyphs cycle, then lock left to right. */
-function useScramble(text: string, active: boolean) {
+function useScramble(text: string, active: boolean, gentle = false) {
   const [scrambled, setScrambled] = useState<string | null>(null);
 
   useEffect(() => {
     if (!active || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       return;
+    }
+
+    if (gentle) {
+      const characters = Array.from(text);
+      const mutableIndexes = characters
+        .map((character, index) => (character === ' ' ? -1 : index))
+        .filter((index) => index >= 0);
+      let tick = 0;
+      const reset = window.setTimeout(() => setScrambled(text), 0);
+
+      const interval = window.setInterval(() => {
+        if (tick >= 3 || mutableIndexes.length === 0) {
+          window.clearInterval(interval);
+          setScrambled(text);
+          return;
+        }
+
+        const next = [...characters];
+        const index = mutableIndexes[Math.floor(Math.random() * mutableIndexes.length)];
+        next[index] = SCRAMBLE_GLYPHS[Math.floor(Math.random() * SCRAMBLE_GLYPHS.length)];
+        setScrambled(next.join(''));
+        tick += 1;
+      }, 160);
+
+      return () => {
+        window.clearTimeout(reset);
+        window.clearInterval(interval);
+      };
     }
 
     const targets = Array.from(text).map((char, index) => ({
@@ -46,14 +75,14 @@ function useScramble(text: string, active: boolean) {
     }, 22);
 
     return () => clearInterval(interval);
-  }, [active, text]);
+  }, [active, gentle, text]);
 
   // Plain title when idle; the scrambling output only applies while active.
   return active ? (scrambled ?? text) : text;
 }
 
-function ScrambleTitle({ text, active }: { text: string; active: boolean }) {
-  const output = useScramble(text, active);
+function ScrambleTitle({ text, active, gentle }: { text: string; active: boolean; gentle: boolean }) {
+  const output = useScramble(text, active, gentle);
   return (
     <span className="yc-item__title">
       <span aria-hidden="true">{output}</span>
@@ -69,7 +98,9 @@ type ProjectsLandingProps = {
 
 export function ProjectsLanding({ onBack, onSelect }: ProjectsLandingProps) {
   const [activeId, setActiveId] = useState<string | null>(null);
+  const [animatedId, setAnimatedId] = useState<string | null>(null);
   const [openId, setOpenId] = useState<string | null>(null);
+  const isMobile = useMediaQuery('(max-width: 720px)');
   const { phaseClass, requestClose, handleTransitionEnd } = useCurtainExit(() => onBack?.());
   const dialogRef = useRef<HTMLDivElement>(null);
 
@@ -82,6 +113,45 @@ export function ProjectsLanding({ onBack, onSelect }: ProjectsLandingProps) {
     onClose: requestClose,
     ref: dialogRef,
   });
+
+  useEffect(() => {
+    if (!isMobile || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
+
+    const projectIds = selectedProjects.map((project) => project.id);
+    const introOrder = [...projectIds].sort(() => Math.random() - 0.5);
+    const timers: number[] = [];
+    let ambientTimer = 0;
+    let lastId: string | null = null;
+
+    const animate = (projectId: string) => {
+      lastId = projectId;
+      setAnimatedId(projectId);
+      timers.push(window.setTimeout(() => setAnimatedId(null), 560));
+    };
+
+    introOrder.forEach((projectId, index) => {
+      timers.push(window.setTimeout(() => animate(projectId), 280 + index * 620));
+    });
+
+    const scheduleAmbientAnimation = () => {
+      const delay = 16000 + Math.random() * 12000;
+      ambientTimer = window.setTimeout(() => {
+        const candidates = projectIds.filter((projectId) => projectId !== lastId);
+        const projectId = candidates[Math.floor(Math.random() * candidates.length)] ?? projectIds[0];
+        animate(projectId);
+        scheduleAmbientAnimation();
+      }, delay);
+    };
+
+    timers.push(window.setTimeout(scheduleAmbientAnimation, 280 + introOrder.length * 620));
+
+    return () => {
+      timers.forEach((timer) => window.clearTimeout(timer));
+      window.clearTimeout(ambientTimer);
+    };
+  }, [isMobile]);
 
   const handleSelect = (projectId: string) => {
     setOpenId(projectId);
@@ -116,7 +186,11 @@ export function ProjectsLanding({ onBack, onSelect }: ProjectsLandingProps) {
                 aria-label={`Open project ${project.title}`}
               >
                 <span className="yc-item__index">{String(index + 1).padStart(2, '0')}</span>
-                <ScrambleTitle text={project.title} active={activeId === project.id} />
+                <ScrambleTitle
+                  text={project.title}
+                  active={isMobile ? animatedId === project.id : activeId === project.id}
+                  gentle={isMobile}
+                />
                 <span className="yc-item__year">{project.period}</span>
               </button>
             </li>
