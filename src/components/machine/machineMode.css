@@ -670,6 +670,25 @@ html[data-portfolio-mode="machine"] body {
     display: none;
   }
 
+  .portfolio-mode-toggle--machine {
+    bottom: max(18px, calc(env(safe-area-inset-bottom) + 6px));
+    width: auto;
+    height: auto;
+    padding: 3px;
+    border-color: #555;
+    border-radius: 4px;
+    background: rgba(9, 9, 9, 0.92);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06);
+  }
+
+  .portfolio-mode-toggle--machine .portfolio-mode-toggle__desktop {
+    display: inline-flex;
+  }
+
+  .portfolio-mode-toggle--machine .portfolio-mode-slider {
+    display: none;
+  }
+
   .portfolio-mode-slider {
     position: relative;
     display: block;

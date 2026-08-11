@@ -44,6 +44,7 @@ export function PortfolioModeToggle({ mode, onChange }: PortfolioModeToggleProps
       resizeObserver.disconnect();
       if (animationFrameRef.current !== null) {
         cancelAnimationFrame(animationFrameRef.current);
+        animationFrameRef.current = null;
       }
     };
   }, [targetValue]);

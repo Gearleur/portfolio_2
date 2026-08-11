@@ -17,15 +17,19 @@ async function dragModeSlider(page: import('@playwright/test').Page, direction: 
   await page.mouse.up();
 }
 
-test('slides between Human and Machine modes', async ({ page }) => {
+test('reuses the Human slider without lag and shows classic controls in Machine mode', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('.mobile-shell')).toBeVisible();
 
-  await dragModeSlider(page, 'right');
-  await expect(page.locator('.machine-resume')).toBeVisible();
+  for (let cycle = 0; cycle < 3; cycle += 1) {
+    await dragModeSlider(page, 'right');
+    await expect(page.locator('.machine-resume')).toBeVisible();
+    await expect(page.getByRole('slider')).toBeHidden();
 
-  await dragModeSlider(page, 'left');
-  await expect(page.locator('.mobile-shell')).toBeVisible();
+    await page.getByRole('button', { name: 'Human' }).click();
+    await expect(page.locator('.mobile-shell')).toBeVisible();
+    await expect(page.getByRole('slider')).toBeVisible();
+  }
 });
 
 test('remains usable while the Projects screen is open', async ({ page }) => {
