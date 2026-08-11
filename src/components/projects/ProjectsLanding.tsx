@@ -28,7 +28,7 @@ function useScramble(text: string, active: boolean, gentle = false) {
       const reset = window.setTimeout(() => setScrambled(text), 0);
 
       const interval = window.setInterval(() => {
-        if (tick >= 5 || mutableIndexes.length === 0) {
+        if (tick >= 12 || mutableIndexes.length === 0) {
           window.clearInterval(interval);
           setScrambled(text);
           return;
@@ -42,7 +42,7 @@ function useScramble(text: string, active: boolean, gentle = false) {
         }
         setScrambled(next.join(''));
         tick += 1;
-      }, 140);
+      }, 110);
 
       return () => {
         window.clearTimeout(reset);
@@ -131,15 +131,15 @@ export function ProjectsLanding({ onBack, onSelect }: ProjectsLandingProps) {
     const animate = (projectId: string) => {
       lastId = projectId;
       setAnimatedId(projectId);
-      timers.push(window.setTimeout(() => setAnimatedId(null), 760));
+      timers.push(window.setTimeout(() => setAnimatedId(null), 1450));
     };
 
     introOrder.forEach((projectId, index) => {
-      timers.push(window.setTimeout(() => animate(projectId), 220 + index * 520));
+      timers.push(window.setTimeout(() => animate(projectId), 220 + index * 1550));
     });
 
     const scheduleAmbientAnimation = () => {
-      const delay = 9000 + Math.random() * 7000;
+      const delay = 6000 + Math.random() * 2000;
       ambientTimer = window.setTimeout(() => {
         const candidates = projectIds.filter((projectId) => projectId !== lastId);
         const projectId = candidates[Math.floor(Math.random() * candidates.length)] ?? projectIds[0];
@@ -148,7 +148,7 @@ export function ProjectsLanding({ onBack, onSelect }: ProjectsLandingProps) {
       }, delay);
     };
 
-    timers.push(window.setTimeout(scheduleAmbientAnimation, 220 + introOrder.length * 520));
+    timers.push(window.setTimeout(scheduleAmbientAnimation, 220 + introOrder.length * 1550));
 
     return () => {
       timers.forEach((timer) => window.clearTimeout(timer));
