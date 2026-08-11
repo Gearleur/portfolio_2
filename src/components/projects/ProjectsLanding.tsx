@@ -28,7 +28,7 @@ function useScramble(text: string, active: boolean, gentle = false) {
       const reset = window.setTimeout(() => setScrambled(text), 0);
 
       const interval = window.setInterval(() => {
-        if (tick >= 12 || mutableIndexes.length === 0) {
+        if (tick >= 20 || mutableIndexes.length === 0) {
           window.clearInterval(interval);
           setScrambled(text);
           return;
