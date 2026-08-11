@@ -1,6 +1,11 @@
 import { useRef, useState } from 'react';
 import type { WindowFrame } from '../types/window';
-import { clampFrameToDesktop, getMaximizedFrame } from '../utils/windowFrame';
+import {
+  clampFrameToDesktop,
+  getCenteredFrame,
+  getInitialWindowFrame,
+  getMaximizedFrame,
+} from '../utils/windowFrame';
 
 function getDesktopElement() {
   const desktop = document.querySelector('.desktop-surface');
@@ -12,12 +17,18 @@ export function useDesktopWindow(defaultFrame: WindowFrame) {
   const [isMaximized, setMaximized] = useState(false);
   const [frame, setFrame] = useState<WindowFrame>(defaultFrame);
   const previousFrame = useRef<WindowFrame>(defaultFrame);
+  const hasOpened = useRef(false);
 
   const open = () => {
     const desktop = getDesktopElement();
     if (desktop) {
-      setFrame((currentFrame) => clampFrameToDesktop(currentFrame, desktop));
+      setFrame((currentFrame) =>
+        hasOpened.current
+          ? getCenteredFrame(currentFrame, desktop)
+          : getInitialWindowFrame(defaultFrame, desktop),
+      );
     }
+    hasOpened.current = true;
     setOpen(true);
   };
 

@@ -1,6 +1,7 @@
 import type { Size, WindowFrame } from '../types/window';
 
 const WINDOW_MARGIN = 12;
+const INITIAL_WINDOW_SCALE = 1.12;
 
 export const MIN_WINDOW_SIZE: Size = {
   width: 280,
@@ -46,6 +47,32 @@ export function clampFrameToDesktop(frame: WindowFrame, desktop: HTMLElement): W
     width,
     height,
   };
+}
+
+export function getCenteredFrame(
+  frame: WindowFrame,
+  desktop: HTMLElement,
+  scale = 1,
+): WindowFrame {
+  const bounds = getDesktopBounds(desktop);
+  const centeredFrame = clampFrameToDesktop(
+    {
+      ...frame,
+      width: Math.round(frame.width * scale),
+      height: Math.round(frame.height * scale),
+    },
+    desktop,
+  );
+
+  return {
+    ...centeredFrame,
+    x: Math.round((bounds.width - centeredFrame.width) / 2),
+    y: Math.round((bounds.height - centeredFrame.height) / 2),
+  };
+}
+
+export function getInitialWindowFrame(frame: WindowFrame, desktop: HTMLElement): WindowFrame {
+  return getCenteredFrame(frame, desktop, INITIAL_WINDOW_SCALE);
 }
 
 export function getMaximizedFrame(desktop: HTMLElement): WindowFrame {

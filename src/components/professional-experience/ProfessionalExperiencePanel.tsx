@@ -9,15 +9,15 @@ export function ProfessionalExperiencePanel() {
         <div>
           <h1 id="experience-heading">Professional Experience</h1>
           <p>
-            AI engineering across industrial LLM systems, computer vision products and
-            production-grade web platforms.
+            Production AI systems for multimodal meeting intelligence, industrial risk analysis
+            and automated DevOps support.
           </p>
         </div>
       </header>
 
       <div className="experience-panel__metrics" aria-label="Experience highlights">
         <span>3 AI roles</span>
-        <span>3,000+ daily users</span>
+        <span>3,000+ monthly users</span>
         <span>8x A100 deployment</span>
       </div>
 
