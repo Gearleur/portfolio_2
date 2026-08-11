@@ -28,18 +28,21 @@ function useScramble(text: string, active: boolean, gentle = false) {
       const reset = window.setTimeout(() => setScrambled(text), 0);
 
       const interval = window.setInterval(() => {
-        if (tick >= 3 || mutableIndexes.length === 0) {
+        if (tick >= 5 || mutableIndexes.length === 0) {
           window.clearInterval(interval);
           setScrambled(text);
           return;
         }
 
         const next = [...characters];
-        const index = mutableIndexes[Math.floor(Math.random() * mutableIndexes.length)];
-        next[index] = SCRAMBLE_GLYPHS[Math.floor(Math.random() * SCRAMBLE_GLYPHS.length)];
+        const animatedCharacters = tick % 2 === 0 ? 2 : 1;
+        for (let character = 0; character < animatedCharacters; character += 1) {
+          const index = mutableIndexes[Math.floor(Math.random() * mutableIndexes.length)];
+          next[index] = SCRAMBLE_GLYPHS[Math.floor(Math.random() * SCRAMBLE_GLYPHS.length)];
+        }
         setScrambled(next.join(''));
         tick += 1;
-      }, 160);
+      }, 140);
 
       return () => {
         window.clearTimeout(reset);
@@ -128,15 +131,15 @@ export function ProjectsLanding({ onBack, onSelect }: ProjectsLandingProps) {
     const animate = (projectId: string) => {
       lastId = projectId;
       setAnimatedId(projectId);
-      timers.push(window.setTimeout(() => setAnimatedId(null), 560));
+      timers.push(window.setTimeout(() => setAnimatedId(null), 760));
     };
 
     introOrder.forEach((projectId, index) => {
-      timers.push(window.setTimeout(() => animate(projectId), 280 + index * 620));
+      timers.push(window.setTimeout(() => animate(projectId), 220 + index * 520));
     });
 
     const scheduleAmbientAnimation = () => {
-      const delay = 16000 + Math.random() * 12000;
+      const delay = 9000 + Math.random() * 7000;
       ambientTimer = window.setTimeout(() => {
         const candidates = projectIds.filter((projectId) => projectId !== lastId);
         const projectId = candidates[Math.floor(Math.random() * candidates.length)] ?? projectIds[0];
@@ -145,7 +148,7 @@ export function ProjectsLanding({ onBack, onSelect }: ProjectsLandingProps) {
       }, delay);
     };
 
-    timers.push(window.setTimeout(scheduleAmbientAnimation, 280 + introOrder.length * 620));
+    timers.push(window.setTimeout(scheduleAmbientAnimation, 220 + introOrder.length * 520));
 
     return () => {
       timers.forEach((timer) => window.clearTimeout(timer));
