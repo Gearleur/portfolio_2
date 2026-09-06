@@ -1,0 +1,61 @@
+.onboarding-readme {
+  display: grid;
+  gap: 10px;
+  padding: 14px 16px;
+}
+
+.onboarding-readme__line {
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.onboarding-readme__hint {
+  font-size: 11px;
+  opacity: 0.62;
+}
+
+.ghost-cursor {
+  position: absolute;
+  z-index: 4;
+  top: 0;
+  left: 0;
+  width: 28px;
+  pointer-events: none;
+  opacity: 0;
+  animation: ghost-cursor-demo 3.4s ease-in-out infinite;
+}
+
+@keyframes ghost-cursor-demo {
+  0% {
+    opacity: 0;
+    transform: translate3d(46vw, 42vh, 0) scale(1);
+  }
+
+  14% {
+    opacity: 0.9;
+  }
+
+  58% {
+    opacity: 0.9;
+    transform: translate3d(88px, 108px, 0) scale(1);
+  }
+
+  66% {
+    transform: translate3d(88px, 108px, 0) scale(0.86);
+  }
+
+  74% {
+    transform: translate3d(88px, 108px, 0) scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(88px, 108px, 0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ghost-cursor {
+    display: none;
+  }
+}
