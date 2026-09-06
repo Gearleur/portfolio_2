@@ -3,6 +3,7 @@ import { DesktopShell, MobileShell } from './components';
 import { MachineResume } from './components/machine/MachineResume';
 import { PortfolioModeToggle } from './components/machine/PortfolioModeToggle';
 import type { PortfolioMode } from './components/machine/PortfolioModeToggle';
+import { PortalButton } from './experience/portal/PortalButton';
 import { ExperienceStageProvider } from './experience/stage/ExperienceStageContext';
 import { useMediaQuery } from './hooks/useMediaQuery';
 
@@ -37,6 +38,7 @@ export default function App() {
             </div>
           </div>
         </div>
+        <PortalButton />
         <PortfolioModeToggle mode={mode} onChange={setMode} />
       </div>
     </ExperienceStageProvider>

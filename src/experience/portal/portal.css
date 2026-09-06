@@ -1,0 +1,108 @@
+.portal-slot {
+  position: fixed;
+  z-index: 900;
+  bottom: 34px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.portal-slot__live {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.portal-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 13px 30px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 999px;
+  background: rgba(10, 12, 16, 0.62);
+  backdrop-filter: blur(14px) saturate(1.5);
+  color: #f4f6fb;
+  isolation: isolate;
+  animation: portal-materialize 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.portal-button__label {
+  position: relative;
+  z-index: 1;
+  font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  transition: letter-spacing 420ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.portal-button__halo {
+  position: absolute;
+  z-index: 0;
+  inset: -1px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from 0deg,
+    rgba(120, 200, 255, 0),
+    rgba(120, 200, 255, 0.55),
+    rgba(196, 140, 255, 0.45),
+    rgba(120, 200, 255, 0)
+  );
+  opacity: 0.75;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  padding: 1px;
+  animation: portal-halo-spin 8s linear infinite;
+}
+
+.portal-button:hover .portal-button__label,
+.portal-button:focus-visible .portal-button__label {
+  letter-spacing: 0.34em;
+}
+
+.portal-button:hover .portal-button__halo {
+  animation-duration: 3.4s;
+}
+
+@keyframes portal-materialize {
+  from {
+    filter: blur(12px);
+    opacity: 0;
+    transform: scale(0.94);
+  }
+
+  to {
+    filter: blur(0);
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes portal-halo-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portal-button {
+    animation: none;
+  }
+
+  .portal-button__halo {
+    animation: none;
+  }
+}
+
+/* Mobile : le bouton se place au-dessus du dock, sans chevaucher une icone. */
+@media (max-width: 640px) {
+  .portal-slot {
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 116px);
+  }
+}
