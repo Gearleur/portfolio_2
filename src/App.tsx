@@ -4,6 +4,7 @@ import { MachineResume } from './components/machine/MachineResume';
 import { PortfolioModeToggle } from './components/machine/PortfolioModeToggle';
 import type { PortfolioMode } from './components/machine/PortfolioModeToggle';
 import { PortalButton } from './experience/portal/PortalButton';
+import { RoomLayer, prefetchRoomScene } from './experience/room/RoomLayer';
 import { ExperienceStageProvider } from './experience/stage/ExperienceStageContext';
 import { useMediaQuery } from './hooks/useMediaQuery';
 
@@ -19,6 +20,23 @@ export default function App() {
       delete document.documentElement.dataset.portfolioMode;
     };
   }, [mode]);
+
+  useEffect(() => {
+    const root = document.querySelector('.experience-root');
+    if (!root) {
+      return;
+    }
+
+    const observer = new MutationObserver(() => {
+      if (root.getAttribute('data-portal-ready') === 'true') {
+        prefetchRoomScene();
+        observer.disconnect();
+      }
+    });
+
+    observer.observe(root, { attributeFilter: ['data-portal-ready'] });
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <ExperienceStageProvider>
@@ -38,7 +56,8 @@ export default function App() {
             </div>
           </div>
         </div>
-        <PortalButton />
+        <PortalButton onActivate={prefetchRoomScene} />
+        <RoomLayer />
         <PortfolioModeToggle mode={mode} onChange={setMode} />
       </div>
     </ExperienceStageProvider>
