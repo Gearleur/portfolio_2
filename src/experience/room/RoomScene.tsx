@@ -16,7 +16,7 @@ export default function RoomScene({ device }: { device: 'crt' | 'phone' }) {
       <fogExp2 attach="fog" args={['#05060a', 0.042]} />
       <ambientLight intensity={0.06} />
       <pointLight position={[-3.1, 0.2, 1.4]} intensity={9} distance={26} color="#9fd8c8" />
-      <Floor />
+      <Floor reflection={<CrtMonitor position={[-3.1, 0, 0]} rotation={[0, 0.62, 0]} />} />
       <CrtMonitor position={[-3.1, 0, 0]} rotation={[0, 0.62, 0]} />
     </Canvas>
   );
