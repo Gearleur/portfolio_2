@@ -38,8 +38,15 @@ const DESKTOP_WINDOW_IDS = [
 ] as const;
 type DesktopWindowId = (typeof DESKTOP_WINDOW_IDS)[number];
 
-function isDesktopWindowId(value: string): value is DesktopWindowId {
-  return DESKTOP_WINDOW_IDS.includes(value as DesktopWindowId);
+// The "Lisez-moi" window is diegetic-only: it self-opens/closes from
+// useOnboarding's phase and is never reachable from a desktop icon. It must
+// stay out of the opener surface so it can never route into
+// notifyWindowOpened (which would wrongly count it toward the portal's
+// two-distinct-windows threshold).
+type OpenableWindowId = Exclude<DesktopWindowId, 'readme'>;
+
+function isOpenableWindowId(value: string): value is OpenableWindowId {
+  return DESKTOP_WINDOW_IDS.includes(value as DesktopWindowId) && value !== 'readme';
 }
 
 export function DesktopShell() {
@@ -85,7 +92,7 @@ export function DesktopShell() {
     open();
   };
 
-  const windowOpeners: Record<DesktopWindowId, () => void> = {
+  const windowOpeners: Record<OpenableWindowId, () => void> = {
     education: () => openWindow('education', educationWindow.open),
     professional: () => openWindow('professional', professionalWindow.open),
     projects: () => openWindow('projects', projectsWindow.open),
@@ -126,7 +133,7 @@ export function DesktopShell() {
           <SystemIcon
             item={item}
             key={item.variant}
-            onOpen={isDesktopWindowId(item.variant) ? windowOpeners[item.variant] : undefined}
+            onOpen={isOpenableWindowId(item.variant) ? windowOpeners[item.variant] : undefined}
           />
         ))}
 
