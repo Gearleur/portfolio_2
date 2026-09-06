@@ -3,6 +3,7 @@ import { DesktopShell, MobileShell } from './components';
 import { MachineResume } from './components/machine/MachineResume';
 import { PortfolioModeToggle } from './components/machine/PortfolioModeToggle';
 import type { PortfolioMode } from './components/machine/PortfolioModeToggle';
+import { ExperienceStageProvider } from './experience/stage/ExperienceStageContext';
 import { useMediaQuery } from './hooks/useMediaQuery';
 
 export default function App() {
@@ -19,11 +20,25 @@ export default function App() {
   }, [mode]);
 
   return (
-    <div className={`portfolio-app portfolio-app--${mode}`}>
-      <div id="portfolio-content">
-        {mode === 'machine' ? <MachineResume /> : isMobile ? <MobileShell /> : <DesktopShell />}
+    <ExperienceStageProvider>
+      <div className={`portfolio-app portfolio-app--${mode}`}>
+        <div className="experience-viewport">
+          <div className="experience-camera">
+            <div className="experience-screen">
+              <div id="portfolio-content">
+                {mode === 'machine' ? (
+                  <MachineResume />
+                ) : isMobile ? (
+                  <MobileShell />
+                ) : (
+                  <DesktopShell />
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+        <PortfolioModeToggle mode={mode} onChange={setMode} />
       </div>
-      <PortfolioModeToggle mode={mode} onChange={setMode} />
-    </div>
+    </ExperienceStageProvider>
   );
 }

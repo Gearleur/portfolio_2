@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useExperienceStageContext } from '../../experience/stage/ExperienceStageContext';
 import { MobileAppContent } from './MobileAppContent';
 import { MobileIcon } from './MobileIcon';
 import { MobileStatusBar } from './MobileStatusBar';
@@ -13,7 +14,14 @@ export function MobileShell() {
   useLockedMobileViewport();
   usePreloadImages(mobileIconSources);
 
+  const { notifyWindowOpened } = useExperienceStageContext();
   const [activeAppId, setActiveAppId] = useState<MobileAppId | null>(null);
+
+  const openApp = (appId: MobileAppId) => {
+    notifyWindowOpened(appId);
+    setActiveAppId(appId);
+  };
+
   const isStandalone = useStandaloneDisplayMode();
   const activeApp =
     homeApps.find((app): app is LaunchableMobileApp => app.action === activeAppId) ?? null;
@@ -50,7 +58,7 @@ export function MobileShell() {
             {homeApps.map((app) => (
               <MobileIcon
                 app={app}
-                onOpen={app.action ? () => setActiveAppId(app.action ?? null) : undefined}
+                onOpen={app.action ? () => openApp(app.action as MobileAppId) : undefined}
                 key={app.id}
               />
             ))}

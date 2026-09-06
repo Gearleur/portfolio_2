@@ -6,6 +6,7 @@ import { DEFAULT_PROJECTS_FRAME } from '../../data/projects';
 import { DEFAULT_RESUME_FRAME } from '../../data/resume';
 import { systemItems } from '../../data/systemItems';
 import { DEFAULT_TECHNICAL_SKILLS_FRAME } from '../../data/technicalSkills';
+import { useExperienceStageContext } from '../../experience/stage/ExperienceStageContext';
 import { useDesktopWindow } from '../../hooks/useDesktopWindow';
 import { useWindowStack } from '../../hooks/useWindowStack';
 import { EducationIcon } from '../education/EducationIcon';
@@ -44,9 +45,11 @@ export function DesktopShell() {
   const extracurricularWindow = useDesktopWindow(DEFAULT_EXTRACURRICULAR_FRAME);
   const resumeWindow = useDesktopWindow(DEFAULT_RESUME_FRAME);
   const windowStack = useWindowStack<DesktopWindowId>(DESKTOP_WINDOW_IDS);
+  const { notifyWindowOpened } = useExperienceStageContext();
 
   const openWindow = (windowId: DesktopWindowId, open: () => void) => {
     windowStack.bringToFront(windowId);
+    notifyWindowOpened(windowId);
     open();
   };
 

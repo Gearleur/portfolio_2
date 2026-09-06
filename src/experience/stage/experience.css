@@ -1,0 +1,34 @@
+.experience-root {
+  position: relative;
+  isolation: isolate;
+}
+
+.experience-viewport {
+  position: relative;
+  transform-style: flat;
+}
+
+.experience-camera,
+.experience-screen {
+  transform-style: preserve-3d;
+}
+
+/*
+ * En phase desktop, aucune perspective ni transform n'est appliquee :
+ * la mise en page reste strictement celle d'aujourd'hui, cout nul.
+ */
+.experience-root[data-stage="desktop"] .experience-viewport,
+.experience-root[data-stage="desktop"] .experience-camera,
+.experience-root[data-stage="desktop"] .experience-screen {
+  perspective: none;
+  transform: none;
+  transform-style: flat;
+}
+
+.experience-root:not([data-stage="desktop"]) .experience-viewport {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 3001;
+}
