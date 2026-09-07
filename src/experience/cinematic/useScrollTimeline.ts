@@ -25,29 +25,40 @@ export function useScrollTimeline(actCount: number, onProgress?: (progress: numb
     onProgressRef.current = onProgress;
   }, [onProgress]);
 
+  // Recalcule la progression depuis le `scrollTop` reel. Le gestionnaire de
+  // scroll ci-dessous l'appelle a chaque evenement ; `CinematicOverlay`
+  // l'appelle aussi explicitement a l'entree dans la piece, pour
+  // resynchroniser `actIndex` et la progression partagee sur une deuxieme
+  // visite -- le conteneur ne demonte jamais, donc `scrollTop` (et l'etat
+  // React qui en derive) survit tel quel a un passage par `hidden`.
+  const sync = useCallback(() => {
+    const element = scrollRef.current;
+    if (!element) {
+      return;
+    }
+
+    const max = element.scrollHeight - element.clientHeight;
+    const progress = max <= 0 ? 0 : clamp01(element.scrollTop / max);
+    progressRef.current = progress;
+    onProgressRef.current?.(progress);
+    setActIndex(actIndexFromProgress(progress, actCount));
+  }, [actCount]);
+
   useEffect(() => {
     const element = scrollRef.current;
     if (!element) {
       return;
     }
 
-    const onScroll = () => {
-      const max = element.scrollHeight - element.clientHeight;
-      const progress = max <= 0 ? 0 : clamp01(element.scrollTop / max);
-      progressRef.current = progress;
-      onProgressRef.current?.(progress);
-      setActIndex(actIndexFromProgress(progress, actCount));
-    };
-
-    onScroll();
-    element.addEventListener('scroll', onScroll, { passive: true });
+    sync();
+    element.addEventListener('scroll', sync, { passive: true });
     return () => {
-      element.removeEventListener('scroll', onScroll);
+      element.removeEventListener('scroll', sync);
       // La piece n'est plus survolee : la progression partagee retombe a
       // zero plutot que de garder la derniere valeur lue.
       onProgressRef.current?.(0);
     };
-  }, [actCount]);
+  }, [sync]);
 
   const goToAct = useCallback(
     (index: number) => {
@@ -63,5 +74,5 @@ export function useScrollTimeline(actCount: number, onProgress?: (progress: numb
     [actCount],
   );
 
-  return { scrollRef, progressRef, actIndex, goToAct };
+  return { scrollRef, progressRef, actIndex, goToAct, sync };
 }

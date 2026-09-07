@@ -3,6 +3,8 @@ import { useEffect, useRef } from 'react';
 import type { RefObject } from 'react';
 import { Matrix4, PlaneGeometry, Vector3 } from 'three';
 import type { Mesh } from 'three';
+import { cinematicScript } from '../cinematic/cinematicScript';
+import { roomDepthFromProgress } from '../cinematic/scrollTimeline';
 import { clamp01, lerp, smootherstep } from '../stage/easing';
 import { useExperienceStageContext } from '../stage/ExperienceStageContext';
 import { PULLBACK_PATH, sampleCameraPath } from './cameraPath';
@@ -24,10 +26,18 @@ const DEFAULT_FOV = 45;
  * Une fois en piece, le scroll de la cinematique pousse la camera plus loin
  * sur Z et la fait deriver lateralement : le moniteur, qu'elle regardait a la
  * fin du recul, finit par sortir du cadre et n'est plus qu'une lueur derriere
- * le visiteur. Les deux constantes reprennent les grandeurs du plan.
+ * le visiteur.
+ *
+ * La profondeur Z suit les `cameraDepth` authores acte par acte dans
+ * `cinematicScript.ts`, pas une simple avancee lineaire : `ROOM_DEPTHS[0]`
+ * vaut 10.4, exactement la position Z ou `PULLBACK_PATH` termine son dernier
+ * keyframe -- la continuite avec la fin du recul est deliberee, pas fortuite,
+ * donc aucune remise a l'echelle n'est necessaire ici. `roomDepthFromProgress`
+ * relie ces profondeurs par interpolation lineaire sur toute la progression.
  */
-const ROOM_DEPTH_ADVANCE = 32;
 const ROOM_LATERAL_DRIFT = 2.2;
+const ROOM_DEPTHS = cinematicScript.map((act) => act.cameraDepth);
+const ROOM_LOOKAHEAD = ROOM_DEPTHS[ROOM_DEPTHS.length - 1] - ROOM_DEPTHS[0];
 
 // Objets de travail alloues une fois : la boucle tourne a 60 Hz et ne doit
 // produire aucun dechet.
@@ -51,6 +61,7 @@ type CameraRigProbe = {
   fovDeg: number;
   width: number;
   height: number;
+  roomProgress: number;
 };
 
 type DomTargets = {
@@ -157,16 +168,17 @@ export function CameraRig({ screenRef }: { screenRef: RefObject<Mesh | null> }) 
     // `CinematicOverlay` ne l'ait remise a zero.
     const roomT = stage === 'room' ? clamp01(roomProgressRef.current) : 0;
     const roomX = sample.position[0] + roomT * ROOM_LATERAL_DRIFT;
-    const roomZ = sample.position[2] + roomT * ROOM_DEPTH_ADVANCE;
+    const roomZ = stage === 'room' ? roomDepthFromProgress(roomT, ROOM_DEPTHS) : sample.position[2];
 
     camera.position.set(roomX, sample.position[1], roomZ);
-    // Le regard suit la meme derive, doublee : plutot que de rester fixe sur
-    // le moniteur, la camera regarde de plus en plus loin devant elle, et le
-    // moniteur sort du cadre au lieu d'y rester centre.
+    // Le regard suit la meme derive laterale, et regarde plus loin que la
+    // camera sur Z : plutot que de rester fixe sur le moniteur, elle regarde
+    // de plus en plus loin devant elle, et le moniteur sort du cadre au lieu
+    // d'y rester centre.
     lookAtTarget.set(
       lerp(sample.lookAt[0], roomX + ROOM_LATERAL_DRIFT, roomT),
       sample.lookAt[1],
-      lerp(sample.lookAt[2], roomZ + ROOM_DEPTH_ADVANCE, roomT),
+      lerp(sample.lookAt[2], roomZ + ROOM_LOOKAHEAD, roomT),
     );
     camera.lookAt(lookAtTarget);
     // `Camera.updateMatrixWorld` rafraichit aussi `matrixWorldInverse`, la
@@ -217,6 +229,7 @@ export function CameraRig({ screenRef }: { screenRef: RefObject<Mesh | null> }) 
         fovDeg: fov,
         width: size.width,
         height: size.height,
+        roomProgress: roomT,
       };
     }
   });

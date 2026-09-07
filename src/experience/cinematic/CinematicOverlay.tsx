@@ -27,11 +27,15 @@ export function CinematicOverlay() {
     [roomProgressRef],
   );
 
-  const { scrollRef, actIndex, goToAct } = useScrollTimeline(
+  const { scrollRef, actIndex, goToAct, sync } = useScrollTimeline(
     cinematicScript.length,
     syncRoomProgress,
   );
 
+  // Entree/sortie de la piece uniquement -- ni `actIndex` ni `goToAct` dans
+  // les dependances, sinon `.focus()` se redeclencherait a chaque acte et
+  // volerait le focus a un visiteur au clavier qui a deja tabule ailleurs
+  // (ex. sur "Revenir au bureau" pendant que la piece continue de defiler).
   useEffect(() => {
     if (!isRoom) {
       // Quitte la piece, par le bouton ou par Echap : la progression partagee
@@ -41,7 +45,23 @@ export function CinematicOverlay() {
       return;
     }
 
+    // Une deuxieme visite retrouve le conteneur deja scrolle -- il n'a
+    // jamais demonte, `scrollTop` a survecu au passage par `hidden`. On
+    // resynchronise la progression partagee et `actIndex` dessus plutot que
+    // de les laisser a zero pendant que le texte affiche encore le dernier
+    // acte visite : sinon la camera repartirait de la dalle sous un texte
+    // qui, lui, resterait sur l'acte ou le visiteur s'etait arrete.
+    sync();
     containerRef.current?.focus();
+  }, [isRoom, roomProgressRef, sync]);
+
+  // Navigation clavier : peut se reabonner a chaque acte sans consequence,
+  // contrairement au focus ci-dessus -- reattacher un ecouteur `window` est
+  // gratuit.
+  useEffect(() => {
+    if (!isRoom) {
+      return;
+    }
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
@@ -63,7 +83,7 @@ export function CinematicOverlay() {
 
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [actIndex, goToAct, isRoom, returnToDesktop, roomProgressRef]);
+  }, [actIndex, goToAct, isRoom, returnToDesktop]);
 
   return (
     <div

@@ -47,3 +47,66 @@ test('advances between acts with the keyboard', async ({ page }) => {
     timeout: 4000,
   });
 });
+
+test('keeps keyboard focus in place while scrolling to a new act', async ({ page }) => {
+  await enterRoom(page);
+
+  // Un visiteur au clavier a tabule jusqu'au bouton de retour ; faire
+  // defiler vers un nouvel acte ne doit pas lui voler ce focus.
+  const backButton = page.locator('.cinematic-back');
+  await backButton.focus();
+  await expect(backButton).toBeFocused();
+
+  await page.keyboard.press('PageDown');
+  await expect(page.locator('.cinematic-act').nth(1)).toHaveAttribute('data-active', 'true', {
+    timeout: 4000,
+  });
+
+  await expect(backButton).toBeFocused();
+});
+
+type RoomProgressProbe = { __cameraRigProbe?: { roomProgress: number } };
+
+test('resyncs the camera and the act on a second room visit', async ({ page }) => {
+  await enterRoom(page);
+
+  // Va directement au dernier acte : pas de sequence de PageDown animee
+  // (behavior: 'smooth') dont le minutage serait fragile a enchainer.
+  await page.evaluate(() => {
+    const element = document.querySelector('.cinematic-scroll');
+    if (element) {
+      element.scrollTop = element.scrollHeight;
+    }
+  });
+
+  await expect(page.locator('.cinematic-act').nth(4)).toHaveAttribute('data-active', 'true', {
+    timeout: 4000,
+  });
+  await page.waitForFunction(() => {
+    const probe = (window as unknown as RoomProgressProbe).__cameraRigProbe;
+    return Boolean(probe && probe.roomProgress > 0.5);
+  });
+
+  // Quitte la piece, puis y revient par le portail -- sans repasser par
+  // Education/Projects : les deux fenetres restent ouvertes d'un bout a
+  // l'autre du test (la machine d'etat ne retire jamais une fenetre de sa
+  // liste), le portail est donc deja pret.
+  await page.locator('.cinematic-back').click();
+  await expect(page.locator('.experience-root')).toHaveAttribute('data-stage', 'desktop', {
+    timeout: 6000,
+  });
+
+  await page.getByRole('button', { name: PORTAL_NAME }).click();
+  await expect(page.locator('.experience-root')).toHaveAttribute('data-stage', 'room', {
+    timeout: 6000,
+  });
+
+  // Le texte et la camera reprennent ensemble, au meme endroit qu'a la
+  // sortie -- ni l'un ni l'autre n'est retombe a l'acte ou la position
+  // d'entree.
+  await expect(page.locator('.cinematic-act').nth(4)).toHaveAttribute('data-active', 'true');
+  await page.waitForFunction(() => {
+    const probe = (window as unknown as RoomProgressProbe).__cameraRigProbe;
+    return Boolean(probe && probe.roomProgress > 0.5);
+  });
+});
