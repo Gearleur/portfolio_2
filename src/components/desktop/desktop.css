@@ -267,3 +267,12 @@
     font-size: 12px;
   }
 }
+
+/*
+ * Une animation infinie sur un calque transforme en 3D est du repaint
+ * pur perdu : on la coupe des que le bureau quitte sa phase stable.
+ */
+.experience-root:not([data-stage="desktop"]) .wallpaper-layer::before,
+.experience-root:not([data-stage="desktop"]) .wallpaper-layer::after {
+  animation-play-state: paused;
+}

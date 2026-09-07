@@ -8,8 +8,12 @@
   transform-style: flat;
 }
 
-.experience-camera,
-.experience-screen {
+/*
+ * Seul le calque camera garde une profondeur : la dalle, elle, aplatit son
+ * contenu comme le fait l'element porte par un CSS3DObject, pour que le bureau
+ * soit compose une fois puis projete comme une image.
+ */
+.experience-camera {
   transform-style: preserve-3d;
 }
 
@@ -31,4 +35,36 @@
   overflow: hidden;
   pointer-events: none;
   z-index: 3001;
+}
+
+/*
+ * Hors phase desktop, ces trois calques rejouent le montage de `CSS3DRenderer` :
+ * `.experience-viewport` tient le role du conteneur (deja fixe et masque
+ * ci-dessus), `.experience-camera` celui du calque camera, `.experience-screen`
+ * celui de l'element porte par un CSS3DObject. `CameraRig` ecrit leurs
+ * dimensions et leurs matrices frame par frame ; les valeurs ci-dessous ne
+ * servent qu'avant la premiere frame du rig.
+ */
+.experience-root:not([data-stage="desktop"]) .experience-camera {
+  /*
+   * Aucune `transform-origin` ici : la matrice camera se termine par
+   * translate(w/2, h/2), qui suppose l'origine centree -- la valeur par defaut.
+   * La forcer a 0 0 decalerait la scene entiere d'un demi-ecran.
+   */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.experience-root:not([data-stage="desktop"]) .experience-screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform-origin: 50% 50%;
+  will-change: transform, opacity;
+  transition: opacity 200ms linear;
 }

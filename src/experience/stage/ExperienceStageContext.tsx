@@ -1,5 +1,13 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useReducer } from 'react';
-import type { ReactNode } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useReducer,
+  useRef,
+} from 'react';
+import type { ReactNode, RefObject } from 'react';
 import { useMediaQuery } from '../../hooks/useMediaQuery';
 import {
   INITIAL_EXPERIENCE_STAGE_STATE,
@@ -16,6 +24,7 @@ export type ExperienceStageValue = {
   isPortalReady: boolean;
   prefersReducedMotion: boolean;
   isMobile: boolean;
+  transitionProgressRef: RefObject<number>;
   notifyWindowOpened: (windowId: string) => void;
   enterRoom: () => void;
   skipTransition: () => void;
@@ -54,15 +63,77 @@ export function ExperienceStageProvider({ children }: { children: ReactNode }) {
     return () => window.clearTimeout(timer);
   }, []);
 
+  // Progression 0 -> 1 de la transition en cours. Elle est ecrite frame par
+  // frame hors de React : la camera et la synchronisation DOM la lisent dans
+  // une boucle a 60 Hz, ou un rendu React par frame serait ruineux.
+  const transitionProgressRef = useRef(0);
+
   useEffect(() => {
     const duration = transitionDurationMs(state.stage, { prefersReducedMotion, isMobile });
     if (duration === 0) {
+      transitionProgressRef.current = state.stage === 'room' ? 1 : 0;
       return;
     }
 
-    const timer = window.setTimeout(() => dispatch({ type: 'TRANSITION_ENDED' }), duration);
-    return () => window.clearTimeout(timer);
+    const startedAt = performance.now();
+    let frame = 0;
+
+    const tick = (now: number) => {
+      const progress = Math.min((now - startedAt) / duration, 1);
+      transitionProgressRef.current = state.stage === 'pushin' ? 1 - progress : progress;
+
+      if (progress < 1) {
+        frame = requestAnimationFrame(tick);
+        return;
+      }
+
+      dispatch({ type: 'TRANSITION_ENDED' });
+    };
+
+    frame = requestAnimationFrame(tick);
+
+    // Filet de securite : un onglet en arriere-plan gele requestAnimationFrame,
+    // et la phase resterait bloquee. Le minuteur resout la transition meme si
+    // aucune frame n'a ete peinte.
+    const safety = window.setTimeout(() => {
+      transitionProgressRef.current = state.stage === 'pushin' ? 0 : 1;
+      dispatch({ type: 'TRANSITION_ENDED' });
+    }, duration + 400);
+
+    return () => {
+      cancelAnimationFrame(frame);
+      window.clearTimeout(safety);
+    };
   }, [isMobile, prefersReducedMotion, state.stage]);
+
+  useEffect(() => {
+    if (state.stage !== 'pullback' && state.stage !== 'pushin') {
+      return;
+    }
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        dispatch({ type: 'SKIP_TRANSITION' });
+      }
+    };
+    const onPointerDown = () => dispatch({ type: 'SKIP_TRANSITION' });
+
+    // Le clic qui ouvre la transition emet son pointerdown avant que cet effet
+    // ne soit branche, mais on arme quand meme l'ecoute a la frame suivante :
+    // le geste declencheur ne doit jamais pouvoir annuler ce qu'il vient de
+    // lancer, quel que soit l'ordonnancement des effets.
+    let armed = 0;
+    const arm = () => window.addEventListener('pointerdown', onPointerDown);
+    armed = requestAnimationFrame(arm);
+
+    window.addEventListener('keydown', onKeyDown);
+
+    return () => {
+      cancelAnimationFrame(armed);
+      window.removeEventListener('keydown', onKeyDown);
+      window.removeEventListener('pointerdown', onPointerDown);
+    };
+  }, [state.stage]);
 
   useEffect(() => {
     const onEnterRoom = () => dispatch({ type: 'ENTER_ROOM' });
@@ -78,6 +149,7 @@ export function ExperienceStageProvider({ children }: { children: ReactNode }) {
       isPortalReady,
       prefersReducedMotion,
       isMobile,
+      transitionProgressRef,
       notifyWindowOpened,
       enterRoom,
       skipTransition,
