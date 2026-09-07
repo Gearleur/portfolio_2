@@ -70,7 +70,7 @@ export function CinematicOverlay() {
       className="cinematic"
       ref={containerRef}
       tabIndex={-1}
-      aria-label="Cinematique"
+      aria-label="Cinématique"
       hidden={!isRoom}
     >
       <CinematicA11yArticle />
