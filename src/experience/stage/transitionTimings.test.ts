@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { PULLBACK_MS, PUSHIN_MS, REDUCED_MS, transitionDurationMs } from './transitionTimings';
+import {
+  isReducedTransition,
+  PULLBACK_MS,
+  PUSHIN_MS,
+  REDUCED_MS,
+  transitionDurationMs,
+} from './transitionTimings';
 
 describe('transitionDurationMs', () => {
   const full = { prefersReducedMotion: false, isMobile: false };
@@ -20,5 +26,25 @@ describe('transitionDurationMs', () => {
   it('returns zero for stable stages', () => {
     expect(transitionDurationMs('desktop', full)).toBe(0);
     expect(transitionDurationMs('room', full)).toBe(0);
+  });
+});
+
+describe('isReducedTransition', () => {
+  const full = { prefersReducedMotion: false, isMobile: false };
+
+  it('is false on desktop without reduced motion', () => {
+    expect(isReducedTransition(full)).toBe(false);
+  });
+
+  it('is true on mobile', () => {
+    expect(isReducedTransition({ ...full, isMobile: true })).toBe(true);
+  });
+
+  it('is true with reduced motion', () => {
+    expect(isReducedTransition({ ...full, prefersReducedMotion: true })).toBe(true);
+  });
+
+  it('is true when both apply', () => {
+    expect(isReducedTransition({ prefersReducedMotion: true, isMobile: true })).toBe(true);
   });
 });

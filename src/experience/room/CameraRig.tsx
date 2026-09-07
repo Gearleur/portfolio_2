@@ -7,6 +7,7 @@ import { cinematicScript } from '../cinematic/cinematicScript';
 import { roomDepthFromProgress } from '../cinematic/scrollTimeline';
 import { clamp01, lerp, smootherstep } from '../stage/easing';
 import { useExperienceStageContext } from '../stage/ExperienceStageContext';
+import { isReducedTransition } from '../stage/transitionTimings';
 import { PULLBACK_PATH, sampleCameraPath } from './cameraPath';
 import type { CameraKeyframe } from './cameraPath';
 import { CRT_SCREEN_PLANE } from './monitorPlacement';
@@ -79,7 +80,8 @@ function planeSizeOf(mesh: Mesh): { width: number; height: number } {
 export function CameraRig({ screenRef }: { screenRef: RefObject<Mesh | null> }) {
   const camera = useThree((state) => state.camera);
   const size = useThree((state) => state.size);
-  const { transitionProgressRef, roomProgressRef, stage } = useExperienceStageContext();
+  const { transitionProgressRef, roomProgressRef, stage, prefersReducedMotion, isMobile } =
+    useExperienceStageContext();
 
   const domRef = useRef<DomTargets>({ cameraLayer: null, screen: null });
 
@@ -157,10 +159,17 @@ export function CameraRig({ screenRef }: { screenRef: RefObject<Mesh | null> }) 
       dock.lookAt[2] = screenCenter.z;
     }
 
-    // La courbe tient les quatre temps de la cinematique : elle retient la
-    // camera pendant les 300 premieres ms, place le raccord DOM / shader dans le
-    // troisieme temps et decelere fort sur le dernier.
-    const sample = sampleCameraPath(path, smootherstep(transitionProgressRef.current));
+    // Section 12/14 de la specification : "pas de dezoom" -- sur mobile et
+    // sous prefers-reduced-motion, la transition compressee a 400 ms ne doit
+    // pas rejouer PULLBACK_PATH en accelere. La camera se cale directement sur
+    // sa derniere image (le plan "deja installe"), et seul le bureau DOM
+    // s'estompe plus bas -- au lieu de suivre les quatre temps de la
+    // cinematique complete, qui retient la camera pendant les 300 premieres
+    // ms, place le raccord DOM / shader dans le troisieme temps et decelere
+    // fort sur le dernier.
+    const reduced = isReducedTransition({ prefersReducedMotion, isMobile });
+    const pathProgress = reduced ? 1 : smootherstep(transitionProgressRef.current);
+    const sample = sampleCameraPath(path, pathProgress);
 
     // Progression du scroll dans la piece : 0 hors de la phase `room`, quelle
     // que soit la valeur qui traine encore dans la ref -- la garde sur
@@ -190,37 +199,53 @@ export function CameraRig({ screenRef }: { screenRef: RefObject<Mesh | null> }) 
       return;
     }
 
-    // Convention exacte de CSS3DRenderer : perspective et matrice de vue sur le
-    // calque camera (origine de transformation au centre), matrice monde de
-    // l'objet sur la dalle DOM, avec le translate(-50%,-50%) qui recentre son
-    // propre bloc.
-    const perspective = cssPerspectiveFromFov(fov, size.height);
+    if (reduced) {
+      // Pas de raccord CSS3D a batir puisqu'il n'y a pas de camera qui bouge :
+      // le bureau garde sa mise en page normale (aucune transform) et
+      // s'estompe seulement, au meme rythme que `transitionProgressRef` --
+      // 1 au depart (bureau plein cadre), 0 une fois la piece installee, dans
+      // les deux sens (recul comme retour).
+      cameraLayer.style.transform = '';
+      cameraLayer.style.width = '';
+      cameraLayer.style.height = '';
+      screen.style.transform = '';
+      screen.style.width = '';
+      screen.style.height = '';
+      screen.style.opacity = `${1 - clamp01(transitionProgressRef.current)}`;
+    } else {
+      // Convention exacte de CSS3DRenderer : perspective et matrice de vue sur
+      // le calque camera (origine de transformation au centre), matrice monde
+      // de l'objet sur la dalle DOM, avec le translate(-50%,-50%) qui recentre
+      // son propre bloc.
+      const perspective = cssPerspectiveFromFov(fov, size.height);
 
-    cameraLayer.style.width = `${size.width}px`;
-    cameraLayer.style.height = `${size.height}px`;
-    cameraLayer.style.transform =
-      `perspective(${perspective}px) translateZ(${perspective}px) ` +
-      `${getCameraCssMatrix(camera.matrixWorldInverse.elements)} ` +
-      `translate(${size.width / 2}px,${size.height / 2}px)`;
+      cameraLayer.style.width = `${size.width}px`;
+      cameraLayer.style.height = `${size.height}px`;
+      cameraLayer.style.transform =
+        `perspective(${perspective}px) translateZ(${perspective}px) ` +
+        `${getCameraCssMatrix(camera.matrixWorldInverse.elements)} ` +
+        `translate(${size.width / 2}px,${size.height / 2}px)`;
 
-    screen.style.width = `${size.width}px`;
-    screen.style.height = `${size.height}px`;
+      screen.style.width = `${size.width}px`;
+      screen.style.height = `${size.height}px`;
 
-    // CSS3DRenderer travaille a raison d'un pixel CSS par unite monde : la mise
-    // a l'echelle ramene le bloc de `size` pixels aux dimensions de la dalle.
-    domScale.set(worldPerPixel, worldPerPixel, 1);
-    objectMatrix.copy(screenMesh.matrixWorld).scale(domScale);
-    screen.style.transform = getObjectCssMatrix(objectMatrix.elements);
+      // CSS3DRenderer travaille a raison d'un pixel CSS par unite monde : la
+      // mise a l'echelle ramene le bloc de `size` pixels aux dimensions de la
+      // dalle.
+      domScale.set(worldPerPixel, worldPerPixel, 1);
+      objectMatrix.copy(screenMesh.matrixWorld).scale(domScale);
+      screen.style.transform = getObjectCssMatrix(objectMatrix.elements);
 
-    // Le rapport de largeur projetee decide du raccord DOM vers shader.
-    const ratio = projectedWidthRatio(
-      size.width * worldPerPixel,
-      camera.position.distanceTo(screenCenter),
-      fov,
-      size.width / size.height,
-    );
+      // Le rapport de largeur projetee decide du raccord DOM vers shader.
+      const ratio = projectedWidthRatio(
+        size.width * worldPerPixel,
+        camera.position.distanceTo(screenCenter),
+        fov,
+        size.width / size.height,
+      );
 
-    screen.style.opacity = shouldSwapToShader(ratio) ? '0' : '1';
+      screen.style.opacity = shouldSwapToShader(ratio) ? '0' : '1';
+    }
 
     if (import.meta.env.DEV) {
       (window as unknown as { __cameraRigProbe?: CameraRigProbe }).__cameraRigProbe = {

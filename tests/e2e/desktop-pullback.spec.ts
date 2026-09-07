@@ -206,3 +206,49 @@ test('clears the desktop off the fallback room when WebGL is refused', async ({ 
   await expect(page.locator('.room-fallback')).toBeVisible();
   await expect(page.locator('.experience-screen')).toHaveCSS('opacity', '0');
 });
+
+/*
+ * Specification section 14 : sous `prefers-reduced-motion`, les transitions
+ * sont "remplacees par des fondus de 400 ms", pas comprimees dans ce budget.
+ * Meme preuve que le test mobile equivalent (mobile-no-dezoom.spec.ts) : la
+ * dalle DOM ne doit jamais porter la matrice `matrix3d(...)` que
+ * "pulls back into the room while the rig drives the desktop" verifie plus
+ * haut pour le recul complet, seule son opacite doit s'estomper.
+ */
+test('crossfades into the room without a camera dezoom under reduced motion', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+
+  const portal = await revealPortal(page);
+
+  const samplesHandle = await page.evaluateHandle(() => {
+    const samples: { transform: string; opacity: string }[] = [];
+    const collect = () => {
+      const screen = document.querySelector('.experience-screen');
+      if (screen) {
+        const style = getComputedStyle(screen);
+        samples.push({ transform: style.transform, opacity: style.opacity });
+      }
+      if (samples.length < 90) {
+        requestAnimationFrame(collect);
+      }
+    };
+    requestAnimationFrame(collect);
+    return samples;
+  });
+
+  await portal.click();
+  await expect(page.locator('.experience-root')).toHaveAttribute('data-stage', 'room', {
+    timeout: 4000,
+  });
+  await page.waitForTimeout(100);
+
+  const samples = await samplesHandle.jsonValue();
+  expect(samples.length).toBeGreaterThan(10);
+
+  for (const sample of samples) {
+    expect(sample.transform).not.toMatch(/^matrix3d\(/);
+  }
+
+  expect(Number(samples[0].opacity)).toBeGreaterThan(0.9);
+  expect(Number(samples[samples.length - 1].opacity)).toBeLessThan(0.1);
+});
