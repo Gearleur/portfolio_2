@@ -68,3 +68,17 @@
   will-change: transform, opacity;
   transition: opacity 200ms linear;
 }
+
+/*
+ * Repli sans WebGL : aucun rig ne tourne, la dalle DOM n'a donc rien a suivre et
+ * resterait plein cadre par-dessus la piece en degrade -- le pitch serait perdu
+ * pour une carte graphique, ce que la specification interdit. On la fait
+ * disparaitre des le depart de la transition, avec le meme fondu de 200 ms que
+ * le raccord vers le shader : sans moniteur ou se poser, le fondu croise est la
+ * degradation honnete.
+ */
+.experience-root:not([data-stage="desktop"])
+  .portfolio-app:has(.room-layer[data-renderer="fallback"])
+  .experience-screen {
+  opacity: 0;
+}

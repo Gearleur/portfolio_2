@@ -3,20 +3,21 @@ import { useEffect, useRef } from 'react';
 import type { RefObject } from 'react';
 import { Matrix4, PlaneGeometry, Vector3 } from 'three';
 import type { Mesh } from 'three';
-import { clamp01, easeOutExpo } from '../stage/easing';
+import { smootherstep } from '../stage/easing';
 import { useExperienceStageContext } from '../stage/ExperienceStageContext';
 import { PULLBACK_PATH, sampleCameraPath } from './cameraPath';
 import type { CameraKeyframe } from './cameraPath';
 import {
+  CRT_SCREEN_PLANE,
   cssPerspectiveFromFov,
   fitScaleForScreen,
   getCameraCssMatrix,
   getObjectCssMatrix,
+  projectedWidthRatio,
   shouldSwapToShader,
 } from './screenProjection';
 
 const DEFAULT_FOV = 45;
-const FALLBACK_PLANE = { width: 1.78, height: 1.34 };
 
 // Objets de travail alloues une fois : la boucle tourne a 60 Hz et ne doit
 // produire aucun dechet.
@@ -35,7 +36,7 @@ function planeSizeOf(mesh: Mesh): { width: number; height: number } {
   const geometry = mesh.geometry;
   return geometry instanceof PlaneGeometry
     ? { width: geometry.parameters.width, height: geometry.parameters.height }
-    : FALLBACK_PLANE;
+    : CRT_SCREEN_PLANE;
 }
 
 export function CameraRig({ screenRef }: { screenRef: RefObject<Mesh | null> }) {
@@ -97,8 +98,8 @@ export function CameraRig({ screenRef }: { screenRef: RefObject<Mesh | null> }) 
     let worldPerPixel = fitScaleForScreen(
       size.width,
       size.height,
-      FALLBACK_PLANE.width,
-      FALLBACK_PLANE.height,
+      CRT_SCREEN_PLANE.width,
+      CRT_SCREEN_PLANE.height,
     );
 
     if (screenMesh) {
@@ -122,8 +123,10 @@ export function CameraRig({ screenRef }: { screenRef: RefObject<Mesh | null> }) 
       dock.lookAt[2] = screenCenter.z;
     }
 
-    const eased = easeOutExpo(clamp01(transitionProgressRef.current));
-    const sample = sampleCameraPath(path, eased);
+    // La courbe tient les quatre temps de la cinematique : elle retient la
+    // camera pendant les 300 premieres ms, place le raccord DOM / shader dans le
+    // troisieme temps et decelere fort sur le dernier.
+    const sample = sampleCameraPath(path, smootherstep(transitionProgressRef.current));
 
     camera.position.set(sample.position[0], sample.position[1], sample.position[2]);
     lookAtTarget.set(sample.lookAt[0], sample.lookAt[1], sample.lookAt[2]);
@@ -160,9 +163,12 @@ export function CameraRig({ screenRef }: { screenRef: RefObject<Mesh | null> }) 
     screen.style.transform = getObjectCssMatrix(objectMatrix.elements);
 
     // Le rapport de largeur projetee decide du raccord DOM vers shader.
-    const distance = camera.position.distanceTo(screenCenter);
-    const visibleWidth = 2 * halfFovTan * distance * (size.width / size.height);
-    const ratio = visibleWidth > 0 ? (size.width * worldPerPixel) / visibleWidth : 0;
+    const ratio = projectedWidthRatio(
+      size.width * worldPerPixel,
+      camera.position.distanceTo(screenCenter),
+      fov,
+      size.width / size.height,
+    );
 
     screen.style.opacity = shouldSwapToShader(ratio) ? '0' : '1';
   });

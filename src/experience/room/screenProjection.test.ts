@@ -1,10 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import {
+  CRT_SCREEN_PLANE,
   SHADER_SWAP_RATIO,
   cssPerspectiveFromFov,
   fitScaleForScreen,
   getCameraCssMatrix,
   getObjectCssMatrix,
+  projectedWidthRatio,
   shouldSwapToShader,
 } from './screenProjection';
 
@@ -61,5 +63,34 @@ describe('fitScaleForScreen', () => {
 
   it('stays positive when the viewport has no measurable size yet', () => {
     expect(fitScaleForScreen(0, 0, 1.78, 1.34)).toBeGreaterThan(0);
+  });
+});
+
+describe('projectedWidthRatio', () => {
+  it('fills the frame when the object is exactly as wide as the visible width', () => {
+    // A 45 degrees, la moitie de la largeur visible vaut distance * tan(22.5) *
+    // rapport d'aspect : un objet de cette largeur occupe tout le cadre.
+    const distance = 4;
+    const aspect = 16 / 10;
+    const visibleWidth = 2 * Math.tan(Math.PI / 8) * distance * aspect;
+
+    expect(projectedWidthRatio(visibleWidth, distance, 45, aspect)).toBeCloseTo(1, 10);
+  });
+
+  it('halves when the distance doubles', () => {
+    expect(projectedWidthRatio(1.78, 8, 45, 1.6)).toBeCloseTo(
+      projectedWidthRatio(1.78, 4, 45, 1.6) / 2,
+      10,
+    );
+  });
+
+  it('stays finite when the camera sits on the object', () => {
+    expect(projectedWidthRatio(1.78, 0, 45, 1.6)).toBe(0);
+  });
+});
+
+describe('CRT_SCREEN_PLANE', () => {
+  it('is wider than it is tall, like the CRT it stands for', () => {
+    expect(CRT_SCREEN_PLANE.width).toBeGreaterThan(CRT_SCREEN_PLANE.height);
   });
 });

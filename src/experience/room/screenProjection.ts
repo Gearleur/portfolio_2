@@ -6,6 +6,13 @@
 
 export const SHADER_SWAP_RATIO = 0.2;
 
+/*
+ * Dimensions de la dalle du moniteur, en unites monde. `CrtMonitor` en fait sa
+ * geometrie et `CameraRig` y inscrit le bureau : la valeur vit ici, une seule
+ * fois, pour que les deux ne puissent pas diverger.
+ */
+export const CRT_SCREEN_PLANE = { width: 1.78, height: 1.34 } as const;
+
 export function cssPerspectiveFromFov(fovDeg: number, viewportHeight: number): number {
   return (0.5 * viewportHeight) / Math.tan(((fovDeg * Math.PI) / 180) / 2);
 }
@@ -29,6 +36,22 @@ export function fitScaleForScreen(
   const safeHeight = viewportHeight > 0 ? viewportHeight : 1;
 
   return Math.min(planeWidth / safeWidth, planeHeight / safeHeight);
+}
+
+/*
+ * Part de la largeur du cadre occupee par un objet de `worldWidth` unites vu a
+ * `distance` unites : c'est la grandeur que `shouldSwapToShader` compare au
+ * seuil de lisibilite.
+ */
+export function projectedWidthRatio(
+  worldWidth: number,
+  distance: number,
+  fovDeg: number,
+  aspect: number,
+): number {
+  const visibleWidth = 2 * Math.tan(((fovDeg * Math.PI) / 180) / 2) * distance * aspect;
+
+  return visibleWidth > 0 ? worldWidth / visibleWidth : 0;
 }
 
 function epsilon(value: number): number {

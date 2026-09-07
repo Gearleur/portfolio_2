@@ -83,3 +83,29 @@ test('skips the pullback on escape', async ({ page }) => {
   await page.keyboard.press('Escape');
   await expect(root).toHaveAttribute('data-stage', 'room');
 });
+
+/*
+ * Spec section 14 : sans WebGL, `RoomFallback` doit jouer la meme cinematique.
+ * Le bureau DOM ne peut plus se coller a rien, il doit donc s'effacer au lieu de
+ * recouvrir la piece de repli.
+ */
+test('clears the desktop off the fallback room when WebGL is refused', async ({ page }) => {
+  await page.addInitScript(() => {
+    const original = HTMLCanvasElement.prototype.getContext;
+    const blocked = new Set(['webgl', 'webgl2', 'experimental-webgl']);
+
+    HTMLCanvasElement.prototype.getContext = function patched(
+      this: HTMLCanvasElement,
+      ...args: Parameters<HTMLCanvasElement['getContext']>
+    ) {
+      return blocked.has(args[0]) ? null : original.apply(this, args);
+    } as HTMLCanvasElement['getContext'];
+  });
+
+  const portal = await revealPortal(page);
+  await portal.click();
+
+  await expect(page.locator('.room-layer[data-renderer="fallback"]')).toBeVisible();
+  await expect(page.locator('.room-fallback')).toBeVisible();
+  await expect(page.locator('.experience-screen')).toHaveCSS('opacity', '0');
+});
