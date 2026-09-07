@@ -220,8 +220,13 @@ test('crossfades into the room without a camera dezoom under reduced motion', as
 
   const portal = await revealPortal(page);
 
+  // Le tableau est aussi expose sur `window` pour qu'un `waitForFunction`
+  // puisse plus bas attendre que la collecte se soit reellement stabilisee,
+  // au lieu de deviner un delai fixe (meme idiome que le probe de projection
+  // plus haut, et que `mobile-no-dezoom.spec.ts`).
   const samplesHandle = await page.evaluateHandle(() => {
     const samples: { transform: string; opacity: string }[] = [];
+    (window as unknown as { __transitionSamples?: typeof samples }).__transitionSamples = samples;
     const collect = () => {
       const screen = document.querySelector('.experience-screen');
       if (screen) {
@@ -240,7 +245,25 @@ test('crossfades into the room without a camera dezoom under reduced motion', as
   await expect(page.locator('.experience-root')).toHaveAttribute('data-stage', 'room', {
     timeout: 4000,
   });
-  await page.waitForTimeout(100);
+
+  // La collecte s'arrete quand le plafond de 90 images est atteint ou quand le
+  // fondu a reellement atteint son etat final (l'opacite que la derniere
+  // assertion attend) : un `waitForTimeout` fixe ne garantissait ni l'un ni
+  // l'autre sous contention.
+  await page.waitForFunction(
+    () => {
+      const samples = (
+        window as unknown as { __transitionSamples?: { opacity: string }[] }
+      ).__transitionSamples;
+      if (!samples || samples.length < 2) {
+        return false;
+      }
+      const last = Number(samples[samples.length - 1].opacity);
+      return samples.length >= 90 || last < 0.1;
+    },
+    undefined,
+    { timeout: 4000 },
+  );
 
   const samples = await samplesHandle.jsonValue();
   expect(samples.length).toBeGreaterThan(10);

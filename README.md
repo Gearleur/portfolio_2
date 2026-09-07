@@ -9,14 +9,16 @@ Portfolio interactif en React + Vite, pense comme un bureau retro inspire des in
 - `pnpm lint` : lance ESLint
 - `pnpm preview` : sert le build localement
 
-## Prochaine etape
+## Experience de sortie de l'ecran
 
-Construire la structure de l'experience :
+Apres deux fenetres ouvertes ou 40 secondes, un bouton portail apparait. Il fait
+reculer la camera hors de l'ecran cathodique vers une piece vide ou se joue une
+cinematique pilotee au scroll.
 
-- bureau plein ecran
-- icones de fichiers a gauche
-- fenetres ouvrables, deplacables, fermables
-- sections portfolio : education, experience, projets, contact
+- Design : `docs/superpowers/specs/2026-09-06-sortie-ecran-cinematique-design.md`
+- Plan : `docs/superpowers/plans/2026-09-06-sortie-ecran-cinematique.md`
+- Le texte du pitch vit dans `src/experience/cinematic/cinematicScript.ts` et se
+  reecrit sans toucher au rendu.
 
 ## Assets tiers
 

@@ -26,9 +26,12 @@ test('crossfades into the room without a camera dezoom', async ({ page }) => {
   await expect(portal).toBeVisible();
 
   // Demarre la collecte avant le clic : la transition dure 400 ms, il ne faut
-  // manquer aucune frame du debut.
+  // manquer aucune frame du debut. Le tableau est aussi expose sur `window`
+  // pour qu'un `waitForFunction` puisse plus bas attendre que la collecte se
+  // soit reellement stabilisee, au lieu de deviner un delai fixe.
   const samplesHandle = await page.evaluateHandle(() => {
     const samples: { transform: string; opacity: string }[] = [];
+    (window as unknown as { __transitionSamples?: typeof samples }).__transitionSamples = samples;
     const collect = () => {
       const screen = document.querySelector('.experience-screen');
       if (screen) {
@@ -47,7 +50,25 @@ test('crossfades into the room without a camera dezoom', async ({ page }) => {
   await expect(page.locator('.experience-root')).toHaveAttribute('data-stage', 'room', {
     timeout: 4000,
   });
-  await page.waitForTimeout(100);
+
+  // La collecte s'arrete quand le plafond de 90 images est atteint ou quand le
+  // fondu a reellement atteint son etat final (l'opacite que la derniere
+  // assertion attend) : un `waitForTimeout` fixe ne garantissait ni l'un ni
+  // l'autre sous contention (voir `desktop-pullback.spec.ts` pour l'idiome).
+  await page.waitForFunction(
+    () => {
+      const samples = (
+        window as unknown as { __transitionSamples?: { opacity: string }[] }
+      ).__transitionSamples;
+      if (!samples || samples.length < 2) {
+        return false;
+      }
+      const last = Number(samples[samples.length - 1].opacity);
+      return samples.length >= 90 || last < 0.1;
+    },
+    undefined,
+    { timeout: 4000 },
+  );
 
   const samples = await samplesHandle.jsonValue();
   expect(samples.length).toBeGreaterThan(10);

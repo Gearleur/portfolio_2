@@ -1,5 +1,5 @@
-import { Canvas } from '@react-three/fiber';
-import { useRef } from 'react';
+import { Canvas, useThree } from '@react-three/fiber';
+import { useEffect, useRef } from 'react';
 import type { RefObject } from 'react';
 import type { Mesh } from 'three';
 import { CameraRig } from './CameraRig';
@@ -20,6 +20,27 @@ const INITIAL_CAMERA_POSITION: Vector3Tuple = [...PULLBACK_PATH[0].position];
 // ExperienceStageContext) : ce repli n'a donc pas besoin de sortir de
 // PULLBACK_PATH, qui est calibre pour le moniteur cathodique.
 const PHONE_INITIAL_CAMERA_POSITION: Vector3Tuple = [-1.5, -0.35, 3.6];
+
+/*
+ * L'onglet en arriere-plan ne doit pas continuer a faire tourner la boucle de
+ * rendu : `document.hidden` bascule `frameloop` sur `never`, ce que R3F
+ * n'annule jamais tout seul, et le remet sur `always` au retour au premier
+ * plan.
+ */
+function VisibilityGuard() {
+  const setFrameloop = useThree((state) => state.setFrameloop);
+
+  useEffect(() => {
+    const onVisibilityChange = () => {
+      setFrameloop(document.hidden ? 'never' : 'always');
+    };
+
+    document.addEventListener('visibilitychange', onVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', onVisibilityChange);
+  }, [setFrameloop]);
+
+  return null;
+}
 
 export default function RoomScene({ device }: { device: 'crt' | 'phone' }) {
   // La dalle est la seule geometrie que le rig doit suivre : c'est sur sa
@@ -53,6 +74,7 @@ export default function RoomScene({ device }: { device: 'crt' | 'phone' }) {
       <Floor reflection={renderDevice()} />
       {renderDevice(screenRef)}
       <CameraRig screenRef={screenRef} />
+      <VisibilityGuard />
     </Canvas>
   );
 }

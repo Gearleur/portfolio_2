@@ -22,7 +22,13 @@ export function useCurtainExit(onExit: () => void) {
   useEffect(() => {
     let inner = 0;
     const outer = requestAnimationFrame(() => {
-      inner = requestAnimationFrame(() => setPhase('open'));
+      // Le correcteur fonctionnel ignore ce reveil si `requestClose` a deja
+      // fait passer la phase a 'closing' entre-temps (un Escape ou un clic
+      // arrivant avant que le double rAF n'ait tourne) : sans lui, cette
+      // ecriture ecraserait la fermeture demandee et rouvrirait le rideau.
+      inner = requestAnimationFrame(() =>
+        setPhase((current) => (current === 'enter' ? 'open' : current)),
+      );
     });
     return () => {
       cancelAnimationFrame(outer);
