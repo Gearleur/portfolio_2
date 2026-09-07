@@ -133,3 +133,23 @@
     transition: opacity 260ms ease;
   }
 }
+
+@media (max-width: 640px) {
+  .cinematic-stage {
+    padding: 0 24px;
+    place-items: center start;
+  }
+
+  .cinematic-line {
+    font-size: clamp(20px, 6.4vw, 30px);
+  }
+
+  .cinematic-cta {
+    flex-direction: column;
+  }
+
+  .cinematic-back {
+    top: calc(env(safe-area-inset-top, 0px) + 16px);
+    left: 16px;
+  }
+}

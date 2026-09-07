@@ -100,9 +100,15 @@
   }
 }
 
-/* Mobile : le bouton se place au-dessus du dock, sans chevaucher une icone. */
+/*
+ * Mobile : le bouton se place au-dessus du dock. Le curseur Human/Machine
+ * (portfolio-mode-toggle, z-index 3000) occupe deja la bande entre 122px et
+ * 174px du bas de l'ecran sur mobile -- ce n'etait pas visible tant qu'aucun
+ * test bout en bout ne cliquait le portail sur mobile. 186px degage cette
+ * bande avec une marge de securite.
+ */
 @media (max-width: 640px) {
   .portal-slot {
-    bottom: calc(env(safe-area-inset-bottom, 0px) + 116px);
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 186px);
   }
 }
