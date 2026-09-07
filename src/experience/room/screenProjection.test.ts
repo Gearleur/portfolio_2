@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import {
-  CRT_SCREEN_PLANE,
   SHADER_SWAP_RATIO,
   cssPerspectiveFromFov,
+  dockDistanceFor,
   fitScaleForScreen,
   getCameraCssMatrix,
   getObjectCssMatrix,
@@ -89,8 +89,18 @@ describe('projectedWidthRatio', () => {
   });
 });
 
-describe('CRT_SCREEN_PLANE', () => {
-  it('is wider than it is tall, like the CRT it stands for', () => {
-    expect(CRT_SCREEN_PLANE.width).toBeGreaterThan(CRT_SCREEN_PLANE.height);
+describe('dockDistanceFor', () => {
+  it('sits back far enough for the desktop to fill the frame exactly', () => {
+    const worldPerPixel = 1.78 / 1440;
+    const distance = dockDistanceFor(900, worldPerPixel, 45);
+
+    expect(projectedWidthRatio(1440 * worldPerPixel, distance, 45, 1440 / 900)).toBeCloseTo(1, 10);
+  });
+
+  it('scales with the world size the desktop is mapped to', () => {
+    expect(dockDistanceFor(900, 2 / 1440, 45)).toBeCloseTo(
+      dockDistanceFor(900, 1 / 1440, 45) * 2,
+      10,
+    );
   });
 });

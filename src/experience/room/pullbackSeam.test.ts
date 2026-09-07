@@ -1,13 +1,15 @@
 import { describe, expect, it } from 'vitest';
 import { smootherstep } from '../stage/easing';
 import { PULLBACK_MS } from '../stage/transitionTimings';
-import { PULLBACK_PATH, sampleCameraPath } from './cameraPath';
 import {
-  CRT_SCREEN_PLANE,
-  fitScaleForScreen,
-  projectedWidthRatio,
-  shouldSwapToShader,
-} from './screenProjection';
+  PULLBACK_FOV_DEG,
+  PULLBACK_PATH,
+  REFERENCE_VIEWPORT,
+  dockKeyframe,
+  sampleCameraPath,
+} from './cameraPath';
+import { CRT_SCREEN_PLANE, crtScreenWorldPose } from './monitorPlacement';
+import { fitScaleForScreen, projectedWidthRatio, shouldSwapToShader } from './screenProjection';
 
 /*
  * La specification decoupe le dezoom en quatre temps (section 9.1) et place le
@@ -16,11 +18,15 @@ import {
  * arithmetique pure, sans navigateur, pour tenir cette fenetre.
  */
 
-const VIEWPORT = { width: 1440, height: 900 };
-const FOV_DEG = 45;
+const VIEWPORT = REFERENCE_VIEWPORT;
+const FOV_DEG = PULLBACK_FOV_DEG;
 
-// La pose amarree vise le centre de la dalle : c'est donc lui, sa cible.
-const SCREEN_CENTER = PULLBACK_PATH[0].lookAt;
+/*
+ * Le centre de la dalle vient du placement du moniteur, pas de la trajectoire :
+ * si quelqu'un deplace le moniteur dans `RoomScene`, la distance mesuree ici
+ * bouge avec lui et la fenetre du raccord est reevaluee pour de vrai.
+ */
+const SCREEN_CENTER = crtScreenWorldPose().center;
 
 const WORLD_PER_PIXEL = fitScaleForScreen(
   VIEWPORT.width,
@@ -56,6 +62,10 @@ function seamMs(): number {
 }
 
 describe('pullback beats at 1440x900', () => {
+  it('opens on the docked pose the rig recomputes every frame', () => {
+    expect(PULLBACK_PATH[0]).toEqual(dockKeyframe(VIEWPORT.width, VIEWPORT.height, FOV_DEG));
+  });
+
   it('starts with the desktop filling the frame exactly', () => {
     expect(projectedRatioAt(0)).toBeCloseTo(1, 3);
   });

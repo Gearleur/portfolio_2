@@ -1,6 +1,7 @@
 import { clamp01, lerp } from '../stage/easing';
-
-export type Vector3Tuple = [number, number, number];
+import { CRT_SCREEN_PLANE, crtScreenWorldPose } from './monitorPlacement';
+import type { Vector3Tuple } from './monitorPlacement';
+import { dockDistanceFor, fitScaleForScreen } from './screenProjection';
 
 export type CameraKeyframe = {
   t: number;
@@ -8,18 +9,53 @@ export type CameraKeyframe = {
   lookAt: Vector3Tuple;
 };
 
+/* Cadre auquel les poses constantes de la trajectoire sont ecrites. */
+export const REFERENCE_VIEWPORT = { width: 1440, height: 900 } as const;
+
+export const PULLBACK_FOV_DEG = 45;
+
+/*
+ * Pose amarree : camera pile sur la normale de la dalle, a la distance exacte ou
+ * le bureau inscrit dans la dalle remplit le cadre. `CameraRig` la recalcule a
+ * chaque frame depuis la matrice monde reelle du maillage, pour que le raccord
+ * soit juste sur n'importe quel ecran ; la version ci-dessous part des memes
+ * constantes de placement et sert de premiere image a la trajectoire.
+ */
+export function dockKeyframe(
+  viewportWidth: number,
+  viewportHeight: number,
+  fovDeg: number,
+): CameraKeyframe {
+  const { center, normal } = crtScreenWorldPose();
+  const distance = dockDistanceFor(
+    viewportHeight,
+    fitScaleForScreen(
+      viewportWidth,
+      viewportHeight,
+      CRT_SCREEN_PLANE.width,
+      CRT_SCREEN_PLANE.height,
+    ),
+    fovDeg,
+  );
+
+  return {
+    t: 0,
+    position: [
+      center[0] + normal[0] * distance,
+      center[1] + normal[1] * distance,
+      center[2] + normal[2] * distance,
+    ],
+    lookAt: [...center],
+  };
+}
+
 /*
  * La camera ne suit pas une ligne droite : elle derive lateralement, ce qui
- * fait tourner l'angle du moniteur pendant le recul.
- *
- * La premiere image est la pose "amarree" : camera pile sur la normale de la
- * dalle, a la distance exacte ou le bureau remplit le cadre. Les valeurs
- * ci-dessous correspondent a un cadre 1440x900 ; `CameraRig` les recalcule a
- * chaque frame a partir de la matrice monde reelle de la dalle et de la taille
- * du canvas, pour que le raccord soit exact quel que soit l'ecran.
+ * fait tourner l'angle du moniteur pendant le recul. Les poses suivantes sont
+ * ecrites a la main, dans le repere de la piece.
  */
 export const PULLBACK_PATH: CameraKeyframe[] = [
-  { t: 0, position: [-1.7184, 0.08, 1.9354], lookAt: [-2.4986, 0.08, 0.8424] },
+  dockKeyframe(REFERENCE_VIEWPORT.width, REFERENCE_VIEWPORT.height, PULLBACK_FOV_DEG),
   { t: 0.36, position: [-2.85, 0.12, 4.2], lookAt: [-3.05, 0.06, 0] },
   { t: 0.72, position: [-0.9, 0.35, 8.1], lookAt: [-2.6, 0.02, 0] },
   { t: 1, position: [0.85, 0.55, 10.4], lookAt: [-2.2, -0.05, 0] },

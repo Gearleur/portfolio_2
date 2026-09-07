@@ -42,7 +42,7 @@ export function PortalButton({ onActivate }: { onActivate?: () => void }) {
         }}
       >
         <span className="portal-button__halo" aria-hidden="true" />
-        <span className="portal-button__label">Sortir de l&apos;ecran</span>
+        <span className="portal-button__label">Sortir de l&apos;écran</span>
       </button>
     </div>
   );

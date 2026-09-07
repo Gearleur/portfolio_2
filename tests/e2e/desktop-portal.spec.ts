@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test';
 test('reveals the portal after two windows and enters the room', async ({ page }) => {
   await page.goto('/');
 
-  const portal = page.getByRole('button', { name: 'Sortir de l\'ecran' });
+  const portal = page.getByRole('button', { name: 'Sortir de l\'écran' });
   await expect(portal).toBeHidden();
 
   await page.getByRole('button', { name: 'Education' }).click();

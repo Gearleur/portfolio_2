@@ -7,9 +7,10 @@ import { smootherstep } from '../stage/easing';
 import { useExperienceStageContext } from '../stage/ExperienceStageContext';
 import { PULLBACK_PATH, sampleCameraPath } from './cameraPath';
 import type { CameraKeyframe } from './cameraPath';
+import { CRT_SCREEN_PLANE } from './monitorPlacement';
 import {
-  CRT_SCREEN_PLANE,
   cssPerspectiveFromFov,
+  dockDistanceFor,
   fitScaleForScreen,
   getCameraCssMatrix,
   getObjectCssMatrix,
@@ -26,6 +27,22 @@ const screenCenter = new Vector3();
 const screenNormal = new Vector3();
 const objectMatrix = new Matrix4();
 const domScale = new Vector3();
+
+/*
+ * Sonde d'alignement, developpement uniquement : elle publie les matrices que la
+ * chaine CSS vient de consommer, pour que le test bout en bout recalcule la
+ * projection WebGL a la main et verifie que les deux tombent au meme endroit --
+ * la promesse de la section 9.2 de la specification, sinon invisible depuis un
+ * navigateur. `import.meta.env.DEV` vaut `false` a la compilation, le bloc
+ * disparait donc du bundle de production.
+ */
+type CameraRigProbe = {
+  view: number[];
+  object: number[];
+  fovDeg: number;
+  width: number;
+  height: number;
+};
 
 type DomTargets = {
   cameraLayer: HTMLElement | null;
@@ -91,7 +108,6 @@ export function CameraRig({ screenRef }: { screenRef: RefObject<Mesh | null> }) 
     }
 
     const fov = 'fov' in camera ? (camera.fov as number) : DEFAULT_FOV;
-    const halfFovTan = Math.tan(((fov * Math.PI) / 180) / 2);
     const screenMesh = screenRef.current;
 
     // Unites-monde par pixel CSS, et pose amarree correspondante.
@@ -111,9 +127,7 @@ export function CameraRig({ screenRef }: { screenRef: RefObject<Mesh | null> }) 
       const plane = planeSizeOf(screenMesh);
       worldPerPixel = fitScaleForScreen(size.width, size.height, plane.width, plane.height);
 
-      // Distance a laquelle le bureau, une fois inscrit dans la dalle, remplit
-      // pile le cadre : c'est la pose ou le raccord DOM / WebGL est invisible.
-      const dockDistance = (size.height * worldPerPixel) / 2 / halfFovTan;
+      const dockDistance = dockDistanceFor(size.height, worldPerPixel, fov);
       const dock = path[0];
       dock.position[0] = screenCenter.x + screenNormal.x * dockDistance;
       dock.position[1] = screenCenter.y + screenNormal.y * dockDistance;
@@ -171,6 +185,16 @@ export function CameraRig({ screenRef }: { screenRef: RefObject<Mesh | null> }) 
     );
 
     screen.style.opacity = shouldSwapToShader(ratio) ? '0' : '1';
+
+    if (import.meta.env.DEV) {
+      (window as unknown as { __cameraRigProbe?: CameraRigProbe }).__cameraRigProbe = {
+        view: Array.from(camera.matrixWorldInverse.elements),
+        object: Array.from(objectMatrix.elements),
+        fovDeg: fov,
+        width: size.width,
+        height: size.height,
+      };
+    }
   });
 
   return null;

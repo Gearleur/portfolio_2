@@ -2,7 +2,7 @@ import { useFrame } from '@react-three/fiber';
 import { useRef } from 'react';
 import type { RefObject } from 'react';
 import type { Mesh, ShaderMaterial } from 'three';
-import { CRT_SCREEN_PLANE } from './screenProjection';
+import { CRT_SCREEN_LOCAL_POSITION, CRT_SCREEN_PLANE } from './monitorPlacement';
 import { createScreenMaterial } from './ScreenMaterial';
 import { ScreenGlow } from './ScreenGlow';
 
@@ -49,7 +49,7 @@ export function CrtMonitor({
         <meshStandardMaterial color="#c9c3b2" roughness={0.78} metalness={0.04} />
       </mesh>
 
-      <mesh ref={attachScreenMesh} position={[0, 0.08, 1.035]} name="crt-screen">
+      <mesh ref={attachScreenMesh} position={CRT_SCREEN_LOCAL_POSITION} name="crt-screen">
         <planeGeometry args={[CRT_SCREEN_PLANE.width, CRT_SCREEN_PLANE.height]} />
       </mesh>
 
