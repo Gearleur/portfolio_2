@@ -17,13 +17,14 @@ export function RoomLayer() {
 
   const renderer = pickRoomRenderer({ stage, hasWebgl });
   const isMounted = useKeepAlive(renderer);
+  const isIdle = renderer === 'none';
 
   if (!isMounted) {
     return null;
   }
 
   return (
-    <div className="room-layer" data-renderer={renderer} data-idle={renderer === 'none'}>
+    <div className="room-layer" data-renderer={renderer} data-idle={isIdle}>
       {/*
        * Le choix du contenu suit `hasWebgl`, pas `renderer` : pendant le
        * delai de grace, `renderer` vaut `none` alors que `hasWebgl` ne change
@@ -33,7 +34,7 @@ export function RoomLayer() {
        */}
       {hasWebgl ? (
         <Suspense fallback={<RoomFallback />}>
-          <RoomScene device={isMobile ? 'phone' : 'crt'} />
+          <RoomScene device={isMobile ? 'phone' : 'crt'} idle={isIdle} />
         </Suspense>
       ) : (
         <RoomFallback />

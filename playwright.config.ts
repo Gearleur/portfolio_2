@@ -21,14 +21,17 @@ export default defineConfig({
       // (SwiftShader) : plusieurs contextes en parallele saturent le CPU
       // partage avec l'unique serveur `pnpm dev`, et des assertions sensibles
       // au temps (transitions CSS, boucle de rendu) se mettent a expirer de
-      // facon aleatoire. Un seul worker pour ce projet supprime la
-      // contention sans affaiblir aucune assertion.
+      // facon aleatoire. Toujours vrai apres correction des deux vraies
+      // regressions (useCurtainExit, echantillonnage RAF) : sans ce plafond,
+      // mobile-chromium seul a echoue 2 fois sur 8 en parallelisme normal.
+      // Un seul worker pour ce projet supprime cette contention interne.
       workers: 1,
     },
     {
       name: 'desktop-chromium',
       testMatch: '**/desktop-*.spec.ts',
       use: { ...devices['Desktop Chrome'], viewport: { width: 1440, height: 900 } },
+      workers: 3,
     },
   ],
 });

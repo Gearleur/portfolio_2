@@ -6,6 +6,7 @@ import { CameraRig } from './CameraRig';
 import { PULLBACK_FOV_DEG, PULLBACK_PATH } from './cameraPath';
 import { CrtMonitor } from './CrtMonitor';
 import { Floor } from './Floor';
+import { resolveFrameloop } from './frameloopPolicy';
 import { CRT_MONITOR_POSITION, CRT_MONITOR_ROTATION } from './monitorPlacement';
 import type { Vector3Tuple } from './monitorPlacement';
 import { PhoneDevice } from './PhoneDevice';
@@ -22,27 +23,31 @@ const INITIAL_CAMERA_POSITION: Vector3Tuple = [...PULLBACK_PATH[0].position];
 const PHONE_INITIAL_CAMERA_POSITION: Vector3Tuple = [-1.5, -0.35, 3.6];
 
 /*
- * L'onglet en arriere-plan ne doit pas continuer a faire tourner la boucle de
- * rendu : `document.hidden` bascule `frameloop` sur `never`, ce que R3F
- * n'annule jamais tout seul, et le remet sur `always` au retour au premier
- * plan.
+ * Deux raisons independantes de museler la boucle de rendu : l'onglet en
+ * arriere-plan (`document.hidden`) et le canvas garde chaud mais invisible
+ * pendant le delai de grace de `useKeepAlive` (`idle`, reflete de
+ * `data-idle` sur `.room-layer`). `resolveFrameloop` les compose en OU pour
+ * qu'aucune des deux ne puisse a elle seule reveiller une boucle que l'autre
+ * exige encore a l'arret -- recalculee a chaque changement de l'une ou
+ * l'autre, jamais assemblee a la main ici.
  */
-function VisibilityGuard() {
+function VisibilityGuard({ idle }: { idle: boolean }) {
   const setFrameloop = useThree((state) => state.setFrameloop);
 
   useEffect(() => {
-    const onVisibilityChange = () => {
-      setFrameloop(document.hidden ? 'never' : 'always');
+    const apply = () => {
+      setFrameloop(resolveFrameloop({ isIdle: idle, isDocumentHidden: document.hidden }));
     };
 
-    document.addEventListener('visibilitychange', onVisibilityChange);
-    return () => document.removeEventListener('visibilitychange', onVisibilityChange);
-  }, [setFrameloop]);
+    apply();
+    document.addEventListener('visibilitychange', apply);
+    return () => document.removeEventListener('visibilitychange', apply);
+  }, [idle, setFrameloop]);
 
   return null;
 }
 
-export default function RoomScene({ device }: { device: 'crt' | 'phone' }) {
+export default function RoomScene({ device, idle }: { device: 'crt' | 'phone'; idle: boolean }) {
   // La dalle est la seule geometrie que le rig doit suivre : c'est sur sa
   // matrice monde que le bureau DOM vient se coller.
   const screenRef = useRef<Mesh | null>(null);
@@ -74,7 +79,7 @@ export default function RoomScene({ device }: { device: 'crt' | 'phone' }) {
       <Floor reflection={renderDevice()} />
       {renderDevice(screenRef)}
       <CameraRig screenRef={screenRef} />
-      <VisibilityGuard />
+      <VisibilityGuard idle={idle} />
     </Canvas>
   );
 }
