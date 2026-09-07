@@ -25,6 +25,7 @@ export type ExperienceStageValue = {
   prefersReducedMotion: boolean;
   isMobile: boolean;
   transitionProgressRef: RefObject<number>;
+  roomProgressRef: RefObject<number>;
   notifyWindowOpened: (windowId: string) => void;
   enterRoom: () => void;
   skipTransition: () => void;
@@ -67,6 +68,12 @@ export function ExperienceStageProvider({ children }: { children: ReactNode }) {
   // frame hors de React : la camera et la synchronisation DOM la lisent dans
   // une boucle a 60 Hz, ou un rendu React par frame serait ruineux.
   const transitionProgressRef = useRef(0);
+
+  // Progression 0 -> 1 du scroll de la cinematique une fois dans la piece.
+  // `CinematicOverlay` l'ecrit depuis son gestionnaire de scroll, `CameraRig`
+  // la lit dans sa boucle a 60 Hz : meme raison d'etre qu'une ref plutot
+  // qu'un etat React que `transitionProgressRef` juste au-dessus.
+  const roomProgressRef = useRef(0);
 
   useEffect(() => {
     const duration = transitionDurationMs(state.stage, { prefersReducedMotion, isMobile });
@@ -150,6 +157,7 @@ export function ExperienceStageProvider({ children }: { children: ReactNode }) {
       prefersReducedMotion,
       isMobile,
       transitionProgressRef,
+      roomProgressRef,
       notifyWindowOpened,
       enterRoom,
       skipTransition,

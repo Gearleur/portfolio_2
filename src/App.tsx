@@ -3,6 +3,7 @@ import { DesktopShell, MobileShell } from './components';
 import { MachineResume } from './components/machine/MachineResume';
 import { PortfolioModeToggle } from './components/machine/PortfolioModeToggle';
 import type { PortfolioMode } from './components/machine/PortfolioModeToggle';
+import { CinematicOverlay } from './experience/cinematic/CinematicOverlay';
 import { PortalButton } from './experience/portal/PortalButton';
 import { RoomLayer, prefetchRoomScene } from './experience/room/RoomLayer';
 import { ExperienceStageProvider } from './experience/stage/ExperienceStageContext';
@@ -58,6 +59,7 @@ export default function App() {
         </div>
         <PortalButton onActivate={prefetchRoomScene} />
         <RoomLayer />
+        <CinematicOverlay />
         <PortfolioModeToggle mode={mode} onChange={setMode} />
       </div>
     </ExperienceStageProvider>

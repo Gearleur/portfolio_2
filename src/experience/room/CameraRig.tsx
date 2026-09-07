@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react';
 import type { RefObject } from 'react';
 import { Matrix4, PlaneGeometry, Vector3 } from 'three';
 import type { Mesh } from 'three';
-import { smootherstep } from '../stage/easing';
+import { clamp01, lerp, smootherstep } from '../stage/easing';
 import { useExperienceStageContext } from '../stage/ExperienceStageContext';
 import { PULLBACK_PATH, sampleCameraPath } from './cameraPath';
 import type { CameraKeyframe } from './cameraPath';
@@ -19,6 +19,15 @@ import {
 } from './screenProjection';
 
 const DEFAULT_FOV = 45;
+
+/*
+ * Une fois en piece, le scroll de la cinematique pousse la camera plus loin
+ * sur Z et la fait deriver lateralement : le moniteur, qu'elle regardait a la
+ * fin du recul, finit par sortir du cadre et n'est plus qu'une lueur derriere
+ * le visiteur. Les deux constantes reprennent les grandeurs du plan.
+ */
+const ROOM_DEPTH_ADVANCE = 32;
+const ROOM_LATERAL_DRIFT = 2.2;
 
 // Objets de travail alloues une fois : la boucle tourne a 60 Hz et ne doit
 // produire aucun dechet.
@@ -59,7 +68,7 @@ function planeSizeOf(mesh: Mesh): { width: number; height: number } {
 export function CameraRig({ screenRef }: { screenRef: RefObject<Mesh | null> }) {
   const camera = useThree((state) => state.camera);
   const size = useThree((state) => state.size);
-  const { transitionProgressRef } = useExperienceStageContext();
+  const { transitionProgressRef, roomProgressRef, stage } = useExperienceStageContext();
 
   const domRef = useRef<DomTargets>({ cameraLayer: null, screen: null });
 
@@ -142,8 +151,23 @@ export function CameraRig({ screenRef }: { screenRef: RefObject<Mesh | null> }) 
     // troisieme temps et decelere fort sur le dernier.
     const sample = sampleCameraPath(path, smootherstep(transitionProgressRef.current));
 
-    camera.position.set(sample.position[0], sample.position[1], sample.position[2]);
-    lookAtTarget.set(sample.lookAt[0], sample.lookAt[1], sample.lookAt[2]);
+    // Progression du scroll dans la piece : 0 hors de la phase `room`, quelle
+    // que soit la valeur qui traine encore dans la ref -- la garde sur
+    // `stage` evite tout sursaut si la piece est quittee avant que
+    // `CinematicOverlay` ne l'ait remise a zero.
+    const roomT = stage === 'room' ? clamp01(roomProgressRef.current) : 0;
+    const roomX = sample.position[0] + roomT * ROOM_LATERAL_DRIFT;
+    const roomZ = sample.position[2] + roomT * ROOM_DEPTH_ADVANCE;
+
+    camera.position.set(roomX, sample.position[1], roomZ);
+    // Le regard suit la meme derive, doublee : plutot que de rester fixe sur
+    // le moniteur, la camera regarde de plus en plus loin devant elle, et le
+    // moniteur sort du cadre au lieu d'y rester centre.
+    lookAtTarget.set(
+      lerp(sample.lookAt[0], roomX + ROOM_LATERAL_DRIFT, roomT),
+      sample.lookAt[1],
+      lerp(sample.lookAt[2], roomZ + ROOM_DEPTH_ADVANCE, roomT),
+    );
     camera.lookAt(lookAtTarget);
     // `Camera.updateMatrixWorld` rafraichit aussi `matrixWorldInverse`, la
     // matrice de vue que reclame la matrice CSS de la camera.

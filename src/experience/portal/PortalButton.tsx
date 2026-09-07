@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useExperienceStageContext } from '../stage/ExperienceStageContext';
 import './portal.css';
 
@@ -6,6 +6,8 @@ export function PortalButton({ onActivate }: { onActivate?: () => void }) {
   const { stage, isPortalReady, enterRoom } = useExperienceStageContext();
   const [announcement, setAnnouncement] = useState('');
   const isVisible = isPortalReady && stage === 'desktop';
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
+  const hasLeftRoom = useRef(false);
 
   useEffect(() => {
     if (!isVisible) {
@@ -24,6 +26,20 @@ export function PortalButton({ onActivate }: { onActivate?: () => void }) {
     };
   }, [isVisible]);
 
+  // Le focus doit revenir sur le portail quand le visiteur quitte la piece :
+  // sans ca, le clavier retomberait au debut du document apres un retour.
+  useEffect(() => {
+    if (stage === 'room') {
+      hasLeftRoom.current = true;
+      return;
+    }
+
+    if (isVisible && hasLeftRoom.current) {
+      hasLeftRoom.current = false;
+      buttonRef.current?.focus();
+    }
+  }, [isVisible, stage]);
+
   if (!isVisible) {
     return null;
   }
@@ -36,6 +52,7 @@ export function PortalButton({ onActivate }: { onActivate?: () => void }) {
       <button
         className="portal-button"
         type="button"
+        ref={buttonRef}
         onClick={() => {
           onActivate?.();
           enterRoom();
