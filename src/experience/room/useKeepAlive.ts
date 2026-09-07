@@ -17,10 +17,13 @@ export function shouldKeepCanvasMounted(input: {
 /*
  * `Canvas` recompile ses shaders et retelecharge ses textures a chaque montage :
  * demonter puis remonter a chaque aller-retour dans la piece serait couteux.
- * Le montage reste donc actif un peu apres la sortie ("chaud"), et la decision
- * de le relacher passe systematiquement par `shouldKeepCanvasMounted` -- jamais
- * par une reecriture de la condition ici -- pour que le predicat teste soit
- * bien celui qui pilote le montage reel.
+ * Le montage reste donc actif un peu apres la sortie ("chaud"). Deux
+ * decisions distinctes : le montage par defaut (`renderer !== 'none'`, teste
+ * en ligne plus bas -- `shouldKeepCanvasMounted` suppose qu'on vient de
+ * quitter la piece, ce qu'elle ne peut pas exprimer avant une premiere
+ * entree) et la liberation apres le delai de grace, la seule qui compte
+ * vraiment ici, qui passe toujours par `shouldKeepCanvasMounted` et jamais
+ * par une reecriture de son seuil.
  */
 export function useKeepAlive(renderer: RoomRenderer): boolean {
   const [prevRenderer, setPrevRenderer] = useState(renderer);

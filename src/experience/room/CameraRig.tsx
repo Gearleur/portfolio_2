@@ -63,6 +63,7 @@ type CameraRigProbe = {
   width: number;
   height: number;
   roomProgress: number;
+  frame: number;
 };
 
 type DomTargets = {
@@ -84,6 +85,12 @@ export function CameraRig({ screenRef }: { screenRef: RefObject<Mesh | null> }) 
     useExperienceStageContext();
 
   const domRef = useRef<DomTargets>({ cameraLayer: null, screen: null });
+  // Compteur d'images, developpement uniquement : seul moyen pour un test
+  // bout en bout de distinguer "la boucle tourne mais les valeurs sont
+  // stables" de "la boucle est reellement a l'arret" -- roomT et la matrice
+  // de vue sont constantes pendant le delai de grace meme si `useFrame`
+  // continue de s'executer, puisque rien n'anime alors dans la piece.
+  const frameCountRef = useRef(0);
 
   // La trajectoire est copiee pour que sa premiere image -- la pose amarree sur
   // la dalle -- soit recalculee a chaque frame sans reallouer le tableau ni
@@ -248,6 +255,7 @@ export function CameraRig({ screenRef }: { screenRef: RefObject<Mesh | null> }) 
     }
 
     if (import.meta.env.DEV) {
+      frameCountRef.current += 1;
       (window as unknown as { __cameraRigProbe?: CameraRigProbe }).__cameraRigProbe = {
         view: Array.from(camera.matrixWorldInverse.elements),
         object: Array.from(objectMatrix.elements),
@@ -255,6 +263,7 @@ export function CameraRig({ screenRef }: { screenRef: RefObject<Mesh | null> }) 
         width: size.width,
         height: size.height,
         roomProgress: roomT,
+        frame: frameCountRef.current,
       };
     }
   });
