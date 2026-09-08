@@ -1,5 +1,5 @@
 import { AdditiveBlending, CanvasTexture } from 'three';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 
 function createRadialTexture(): CanvasTexture {
   const size = 256;
@@ -35,6 +35,15 @@ export function ScreenGlow({
   scale: number;
 }) {
   const texture = useMemo(() => createRadialTexture(), []);
+
+  /*
+   * `@react-three/fiber` ne libere que ce qu'il a lui-meme instancie depuis le
+   * JSX : cette texture vient d'un `useMemo`, elle n'est donc a personne
+   * d'autre qu'a nous. Quatre exemplaires de `ScreenGlow` sont montes par
+   * canvas -- ils fuiraient a chaque montage, contre la promesse de la
+   * section 13 de la specification.
+   */
+  useEffect(() => () => texture.dispose(), [texture]);
 
   return (
     <sprite position={position} scale={[scale, scale, 1]}>

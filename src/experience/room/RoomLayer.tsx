@@ -18,13 +18,17 @@ export function RoomLayer() {
   const renderer = pickRoomRenderer({ stage, hasWebgl });
   const isMounted = useKeepAlive(renderer);
   const isIdle = renderer === 'none';
+  const device = isMobile ? 'phone' : 'crt';
 
   if (!isMounted) {
     return null;
   }
 
   return (
-    <div className="room-layer" data-renderer={renderer} data-idle={isIdle}>
+    // `data-device` expose l'appareil choisi : sans lui, rien dans le DOM ne
+    // distingue le parcours mobile du parcours bureau, et un test bout en bout
+    // ne peut pas verifier que le telephone est bien celui qui est monte.
+    <div className="room-layer" data-renderer={renderer} data-idle={isIdle} data-device={device}>
       {/*
        * Le choix du contenu suit `hasWebgl`, pas `renderer` : pendant le
        * delai de grace, `renderer` vaut `none` alors que `hasWebgl` ne change
@@ -34,7 +38,7 @@ export function RoomLayer() {
        */}
       {hasWebgl ? (
         <Suspense fallback={<RoomFallback />}>
-          <RoomScene device={isMobile ? 'phone' : 'crt'} idle={isIdle} />
+          <RoomScene device={device} idle={isIdle} />
         </Suspense>
       ) : (
         <RoomFallback />

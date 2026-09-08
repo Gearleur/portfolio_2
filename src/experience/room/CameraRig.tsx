@@ -40,8 +40,11 @@ const ROOM_LATERAL_DRIFT = 2.2;
 const ROOM_DEPTHS = cinematicScript.map((act) => act.cameraDepth);
 const ROOM_LOOKAHEAD = ROOM_DEPTHS[ROOM_DEPTHS.length - 1] - ROOM_DEPTHS[0];
 
-// Objets de travail alloues une fois : la boucle tourne a 60 Hz et ne doit
-// produire aucun dechet.
+// Objets de travail alloues une fois plutot qu'a chaque image. La boucle
+// tourne a 60 Hz : ce qui peut sortir du chemin chaud en sort. Elle n'est pas
+// pour autant sans allocation -- `sampleCameraPath` rend un objet neuf, comme
+// les deux formateurs de matrices CSS -- mais ces objets-la sont les plus gros
+// et les plus faciles a hisser.
 const lookAtTarget = new Vector3();
 const screenCenter = new Vector3();
 const screenNormal = new Vector3();
@@ -64,12 +67,45 @@ type CameraRigProbe = {
   height: number;
   roomProgress: number;
   frame: number;
+  /*
+   * Centre monde de la dalle reellement montee. Le bloc n'est publie que
+   * lorsqu'un maillage de dalle existe, donc la simple presence de la sonde
+   * prouve deja qu'un appareil a monte sa geometrie ; cette position dit
+   * lequel -- le telephone et le moniteur ne sont pas au meme endroit dans
+   * la piece. Sans elle, le parcours mobile resterait entierement vert meme
+   * si `PhoneDevice` ne montait pas : la phase et l'acte actif sont pilotes
+   * par la machine d'etat, sans rien demander a WebGL.
+   */
+  screenCenter: [number, number, number];
 };
 
 type DomTargets = {
   cameraLayer: HTMLElement | null;
   screen: HTMLElement | null;
 };
+
+/*
+ * Remise a plat des trois calques que le rig pilote en style en ligne. Un
+ * style en ligne bat la feuille de style quelle que soit la specificite : la
+ * regle "phase desktop" d'`experience.css` ne peut pas reprendre la main
+ * toute seule, il faut effacer les proprietes une a une. Une seule fonction
+ * pour les deux appelants (retour en phase `desktop` et demontage) pour
+ * qu'ils ne puissent pas diverger sur la liste des proprietes a effacer.
+ */
+function resetDomTargets({ cameraLayer, screen }: DomTargets): void {
+  if (cameraLayer) {
+    cameraLayer.style.transform = '';
+    cameraLayer.style.width = '';
+    cameraLayer.style.height = '';
+  }
+
+  if (screen) {
+    screen.style.transform = '';
+    screen.style.width = '';
+    screen.style.height = '';
+    screen.style.opacity = '';
+  }
+}
 
 function planeSizeOf(mesh: Mesh): { width: number; height: number } {
   const geometry = mesh.geometry;
@@ -111,24 +147,29 @@ export function CameraRig({ screenRef }: { screenRef: RefObject<Mesh | null> }) 
     };
     domRef.current = targets;
 
-    // Le bureau redevient une page ordinaire quand le rig disparait : sans ce
-    // nettoyage, les styles en ligne survivraient a la phase et gagneraient
-    // contre la feuille de style qui remet tout a plat.
-    return () => {
-      const { cameraLayer, screen } = targets;
-      if (cameraLayer) {
-        cameraLayer.style.transform = '';
-        cameraLayer.style.width = '';
-        cameraLayer.style.height = '';
-      }
-      if (screen) {
-        screen.style.transform = '';
-        screen.style.width = '';
-        screen.style.height = '';
-        screen.style.opacity = '';
-      }
-    };
+    // Filet de securite pour le demontage reel : la remise a plat qui compte
+    // pour le visiteur est celle de l'effet suivant, pas celle-ci.
+    return () => resetDomTargets(targets);
   }, []);
+
+  /*
+   * Le bureau redevient une page ordinaire des que la phase repasse a
+   * `desktop`, pas au demontage du rig : `useKeepAlive` garde le canvas monte
+   * dix secondes apres la sortie de la piece, le nettoyage de demontage
+   * arriverait donc dix secondes trop tard. Pendant tout ce temps la derniere
+   * `matrix3d` ecrite ici survivrait, gagnerait contre `experience.css` et
+   * laisserait le bureau en parallelogramme, a moitie hors cadre et hors
+   * d'atteinte du curseur. Ce nettoyage ne peut pas vivre dans `useFrame` :
+   * `resolveFrameloop` a deja gele la boucle quand la phase revient a
+   * `desktop`, aucune frame supplementaire n'est garantie.
+   */
+  useEffect(() => {
+    if (stage !== 'desktop') {
+      return;
+    }
+
+    resetDomTargets(domRef.current);
+  }, [stage]);
 
   useFrame(() => {
     const path = pathRef.current;
@@ -264,6 +305,7 @@ export function CameraRig({ screenRef }: { screenRef: RefObject<Mesh | null> }) 
         height: size.height,
         roomProgress: roomT,
         frame: frameCountRef.current,
+        screenCenter: [screenCenter.x, screenCenter.y, screenCenter.z],
       };
     }
   });

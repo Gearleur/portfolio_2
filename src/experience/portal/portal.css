@@ -1,7 +1,22 @@
+/*
+ * Le bouton reste dans `.experience-root`, qui pose `isolation: isolate` : son
+ * z-index plafonne donc au niveau d'empilement local de cet ancetre, sous tout
+ * ce qui est porte vers `document.body` (le curseur Human/Machine, les plein
+ * ecran projets). C'est voulu -- une prise en main plein ecran est une modale,
+ * et une modale qui couvre le chrome de la page est le comportement correct --
+ * mais ca veut dire qu'aucun z-index ne peut le sortir de dessous le curseur
+ * de mode. La cohabitation est donc geometrique : la position se derive de la
+ * geometrie que `machineMode.css` publie pour le curseur, une seule origine
+ * pour les deux, a tous les gabarits. Les valeurs de repli reprennent la
+ * definition de bureau, au cas ou `machineMode.css` ne serait pas charge.
+ */
 .portal-slot {
   position: fixed;
   z-index: 900;
-  bottom: 34px;
+  bottom: calc(
+    var(--mode-toggle-bottom, 18px) + var(--mode-toggle-height, 32px) +
+      var(--mode-toggle-clearance, 16px)
+  );
   left: 50%;
   transform: translateX(-50%);
 }
@@ -40,13 +55,27 @@
   transition: letter-spacing 420ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/*
+ * L'angle du degrade est anime, pas l'element. Faire tourner la pastille
+ * elle-meme (`rotate: 360deg`) la fait balayer un arc de plus de 200 px hors
+ * du bouton -- une helice, pas un halo -- puisqu'elle est deux fois plus large
+ * que haute et que `.portal-button` laisse deborder. Une propriete
+ * enregistree est necessaire : sans `@property`, une variable personnalisee
+ * est interpolee comme du texte et ne s'anime pas.
+ */
+@property --portal-halo-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
 .portal-button__halo {
   position: absolute;
   z-index: 0;
   inset: -1px;
   border-radius: inherit;
   background: conic-gradient(
-    from 0deg,
+    from var(--portal-halo-angle),
     rgba(120, 200, 255, 0),
     rgba(120, 200, 255, 0.55),
     rgba(196, 140, 255, 0.45),
@@ -86,7 +115,7 @@
 
 @keyframes portal-halo-spin {
   to {
-    rotate: 360deg;
+    --portal-halo-angle: 360deg;
   }
 }
 
@@ -97,18 +126,5 @@
 
   .portal-button__halo {
     animation: none;
-  }
-}
-
-/*
- * Mobile : le bouton se place au-dessus du dock. Le curseur Human/Machine
- * (portfolio-mode-toggle, z-index 3000) occupe deja la bande entre 122px et
- * 174px du bas de l'ecran sur mobile -- ce n'etait pas visible tant qu'aucun
- * test bout en bout ne cliquait le portail sur mobile. 186px degage cette
- * bande avec une marge de securite.
- */
-@media (max-width: 640px) {
-  .portal-slot {
-    bottom: calc(env(safe-area-inset-bottom, 0px) + 186px);
   }
 }

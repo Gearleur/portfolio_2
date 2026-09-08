@@ -47,7 +47,7 @@ export function MobileShell() {
             className="mobile-home-button"
             type="button"
             onClick={() => setActiveAppId(null)}
-            aria-label="Retour a l'ecran d'accueil"
+            aria-label="Retour à l'écran d'accueil"
           />
         </section>
       ) : (

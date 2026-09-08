@@ -96,3 +96,69 @@ test('lets clicks pass through the idle canvas to the desktop underneath', async
   expect(hit.tag).not.toBe('CANVAS');
   expect(hit.isPortalOrInside).toBe(true);
 });
+
+/*
+ * Le bureau doit redevenir une page ordinaire des le retour, pas dix secondes
+ * plus tard quand le canvas se demonte. `CameraRig` ecrit `transform`,
+ * `width`, `height` et `opacity` en styles en ligne sur `.experience-camera`
+ * et `.experience-screen` a chaque image : un style en ligne bat la feuille de
+ * style quelle que soit la specificite, la derniere `matrix3d` survivait donc
+ * a la phase et laissait le bureau en parallelogramme, a moitie hors cadre et
+ * hors d'atteinte du curseur, pendant tout le delai de grace de
+ * `useKeepAlive`. La mesure est prise dans cette fenetre exactement --
+ * `leaveRoomOnceEntered` vient de verifier que `data-idle="true"` est encore
+ * la.
+ */
+test('gives the desktop back its own geometry while the canvas is kept warm', async ({ page }) => {
+  await leaveRoomOnceEntered(page);
+
+  const icon = page.locator('.education-file');
+  const box = await icon.boundingBox();
+  if (!box) {
+    throw new Error('the Education icon has no bounding box');
+  }
+
+  const measured = await page.evaluate(
+    ({ x, y }) => {
+      const screen = document.querySelector('.experience-screen');
+      const iconElement = document.querySelector('.education-file');
+      if (!screen || !iconElement) {
+        return null;
+      }
+
+      const rect = screen.getBoundingClientRect();
+      const topElement = document.elementFromPoint(x, y);
+
+      return {
+        transform: getComputedStyle(screen).transform,
+        left: rect.left,
+        top: rect.top,
+        width: rect.width,
+        height: rect.height,
+        viewportWidth: window.innerWidth,
+        viewportHeight: window.innerHeight,
+        hitsIcon: Boolean(
+          topElement && (topElement === iconElement || iconElement.contains(topElement)),
+        ),
+        hit: topElement ? `${topElement.tagName}.${topElement.className}` : null,
+      };
+    },
+    { x: box.x + box.width / 2, y: box.y + box.height / 2 },
+  );
+
+  if (!measured) {
+    throw new Error('the desktop plane or the Education icon is missing');
+  }
+
+  expect(measured.transform).toBe('none');
+  expect(Math.abs(measured.left)).toBeLessThan(1);
+  expect(Math.abs(measured.top)).toBeLessThan(1);
+  expect(measured.width).toBe(measured.viewportWidth);
+  expect(measured.height).toBeGreaterThanOrEqual(measured.viewportHeight);
+  expect(measured.hitsIcon, `elementFromPoint returned ${measured.hit}`).toBe(true);
+
+  // La mesure devait bien tomber dans le delai de grace : sans ca, le test se
+  // contenterait de verifier le nettoyage de demontage, qui n'a jamais ete en
+  // cause.
+  await expect(page.locator('.room-layer[data-idle="true"]')).toBeVisible();
+});

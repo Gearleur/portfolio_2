@@ -1,3 +1,15 @@
+/*
+ * INVARIANT : `isolation: isolate` ouvre ici un niveau d'empilement local. Tout
+ * ce qui vit sous `.experience-root` -- bouton portail, calque piece, texte de
+ * la cinematique -- y est enferme et plafonne au rang de cet ancetre, quel que
+ * soit le z-index qu'on lui donne. Un element porte vers `document.body` par
+ * `createPortal` (le curseur Human/Machine, les plein ecran projets) est en
+ * dehors et passe donc systematiquement devant. L'isolation est necessaire a
+ * la composition de la piece 3D : on ne la retire pas, on compose avec.
+ * Deux bugs sont nes de cette meconnaissance -- un bouton de mode rendu
+ * inatteignable dans la piece, et un bouton portail recouvert par ce meme
+ * curseur -- avant que la regle ne soit ecrite ici.
+ */
 .experience-root {
   position: relative;
   isolation: isolate;

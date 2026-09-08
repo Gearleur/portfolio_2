@@ -110,3 +110,92 @@ test('resyncs the camera and the act on a second room visit', async ({ page }) =
     return Boolean(probe && probe.roomProgress > 0.5);
   });
 });
+
+/*
+ * Le scroll est le seul moyen d'avancer dans la cinematique (section 5 de la
+ * specification). Les cinq actes partagent la meme cellule de grille : celui
+ * du dernier, invisible mais dernier dans le DOM donc au-dessus, posait sa
+ * rangee d'appels a l'action en travers du centre de l'ecran et avalait la
+ * molette -- `.cinematic-cta` reprend `pointer-events: auto` et vit dans
+ * `.cinematic-stage`, un frere du conteneur scrollable, donc la molette ne
+ * remontait vers aucun ancetre defilable. Un visiteur dont le curseur repose
+ * au milieu de l'ecran, sous le texte qu'il lit, trouvait le pitch fige.
+ * On vise exactement cette bande : `visibility: hidden` conserve la mise en
+ * page, elle reste donc mesurable apres correction.
+ */
+test('advances the cinematic on a wheel over the invisible CTA row', async ({ page }) => {
+  await enterRoom(page);
+  await expect(page.locator('.cinematic-act').first()).toHaveAttribute('data-active', 'true');
+
+  const band = await page.evaluate(() => {
+    const cta = document.querySelector('.cinematic-cta');
+    if (!cta) {
+      return null;
+    }
+
+    const rect = cta.getBoundingClientRect();
+    return { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+  });
+
+  if (!band) {
+    throw new Error('the cinematic CTA row was not found');
+  }
+
+  await page.mouse.move(band.x, band.y);
+  for (let notch = 0; notch < 8; notch += 1) {
+    await page.mouse.wheel(0, 320);
+  }
+
+  await expect(page.locator('.cinematic-act').first()).toHaveAttribute('data-active', 'false', {
+    timeout: 4000,
+  });
+
+  const scrollTop = await page.evaluate(
+    () => document.querySelector('.cinematic-scroll')?.scrollTop ?? 0,
+  );
+  expect(scrollTop).toBeGreaterThan(0);
+});
+
+/*
+ * Section 15 : "Escape ramene au bureau". `desktop-pullback.spec.ts` teste
+ * Escape pendant le recul, ou il saute la transition -- c'est un autre
+ * comportement, et depuis la piece rien ne couvrait celui-ci.
+ */
+test('returns to the desktop on escape from the room', async ({ page }) => {
+  await enterRoom(page);
+
+  await page.keyboard.press('Escape');
+  await expect(page.locator('.experience-root')).toHaveAttribute('data-stage', 'desktop', {
+    timeout: 6000,
+  });
+});
+
+/*
+ * Le bureau existe toujours dans le document pendant la piece -- c'est lui
+ * qu'on recule, il ne peut pas etre demonte -- mais il est sous un calque a
+ * `opacity: 0`. Une marche au clavier depuis la region cinematique atteignait
+ * les icones du bureau et les activait : une fenetre s'ouvrait et notifiait la
+ * machine d'etat pendant que le visiteur etait dans la piece.
+ * `pointer-events: none` ne couvrait que la souris.
+ */
+test('keeps the tab order out of the desktop while in the room', async ({ page }) => {
+  await enterRoom(page);
+
+  const walk: string[] = [];
+  for (let step = 0; step < 12; step += 1) {
+    await page.keyboard.press('Tab');
+    walk.push(
+      await page.evaluate(() => {
+        const active = document.activeElement;
+        if (!active) {
+          return 'none';
+        }
+
+        const where = active.closest('#portfolio-content') ? 'desktop' : 'outside';
+        return `${where}:${active.tagName}.${active.className}`;
+      }),
+    );
+  }
+
+  expect(walk.filter((stop) => stop.startsWith('desktop:'))).toEqual([]);
+});

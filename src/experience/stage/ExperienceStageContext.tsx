@@ -142,12 +142,6 @@ export function ExperienceStageProvider({ children }: { children: ReactNode }) {
     };
   }, [state.stage]);
 
-  useEffect(() => {
-    const onEnterRoom = () => dispatch({ type: 'ENTER_ROOM' });
-    window.addEventListener('experience:enter-room', onEnterRoom);
-    return () => window.removeEventListener('experience:enter-room', onEnterRoom);
-  }, []);
-
   const isPortalReady = selectIsPortalReady(state);
 
   const value = useMemo<ExperienceStageValue>(

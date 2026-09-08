@@ -38,13 +38,35 @@
   pointer-events: none;
 }
 
+/*
+ * Les cinq actes occupent la meme cellule de grille, empiles les uns sur les
+ * autres. `opacity: 0` seul ne les retire ni du survol, ni du clic, ni de
+ * l'ordre de tabulation : la rangee de boutons du dernier acte -- invisible,
+ * dernier dans le DOM, donc au-dessus -- se retrouvait en travers du centre
+ * de l'ecran et avalait la molette pendant toute la cinematique, alors que le
+ * scroll est le seul moyen d'avancer (section 5 de la specification).
+ * `visibility: hidden` regle les trois d'un coup ; son basculement est
+ * retarde de la duree du fondu pour que la sortie d'un acte se joue encore
+ * en entier.
+ */
 .cinematic-act {
   position: absolute;
   display: grid;
   gap: 18px;
   max-width: 780px;
   opacity: 0;
-  transition: opacity 520ms ease;
+  /* Bascule immediate a l'entree : c'est la sortie, plus bas, qui attend. */
+  transition:
+    opacity 520ms ease,
+    visibility 0s;
+}
+
+.cinematic-act[data-active='false'] {
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 520ms ease,
+    visibility 0s 520ms;
 }
 
 .cinematic-act[data-active='true'] {
@@ -91,6 +113,11 @@
   transform: translateY(0);
 }
 
+/*
+ * `.cinematic-stage` est en `pointer-events: none` pour laisser passer la
+ * molette : la rangee d'appels a l'action la reprend, mais seulement dans un
+ * acte actif -- c'est l'acte au-dessus qui arbitre (voir plus haut).
+ */
 .cinematic-cta {
   display: flex;
   gap: 14px;
