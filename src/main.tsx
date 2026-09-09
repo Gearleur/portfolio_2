@@ -4,6 +4,7 @@ import App from './App';
 import { registerServiceWorker } from './registerServiceWorker';
 import './styles/yc-da.css';
 import './styles.css';
+import './styles/retro-glass.css';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
