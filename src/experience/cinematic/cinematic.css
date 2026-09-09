@@ -53,7 +53,14 @@
   position: absolute;
   display: grid;
   gap: 18px;
+  width: min(38vw, 560px);
+  right: 7vw;
   max-width: 780px;
+  padding: 24px;
+  border: 1px solid #ffffffb0;
+  border-radius: 5px;
+  background: #f8fbffcc;
+  backdrop-filter: blur(12px);
   opacity: 0;
   /* Bascule immediate a l'entree : c'est la sortie, plus bas, qui attend. */
   transition:
@@ -75,9 +82,9 @@
 
 .cinematic-line {
   overflow: hidden;
-  color: #f4f6fb;
+  color: #24364e;
   font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
-  font-size: clamp(22px, 3.4vw, 44px);
+  font-size: clamp(20px, 2.3vw, 32px);
   font-weight: 300;
   line-height: 1.28;
 }
@@ -129,10 +136,10 @@
 .cinematic-cta__back,
 .cinematic-back {
   padding: 11px 22px;
-  border: 1px solid rgba(255, 255, 255, 0.26);
+  border: 1px solid #b2c1d4;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.05);
-  color: #f4f6fb;
+  background: rgba(255, 255, 255, 0.82);
+  color: #24364e;
   font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
   font-size: 11px;
   letter-spacing: 0.22em;
@@ -166,6 +173,8 @@
     padding: 0 24px;
     place-items: center start;
   }
+
+  .cinematic-act { width: calc(100% - 48px); right: 24px; padding: 18px; }
 
   .cinematic-line {
     font-size: clamp(20px, 6.4vw, 30px);

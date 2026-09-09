@@ -2,7 +2,7 @@
   position: fixed;
   z-index: 3000;
   inset: 0;
-  background: #05060a;
+  background: #f1f3f6;
 }
 
 .room-canvas {
@@ -33,5 +33,5 @@
   height: 100%;
   background:
     radial-gradient(120% 70% at 18% 52%, rgba(159, 216, 200, 0.22), transparent 58%),
-    linear-gradient(180deg, #05060a 0%, #05060a 62%, #0b0f14 100%);
+    linear-gradient(180deg, #f1f3f6 0%, #f1f3f6 62%, #dce7f4 100%);
 }

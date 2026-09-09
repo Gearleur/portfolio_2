@@ -1,59 +1,46 @@
-import { useFrame } from '@react-three/fiber';
-import { useRef } from 'react';
+import { useEffect, useState } from 'react';
 import type { RefObject } from 'react';
-import type { Mesh, ShaderMaterial } from 'three';
+import { SRGBColorSpace, TextureLoader } from 'three';
+import type { Mesh, Texture } from 'three';
 import { CRT_SCREEN_LOCAL_POSITION, CRT_SCREEN_PLANE } from './monitorPlacement';
-import { createScreenMaterial } from './ScreenMaterial';
-import { ScreenGlow } from './ScreenGlow';
 
-export function CrtMonitor({
-  position,
-  rotation,
-  screenRef,
-}: {
+/** Architectural screen, with a real recess and a luminous inner frame. */
+export function CrtMonitor({ position, rotation, screenRef }: {
   position: [number, number, number];
   rotation: [number, number, number];
   screenRef?: RefObject<Mesh | null>;
 }) {
-  // The shader material is mutated every frame (uTime), so it lives in a ref
-  // rather than useMemo: useMemo's value is treated as render output and must
-  // stay immutable, while a ref is the sanctioned home for values that get
-  // updated imperatively across frames outside of React's render cycle.
-  const materialRef = useRef<ShaderMaterial | null>(null);
-  if (materialRef.current === null) {
-    materialRef.current = createScreenMaterial();
-  }
-
-  useFrame((_, delta) => {
-    if (materialRef.current) {
-      materialRef.current.uniforms.uTime.value += delta;
-    }
-  });
-
-  // The material instance is attached imperatively in this ref callback
-  // (which runs during commit, not render) instead of via the `material`
-  // JSX prop, so the mutable ref is never read during the render itself.
-  const attachScreenMesh = (mesh: Mesh | null) => {
-    if (mesh && materialRef.current) {
-      mesh.material = materialRef.current;
-    }
-    if (screenRef) {
-      screenRef.current = mesh;
-    }
-  };
+  const [wallpaper, setWallpaper] = useState<Texture | null>(null);
+  useEffect(() => {
+    let active = true;
+    const texture = new TextureLoader().load('/assets/wallpapper_desktop.png', (loaded) => {
+      loaded.colorSpace = SRGBColorSpace;
+      if (active) setWallpaper(loaded);
+    });
+    return () => { active = false; texture.dispose(); };
+  }, []);
+  const { width, height } = CRT_SCREEN_PLANE;
+  const [x, y, z] = CRT_SCREEN_LOCAL_POSITION;
 
   return (
     <group position={position} rotation={rotation}>
-      <mesh>
-        <boxGeometry args={[2.32, 1.92, 2.05]} />
-        <meshStandardMaterial color="#c9c3b2" roughness={0.78} metalness={0.04} />
+      <mesh position={[x, y, z - 0.2]} castShadow receiveShadow>
+        <boxGeometry args={[width + 0.22, height + 0.22, 0.36]} />
+        <meshStandardMaterial color="#e1e5e9" roughness={0.32} metalness={0.22} />
       </mesh>
-
-      <mesh ref={attachScreenMesh} position={CRT_SCREEN_LOCAL_POSITION} name="crt-screen">
-        <planeGeometry args={[CRT_SCREEN_PLANE.width, CRT_SCREEN_PLANE.height]} />
+      <mesh position={[x, y, z - 0.009]}>
+        <planeGeometry args={[width + 0.065, height + 0.065]} />
+        <meshBasicMaterial color="#b9e6ff" toneMapped={false} />
       </mesh>
-
-      <ScreenGlow position={[0, 0.08, 1.16]} scale={3.4} />
+      <mesh ref={screenRef} position={CRT_SCREEN_LOCAL_POSITION} name="crt-screen">
+        <planeGeometry args={[width, height]} />
+        <meshBasicMaterial key={wallpaper?.uuid ?? 'loading'} map={wallpaper} color={wallpaper ? '#ffffff' : '#347bc3'} toneMapped={false} />
+      </mesh>
+      <pointLight position={[0, -0.8, 0.8]} color="#75bfff" intensity={7} distance={5} decay={2} />
+      <mesh position={[0, y + height / 2 + 0.095, z + 0.02]}>
+        <boxGeometry args={[width + 0.1, 0.035, 0.04]} />
+        <meshBasicMaterial color="#e1f5ff" toneMapped={false} />
+      </mesh>
     </group>
   );
 }

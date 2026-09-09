@@ -15,7 +15,7 @@
   z-index: 900;
   bottom: calc(
     var(--mode-toggle-bottom, 18px) + var(--mode-toggle-height, 32px) +
-      var(--mode-toggle-clearance, 16px)
+      var(--mode-toggle-clearance, 16px) + 20px
   );
   left: 50%;
   transform: translateX(-50%);
@@ -34,10 +34,12 @@
   position: relative;
   display: inline-flex;
   align-items: center;
+  gap: 14px;
   padding: 13px 30px;
   border: 1px solid rgba(255, 255, 255, 0.28);
   border-radius: 999px;
-  background: rgba(10, 12, 16, 0.62);
+  background: linear-gradient(135deg, rgba(24, 32, 57, 0.96), rgba(12, 17, 32, 0.94));
+  box-shadow: inset 0 1px 0 #ffffff24, 0 4px 18px #10193350;
   backdrop-filter: blur(14px) saturate(1.5);
   color: #f4f6fb;
   isolation: isolate;
@@ -50,9 +52,43 @@
   font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
   font-size: 11px;
   font-weight: 500;
-  letter-spacing: 0.26em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  transition: letter-spacing 420ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.portal-button__arrow {
+  position: relative;
+  z-index: 1;
+  font-size: 18px;
+  line-height: 1;
+  color: #c5dbff;
+  transition: transform 220ms ease;
+}
+
+/* Blur an unmasked light source; the separate face keeps the label readable. */
+.portal-button::before {
+  content: '';
+  position: absolute;
+  z-index: -2;
+  inset: -7px;
+  border-radius: inherit;
+  background: conic-gradient(from var(--portal-halo-angle), #3468ff, #64edff 20%, #7465ff 42%, #cb6aff 62%, #ff95dc 80%, #3468ff);
+  filter: blur(12px) saturate(1.5);
+  opacity: 1;
+  pointer-events: none;
+  animation: portal-halo-spin 5s linear infinite;
+  transition: filter 220ms ease, inset 220ms ease;
+}
+
+.portal-button::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(135deg, #192139, #0c1120);
+  box-shadow: inset 0 1px 0 #ffffff38;
+  pointer-events: none;
 }
 
 /*
@@ -72,31 +108,39 @@
 .portal-button__halo {
   position: absolute;
   z-index: 0;
-  inset: -1px;
+  inset: -3px;
   border-radius: inherit;
   background: conic-gradient(
     from var(--portal-halo-angle),
-    rgba(120, 200, 255, 0),
-    rgba(120, 200, 255, 0.55),
-    rgba(196, 140, 255, 0.45),
-    rgba(120, 200, 255, 0)
+    #557ef0,
+    #b9f3ff 18%,
+    #819aff 32%,
+    #bc91ff 55%,
+    #f3b7e9 72%,
+    #557ef0
   );
-  opacity: 0.75;
+  opacity: 1;
   mask:
     linear-gradient(#000 0 0) content-box,
     linear-gradient(#000 0 0);
   mask-composite: exclude;
-  padding: 1px;
-  animation: portal-halo-spin 8s linear infinite;
+  padding: 3px;
+  pointer-events: none;
+  animation: portal-halo-spin 5s linear infinite;
 }
 
-.portal-button:hover .portal-button__label,
-.portal-button:focus-visible .portal-button__label {
-  letter-spacing: 0.34em;
+.portal-button:is(:hover, :focus-visible) .portal-button__arrow {
+  transform: translate(2px, -2px);
 }
 
-.portal-button:hover .portal-button__halo {
-  animation-duration: 3.4s;
+.portal-button:is(:hover, :focus-visible)::before {
+  inset: -9px;
+  filter: blur(15px) saturate(1.8) brightness(1.2);
+}
+
+.portal-button:focus-visible {
+  outline: 2px solid #e1efff;
+  outline-offset: 6px;
 }
 
 @keyframes portal-materialize {
@@ -124,7 +168,11 @@
     animation: none;
   }
 
-  .portal-button__halo {
+  .portal-button__halo,
+  .portal-button::before {
     animation: none;
+    transition: none;
   }
+
+  .portal-button__arrow { transition: none; transform: none !important; }
 }

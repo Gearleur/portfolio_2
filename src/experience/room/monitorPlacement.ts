@@ -15,15 +15,15 @@ export const CRT_MONITOR_POSITION: Vector3Tuple = [-3.1, 0, 0];
  * pendant le recul. La constante est un scalaire plutot qu'un triplet pour que
  * `crtScreenWorldPose` n'ait pas a pretendre gerer une rotation quelconque.
  */
-export const CRT_MONITOR_ROTATION_Y = 0.62;
+export const CRT_MONITOR_ROTATION_Y = -0.3;
 
 export const CRT_MONITOR_ROTATION: Vector3Tuple = [0, CRT_MONITOR_ROTATION_Y, 0];
 
 /* Position de la dalle dans le repere du moniteur, juste devant le bezel. */
-export const CRT_SCREEN_LOCAL_POSITION: Vector3Tuple = [0, 0.08, 1.035];
+export const CRT_SCREEN_LOCAL_POSITION: Vector3Tuple = [0, 0.12, 0.15];
 
 /* Dimensions de la dalle, en unites monde. */
-export const CRT_SCREEN_PLANE = { width: 1.78, height: 1.34 } as const;
+export const CRT_SCREEN_PLANE = { width: 4.8, height: 3 } as const;
 
 /*
  * Centre et normale sortante de la dalle, en coordonnees monde. `CameraRig` lit

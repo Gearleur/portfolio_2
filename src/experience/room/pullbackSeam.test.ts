@@ -12,10 +12,9 @@ import { CRT_SCREEN_PLANE, crtScreenWorldPose } from './monitorPlacement';
 import { fitScaleForScreen, projectedWidthRatio, shouldSwapToShader } from './screenProjection';
 
 /*
- * La specification decoupe le dezoom en quatre temps (section 9.1) et place le
- * raccord DOM vers shader dans le troisieme, entre 1200 et 2100 ms. Ce fichier
- * rejoue la chaine complete -- courbe, trajectoire, projection, seuil -- en
- * arithmetique pure, sans navigateur, pour tenir cette fenetre.
+ * The white-gallery portal stays large enough to read after the reveal.
+ * Preserve the live desktop until it is genuinely distant, then use wallpaper.
+ * Timing assertions for the former small CRT no longer describe this scene.
  */
 
 const VIEWPORT = REFERENCE_VIEWPORT;
@@ -51,16 +50,6 @@ function projectedRatioAt(elapsedMs: number): number {
   );
 }
 
-function seamMs(): number {
-  for (let elapsed = 0; elapsed <= PULLBACK_MS; elapsed += 5) {
-    if (shouldSwapToShader(projectedRatioAt(elapsed))) {
-      return elapsed;
-    }
-  }
-
-  return Number.POSITIVE_INFINITY;
-}
-
 describe('pullback beats at 1440x900', () => {
   it('opens on the docked pose the rig recomputes every frame', () => {
     expect(PULLBACK_PATH[0]).toEqual(dockKeyframe(VIEWPORT.width, VIEWPORT.height, FOV_DEG));
@@ -80,14 +69,16 @@ describe('pullback beats at 1440x900', () => {
     expect(shouldSwapToShader(projectedRatioAt(1200))).toBe(false);
   });
 
-  it('has dissolved into the shader before the third beat closes', () => {
-    expect(shouldSwapToShader(projectedRatioAt(2100))).toBe(true);
+  it('keeps the enlarged portal live throughout the reveal', () => {
+    expect(projectedRatioAt(PULLBACK_MS)).toBeGreaterThan(0.2);
+    expect(shouldSwapToShader(projectedRatioAt(PULLBACK_MS))).toBe(false);
   });
 
-  it('crosses the readability threshold inside the third beat', () => {
-    const seam = seamMs();
-    expect(seam).toBeGreaterThanOrEqual(1200);
-    expect(seam).toBeLessThanOrEqual(2100);
+  it('only swaps to the wallpaper once the screen is distant', () => {
+    const ratio = projectedWidthRatio(
+      VIEWPORT.width * WORLD_PER_PIXEL, 30, FOV_DEG, VIEWPORT.width / VIEWPORT.height,
+    );
+    expect(shouldSwapToShader(ratio)).toBe(true);
   });
 
   // Le recul doit rester monotone : un aller-retour ferait clignoter le raccord.

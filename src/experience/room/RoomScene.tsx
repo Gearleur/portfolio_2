@@ -6,6 +6,7 @@ import { CameraRig } from './CameraRig';
 import { PULLBACK_FOV_DEG, PULLBACK_PATH } from './cameraPath';
 import { CrtMonitor } from './CrtMonitor';
 import { Floor } from './Floor';
+import { RoomObjects } from './RoomObjects';
 import { resolveFrameloop } from './frameloopPolicy';
 import { CRT_MONITOR_POSITION, CRT_MONITOR_ROTATION } from './monitorPlacement';
 import type { Vector3Tuple } from './monitorPlacement';
@@ -55,9 +56,7 @@ export default function RoomScene({ device, idle }: { device: 'crt' | 'phone'; i
   const dpr: [number, number] = isPhone ? [1, 1.5] : [1, 1.75];
   const cameraPosition = isPhone ? PHONE_INITIAL_CAMERA_POSITION : INITIAL_CAMERA_POSITION;
 
-  // Un seul point d'instanciation pour l'appareil reel et pour son reflet :
-  // `screenRef` ne doit aller qu'a l'appareil reel, jamais a la copie miroir
-  // de `Floor` (voir le commentaire dans `Floor`), donc `ref` reste optionnel.
+  // Only the primary display participates in the DOM / WebGL alignment.
   const renderDevice = (ref?: RefObject<Mesh | null>) =>
     isPhone ? (
       <PhoneDevice position={PHONE_POSITION} rotation={PHONE_ROTATION} screenRef={ref} />
@@ -67,16 +66,22 @@ export default function RoomScene({ device, idle }: { device: 'crt' | 'phone'; i
 
   return (
     <Canvas
+      shadows
       className="room-canvas"
       dpr={dpr}
       gl={{ antialias: true, powerPreference: 'high-performance' }}
       camera={{ fov: PULLBACK_FOV_DEG, near: 0.1, far: 220, position: cameraPosition }}
     >
-      <color attach="background" args={['#05060a']} />
-      <fogExp2 attach="fog" args={['#05060a', 0.042]} />
-      <ambientLight intensity={0.06} />
-      <pointLight position={[-3.1, 0.2, 1.4]} intensity={9} distance={26} color="#9fd8c8" />
-      <Floor reflection={renderDevice()} />
+      <color attach="background" args={['#f1f3f6']} />
+      <fogExp2 attach="fog" args={['#f1f3f6', 0.028]} />
+      <ambientLight intensity={1.1} />
+      <hemisphereLight args={['#eef6ff', '#b9bdc4', 1.4]} />
+      <directionalLight position={[3, 9, 6]} intensity={2.5} castShadow
+        shadow-mapSize={[1024, 1024]} shadow-camera-left={-14} shadow-camera-right={14}
+        shadow-camera-top={12} shadow-camera-bottom={-12} shadow-normalBias={0.03} />
+
+      <Floor />
+      {!isPhone && <RoomObjects />}
       {renderDevice(screenRef)}
       <CameraRig screenRef={screenRef} />
       <VisibilityGuard idle={idle} />

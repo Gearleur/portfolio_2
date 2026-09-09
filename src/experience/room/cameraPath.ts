@@ -56,9 +56,9 @@ export function dockKeyframe(
  */
 export const PULLBACK_PATH: CameraKeyframe[] = [
   dockKeyframe(REFERENCE_VIEWPORT.width, REFERENCE_VIEWPORT.height, PULLBACK_FOV_DEG),
-  { t: 0.36, position: [-2.85, 0.12, 4.2], lookAt: [-3.05, 0.06, 0] },
-  { t: 0.72, position: [-0.9, 0.35, 8.1], lookAt: [-2.6, 0.02, 0] },
-  { t: 1, position: [0.85, 0.55, 10.4], lookAt: [-2.2, -0.05, 0] },
+  { t: 0.36, position: [-2.5, 0.35, 5.2], lookAt: [-3.0, 0.12, 0] },
+  { t: 0.72, position: [-0.9, 0.65, 8.1], lookAt: [-2.6, 0.02, 0] },
+  { t: 1, position: [0.85, 0.8, 10.4], lookAt: [-0.2, 0.4, 0] },
 ];
 
 function lerpTuple(from: Vector3Tuple, to: Vector3Tuple, t: number): Vector3Tuple {

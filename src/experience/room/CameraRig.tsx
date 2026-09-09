@@ -1,5 +1,5 @@
 import { useFrame, useThree } from '@react-three/fiber';
-import { useEffect, useRef } from 'react';
+import { useEffect, useLayoutEffect, useRef } from 'react';
 import type { RefObject } from 'react';
 import { Matrix4, PlaneGeometry, Vector3 } from 'three';
 import type { Mesh } from 'three';
@@ -23,22 +23,12 @@ import {
 
 const DEFAULT_FOV = 45;
 
-/*
- * Une fois en piece, le scroll de la cinematique pousse la camera plus loin
- * sur Z et la fait deriver lateralement : le moniteur, qu'elle regardait a la
- * fin du recul, finit par sortir du cadre et n'est plus qu'une lueur derriere
- * le visiteur.
- *
- * La profondeur Z suit les `cameraDepth` authores acte par acte dans
- * `cinematicScript.ts`, pas une simple avancee lineaire : `ROOM_DEPTHS[0]`
- * vaut 10.4, exactement la position Z ou `PULLBACK_PATH` termine son dernier
- * keyframe -- la continuite avec la fin du recul est deliberee, pas fortuite,
- * donc aucune remise a l'echelle n'est necessaire ici. `roomDepthFromProgress`
- * relie ces profondeurs par interpolation lineaire sur toute la progression.
- */
+/* The camera retreats through the gallery while keeping its gaze behind it.
+ * A forward-facing look target used to turn the camera away from the screen
+ * halfway through the scroll. The authored depths still control travel. */
 const ROOM_LATERAL_DRIFT = 2.2;
 const ROOM_DEPTHS = cinematicScript.map((act) => act.cameraDepth);
-const ROOM_LOOKAHEAD = ROOM_DEPTHS[ROOM_DEPTHS.length - 1] - ROOM_DEPTHS[0];
+const ROOM_LOOKAHEAD = 10;
 
 // Objets de travail alloues une fois plutot qu'a chaque image. La boucle
 // tourne a 60 Hz : ce qui peut sortir du chemin chaud en sort. Elle n'est pas
@@ -127,6 +117,16 @@ export function CameraRig({ screenRef }: { screenRef: RefObject<Mesh | null> }) 
   // de vue sont constantes pendant le delai de grace meme si `useFrame`
   // continue de s'executer, puisque rien n'anime alors dans la piece.
   const frameCountRef = useRef(0);
+  const lastLookAt = useRef(new Vector3());
+  const returnPose = useRef({ position: new Vector3(), target: new Vector3() });
+
+  // Start the return from the actual scrolled camera pose, not the entry pose.
+  useLayoutEffect(() => {
+    if (stage === 'pushin') {
+      returnPose.current.position.copy(camera.position);
+      returnPose.current.target.copy(lastLookAt.current);
+    }
+  }, [camera, stage]);
 
   // La trajectoire est copiee pour que sa premiere image -- la pose amarree sur
   // la dalle -- soit recalculee a chaque frame sans reallouer le tableau ni
@@ -163,7 +163,7 @@ export function CameraRig({ screenRef }: { screenRef: RefObject<Mesh | null> }) 
    * `resolveFrameloop` a deja gele la boucle quand la phase revient a
    * `desktop`, aucune frame supplementaire n'est garantie.
    */
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (stage !== 'desktop') {
       return;
     }
@@ -172,6 +172,8 @@ export function CameraRig({ screenRef }: { screenRef: RefObject<Mesh | null> }) 
   }, [stage]);
 
   useFrame(() => {
+    // A final queued frame must never restore CSS3D after desktop cleanup.
+    if (stage === 'desktop') return;
     const path = pathRef.current;
     if (!path) {
       return;
@@ -218,6 +220,20 @@ export function CameraRig({ screenRef }: { screenRef: RefObject<Mesh | null> }) 
     const reduced = isReducedTransition({ prefersReducedMotion, isMobile });
     const pathProgress = reduced ? 1 : smootherstep(transitionProgressRef.current);
     const sample = sampleCameraPath(path, pathProgress);
+    if (stage === 'pushin' && !reduced) {
+      const t = 1 - pathProgress;
+      const from = returnPose.current;
+      sample.position = [
+        lerp(from.position.x, path[0].position[0], t),
+        lerp(from.position.y, path[0].position[1], t),
+        lerp(from.position.z, path[0].position[2], t),
+      ];
+      sample.lookAt = [
+        lerp(from.target.x, path[0].lookAt[0], t),
+        lerp(from.target.y, path[0].lookAt[1], t),
+        lerp(from.target.z, path[0].lookAt[2], t),
+      ];
+    }
 
     // Progression du scroll dans la piece : 0 hors de la phase `room`, quelle
     // que soit la valeur qui traine encore dans la ref -- la garde sur
@@ -228,15 +244,13 @@ export function CameraRig({ screenRef }: { screenRef: RefObject<Mesh | null> }) 
     const roomZ = stage === 'room' ? roomDepthFromProgress(roomT, ROOM_DEPTHS) : sample.position[2];
 
     camera.position.set(roomX, sample.position[1], roomZ);
-    // Le regard suit la meme derive laterale, et regarde plus loin que la
-    // camera sur Z : plutot que de rester fixe sur le moniteur, elle regarde
-    // de plus en plus loin devant elle, et le moniteur sort du cadre au lieu
-    // d'y rester centre.
+    // Keep a stable viewing direction as the architectural bays pass by.
     lookAtTarget.set(
       lerp(sample.lookAt[0], roomX + ROOM_LATERAL_DRIFT, roomT),
       sample.lookAt[1],
-      lerp(sample.lookAt[2], roomZ + ROOM_LOOKAHEAD, roomT),
+      lerp(sample.lookAt[2], roomZ - ROOM_LOOKAHEAD, roomT),
     );
+    lastLookAt.current.copy(lookAtTarget);
     camera.lookAt(lookAtTarget);
     // `Camera.updateMatrixWorld` rafraichit aussi `matrixWorldInverse`, la
     // matrice de vue que reclame la matrice CSS de la camera.
