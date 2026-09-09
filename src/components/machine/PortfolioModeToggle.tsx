@@ -1,6 +1,5 @@
 import { useLayoutEffect, useRef, useState } from 'react';
 import type { PointerEvent } from 'react';
-import { createPortal } from 'react-dom';
 
 export type PortfolioMode = 'human' | 'machine';
 
@@ -112,19 +111,7 @@ export function PortfolioModeToggle({ mode, onChange }: PortfolioModeToggleProps
     commitSlider(finalValue);
   };
 
-  /*
-   * Porte vers `document.body`, hors de `.experience-root` : cet ancetre
-   * pose `isolation: isolate` (necessaire a la composition de la piece 3D)
-   * sans z-index propre, donc tout ce qu'il contient -- ce bouton compris --
-   * plafonne a son propre niveau d'empilement local, quel que soit le
-   * z-index qu'on lui donne ici. `.yc-projects`/`.yc-immersive`, portes eux
-   * aussi vers `document.body` avec un z-index explicite, finissaient par
-   * passer devant une fois leur transition d'ouverture terminee -- le
-   * bouton restait alors invisible aux clics, bug reel masque par la
-   * vitesse habituelle des tests (voir le rapport de la tache 10, round 3).
-   * Meme porte de sortie que `ProjectsLanding`/`ProjectImmersive`.
-   */
-  return createPortal(
+  return (
     <div className={`portfolio-mode-toggle portfolio-mode-toggle--${mode}`} role="group" aria-label="Portfolio display mode">
       <div className="portfolio-mode-toggle__desktop">
         <button
@@ -183,7 +170,6 @@ export function PortfolioModeToggle({ mode, onChange }: PortfolioModeToggleProps
           }}
         />
       </label>
-    </div>,
-    document.body,
+    </div>
   );
 }

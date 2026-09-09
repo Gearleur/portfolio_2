@@ -1,20 +1,6 @@
 :root {
   --machine-column-width: 940px;
   --machine-gutter: clamp(18px, 4vw, 56px);
-
-  /*
-   * Geometrie du curseur Human/Machine, publiee pour le bouton portail
-   * (`portal.css`). Les deux sont fixes en bas au centre et vivent dans des
-   * plans d'empilement disjoints -- le curseur est porte vers `document.body`
-   * pour echapper a `isolation: isolate` de `.experience-root` --, donc aucun
-   * z-index ne peut les departager : la seule separation possible est
-   * geometrique. Les faire deriver d'une meme origine evite qu'ils se
-   * recouvrent a nouveau au prochain changement de gabarit, comme c'est
-   * arrive une fois sur mobile (R23) et une fois sur bureau.
-   */
-  --mode-toggle-bottom: max(18px, calc(env(safe-area-inset-bottom) + 6px));
-  --mode-toggle-height: 32px;
-  --mode-toggle-clearance: 16px;
 }
 
 html[data-portfolio-mode="machine"],
@@ -35,7 +21,7 @@ html[data-portfolio-mode="machine"] body {
 .portfolio-mode-toggle {
   position: fixed;
   z-index: 3000;
-  bottom: var(--mode-toggle-bottom);
+  bottom: max(18px, calc(env(safe-area-inset-bottom) + 6px));
   left: 50%;
   display: inline-flex;
   align-items: center;
@@ -665,18 +651,10 @@ html[data-portfolio-mode="machine"] body {
 }
 
 @media (max-width: 640px) {
-  /*
-   * Le curseur remonte au-dessus du dock : le bouton portail suit, puisqu'il
-   * derive sa position de ces deux valeurs.
-   */
-  :root {
-    --mode-toggle-bottom: max(122px, calc(env(safe-area-inset-bottom) + 110px));
-    --mode-toggle-height: 52px;
-  }
-
   .portfolio-mode-toggle {
+    bottom: max(122px, calc(env(safe-area-inset-bottom) + 110px));
     width: min(270px, calc(100vw - 42px));
-    height: var(--mode-toggle-height);
+    height: 52px;
     padding: 4px;
     border-color: #050505;
     border-radius: 13px;

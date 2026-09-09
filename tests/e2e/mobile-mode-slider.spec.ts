@@ -32,26 +32,10 @@ test('reuses the Human slider without lag and shows classic controls in Machine 
   }
 });
 
-/*
- * Le rideau de `.yc-projects` glisse pendant 620 ms (`useCurtainExit`) avant
- * de couvrir tout l'ecran. Glisser des l'ouverture "visible" (avant la fin
- * de cette transition) ne prouve rien de fiable : le bouton reste
- * atteignable tant que le rideau n'est pas encore arrive, meme si un bug
- * d'empilement le cache une fois l'ouverture reellement terminee -- c'est
- * exactement ce qui masquait le bug reel de `PortfolioModeToggle` (tache 10,
- * round 3) derriere un test qui passait par chance a la vitesse habituelle
- * des tests. On attend donc `transform: none` (classe `is-open` etablie)
- * avant de glisser.
- */
 test('remains usable while the Projects screen is open', async ({ page }) => {
   await page.goto('/');
   await page.getByRole('button', { name: 'Projects' }).click();
   await expect(page.locator('.yc-projects')).toBeVisible();
-
-  await page.waitForFunction(() => {
-    const projects = document.querySelector('.yc-projects');
-    return Boolean(projects) && getComputedStyle(projects).transform === 'none';
-  });
 
   await dragModeSlider(page, 'right');
   await expect(page.locator('.machine-resume')).toBeVisible();

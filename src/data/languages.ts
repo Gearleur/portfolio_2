@@ -28,6 +28,6 @@ export const languageEntries: LanguageEntry[] = [
 export const DEFAULT_LANGUAGES_FRAME: WindowFrame = {
   x: 220,
   y: 116,
-  width: 620,
-  height: 440,
+  width: 700,
+  height: 620,
 };

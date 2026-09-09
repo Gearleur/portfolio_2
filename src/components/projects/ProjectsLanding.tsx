@@ -176,6 +176,12 @@ export function ProjectsLanding({ onBack, onSelect }: ProjectsLandingProps) {
         <p className="yc-projects__eyebrow" id="projects-dialog-title">Selected work — 2022 / 2026</p>
       </header>
 
+      <section className="yc-projects__intro" aria-labelledby="projects-heading">
+        <span className="yc-projects__badge">Selected projects</span>
+        <h1 id="projects-heading">From research to real systems.</h1>
+        <p>A selection of work in machine learning, AI and software engineering.</p>
+      </section>
+
       <div className="yc-projects__body">
         <ol className="yc-list" onMouseLeave={() => setActiveId(null)}>
           {selectedProjects.map((project, index) => (

@@ -1,4 +1,3 @@
-import { useEffect, useRef } from 'react';
 import { DEFAULT_EDUCATION_FRAME } from '../../data/education';
 import { DEFAULT_EXTRACURRICULAR_FRAME } from '../../data/extracurricular';
 import { DEFAULT_LANGUAGES_FRAME } from '../../data/languages';
@@ -7,11 +6,6 @@ import { DEFAULT_PROJECTS_FRAME } from '../../data/projects';
 import { DEFAULT_RESUME_FRAME } from '../../data/resume';
 import { systemItems } from '../../data/systemItems';
 import { DEFAULT_TECHNICAL_SKILLS_FRAME } from '../../data/technicalSkills';
-import { useExperienceStageContext } from '../../experience/stage/ExperienceStageContext';
-import { GhostCursor } from '../../experience/onboarding/GhostCursor';
-import { ReadmeWindow } from '../../experience/onboarding/ReadmeWindow';
-import { DEFAULT_README_FRAME } from '../../experience/onboarding/readmeFrame';
-import { useOnboarding } from '../../experience/onboarding/useOnboarding';
 import { useDesktopWindow } from '../../hooks/useDesktopWindow';
 import { useWindowStack } from '../../hooks/useWindowStack';
 import { EducationIcon } from '../education/EducationIcon';
@@ -34,19 +28,11 @@ const DESKTOP_WINDOW_IDS = [
   'languages',
   'extracurricular',
   'resume',
-  'readme',
 ] as const;
 type DesktopWindowId = (typeof DESKTOP_WINDOW_IDS)[number];
 
-// The "Lisez-moi" window is diegetic-only: it self-opens/closes from
-// useOnboarding's phase and is never reachable from a desktop icon. It must
-// stay out of the opener surface so it can never route into
-// notifyWindowOpened (which would wrongly count it toward the portal's
-// two-distinct-windows threshold).
-type OpenableWindowId = Exclude<DesktopWindowId, 'readme'>;
-
-function isOpenableWindowId(value: string): value is OpenableWindowId {
-  return DESKTOP_WINDOW_IDS.includes(value as DesktopWindowId) && value !== 'readme';
+function isDesktopWindowId(value: string): value is DesktopWindowId {
+  return DESKTOP_WINDOW_IDS.includes(value as DesktopWindowId);
 }
 
 export function DesktopShell() {
@@ -57,42 +43,14 @@ export function DesktopShell() {
   const languagesWindow = useDesktopWindow(DEFAULT_LANGUAGES_FRAME);
   const extracurricularWindow = useDesktopWindow(DEFAULT_EXTRACURRICULAR_FRAME);
   const resumeWindow = useDesktopWindow(DEFAULT_RESUME_FRAME);
-  const readmeWindow = useDesktopWindow(DEFAULT_README_FRAME);
   const windowStack = useWindowStack<DesktopWindowId>(DESKTOP_WINDOW_IDS);
-  const { notifyWindowOpened } = useExperienceStageContext();
-  const { phase, dismiss } = useOnboarding();
-
-  // `readmeWindow` is a fresh object with fresh open/close closures on every
-  // render (see useDesktopWindow), so it cannot be a dependency here without
-  // looping: open()/close() call setFrame, which re-renders, which creates a
-  // new readmeWindow, which would re-fire this effect forever. Depending on
-  // `phase` alone, combined with the `hasOpenedReadme` ref guard below, makes
-  // open() and close() fire exactly once per phase transition instead.
-  const hasOpenedReadme = useRef(false);
-  useEffect(() => {
-    const shouldBeOpen = phase === 'readme' || phase === 'readme-and-ghost';
-    if (shouldBeOpen && !hasOpenedReadme.current) {
-      hasOpenedReadme.current = true;
-      readmeWindow.open();
-    } else if (!shouldBeOpen && hasOpenedReadme.current) {
-      hasOpenedReadme.current = false;
-      readmeWindow.close();
-    }
-    // readmeWindow is intentionally omitted below: it is recreated every
-    // render, and the ref guard above (not the dependency array) is what
-    // keeps open()/close() to a single call per phase transition. Adding it
-    // back reintroduces the loop.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [phase]);
 
   const openWindow = (windowId: DesktopWindowId, open: () => void) => {
     windowStack.bringToFront(windowId);
-    notifyWindowOpened(windowId);
-    dismiss();
     open();
   };
 
-  const windowOpeners: Record<OpenableWindowId, () => void> = {
+  const windowOpeners: Record<DesktopWindowId, () => void> = {
     education: () => openWindow('education', educationWindow.open),
     professional: () => openWindow('professional', professionalWindow.open),
     projects: () => openWindow('projects', projectsWindow.open),
@@ -109,31 +67,13 @@ export function DesktopShell() {
       <MenuBar />
 
       <div className="desktop-surface" aria-label="Bureau portfolio">
-        {readmeWindow.isOpen ? (
-          <ReadmeWindow
-            frame={readmeWindow.frame}
-            isMaximized={readmeWindow.isMaximized}
-            onClose={() => {
-              dismiss();
-              readmeWindow.close();
-            }}
-            onFrameChange={readmeWindow.updateFrame}
-            onMinimize={readmeWindow.minimize}
-            onToggleMaximize={readmeWindow.toggleMaximize}
-            onActivate={() => windowStack.bringToFront('readme')}
-            zIndex={windowStack.getZIndex('readme')}
-          />
-        ) : null}
-
-        {phase === 'readme-and-ghost' ? <GhostCursor /> : null}
-
         <EducationIcon onOpen={windowOpeners.education} />
 
         {systemItems.map((item) => (
           <SystemIcon
             item={item}
             key={item.variant}
-            onOpen={isOpenableWindowId(item.variant) ? windowOpeners[item.variant] : undefined}
+            onOpen={isDesktopWindowId(item.variant) ? windowOpeners[item.variant] : undefined}
           />
         ))}
 

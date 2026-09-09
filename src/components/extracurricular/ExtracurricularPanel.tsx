@@ -1,188 +1,95 @@
+import { useId, useState } from 'react';
 import { extracurricularExperiences } from '../../data/extracurricular';
 import './extracurricular.css';
 
-const sidebarLinks = [
-  'My Profile [ edit ]',
-  'My Friends',
-  'My Groups',
-  'My Parties',
-  'My Messages',
-  'My Account',
-  'My Privacy',
-];
-
-const profileRows = [
-  ['Name', 'Alexandre Teixeira'],
-  ['Member Since', 'Sept. 2022'],
-  ['Last Update', 'June 10, 2026'],
-  ['School', 'UTC'],
-  ['Residence', 'Paris'],
-  ['Status', 'Building things'],
-  ['Email', 'alexandretei13@gmail.com'],
-];
-
-const interestRows = [
-  ['Interests', 'AI products, startups, partnerships, student events'],
-  ['Favorite Topics', 'Venture creation, market positioning, international business'],
-  ['Currently Reading', 'Founder notes, product strategy and technical case studies'],
-  ['About Me', 'Curious about people, systems and the messy part where ideas become real projects.'],
-];
-
 export function ExtracurricularPanel() {
+  const [tab, setTab] = useState<'wall' | 'info'>('wall');
+  const [query, setQuery] = useState('');
+  const id = useId();
+  const visible = extracurricularExperiences.filter((experience) =>
+    `${experience.organization} ${experience.role} ${experience.location} ${experience.tags.join(' ')}`
+      .toLowerCase().includes(query.trim().toLowerCase()),
+  );
+
   return (
-    <section className="facebook-panel" aria-labelledby="facebook-profile-heading">
+    <section className="facebook-panel" aria-labelledby={`${id}-heading`}>
       <header className="facebook-masthead">
-        <div className="facebook-masthead__mark" aria-hidden="true" />
-        <div>
-          <p className="facebook-masthead__brand">[ thefacebook ]</p>
-          <nav aria-label="Facebook navigation">
-            <span>home</span>
-            <span>search</span>
-            <span>global social net</span>
-            <span>invite</span>
-            <span>faq</span>
-            <span>logout</span>
-          </nav>
-        </div>
+        <p className="facebook-masthead__brand">thefacebook</p>
+        <label className="facebook-search">
+          <span className="visually-hidden">Search extracurricular experiences</span>
+          <input type="search" placeholder="Search experiences…" value={query}
+            onChange={(event) => { setQuery(event.target.value); setTab('wall'); }} />
+        </label>
+        <span className="facebook-masthead__network">UTC network</span>
       </header>
 
-      <div className="facebook-profile-bar">
-        <h1 id="facebook-profile-heading">Alexandre Teixeira's Profile</h1>
-        <span>UTC Network</span>
-      </div>
-
       <div className="facebook-layout">
-        <aside className="facebook-sidebar" aria-label="Profile shortcuts">
-          <div className="facebook-search">
-            <label htmlFor="facebook-search">quick search</label>
-            <div>
-              <input id="facebook-search" type="search" value="" readOnly />
-              <button type="button">go</button>
-            </div>
+        <aside className="facebook-sidebar" aria-label="About Alexandre">
+          <div className="facebook-picture">
+            <img src="/assets/extracurricular/moi.jpg" alt="Alexandre Teixeira" width={400} height={400} />
           </div>
-
-          <nav className="facebook-links" aria-label="Old Facebook links">
-            {sidebarLinks.map((link) => (
-              <a href="#facebook-profile-heading" key={link}>
-                {link}
-              </a>
+          <div className="facebook-sidebar__caption">Entrepreneurship · Student life</div>
+          <section className="facebook-box">
+            <h2>Information</h2>
+            <dl><dt>Network</dt><dd>UTC</dd><dt>Interests</dt><dd>AI products, startups & partnerships</dd></dl>
+          </section>
+          <section className="facebook-box">
+            <h2>Groups <span>({extracurricularExperiences.length})</span></h2>
+            {extracurricularExperiences.map((experience) => (
+              <button type="button" className="facebook-group" key={experience.id}
+                onClick={() => { setQuery(experience.organization); setTab('wall'); }}>
+                <span className={`facebook-avatar facebook-avatar--${experience.tone}`} aria-hidden="true">{experience.tone === 'founder' ? 'FB' : 'IF'}</span>
+                <span><strong>{experience.organization}</strong><small>{experience.location}</small></span>
+              </button>
             ))}
-          </nav>
-
-          <div className="facebook-ad" aria-hidden="true">
-            <strong>Founder Breakfast</strong>
-            <span>Shanghai</span>
-            <small>startup mornings</small>
-          </div>
-
-          <div className="facebook-photo-strip" aria-hidden="true">
-            <span className="facebook-polaroid facebook-polaroid--one">SH</span>
-            <span className="facebook-polaroid facebook-polaroid--two">IF</span>
-            <span className="facebook-polaroid facebook-polaroid--three">UTC</span>
-          </div>
+          </section>
         </aside>
 
         <div className="facebook-main">
-          <section className="facebook-box facebook-picture-box" aria-labelledby="facebook-picture-heading">
-            <h2 id="facebook-picture-heading">Picture</h2>
-            <div className="facebook-picture">
-              <span>AT</span>
-              <small>photos later</small>
-            </div>
-          </section>
+          <header className="facebook-profile-header">
+            <p className="facebook-profile-header__eyebrow">Extracurricular experience</p>
+            <h1 id={`${id}-heading`}>Alexandre Teixeira</h1>
+            <p>People, ideas and projects beyond the classroom.</p>
+          </header>
+          <div className="facebook-tabs" role="group" aria-label="Profile sections">
+            <button type="button" aria-pressed={tab === 'wall'} onClick={() => setTab('wall')}>Wall</button>
+            <button type="button" aria-pressed={tab === 'info'} onClick={() => setTab('info')}>Info</button>
+          </div>
 
-          <section className="facebook-box facebook-actions" aria-label="Profile actions">
-            <button type="button">Send Alexandre a Message</button>
-            <button type="button">Poke Him!</button>
-          </section>
-
-          <section className="facebook-box">
-            <h2>Connection</h2>
-            <p>You are connected through entrepreneurship, student life and creative projects.</p>
-          </section>
-
-          <section className="facebook-box">
-            <h2>Mutual Experience</h2>
-            <p>You have 2 experiences in common with Alexandre.</p>
-            <div className="facebook-friends">
-              {extracurricularExperiences.map((experience) => (
-                <article className="facebook-friend" key={experience.id}>
-                  <span className={`facebook-friend__avatar facebook-friend__avatar--${experience.tone}`}>
-                    {experience.tone === 'founder' ? 'FB' : 'IF'}
-                  </span>
-                  <strong>{experience.organization}</strong>
-                  <small>{experience.location}</small>
-                </article>
-              ))}
-            </div>
-          </section>
-
-          <section className="facebook-box">
-            <h2>Access</h2>
-            <p>Alexandre is currently logged in from a non-residential location.</p>
-          </section>
-        </div>
-
-        <aside className="facebook-info" aria-label="Profile information">
-          <section className="facebook-box">
-            <h2>Information</h2>
-            <div className="facebook-info-table">
-              <h3>Account Info:</h3>
-              {profileRows.map(([label, value]) => (
-                <p key={label}>
-                  <strong>{label}:</strong>
-                  <span>{value}</span>
-                </p>
-              ))}
-            </div>
-          </section>
-
-          <section className="facebook-box">
-            <h2>Extracurricular Info</h2>
-            <div className="facebook-experiences">
-              {extracurricularExperiences.map((experience) => (
-                <article
-                  className={`facebook-experience facebook-experience--${experience.tone}`}
-                  key={experience.id}
-                >
-                  <header>
-                    <p>{experience.period}</p>
-                    <h3>
-                      {experience.role} - {experience.organization}
-                    </h3>
-                    <span>{experience.location}</span>
-                  </header>
-
-                  <p>{experience.summary}</p>
-
-                  <ul>
-                    {experience.bullets.map((bullet) => (
-                      <li key={bullet}>{bullet}</li>
-                    ))}
-                  </ul>
-
-                  <div className="facebook-tags" aria-label={`${experience.organization} tags`}>
-                    {experience.tags.map((tag) => (
-                      <span key={tag}>{tag}</span>
-                    ))}
+          {tab === 'wall' ? (
+            <section aria-label="Experience wall">
+              <div className="facebook-feed-heading"><h2>Recent activity</h2><span>{visible.length} experiences</span></div>
+              {query && <button className="facebook-clear" type="button" onClick={() => setQuery('')}>Clear filter ×</button>}
+              {visible.length === 0 && <p className="facebook-empty" role="status">No experiences found. Try a group, role or city.</p>}
+              {visible.map((experience) => (
+                <article className="facebook-post" key={experience.id}>
+                  <span className={`facebook-avatar facebook-avatar--${experience.tone}`} aria-hidden="true">{experience.tone === 'founder' ? 'FB' : 'IF'}</span>
+                  <div className="facebook-post__body">
+                    <header><h3>{experience.organization}</h3><p>{experience.role} · {experience.location}</p><small>{experience.period}</small></header>
+                    <p className="facebook-post__summary">{experience.summary}</p>
+                    <div className={`facebook-event facebook-event--${experience.tone}`}>
+                      <span>{experience.tone === 'founder' ? 'ENTREPRENEURSHIP / SHANGHAI' : 'MUSIC / STUDENT LIFE'}</span>
+                      <strong>{experience.organization}</strong>
+                      <small>{experience.tone === 'founder' ? 'Ideas start with a conversation.' : 'Behind the scenes. Making it happen.'}</small>
+                    </div>
+                    <details className="facebook-post__details">
+                      <summary>View experience details</summary>
+                      <ul>{experience.bullets.map((bullet) => <li key={bullet}>{bullet}</li>)}</ul>
+                    </details>
+                    <div className="facebook-tags">{experience.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
                   </div>
                 </article>
               ))}
-            </div>
-          </section>
-
-          <section className="facebook-box">
-            <h2>Personal Info</h2>
-            <div className="facebook-info-table">
-              {interestRows.map(([label, value]) => (
-                <p key={label}>
-                  <strong>{label}:</strong>
-                  <span>{value}</span>
-                </p>
-              ))}
-            </div>
-          </section>
-        </aside>
+            </section>
+          ) : (
+            <section className="facebook-about" aria-label="Profile information">
+              <h2>About Alexandre</h2>
+              <p>Curious about people, systems and the messy part where ideas become real projects.</p>
+              <dl><dt>Education network</dt><dd>Université de technologie de Compiègne</dd><dt>Interests</dt><dd>AI products, venture creation, international business and student events.</dd><dt>Experience</dt><dd>Founder Breakfast in Shanghai and partnership management for Imaginarium Festival.</dd></dl>
+            </section>
+          )}
+          <footer className="facebook-footer">Alexandre's profile <span>UTC · Extracurricular</span></footer>
+        </div>
       </div>
     </section>
   );
