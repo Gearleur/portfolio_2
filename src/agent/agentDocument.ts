@@ -62,7 +62,7 @@ let contextText = null;
 async function loadContext() {
   if (contextText !== null) return contextText;
   const response = await fetch('/agent/context.txt', { signal: AbortSignal.timeout(10000) });
-  if (!response.ok) throw new Error(response.status === 429 ? 'Rate limited' : 'Profile unavailable');
+  if (!response.ok) throw new Error(response.status === 429 ? 'Too many requests. Please wait a minute before trying again.' : 'Profile export temporarily unavailable. You can still read the profile on this page.');
   contextText = await response.text();
   return contextText;
 }
@@ -91,8 +91,8 @@ button.addEventListener('click', async () => {
   status.textContent = 'Preparing your context…';
   try {
     await copyText(await loadContext(), button, 'Prompt and complete profile copied. Ready to paste.');
-  } catch {
-    status.textContent = 'Unable to load the profile. Retry or use the plain-text links.';
+  } catch (error) {
+    status.textContent = error instanceof Error ? error.message : 'Profile export temporarily unavailable. Please try again later.';
   } finally {
     button.disabled = false;
   }

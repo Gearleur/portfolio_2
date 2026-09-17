@@ -19,7 +19,7 @@ export function AgentAccess(): React.JSX.Element {
         <button className="agent-copy-command" data-copy-command="context-command" type="button" hidden>Copy text command</button>
       </div>
       <div className="agent-command">
-        <p className="machine-comment">// Structured profile · GET /agent/profile.json · no API key</p>
+        <p className="machine-comment">// Structured profile · GET /agent/profile.json · rate-limited public access</p>
         <pre className="machine-json"><code id="json-command" data-command-path="/agent/profile.json">{'curl -fsSL "$PORTFOLIO_URL/agent/profile.json"'}</code></pre>
         <button className="agent-copy-command" data-copy-command="json-command" type="button" hidden>Copy JSON command</button>
       </div>

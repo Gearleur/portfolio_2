@@ -1,6 +1,18 @@
 import { expect, test } from '@playwright/test';
 import { execFileSync } from 'node:child_process';
 
+for (const [status, message] of [[429, 'Too many requests'], [503, 'Profile export temporarily unavailable']] as const) {
+  test(`explains export rejection ${status} while keeping the page readable`, async ({ page }) => {
+    await page.route('**/agent/context.txt', (route) => route.fulfill({ status, body: 'Unavailable' }));
+    await page.goto('/agent/');
+    await page.getByRole('button', { name: 'Copy prompt and complete profile' }).click();
+    await expect(page.getByRole('status')).toContainText(message);
+    await expect(page.getByRole('button', { name: 'Copy prompt and complete profile' })).toBeEnabled();
+    await expect(page.locator('main')).toContainText('SNCF GPT');
+    await expect(page.getByRole('textbox', { name: 'Text to copy manually' })).toBeHidden();
+  });
+}
+
 test('serves the complete profile and formats to a client without JavaScript', async ({ browser, request, baseURL }) => {
   const context = await browser.newContext({ javaScriptEnabled: false, baseURL });
   const page = await context.newPage();

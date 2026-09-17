@@ -22,7 +22,9 @@ La page `/agent` partage le composant `MachineResumeDocument.tsx` et la feuille
 Le bouton « Copy all » copie le prompt suivi du profil entier ; « Human interface »
 ramène au bureau. Les commandes `curl` utilisent automatiquement l’origine du site.
 `GET /agent/profile.json` permet aussi de récupérer toutes les données structurées,
-sans clé API. Exemple local :
+sans clé API, avec un contrôle de débit côté serveur sur Vercel. Les exports
+renvoient 503 tant que la règle du pare-feu n’est pas configurée. Exemple local
+(Vite ne fait pas tourner le middleware Vercel) :
 
 ```sh
 curl -fsSL 'http://localhost:4173/agent/context.txt'
@@ -48,8 +50,10 @@ avec un lien de téléchargement, un changement de langue et un bouton de retour
 
 ## Sécurité et déploiement
 
-`vercel.json` contient les routes et les en-têtes de sécurité. La limitation des
-requêtes doit être activée séparément dans le pare-feu du projet Vercel.
+`vercel.json` contient les routes et les en-têtes de sécurité. `middleware.ts`
+limite les exports aux méthodes GET/HEAD et exige une autorisation du pare-feu.
+La règle `public-profile-downloads` doit être activée séparément dans Vercel ;
+en son absence, les exports sont bloqués (503) après déploiement.
 Voir [la configuration et ses limites](docs/vercel-security.md).
 Les coordonnées actuellement présentes dans les PDF et le profil restent publiques.
 

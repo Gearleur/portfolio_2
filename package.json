@@ -12,6 +12,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@vercel/firewall": "^1.2.5",
+    "@vercel/functions": "^3.9.8",
     "pdfjs-dist": "^6.3.289",
     "react": "^19.2.7",
     "react-dom": "^19.2.7"

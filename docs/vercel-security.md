@@ -20,37 +20,65 @@ Le service worker ne conserve plus les exports texte/JSON ni les PDF dans son
 cache hors ligne. Les données déjà téléchargées par un visiteur ne peuvent pas
 être révoquées. Le HTML et le code du portfolio restent publics.
 
+## Contrôle serveur des exports
+
+Le middleware Vercel `middleware.ts` protège les exports sous `/agent/`, avant
+le cache CDN. La page HTML, sa feuille de style et son script restent accessibles.
+Les exports `/agent/profile.json`, `/agent/profile.md` et `/agent/context.txt`
+acceptent uniquement **GET et HEAD** (405 pour les autres méthodes).
+
+Chaque lecture interroge le pare-feu avec la règle `public-profile-downloads` et
+l’IP fournie par Vercel, sans compteur en mémoire ou clé exposée au navigateur :
+
+- quota dépassé : **429**, avec `Retry-After: 60` ;
+- blocage explicite du pare-feu : **403** ;
+- règle absente, configuration serveur manquante, panne ou délai dépassé : **503** ;
+- lecture autorisée : transmission du fichier, avec `Cache-Control: no-store`.
+
+Le code traite explicitement l’erreur `not-found` du SDK : ce dernier retourne
+`rateLimited: false` quand la règle manque. Le middleware refuse également de
+s’appuyer sur le mode développement du SDK, qui ne compte pas les requêtes.
+L’hôte utilisé pour joindre le pare-feu provient de `VERCEL_URL`, pas du client.
+
+**Le middleware sera actif après un déploiement Vercel. Tant que sa règle n’est
+pas publiée, les exports et le bouton « Copy all » de `/agent` seront indisponibles
+(503). Le profil HTML, les pages CV et le bureau resteront consultables.**
+
 ## Règle à activer dans le projet Vercel
 
-**Cette règle n’est pas activée par le dépôt ou par un build.** Elle nécessite
-l’accès au pare-feu du projet. Le site est statique : un compteur JavaScript
-dans le navigateur ne limiterait ni `curl`, ni les autres téléchargements.
-
-Dans **Project → Firewall → Configure → New Rule** :
+La création de la règle nécessite l’accès au projet ; elle n’est pas effectuée
+par le build. Dans **Project → Firewall → Configure → New Rule** :
 
 1. Nom : `public-profile-downloads`.
-2. Condition : chemin égal à l’un des chemins suivants (conditions OU) :
-   `/agent`, `/agent/`, `/agent.html`, `/agent/index.html`,
-   `/agent/profile.md`, `/agent/profile.json`, `/agent/context.txt`, `/llms.txt`,
-   `/CV_en.pdf`, `/CV_fr.pdf`, `/cv/fr`, `/cv/fr/`, `/cv/fr/index.html`,
-   `/cv/en`, `/cv/en/`, `/cv/en/index.html`.
-3. Action : **Rate Limit**, algorithme **Fixed Window**, fenêtre **60 secondes**,
-   limite initiale **60 requêtes**, clé **IP**, réponse **429**.
-4. Enregistrer, vérifier les changements puis publier la règle.
-5. Surveiller les événements et ajuster le seuil selon le trafic réel. Plusieurs
-   personnes sur un réseau partagé ont parfois la même IP.
+2. Condition : **@vercel/firewall**, Rate limit ID : `public-profile-downloads`.
+   Ne pas utiliser uniquement une condition de chemin : le SDK a besoin de cette
+   règle dédiée. Ne pas ajouter de filtre de chemin ou d’en-tête supplémentaire.
+3. **Rate Limit**, algorithme **Fixed Window**, fenêtre **60 secondes**,
+   limite initiale **60 requêtes**, réponse **429**. Le middleware fournit l’IP
+   comme clé commune aux trois formats, y compris pour HEAD et les query strings.
+4. Enregistrer, vérifier les changements puis **Publish**.
+5. Garder les variables système Vercel exposées (`VERCEL`, `VERCEL_URL`). Pour
+   les déploiements Preview protégés, suivre aussi la configuration de bypass
+   d’automatisation décrite dans la documentation SDK, sans désactiver leur protection.
+6. Vérifier un GET normal, puis le retour 429 sur un test limité et contrôlé en
+   Preview. Surveiller les événements et ajuster le seuil au trafic réel.
 
-La limite est un point de départ, pas une garantie contre la collecte : les
-compteurs Vercel sont régionaux et un robot peut répartir ses requêtes entre IP.
-Les lecteurs IA doivent pouvoir effectuer un GET normal sans défi JavaScript.
-Il ne faut donc pas bloquer tous les clients `curl` ou tous les agents.
+Les compteurs Vercel sont régionaux : ce n’est pas un quota mondial absolu. Un
+robot peut aussi répartir ses requêtes entre plusieurs IP. Les lecteurs IA
+restent autorisés sous le seuil ; il ne faut pas bloquer tous les clients curl.
 
-Référence : [rate limiting du pare-feu Vercel](https://vercel.com/docs/vercel-firewall/vercel-waf/rate-limiting).
+Le HTML, les PDF et le JavaScript publics contiennent aussi le profil : ils ne
+sont pas rendus privés par cette restriction des exports. Une protection contre
+l’abus portant sur tout le site demanderait une règle WAF complémentaire.
+
+Références : [SDK du pare-feu Vercel](https://vercel.com/docs/vercel-firewall/vercel-waf/rate-limiting-sdk),
+[Routing Middleware](https://vercel.com/docs/routing-middleware),
+[limites de débit](https://vercel.com/docs/vercel-firewall/vercel-waf/rate-limiting).
 
 ## Choisir les informations publiques
 
-Les pages, les exports, le JavaScript du site et les deux PDF sont consultables
-sans authentification. Les en-têtes de sécurité ne rendent pas leur contenu
+Les pages, le JavaScript et les deux PDF sont consultables sans authentification.
+Les exports sont publics sous réserve du contrôle de débit décrit ci-dessus. Les en-têtes de sécurité ne rendent pas leur contenu
 privé. Actuellement, l’e-mail et le téléphone figurent encore dans les sources
 du profil et les PDF fournis. Leur suppression éventuelle doit couvrir tous ces
 formats, puis être suivie d’un nouveau déploiement.
@@ -69,8 +97,10 @@ PORTFOLIO_E2E_PREVIEW=1 pnpm exec playwright test
 ```
 
 Le mode preview utilise les mêmes en-têtes globaux que `vercel.json` : les tests
-vérifient le rendu PDF et le copier-coller sous CSP. Il ne simule pas le pare-feu
-Vercel. Après déploiement, vérifier sur le domaine réel les routes `/agent/`,
+vérifient le rendu PDF et le copier-coller sous CSP. Vite dev/preview et un simple hébergement de `dist` n’exécutent pas le middleware
+Vercel : les exports y sont sans limite. Les tests unitaires exercent le middleware
+et le vrai SDK avec des réponses réseau simulées (autorisation, quota, absence de
+règle, panne et timeout). Ils ne remplacent pas un contrôle sur Vercel. Après déploiement, vérifier sur le domaine réel les routes `/agent/`,
 `/cv/fr/`, `/cv/en/`, les en-têtes HTTP, puis l’état publié de la règle dans
 Firewall. Aucune règle WAF ni vérification du déploiement distant n’est annoncée
 comme effectuée sans accès au projet.
