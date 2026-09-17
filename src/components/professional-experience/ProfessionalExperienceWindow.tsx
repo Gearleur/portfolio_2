@@ -7,6 +7,7 @@ type ProfessionalExperienceWindowProps = DesktopWindowControllerProps;
 export function ProfessionalExperienceWindow(props: ProfessionalExperienceWindowProps) {
   return (
     <RetroWindow
+      iconSelector=".system-file--professional img"
       {...props}
       ariaLabel="Fenetre Professional Experience"
       bodyClassName="retro-window__body--experience"

@@ -5,6 +5,7 @@ export type ResumeDownload = {
   description: string;
   fileName: string;
   href?: string;
+  pageHref?: string;
   language: string;
   meta: string;
   status: 'available' | 'missing';
@@ -16,6 +17,7 @@ export const resumeDownloads: ResumeDownload[] = [
     language: 'English',
     fileName: 'Alexandre_Teixeira_CV_EN.pdf',
     href: '/CV_en.pdf',
+    pageHref: '/cv/en/',
     meta: 'PDF document - English version',
     description: 'Finance-ready resume with education, experience, projects and technical skills.',
     status: 'available',
@@ -25,6 +27,7 @@ export const resumeDownloads: ResumeDownload[] = [
     language: 'Français',
     fileName: 'Alexandre_Teixeira_CV_FR.pdf',
     href: '/CV_fr.pdf',
+    pageHref: '/cv/fr/',
     meta: 'PDF document - French version',
     description: 'Version francaise du CV, prete pour les candidatures et partages rapides.',
     status: 'available',
@@ -35,5 +38,5 @@ export const DEFAULT_RESUME_FRAME: WindowFrame = {
   x: 188,
   y: 94,
   width: 680,
-  height: 470,
+  height: 690,
 };

@@ -10,6 +10,9 @@
     <meta name="apple-mobile-web-app-title" content="Portfolio" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="alternate" type="text/html" href="/agent/" title="Profile for AI agents" />
+    <link rel="alternate" type="text/markdown" href="/agent/profile.md" title="Alexandre Teixeira — profile" />
+    <link rel="describedby" type="text/plain" href="/llms.txt" />
     <link rel="icon" type="image/svg+xml" href="/assets/pwa-icon.svg" />
     <link rel="apple-touch-icon" href="/assets/icons/mobile/CV.png" />
     <link rel="preload" href="/fonts/DepartureMono-Regular.woff2" as="font" type="font/woff2" crossorigin />
@@ -21,6 +24,7 @@
   </head>
   <body>
     <div id="root"></div>
+    <noscript><p>Alexandre Teixeira — AI Engineer. <a href="/agent/">Read my complete profile</a> or <a href="/agent/profile.md">open the text version</a>.</p></noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

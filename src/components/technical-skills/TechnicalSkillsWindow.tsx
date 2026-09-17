@@ -7,6 +7,7 @@ type TechnicalSkillsWindowProps = DesktopWindowControllerProps;
 export function TechnicalSkillsWindow(props: TechnicalSkillsWindowProps) {
   return (
     <RetroWindow
+      iconSelector=".system-file--skills img"
       {...props}
       ariaLabel="Fenetre Technical Skills"
       bodyClassName="retro-window__body--technical-skills"

@@ -9,7 +9,51 @@ Portfolio interactif en React + Vite, pense comme un bureau retro inspire des in
 - `pnpm lint` : lance ESLint
 - `pnpm preview` : sert le build localement
 
-## Prochaine etape
+## Profil pour les agents IA
+
+- `/agent` (ou `/agent/`) : page HTML complète, lisible sans JavaScript.
+- `/agent/profile.md` : profil en Markdown, sans prompt.
+- `/agent/profile.json` : données structurées avec leurs sources.
+- `/agent/context.txt` : prompt d’introduction suivi du profil, utilisé par le bouton de copie.
+- `/llms.txt` : liens de découverte proposés aux agents ; leur consultation dépend de chaque outil.
+
+La page `/agent` partage le composant `MachineResumeDocument.tsx` et la feuille
+`machineMode.css` avec le mode Machine. Tous les projets y sont ouverts par défaut.
+Le bouton « Copy all » copie le prompt suivi du profil entier ; « Human interface »
+ramène au bureau. Les commandes `curl` utilisent automatiquement l’origine du site.
+`GET /agent/profile.json` permet aussi de récupérer toutes les données structurées,
+sans clé API. Exemple local :
+
+```sh
+curl -fsSL 'http://localhost:4173/agent/context.txt'
+curl -fsSL 'http://localhost:4173/agent/profile.json'
+```
+
+Le plugin `build/agentPages.ts` sert ces pages en développement et les génère dans
+`dist` à chaque build, depuis les mêmes données que le mode Machine. Publier tout
+le dossier `dist` et laisser l’hébergeur servir les fichiers statiques avant toute
+règle de repli SPA ; `/agent` doit résoudre vers `agent.html` ou `agent/index.html`.
+Les deux fichiers sont générés pour les hébergeurs qui gèrent les URL sans extension
+ou les index de dossiers.
+
+Le prompt et la structure sont dans `src/agent/agentContent.ts`, la page dans
+`src/agent/agentDocument.ts`. Le contenu est fondé sur les CV fournis ; les dates
+ne constituent pas une vérification en temps réel de la situation professionnelle.
+
+## Structure de l’expérience
+
+Les pages `/cv/fr/` et `/cv/en/` affichent les PDF dans leur langue respective,
+avec un lien de téléchargement, un changement de langue et un bouton de retour
+à l’interface. Elles sont aussi accessibles depuis la fenêtre CV et le mode Machine.
+
+## Sécurité et déploiement
+
+`vercel.json` contient les routes et les en-têtes de sécurité. La limitation des
+requêtes doit être activée séparément dans le pare-feu du projet Vercel.
+Voir [la configuration et ses limites](docs/vercel-security.md).
+Les coordonnées actuellement présentes dans les PDF et le profil restent publiques.
+
+## Bureau
 
 Construire la structure de l'experience :
 

@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { selectedProjects } from '../../data/projects';
 import { useMediaQuery } from '../../hooks/useMediaQuery';
 import { useFullscreenDialog } from '../../hooks/useFullscreenDialog';
+import { useIconWindowAnimation } from '../../hooks/useIconWindowAnimation';
 import { BackButton } from './BackButton';
 import { useCurtainExit } from './useCurtainExit';
 import { ProjectImmersive } from './ProjectImmersive';
@@ -95,17 +96,23 @@ function ScrambleTitle({ text, active, gentle }: { text: string; active: boolean
 }
 
 type ProjectsLandingProps = {
+  fromDesktopIcon?: boolean;
   onBack?: () => void;
   onSelect?: (projectId: string) => void;
 };
 
-export function ProjectsLanding({ onBack, onSelect }: ProjectsLandingProps) {
+export function ProjectsLanding({ onBack, onSelect, fromDesktopIcon = false }: ProjectsLandingProps) {
   const [activeId, setActiveId] = useState<string | null>(null);
   const [animatedId, setAnimatedId] = useState<string | null>(null);
   const [openId, setOpenId] = useState<string | null>(null);
   const isMobile = useMediaQuery('(max-width: 720px)');
-  const { phaseClass, requestClose, handleTransitionEnd } = useCurtainExit(() => onBack?.());
+  const { phaseClass, requestClose: closeCurtain, handleTransitionEnd } = useCurtainExit(() => onBack?.());
   const dialogRef = useRef<HTMLDivElement>(null);
+  const closeToIcon = useIconWindowAnimation(dialogRef, fromDesktopIcon ? '.system-file--projects img' : undefined);
+  const requestClose = useCallback(() => {
+    if (fromDesktopIcon) closeToIcon(() => onBack?.());
+    else closeCurtain();
+  }, [closeCurtain, closeToIcon, fromDesktopIcon, onBack]);
 
   const activeProject = selectedProjects.find((project) => project.id === activeId) ?? null;
   const openIndex = selectedProjects.findIndex((project) => project.id === openId);
@@ -164,7 +171,7 @@ export function ProjectsLanding({ onBack, onSelect }: ProjectsLandingProps) {
   return createPortal(
     <div
       ref={dialogRef}
-      className={`yc-projects${phaseClass ? ` ${phaseClass}` : ''}`}
+      className={`yc-projects${fromDesktopIcon ? ' yc-projects--from-icon' : phaseClass ? ` ${phaseClass}` : ''}`}
       role="dialog"
       aria-modal="true"
       aria-labelledby="projects-dialog-title"

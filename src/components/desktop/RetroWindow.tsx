@@ -3,8 +3,10 @@ import type { PointerEvent, ReactNode } from 'react';
 import type { WindowFrame, WindowInteraction } from '../../types/window';
 import { clampFrameToDesktop, getDesktopBounds } from '../../utils/windowFrame';
 import './retroWindow.css';
+import { useIconWindowAnimation } from '../../hooks/useIconWindowAnimation';
 
 export type RetroWindowProps = {
+  iconSelector?: string;
   ariaLabel: string;
   bodyClassName?: string;
   children: ReactNode;
@@ -32,6 +34,7 @@ export type DesktopWindowControllerProps = Pick<
 >;
 
 export function RetroWindow({
+  iconSelector,
   ariaLabel,
   bodyClassName,
   children,
@@ -45,6 +48,8 @@ export function RetroWindow({
   title,
   zIndex,
 }: RetroWindowProps) {
+  const windowRef = useRef<HTMLElement>(null);
+  const closeToIcon = useIconWindowAnimation(windowRef, iconSelector);
   const interactionRef = useRef<WindowInteraction | null>(null);
   const titleId = useId();
 
@@ -132,6 +137,7 @@ export function RetroWindow({
 
   return (
     <section
+      ref={windowRef}
       className={`retro-window${isMaximized ? ' retro-window--maximized' : ''}`}
       style={{ left: frame.x, top: frame.y, width: frame.width, height: frame.height, zIndex }}
       role="dialog"
@@ -156,7 +162,7 @@ export function RetroWindow({
           <button
             className="window-control window-control--minimize"
             type="button"
-            onClick={onMinimize}
+            onClick={() => closeToIcon(onMinimize)}
             onPointerDown={(event) => event.stopPropagation()}
             aria-label="Reduire la fenetre"
           />
@@ -172,7 +178,7 @@ export function RetroWindow({
           <button
             className="window-control window-control--close"
             type="button"
-            onClick={onClose}
+            onClick={() => closeToIcon(onClose)}
             onPointerDown={(event) => event.stopPropagation()}
             aria-label="Fermer la fenetre"
           />

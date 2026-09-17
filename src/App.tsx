@@ -4,6 +4,7 @@ import { MachineResume } from './components/machine/MachineResume';
 import { PortfolioModeToggle } from './components/machine/PortfolioModeToggle';
 import type { PortfolioMode } from './components/machine/PortfolioModeToggle';
 import { useMediaQuery } from './hooks/useMediaQuery';
+import { AiEntrance } from './components/ai/AiEntrance';
 
 export default function App() {
   const isMobile = useMediaQuery('(max-width: 640px)');
@@ -19,11 +20,15 @@ export default function App() {
   }, [mode]);
 
   return (
-    <div className={`portfolio-app portfolio-app--${mode}`}>
-      <div id="portfolio-content">
-        {mode === 'machine' ? <MachineResume /> : isMobile ? <MobileShell /> : <DesktopShell />}
-      </div>
-      <PortfolioModeToggle mode={mode} onChange={setMode} />
-    </div>
+    <AiEntrance>
+      {(openAi) => (
+        <div className={`portfolio-app portfolio-app--${mode}`}>
+          <div id="portfolio-content">
+            {mode === 'machine' ? <MachineResume /> : isMobile ? <MobileShell onOpenAi={openAi} /> : <DesktopShell onOpenAi={openAi} />}
+          </div>
+          <PortfolioModeToggle mode={mode} onChange={setMode} />
+        </div>
+      )}
+    </AiEntrance>
   );
 }

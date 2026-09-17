@@ -12,9 +12,16 @@
     "forceConsistentCasingInFileNames": true,
     "module": "ESNext",
     "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true
   },
-  "include": ["vite.config.ts", "eslint.config.js"]
+  "include": [
+    "vite.config.ts", "eslint.config.js", "build/**/*.ts", "src/agent/**/*.ts", "src/agent/**/*.tsx",
+    "src/data/profile.ts", "src/data/professionalExperience.ts", "src/types/window.ts",
+    "src/components/machine/machineResumeData.ts", "src/components/machine/machineResumeMarkdown.ts",
+    "src/components/machine/MachineResumeDocument.tsx"
+  ],
+  "exclude": ["**/*.test.ts"]
 }

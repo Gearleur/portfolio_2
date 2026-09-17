@@ -1,17 +1,20 @@
 import { defineConfig, devices } from '@playwright/test';
 
+const production = process.env.PORTFOLIO_E2E_PREVIEW === '1';
+const port = production ? 4174 : 4173;
+
 export default defineConfig({
   testDir: './tests/e2e',
   testMatch: '**/*.spec.ts',
   fullyParallel: true,
   use: {
-    baseURL: 'http://127.0.0.1:4173',
+    baseURL: `http://127.0.0.1:${port}`,
     trace: 'retain-on-failure',
   },
   webServer: {
-    command: 'pnpm dev --host 127.0.0.1 --port 4173',
-    url: 'http://127.0.0.1:4173',
-    reuseExistingServer: true,
+    command: `pnpm ${production ? 'preview' : 'dev'} --host 127.0.0.1 --port ${port} --strictPort`,
+    url: `http://127.0.0.1:${port}`,
+    reuseExistingServer: !production,
   },
   projects: [
     {

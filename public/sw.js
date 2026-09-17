@@ -1,10 +1,14 @@
-/* global URL, caches, fetch, self */
+/* global URL, caches, fetch, self, Response */
 
-const CACHE_NAME = 'portfolio-pwa-v2';
+const CACHE_NAME = 'portfolio-pwa-v5';
 
 const APP_SHELL_URLS = [
   '/',
   '/index.html',
+  '/agent/',
+  '/agent/style.css',
+  '/agent/copy.js',
+  '/llms.txt',
   '/manifest.webmanifest',
   '/assets/pwa-icon.svg',
   '/assets/iphone6_top.svg',
@@ -55,9 +59,32 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  const url = new URL(request.url);
+  // Revalidate mutable CV files instead of retaining an old version indefinitely.
+  // Text exports are deliberately not stored in the offline cache.
+  if (url.origin === self.location.origin &&
+      ['/agent/profile.md', '/agent/profile.json', '/agent/context.txt', '/CV_en.pdf', '/CV_fr.pdf'].includes(url.pathname)) {
+    event.respondWith(fetch(request));
+    return;
+  }
+  if (url.origin === self.location.origin &&
+      (url.pathname === '/agent' || url.pathname.startsWith('/agent/') || url.pathname === '/llms.txt')) {
+    const cacheKey = url.pathname === '/agent' || url.pathname === '/agent/index.html' ? '/agent/' : request;
+    event.respondWith(
+      fetch(request).then(async (response) => {
+        if (response.ok) {
+          const cache = await caches.open(CACHE_NAME);
+          await cache.put(cacheKey, response.clone());
+        }
+        return response;
+      }).catch(async () => (await caches.match(cacheKey)) ?? Response.error()),
+    );
+    return;
+  }
+
   if (request.mode === 'navigate') {
     event.respondWith(
-      fetch(request).catch(() => caches.match('/index.html')),
+      fetch(request).catch(() => url.pathname.startsWith('/cv/') ? Response.error() : caches.match('/index.html')),
     );
     return;
   }

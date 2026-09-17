@@ -16,6 +16,7 @@ export function EducationWindow({
 }: EducationWindowProps) {
   return (
     <RetroWindow
+      iconSelector=".education-file img"
       ariaLabel="Fenetre Education"
       bodyClassName="retro-window__body--education"
       frame={frame}

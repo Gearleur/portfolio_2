@@ -19,10 +19,9 @@ export const machineProjects: MachineProject[] = [
       'Benchmarking CNN and Transformer models across predictive performance, architectural complexity and inference constraints.',
     highlights: [
       'Compared convolutional and Transformer-based approaches for volumetric medical imaging.',
-      'Evaluated model performance alongside compute cost, memory use and deployment constraints.',
-      'Documented architectural trade-offs for accuracy-sensitive medical imaging workflows.',
+      'Benchmarked performance, architectural complexity and inference constraints.',
     ],
-    stack: ['PyTorch', 'CNN', 'Transformers', '3D medical imaging', 'Model evaluation'],
+    stack: ['CNN', 'Transformers', '3D medical imaging', 'Model evaluation'],
     system: [
       { component: 'Input', implementation: 'Volumetric 3D medical images' },
       { component: 'Models', implementation: 'CNN and Transformer architectures' },
@@ -58,7 +57,6 @@ export const machineProjects: MachineProject[] = [
       'A from-scratch AlphaZero-inspired agent combining tree search, self-play and deep reinforcement learning.',
     highlights: [
       'Combined Monte Carlo Tree Search, self-play and deep reinforcement learning.',
-      'Designed matrix encodings for game states and legal actions.',
       'Built a PyTorch residual network with separate policy and value heads.',
     ],
     stack: ['Python', 'PyTorch', 'MCTS', 'Self-play', 'Deep RL', 'Residual network'],
@@ -76,7 +74,6 @@ export const machineSkillGroups = [
     label: 'AI / LLM Engineering',
     values: [
       'PyTorch',
-      'TensorFlow',
       'Hugging Face',
       'vLLM',
       'LangChain',
@@ -98,8 +95,6 @@ export const machineSkillGroups = [
       'Docker',
       'Kubernetes',
       'Jenkins',
-      'Harbor',
-      'Artifactory',
       'GitLab CI/CD',
     ],
   },
@@ -109,8 +104,6 @@ export const machineSkillGroups = [
       'Python',
       'React',
       'FastAPI',
-      'Flask',
-      'Pydantic',
       'PostgreSQL',
       'REST APIs',
       'SQL',
@@ -119,3 +112,31 @@ export const machineSkillGroups = [
     ],
   },
 ];
+
+// Shared by the Machine view and its Markdown export; sourced from CV_en.pdf / CV_fr.pdf.
+export const machineProfile = {
+  languages: 'French (native) · English (professional) · Chinese (basic)',
+  leadership: [
+    { role: 'Partnership Manager, Imaginarium Festival', period: '2022–2023', summary: 'Managed sponsorships for a €600,000-budget student festival.' },
+    { role: 'Founder Breakfast, Shanghai', period: '2024–2025', summary: 'Engaged with startup founders on AI-driven innovation.' },
+  ],
+  role: 'AI Engineer',
+  summary: '0→1 AI Engineer — I turn complex business problem statements into AI products that get deployed and adopted. My approach: understand the workflow, simplify the problem, and build from idea to impact.',
+  education: [
+    {
+      school: 'University of Technology of Compiègne (UTC)',
+      period: '2022–2026 · Compiègne',
+      degree: 'Master’s-level Engineering Degree (Diplôme d’Ingénieur), Computer Science',
+      courses: [
+        'Artificial Intelligence, optimization, operations research, logic and search-based problem solving.',
+        'Additional coursework: Psychology of Learning, Project Management, and Responsible Innovation Marketing.',
+      ],
+    },
+    {
+      school: 'Shanghai University — UTSEUS',
+      period: '2024–2025 · Shanghai',
+      degree: 'Exchange Program in Artificial Intelligence',
+      courses: ['Natural Language Processing, Generative AI, Data Analysis, Data Visualization.'],
+    },
+  ],
+};

@@ -12,12 +12,29 @@ function getDesktopElement() {
   return desktop instanceof HTMLElement ? desktop : null;
 }
 
-export function useDesktopWindow(defaultFrame: WindowFrame) {
+export function useDesktopWindow(defaultFrame: WindowFrame, initiallyOpen = false) {
   const [isOpen, setOpen] = useState(false);
   const [isMaximized, setMaximized] = useState(false);
   const [frame, setFrame] = useState<WindowFrame>(defaultFrame);
   const previousFrame = useRef<WindowFrame>(defaultFrame);
   const hasOpened = useRef(false);
+
+  useEffect(() => {
+    if (!initiallyOpen) return;
+    const request = requestAnimationFrame(() => {
+      const desktop = getDesktopElement();
+      if (desktop) {
+        const availableHeight = Math.min(desktop.clientHeight, window.innerHeight - desktop.getBoundingClientRect().top);
+        const initialFrame = getInitialWindowFrame(defaultFrame, desktop);
+        initialFrame.height = Math.min(initialFrame.height, availableHeight - 32);
+        initialFrame.y = Math.max(12, (availableHeight - initialFrame.height) / 2);
+        setFrame(initialFrame);
+      }
+      hasOpened.current = true;
+      setOpen(true);
+    });
+    return () => cancelAnimationFrame(request);
+  }, [defaultFrame, initiallyOpen]);
 
   useEffect(() => {
     if (!isOpen) {

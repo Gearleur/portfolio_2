@@ -18,6 +18,7 @@
 
 .menu-bar__left,
 .menu-bar__right {
+  gap: 10px;
   display: flex;
   align-items: center;
   height: 100%;

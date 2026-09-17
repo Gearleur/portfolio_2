@@ -1,0 +1,117 @@
+/* SmoothUI SmoothButton: plain-CSS outline / pill adaptation (MIT).
+ * Source and license: SmoothUI.LICENSE.md. */
+.smooth-matrix-button {
+  --matrix-ink: #f27627;
+  --matrix-focus: #d76124;
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 62px;
+  min-width: 178px;
+  padding: 16px 30px;
+  overflow: hidden;
+  border: 1px solid #ffffffbd;
+  border-radius: 999px;
+  background: #fffefa;
+  color: #343733;
+  box-shadow: none;
+  font-family: var(--ai-font, -apple-system, BlinkMacSystemFont, 'Inter', sans-serif);
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -.035em;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 150ms ease-out, background-color 150ms ease-out,
+    border-color 150ms ease-out, color 150ms ease-out, box-shadow 150ms ease-out;
+}
+
+.smooth-matrix-button--blue {
+  --matrix-ink: #2780ed;
+  --matrix-focus: #2471cd;
+}
+
+.smooth-matrix-button::before {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(circle, var(--matrix-ink) 1.25px, transparent 1.6px) 1px 1px / 7px 7px;
+  mask-image: linear-gradient(90deg, transparent, #000 22%, #000 78%, transparent);
+  mask-size: 35px 100%;
+  mask-repeat: no-repeat;
+  mask-position: -42px 0;
+  opacity: 0;
+}
+.smooth-matrix-button:is(:hover, :focus-visible)::before {
+  animation: smooth-orange-scan 820ms cubic-bezier(.3, 0, .22, 1) both;
+}
+@keyframes smooth-orange-scan {
+  0% { mask-position: -42px 0; opacity: 0; }
+  5%, 95% { opacity: .9; }
+  100% { mask-position: calc(100% + 42px) 0; opacity: 0; }
+}
+
+.smooth-matrix-button__label {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+
+.smooth-matrix-button svg {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+}
+
+.smooth-matrix-button:is(:hover, :focus-visible) {
+  background-color: #f4ede5;
+  color: #181f25;
+  box-shadow: none;
+}
+
+.smooth-matrix-button:focus-visible {
+  outline: 2px solid var(--matrix-focus);
+  outline-offset: 5px;
+}
+
+.smooth-matrix-button:active {
+  transform: scale(.97);
+  box-shadow: none;
+}
+
+.smooth-matrix-button:disabled {
+  pointer-events: none;
+  opacity: .5;
+}
+
+@media (max-width: 600px) {
+  .smooth-matrix-button {
+    min-width: 152px;
+    min-height: 58px;
+    padding: 15px 25px;
+    font-size: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .smooth-matrix-button:is(:hover, :focus-visible)::before { animation: none; }
+  .smooth-matrix-button,
+  .smooth-matrix-button:is(:hover, :focus-visible, :active) {
+    transform: none;
+    transition: none;
+  }
+
+}

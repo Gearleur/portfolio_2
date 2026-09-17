@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { SmoothActionButton } from '../ai/SmoothMatrixButton';
 import { MobileAppContent } from './MobileAppContent';
 import { MobileIcon } from './MobileIcon';
 import { MobileStatusBar } from './MobileStatusBar';
@@ -9,7 +10,7 @@ import { usePreloadImages } from './usePreloadImages';
 import { useStandaloneDisplayMode } from './useStandaloneDisplayMode';
 import './mobile.css';
 
-export function MobileShell() {
+export function MobileShell({ onOpenAi }: { onOpenAi?: () => void }) {
   useLockedMobileViewport();
   usePreloadImages(mobileIconSources);
 
@@ -45,6 +46,7 @@ export function MobileShell() {
       ) : (
         <section className="mobile-home" aria-label="Applications portfolio">
           <MobileStatusBar />
+          {onOpenAi && <SmoothActionButton className="ai-launch ai-mobile-launch" onClick={onOpenAi}>Parlons de l’IA <span aria-hidden="true">↗</span></SmoothActionButton>}
 
           <div className="mobile-home__grid">
             {homeApps.map((app) => (

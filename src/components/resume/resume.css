@@ -390,3 +390,29 @@ button.resume-ios-row {
     grid-column: 1 / -1;
   }
 }
+
+.retro-window__body--resume-preview {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 0;
+  background: #e6e6e6;
+}
+.resume-preview-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  background: #f8f6f1;
+  font-size: 12px;
+}
+.resume-preview-toolbar select { margin-left: 8px; }
+.resume-preview-toolbar a { color: #343733; }
+.resume-preview-toolbar { flex-wrap: wrap; }
+.resume-page-links { display: flex; flex-wrap: wrap; gap: 12px; font-size: 13px; }
+.resume-page-links a { color: #184a93; }
+.resume-preview-document { flex: 1; width: 100%; min-height: 0; overflow: auto; background: #d5d8dc; }
+.resume-preview-document canvas { display: block; width: 100%; height: auto; background: white; }
+.resume-preview-document canvas + canvas { margin-top: 12px; }
+.resume-preview-document > p { padding: 12px; font-size: 13px; }

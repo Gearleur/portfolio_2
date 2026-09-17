@@ -7,6 +7,7 @@ type ExtracurricularWindowProps = DesktopWindowControllerProps;
 export function ExtracurricularWindow(props: ExtracurricularWindowProps) {
   return (
     <RetroWindow
+      iconSelector=".system-file--extracurricular img"
       {...props}
       ariaLabel="Fenetre Extracurricular Experience"
       bodyClassName="retro-window__body--extracurricular"

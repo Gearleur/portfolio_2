@@ -16,6 +16,7 @@ export type ProfessionalExperience = {
 export const professionalExperiences: ProfessionalExperience[] = [
   {
     company: 'SNCF',
+    imageSrc: '/assets/profesional_experience/sncf.svg.webp',
     duration: '6 months',
     impact: [
       '90% of audio processed in under 5 minutes.',
@@ -28,11 +29,11 @@ export const professionalExperiences: ProfessionalExperience[] = [
     summary:
       'Multimodal AI platform for meeting summarization across RFIs, video calls and in-room meetings.',
     highlights: [
-      'Built an internal multimodal platform used across teams for RFIs, video calls and in-room meetings.',
+      'RFIs, video calls and in-room meetings generated hours of audio that teams had no time to review.',
       'Processed 90% of audio in under 5 minutes, including transcription, speaker diarization and summarization.',
       'Detected key slides and used vision-language models to inject visual context automatically into generated summaries.',
       'Built the product from prototype to production with React, Python, Azure AI Services, Docker and Jenkins.',
-      'Led an RFI across 15 AI vendors, including Mistral AI, IBM, LinkUp and Vespa, and supported the internal rollout of Mistral Code for engineering teams.',
+      'Served as the team’s technical reference for AI direction: led an RFI across 15 AI vendors (Mistral AI, IBM, LinkUp and Vespa) and the internal rollout of Mistral Code.',
     ],
     technologies: [
       'Azure AI Services',
@@ -53,8 +54,9 @@ export const professionalExperiences: ProfessionalExperience[] = [
     summary:
       'AI whiteboard for scaling Failure Mode and Effects Analysis workflows.',
     highlights: [
+      'Manual, expert-dependent FMEA risk analysis limited the number of workflows that could be covered.',
       'Built an AI-augmented collaborative whiteboard to generate and structure FMEAs at scale.',
-      'Combined LLMs and RAG to propose risks, causes, effects and actions while keeping expert validation in the loop.',
+      'Combined LLMs and RAG to propose risks, causes and actions while keeping expert validation in the loop.',
       'Industrialized inference on an 8x NVIDIA A100 cluster using vLLM and load balancing.',
     ],
     technologies: ['LLMs', 'RAG', 'Python', 'vLLM', 'NVIDIA A100', 'Load balancing'],
@@ -67,15 +69,18 @@ export const professionalExperiences: ProfessionalExperience[] = [
       '3,000+ monthly users.',
       'Featured on BFM Business.',
     ],
+    imageSrc: '/assets/profesional_experience/esncf.jpg',
     monogram: 'SNCF',
     period: 'Sep. 2023 - Feb. 2024 · Lyon',
     role: 'AI Engineer · Internship',
     summary:
       'Generative AI assistant automating first-line DevOps support.',
     highlights: [
-      'Built the RAG assistant independently from architecture to deployment and shipped a functional MVP in three months.',
+      'Identified the opportunity in L1 DevOps support, where repetitive ServiceNow tickets were handled manually.',
+      'Scoped the use case and built the RAG assistant solo from architecture to deployment, delivering an MVP in three months.',
       'Automatically resolved 82% of L1 ServiceNow tickets, eliminating most manual first-line handling.',
-      'Helped industrialize the product, which grew to 3,000+ monthly users and a 25-person team and was featured on BFM Business.',
+      'The product reached 3,000+ monthly users and a 25-person team and was featured on BFM Business.',
+      'The product then grew group-wide into SNCF GPT, still running on the architecture I designed, as described in my CV.',
     ],
     technologies: ['Generative AI', 'RAG', 'Python', 'ServiceNow', 'DevOps'],
   },

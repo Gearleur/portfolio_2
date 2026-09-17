@@ -33,8 +33,13 @@
 }
 
 .yc-projects.is-open,
+.yc-projects--from-icon,
 .yc-immersive.is-open {
   transform: none;
+}
+
+.yc-projects--from-icon {
+  transition: none;
 }
 
 .yc-projects.is-closing,

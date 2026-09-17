@@ -7,6 +7,7 @@ type LanguagesWindowProps = DesktopWindowControllerProps;
 export function LanguagesWindow(props: LanguagesWindowProps) {
   return (
     <RetroWindow
+      iconSelector=".system-file--languages img"
       {...props}
       ariaLabel="Fenetre Languages"
       bodyClassName="retro-window__body--languages"

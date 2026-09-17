@@ -1,6 +1,6 @@
 import { professionalExperiences } from '../../data/professionalExperience';
 import { profile } from '../../data/profile';
-import { machineProjects, machineSkillGroups } from './machineResumeData';
+import { machineProfile, machineProjects, machineSkillGroups } from './machineResumeData';
 
 function renderList(items: string[]) {
   return items.map((item) => `- ${item}`).join('\n');
@@ -48,37 +48,29 @@ function renderSkillsTable() {
 
 export function getMachineResumeMarkdown() {
   return `# ${profile.name.toUpperCase()}
-${profile.role}
+${machineProfile.role}
 
 \`\`\`json
 {
   "email": "${profile.email}",
   "phone": "${profile.phoneDisplay}",
   "location": "${profile.location}",
-  "linkedin": "${profile.linkedinHandle}",
-  "github": "${profile.githubHandle}",
-  "portfolio": "current_document",
-  "availability": "${profile.availability}"
+  "linkedin": "${profile.linkedinUrl}",
+  "github": "${profile.githubUrl}",
+  "source": ["CV_en.pdf", "CV_fr.pdf"]
 }
 \`\`\`
 
-> 0→1 AI Engineer — I turn complex business problems into AI products that get deployed and adopted. My approach: understand the workflow, simplify the problem, and build from idea to impact.
+> ${machineProfile.summary}
 
 ## EDUCATION
 
-### University of Technology of Compiègne (UTC)
-**2022–2026 · Compiègne**
+${machineProfile.education.map((education) => `### ${education.school}
+**${education.period}**
 
-Master’s-level Engineering Degree (Diplôme d’Ingénieur), Computer Science
+${education.degree}
 
-- Artificial Intelligence, optimization, operations research, logic and search-based problem solving, cybersecurity.
-
-### Shanghai University — UTSEUS
-**Sep. 2024–Jan. 2025 · Shanghai**
-
-Exchange Program in Artificial Intelligence
-
-- Natural Language Processing, Generative AI, Data Analysis, Data Visualization.
+${renderList(education.courses)}`).join('\n\n')}
 
 ## PROFESSIONAL_EXPERIENCE[]
 
@@ -96,8 +88,7 @@ ${renderSkillsTable()}
 
 ## LANGUAGES_AND_LEADERSHIP
 
-- **Languages:** French (native) · English (professional) · Chinese (basic)
-- **Partnership Manager, Imaginarium Festival (2022–2023):** managed sponsorships for a €600,000-budget student festival.
-- **Founder Breakfast, Shanghai (2024–2025):** engaged with startup founders on AI-driven innovation.
+- **Languages:** ${machineProfile.languages}
+${machineProfile.leadership.map((entry) => `- **${entry.role} (${entry.period}):** ${entry.summary}`).join('\n')}
 `;
 }

@@ -22,7 +22,7 @@ export function useCurtainExit(onExit: () => void) {
   useEffect(() => {
     let inner = 0;
     const outer = requestAnimationFrame(() => {
-      inner = requestAnimationFrame(() => setPhase('open'));
+      inner = requestAnimationFrame(() => setPhase((current) => current === 'enter' ? 'open' : current));
     });
     return () => {
       cancelAnimationFrame(outer);

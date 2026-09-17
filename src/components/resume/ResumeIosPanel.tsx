@@ -16,7 +16,11 @@ export function ResumeIosPanel({ onClose }: ResumeIosPanelProps) {
       </header>
 
       <div className="resume-ios-content">
-        <p className="resume-ios-caption">Choose a resume package to download.</p>
+        <p className="resume-ios-caption">Choose a CV to read or download.</p>
+        <nav className="resume-page-links" aria-label="Read CV online">
+          <a href="/cv/fr/">Voir le CV français ↗</a>
+          <a href="/cv/en/">View English CV ↗</a>
+        </nav>
 
         <section className="resume-ios-card" aria-label="Resume downloads">
           {resumeDownloads.map((download) => (

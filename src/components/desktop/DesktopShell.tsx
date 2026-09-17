@@ -35,14 +35,14 @@ function isDesktopWindowId(value: string): value is DesktopWindowId {
   return DESKTOP_WINDOW_IDS.includes(value as DesktopWindowId);
 }
 
-export function DesktopShell() {
+export function DesktopShell({ onOpenAi }: { onOpenAi?: () => void }) {
   const educationWindow = useDesktopWindow(DEFAULT_EDUCATION_FRAME);
   const professionalWindow = useDesktopWindow(DEFAULT_PROFESSIONAL_FRAME);
   const projectsWindow = useDesktopWindow(DEFAULT_PROJECTS_FRAME);
   const skillsWindow = useDesktopWindow(DEFAULT_TECHNICAL_SKILLS_FRAME);
   const languagesWindow = useDesktopWindow(DEFAULT_LANGUAGES_FRAME);
   const extracurricularWindow = useDesktopWindow(DEFAULT_EXTRACURRICULAR_FRAME);
-  const resumeWindow = useDesktopWindow(DEFAULT_RESUME_FRAME);
+  const resumeWindow = useDesktopWindow(DEFAULT_RESUME_FRAME, true);
   const windowStack = useWindowStack<DesktopWindowId>(DESKTOP_WINDOW_IDS);
 
   const openWindow = (windowId: DesktopWindowId, open: () => void) => {
@@ -64,7 +64,7 @@ export function DesktopShell() {
     <main className="app-shell">
       <div className="wallpaper-layer" aria-hidden="true" />
 
-      <MenuBar />
+      <MenuBar onOpenAi={onOpenAi} />
 
       <div className="desktop-surface" aria-label="Bureau portfolio">
         <EducationIcon onOpen={windowOpeners.education} />
@@ -103,7 +103,7 @@ export function DesktopShell() {
           />
         ) : null}
 
-        {projectsWindow.isOpen ? <ProjectsLanding onBack={projectsWindow.close} /> : null}
+        {projectsWindow.isOpen ? <ProjectsLanding fromDesktopIcon onBack={projectsWindow.close} /> : null}
 
         {skillsWindow.isOpen ? (
           <TechnicalSkillsWindow

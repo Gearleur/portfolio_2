@@ -116,7 +116,7 @@
 .experience-card__visual img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .experience-card__content {
