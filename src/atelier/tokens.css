@@ -12,16 +12,50 @@
   font-display: swap;
 }
 
+/* Instrument Serif (SIL OFL 1.1, public/fonts/InstrumentSerif-LICENSE.txt). */
+@font-face {
+  font-family: 'Instrument Serif';
+  src: url('/fonts/InstrumentSerif-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Instrument Serif';
+  src: url('/fonts/InstrumentSerif-Italic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
 :root {
   /* Coquelicot, validated at step 1: cube cursor, text selection, highlights.
      Mirrors ACCENT in tokens.ts. */
   --accent: #e0301f;
   --on-accent: #ffffff;
 
+  /* Background colour, validated at step 1. Mirrors FOND.color in tokens.ts. */
+  --fond: #f8f9f6;
+
   /* Inks « Noir », validated at step 2. Mirror INK_COLORS in tokens.ts. */
   --ink: #161614;
   --ink-soft: #636361;
   --line: #dededd;
+
+  /* Type, validated at step 3. Sizes are px for a 1440 px wide page, unitless
+     so the témoin can scale them. Mirror TYPO in tokens.ts. */
+  --font-display: 'Instrument Serif', Georgia, serif;
+  --font-text: 'Inter', system-ui, sans-serif;
+  --font-label: 'Inter', system-ui, sans-serif;
+  --size-display: 58;
+  --size-text: 13;
+  --size-label: 10.5;
+  --type-ratio: 1.25;
+  --display-weight: 400;
+  --display-tracking: 0em;
+  --display-leading: 1;
+  --label-case: none;
 }
 
 ::selection {

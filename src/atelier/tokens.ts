@@ -55,3 +55,15 @@ export const FOND: FondSettings & { waveId: WaveCompositionId } = {
     duration: 11,
   },
 };
+
+/**
+ * The type validated at step 3 (journal n° 32). Sizes are px for a 1440 px wide
+ * page; `font` is the typothèque id. tokens.css mirrors it.
+ */
+export const TYPO = {
+  display: { font: 'instrument-serif', family: 'Instrument Serif', size: 58, tracking: 0, weight: 400 },
+  text: { font: 'inter', family: 'Inter', size: 13 },
+  label: { font: 'inter', family: 'Inter', size: 10.5, caps: false },
+  /** Subheadings step up from the text by this ratio. */
+  ratio: 1.25,
+};

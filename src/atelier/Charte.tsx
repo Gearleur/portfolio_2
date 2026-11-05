@@ -1,6 +1,6 @@
 import { oklchCss, oklchToHex } from './color';
 import { percent } from './format';
-import { ACCENT, APPOINT, FOND, INK_COLORS } from './tokens';
+import { ACCENT, APPOINT, FOND, INK_COLORS, TYPO } from './tokens';
 
 // Step 0, validated on 2026-11-05 (docs/atelier/README.md, section 7).
 const BRIEF: [string, string][] = [
@@ -12,6 +12,8 @@ const BRIEF: [string, string][] = [
   ['Adresses', '/portfolio/ pour la Vitrine, /atelier/ pour l’Atelier'],
 ];
 
+const px = (value: number) => `${String(value).replace('.', ',')} px`;
+
 type Card = {
   label: string;
   value: string;
@@ -19,6 +21,8 @@ type Card = {
   swatch?: string;
   swatches?: string[];
   cube?: boolean;
+  /** Shows the value in this font. */
+  font?: string;
   note: string;
   step: number;
 };
@@ -42,6 +46,13 @@ export function Charte() {
       swatches: APPOINT.map((color) => color.hex),
       note: 'Sept couleurs gardées en plus. Les rôles viendront avec les composants.',
       step: 2,
+    },
+    {
+      label: 'Typo',
+      value: `${TYPO.display.family} et ${TYPO.text.family}`,
+      font: 'var(--font-display)',
+      note: `Titre ${px(TYPO.display.size)} · texte ${px(TYPO.text.size)} · étiquettes ${px(TYPO.label.size)} en ${TYPO.label.caps ? 'capitales' : 'minuscules'} · sous-titres ×${String(TYPO.ratio).replace('.', ',')}`,
+      step: 3,
     },
     { label: 'Grain', value: percent(grain.strength), note: `Taille ${percent(grain.size)} · irrégularité ${percent(grain.irregularity)}`, step: 1 },
     {
@@ -76,7 +87,7 @@ export function Charte() {
               <span className="charte__label">
                 {card.label} <span>étape {card.step}</span>
               </span>
-              <span className="charte__value">
+              <span className="charte__value" style={card.font ? { fontFamily: card.font, fontSize: 19, fontWeight: 400 } : undefined}>
                 {card.swatch && <span className="charte__swatch" style={{ background: card.swatch }} />}
                 {card.cube && <span className="charte__cube" style={{ background: ACCENT.hex }} />}
                 {card.value}

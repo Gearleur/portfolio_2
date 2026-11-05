@@ -385,6 +385,32 @@ a.atelier-steps__item:hover,
   color: var(--atelier-ink);
 }
 
+.atelier-segment {
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-self: start;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--atelier-line);
+  border-radius: 999px;
+  font-size: 12px;
+}
+
+.atelier-segment__legend {
+  padding: 0 8px 0 10px;
+  color: var(--atelier-dim);
+}
+
+.atelier-segment button {
+  padding: 6px 12px;
+  border-radius: 999px;
+}
+
+.atelier-segment button[aria-pressed='true'] {
+  background: #ffffff1f;
+}
+
 .atelier-select {
   position: relative;
   display: flex;
@@ -397,7 +423,8 @@ a.atelier-steps__item:hover,
   pointer-events: none;
 }
 
-.atelier-select select {
+.atelier-select select,
+.atelier-field select {
   width: 100%;
   height: 34px;
   padding: 0 34px 0 32px;
@@ -600,9 +627,11 @@ a.atelier-steps__item:hover,
   font-size: 2cqw;
 }
 
+/* The highlight leaves the top of the line free, so tight headlines keep the
+   descenders of the line above visible. */
 .specimen mark {
   padding: 0 0.15em;
-  background: var(--accent);
+  background: linear-gradient(var(--accent), var(--accent)) 0 75% / 100% 80% no-repeat;
   color: var(--on-accent);
 }
 
@@ -619,32 +648,47 @@ a.atelier-steps__item:hover,
   translate: 62cqw 36cqh;
 }
 
-/* Témoin: a stand-in page to judge the colours in use (step 2). */
+/* Témoin: a stand-in page to judge colours and type in use. Sizes are given
+   in px at a 1440 px wide page (--u), so the stage and full screen agree.
+   Steps override the fonts and sizes through the variables below. */
 
 .temoin {
+  --u: calc(100cqw / 1440);
+
   position: absolute;
   inset: 0;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 3.5cqw 5cqw 4cqw;
+  padding: calc(50 * var(--u)) calc(72 * var(--u)) calc(58 * var(--u));
+  color: var(--ink);
+  font-family: var(--font-text, 'Inter', system-ui, sans-serif);
+  font-size: calc(var(--size-text, 18) * var(--u));
 }
 
 .temoin__top {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  font-size: 1.35cqw;
 }
 
 .temoin__brand {
   font-weight: 500;
 }
 
+.temoin__nav,
+.temoin__facts dt,
+.temoin__index span:not(:nth-child(2)) {
+  color: var(--ink-soft);
+  font-family: var(--font-label, inherit);
+  font-size: calc(var(--size-label, 18) * var(--u));
+  letter-spacing: var(--label-tracking, 0);
+  text-transform: var(--label-case, none);
+}
+
 .temoin__nav {
   display: flex;
-  gap: 2.4cqw;
-  color: var(--ink-soft);
+  gap: calc(34 * var(--u));
 }
 
 .temoin__nav [aria-current] {
@@ -656,59 +700,78 @@ a.atelier-steps__item:hover,
   content: '';
   position: absolute;
   top: 50%;
-  left: -1.1cqw;
-  width: 0.55cqw;
-  height: 0.55cqw;
+  left: calc(-16 * var(--u));
+  width: calc(8 * var(--u));
+  height: calc(8 * var(--u));
   background: var(--accent);
   translate: 0 -50%;
 }
 
 .temoin__intro {
   display: grid;
-  gap: 2.6cqw;
+  gap: calc(38 * var(--u));
 }
 
 .temoin__title {
   max-width: 62%;
-  font-size: 4.4cqw;
-  font-weight: 500;
-  letter-spacing: -0.025em;
-  line-height: 1.05;
+  font-family: var(--font-display, inherit);
+  font-size: calc(var(--size-display, 63) * var(--u));
+  font-stretch: var(--display-stretch, 100%);
+  font-weight: var(--display-weight, 500);
+  letter-spacing: var(--display-tracking, -0.025em);
+  line-height: var(--display-leading, 1.05);
 }
 
 .temoin__facts {
   display: flex;
-  gap: 4cqw;
+  gap: calc(58 * var(--u));
   margin: 0;
-  font-size: 1.25cqw;
 }
 
 .temoin__facts dt {
-  margin-bottom: 0.3cqw;
-  color: var(--ink-soft);
+  margin-bottom: calc(4 * var(--u));
 }
 
 .temoin__facts dd {
   margin: 0;
 }
 
+/* Step 3 trial: the values pressed into the background, deeper with --relief-depth
+   (0.2 to 1). On a light ground the white lip barely shows: the dark rim above the
+   letters does the work. */
+.temoin[data-relief] .temoin__facts dd {
+  --d: var(--relief-depth, 0.6);
+  font-weight: 500;
+}
+
+/* Inlaid: a grey fill drawn with a dark outline, its top edge in shadow. */
+.temoin[data-relief='incruste'] .temoin__facts dd {
+  color: color-mix(in oklch, var(--ink) calc(30% * var(--d)), var(--fond));
+  -webkit-text-stroke: calc(0.04em * var(--d)) rgb(22 22 20 / 0.8);
+  text-shadow: 0 calc(-0.085em * var(--d)) 0 rgb(0 0 0 / calc(0.8 * var(--d)));
+}
+
+/* Blind stamp: no ink, only the edges of the hollow. */
+.temoin[data-relief='sec'] .temoin__facts dd {
+  color: color-mix(in oklch, var(--ink) calc(16% * var(--d)), var(--fond));
+  text-shadow:
+    0 calc(-0.13em * var(--d)) calc(0.01em * var(--d)) rgb(0 0 0 / calc(1.25 * var(--d))),
+    0 calc(0.13em * var(--d)) 0 #fff;
+}
+
 .temoin__index {
   margin: 0;
   padding: 0;
   border-top: 1px solid var(--line);
-  font-size: 1.25cqw;
   list-style: none;
 }
 
 .temoin__index li {
   display: grid;
-  grid-template-columns: 4cqw minmax(0, 1fr) 14cqw 6cqw;
-  padding: 0.9cqw 0;
+  grid-template-columns: calc(58 * var(--u)) minmax(0, 1fr) calc(200 * var(--u)) calc(86 * var(--u));
+  align-items: baseline;
+  padding: calc(13 * var(--u)) 0;
   border-bottom: 1px solid var(--line);
-}
-
-.temoin__index span:not(:nth-child(2)) {
-  color: var(--ink-soft);
 }
 
 .temoin__index span:last-child {

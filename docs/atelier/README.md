@@ -189,7 +189,7 @@ La palette Snow crimson est gardée en appoint (journal n° 23) :
 | 0 | Le brief | L'intention, le ton, la langue, les noms d'URL | Validé le 2026-11-05 |
 | 1 | Le fond et l'accent | La couleur du fond clair, le grain, l'onde ; l'accent | Validé le 2026-11-05 |
 | 2 | Les couleurs | La palette complète : encres, gris, états, contrastes | Validé le 2026-11-05 |
-| 3 | La typo | Le couple de polices et l'échelle de tailles | — |
+| 3 | La typo | Le couple de polices et l'échelle de tailles | Validé le 2026-11-05 |
 | 4 | Espaces et grille | Le rythme et les colonnes | — |
 | 5 | Le chemin de fer | La composition de la Vitrine | — |
 | 6 | Les composants | Chaque brique, une par une | — |
@@ -277,6 +277,70 @@ projet), par exemple pixel + sans-serif, ou sans-serif seule à la Kalkbrenner.
 On fixe ensuite l'échelle : beaucoup de petites tailles pour l'information, une
 seule très grande pour le moment fort.
 
+**Premier tour.** Trois directions sur la page témoin, avec le fond, les encres
+et l'accent validés :
+
+- **Pixel** : Departure Mono pour le titre et les étiquettes, Inter pour le
+  texte. Le côté machine du « d » de la première capture. La taille saute de
+  11 px en 11 px, la grille de la police.
+- **Grotesque** : Inter seule, grasse et serrée pour le titre. Kalkbrenner.
+- **Éditoriale** : Instrument Serif pour la phrase-titre, Inter pour
+  l'information. Rachel Chen.
+
+Les curseurs règlent la taille du moment fort (56 à 160 px), l'interlettrage, la
+graisse (Inter seulement), la taille du texte (13 à 18 px) et l'écart entre les
+tailles (×1,125 à ×1,5). Un interrupteur passe les étiquettes en capitales ou
+en minuscules. Une **planche d'échelle** montre chaque taille sur les couleurs
+de la page.
+
+Instrument Serif (licence OFL 1.1) est ajoutée dans `public/fonts` avec sa
+licence, parce que la politique de sécurité n'autorise que des polices locales.
+Elle sera retirée si l'Éditoriale n'est pas retenue.
+
+**Deuxième tour.** Ton réglage (Éditoriale : Instrument Serif à 58 px, texte
+Inter à 13 px, écart ×1,25, étiquettes en minuscules) devient la composition de
+départ. Les curseurs descendent plus bas : 24 px pour le moment fort, 11 px pour
+le texte. Chaque rôle (titre, texte, étiquettes) peut prendre n'importe quelle
+police :
+
+- une **typothèque** de 54 polices libres (licence OFL), classées en gluant (9),
+  pixel (11), éditorial (11), innovant (11) et institutionnel (12). Chacune a une
+  note, ses axes variables et trois boutons pour lui donner un rôle. Un texte
+  d'essai modifiable sert d'échantillon ;
+- les polices sont téléchargées depuis les paquets npm de Fontsource : un seul
+  woff2 par famille (sous-ensemble latin, tous les axes quand c'est possible),
+  avec sa licence dans `src/atelier/fonts/licenses/`. Elles ne se chargent que
+  quand leur carte approche de l'écran ;
+- quand le choix sera fait, on retire les polices non retenues du repo.
+
+**Troisième tour.** Le panneau est rangé par rôle : Titre, Texte, Étiquettes.
+Chacun a sa police et sa taille. Les étiquettes ne se déduisent plus du texte
+(9 à 16 px) ; l'écart, renommé « Sous-titres », ne règle plus que les titres
+intermédiaires de l'échelle. La typothèque passe à 55 polices avec **Glass TTY
+VT220**, les lettres du terminal DEC VT220 (domaine public, 6 Ko, sans
+apostrophe typographique). Une composition **Terminal** la met en titre et en
+étiquettes, avec Inter pour le texte.
+
+**Quatrième tour.** Ta photo « Frieden » montre une serif de titrage à fort
+contraste, avec des déliés qui se croisent : sans doute un lettrage dessiné ou
+une police payante. Parmi une vingtaine de serifs libres comparées, **Playfair**
+(OFL, graisse et largeur variables) s'en approche le plus à 500, resserrée à
+87,5 %. La composition **Frieden** la met en titre, avec Inter, plus simple,
+pour le texte et les étiquettes. Le titre gagne un curseur de largeur quand sa
+police en a l'axe.
+
+Un essai de **relief** enfonce les valeurs sous les étiquettes (« AI engineer »
+sous « Rôle ») dans le fond : **Incrusté** (lettres grises cernées de sombre,
+le bord du haut dans l'ombre) ou **À sec** (gaufrage sans encre, moins lisible),
+avec une profondeur réglable. Sur un fond aussi clair, le liseré blanc se voit
+à peine : c'est le bord sombre qui fait le creux.
+
+**Retenu.** Instrument Serif à 58 px pour le titre (interlettrage 0), Inter à
+13 px pour le texte, Inter à 10,5 px en minuscules pour les étiquettes,
+sous-titres par paliers de ×1,25 (16,5 · 20,5 · 25,5 px), valeurs à plat. Les
+tailles valent pour une page de 1440 px. Elles sont dans `tokens.css` et `TYPO`
+(`tokens.ts`). La typothèque reste dans l'Atelier pour y revenir plus tard.
+
 ### Étape 4 — Espaces et grille
 
 Une échelle d'espacements (4, 8, 12, 16, 24, 32, 48, 64…) et une grille de
@@ -351,6 +415,13 @@ un bon argument dans un portfolio.
 | 23 | 2026-11-05 | **Palette d'appoint** gardée en plus, d'après Snow crimson (Feral UI) : Moonwash Blue `#DBEAF4`, Misted Sky `#E5EDF3`, Moonwash Blue `#CADCE4`, Deep Hanada `#354050`, Orchid Grey `#392932`, Smoked Beni `#7F1727` et `#8E0A1F`. Les clairs servent de surfaces sous l'encre, les profonds de texte ou de blocs. Les rôles se décident à l'étape 6. | « Je veux quand même garder ces couleurs en plus » | 2 |
 | 24 | 2026-11-05 | L'onde Neige vermillon reprend les valeurs exactes de Snow crimson : Moonwash Blue `#DBEAF4`, Deep Hanada `#354050`, Smoked Beni `#8E0A1F`. Le vermillon reste en bord d'attaque. | Ton « vas-y » | 2 |
 | 25 | 2026-11-05 | **Étape 2 validée** (BAT) | « On continue, vas-y » | 2 |
+| 26 | 2026-11-05 | Étape 3 ouverte : trois directions (Pixel, Grotesque, Éditoriale). Instrument Serif est ajoutée comme candidate. | Plan | 3 |
+| 27 | 2026-11-05 | Typo de départ : **Éditoriale réglée par toi**. Instrument Serif à 58 px, texte Inter à 13 px, écart ×1,25, interlettrage 0, étiquettes en minuscules. À explorer plus petit, et parmi une typothèque élargie. | Tes réglages copiés | 3 |
+| 28 | 2026-11-05 | Chaque rôle a sa propre taille : le texte (11 à 20 px) et les étiquettes (9 à 16 px) se règlent comme le titre. | « On ne peut pas changer la taille des autres polices à part le titre » | 3 |
+| 29 | 2026-11-05 | **Glass TTY VT220** (DEC VT220, domaine public) entre dans la typothèque, avec une composition Terminal. | « DEC VT100 / VT220, propose-la » | 3 |
+| 30 | 2026-11-05 | **Playfair** entre dans la typothèque, comme la serif libre la plus proche de « Frieden ». Composition Frieden : Playfair 500 à 87,5 % en titre, Inter pour le reste. | « Celle-là en main et les autres un truc plus simple » | 3 |
+| 31 | 2026-11-05 | Essai de relief sur les valeurs sous les étiquettes : Incrusté ou À sec, profondeur réglable. | « Enfoncé dans le fond, avec des contours sombres » | 3 |
+| 32 | 2026-11-05 | **Étape 3 validée** (BAT) : Instrument Serif 58 px en titre, Inter 13 px en texte, Inter 10,5 px en minuscules pour les étiquettes, sous-titres ×1,25, valeurs à plat. La typothèque est gardée pour y revenir. | « On part sur ça, vas-y, je verrai plus tard » | 3 |
 
 ---
 

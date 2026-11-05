@@ -2,7 +2,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { contrastRatio, oklchToHex } from './color';
-import { ACCENT, FOND, INK_COLORS } from './tokens';
+import { ACCENT, FOND, INK_COLORS, TYPO } from './tokens';
 
 // Read from disk: Vitest swaps stylesheets for empty modules, even with ?raw.
 const css = readFileSync(new URL('./tokens.css', import.meta.url), 'utf8');
@@ -13,10 +13,27 @@ describe('validated tokens', () => {
     expect(css).toContain(`--on-accent: ${ACCENT.onAccent.toLowerCase()};`);
   });
 
+  it('keeps tokens.css in step with the background colour', () => {
+    expect(css).toContain(`--fond: ${oklchToHex(FOND.color)};`);
+  });
+
   it('keeps tokens.css in step with the inks', () => {
     expect(css).toContain(`--ink: ${INK_COLORS.ink};`);
     expect(css).toContain(`--ink-soft: ${INK_COLORS.soft};`);
     expect(css).toContain(`--line: ${INK_COLORS.line};`);
+  });
+
+  it('keeps tokens.css in step with the type', () => {
+    expect(css).toContain(`--font-display: '${TYPO.display.family}',`);
+    expect(css).toContain(`--font-text: '${TYPO.text.family}',`);
+    expect(css).toContain(`--font-label: '${TYPO.label.family}',`);
+    expect(css).toContain(`--size-display: ${TYPO.display.size};`);
+    expect(css).toContain(`--size-text: ${TYPO.text.size};`);
+    expect(css).toContain(`--size-label: ${TYPO.label.size};`);
+    expect(css).toContain(`--type-ratio: ${TYPO.ratio};`);
+    expect(css).toContain(`--display-weight: ${TYPO.display.weight};`);
+    expect(css).toContain(`--display-tracking: ${TYPO.display.tracking}em;`);
+    expect(css).toContain(`--label-case: ${TYPO.label.caps ? 'uppercase' : 'none'};`);
   });
 
   it('keeps both inks readable on the background (WCAG AA, 4.5:1)', () => {

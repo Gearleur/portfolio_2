@@ -1,0 +1,289 @@
+/* Departure Mono, a typothèque face already in public/fonts. The retained faces
+   live in tokens.css; the others are registered on demand (typotheque.ts). */
+
+@font-face {
+  font-family: 'Departure Mono';
+  src:
+    url('/fonts/DepartureMono-Regular.woff2') format('woff2'),
+    url('/fonts/DepartureMono-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* « Aa » in the direction's headline face, in place of a colour dot. */
+.atelier-glyph {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--fond);
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1;
+}
+
+/* Échelle: the type scale set on the page colours, one row per size. */
+
+.echelle {
+  margin-top: 32px;
+  padding: 24px 28px 8px;
+  border-radius: 12px;
+  background: var(--fond);
+  color: var(--ink);
+}
+
+.echelle h3 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 12px;
+  margin: 0 0 12px;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.echelle h3 span,
+.echelle__meta code {
+  color: var(--ink-soft);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.echelle ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.echelle li {
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr);
+  align-items: baseline;
+  gap: 24px;
+  padding: 14px 0;
+  border-top: 1px solid var(--line);
+}
+
+.echelle__meta {
+  display: grid;
+  gap: 2px;
+  font-size: 12px;
+}
+
+.echelle__meta code {
+  font: inherit;
+}
+
+.echelle__sample {
+  overflow: hidden;
+  font-family: var(--font-text);
+  line-height: 1.15;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.echelle__sample--display {
+  font-family: var(--font-display);
+  font-stretch: var(--display-stretch);
+  font-weight: var(--display-weight);
+  letter-spacing: var(--display-tracking);
+  line-height: 1;
+}
+
+.echelle__sample--h1,
+.echelle__sample--h2,
+.echelle__sample--h3 {
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.echelle__sample--label {
+  color: var(--ink-soft);
+  font-family: var(--font-label);
+  letter-spacing: var(--label-tracking);
+  text-transform: var(--label-case);
+}
+
+/* Font pickers of the panel: one select per role. */
+.atelier-field {
+  display: grid;
+  grid-template-columns: 84px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+}
+
+.atelier-field > span {
+  color: var(--atelier-dim);
+}
+
+.atelier-field select {
+  height: 30px;
+  padding-left: 10px;
+}
+
+.atelier-segment button span {
+  margin-left: 2px;
+  color: var(--atelier-dim);
+}
+
+/* Typothèque: the catalogue of free faces, each card set on the page colours. */
+
+.typotheque {
+  margin-top: 48px;
+}
+
+.typotheque h3 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 12px;
+  margin: 0;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.typotheque h3 span {
+  color: var(--atelier-dim);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.typotheque__tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 24px;
+  margin-top: 16px;
+}
+
+.typotheque__sample {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--atelier-dim);
+  font-size: 12px;
+}
+
+.typotheque__sample input {
+  width: min(320px, 60vw);
+  height: 32px;
+  padding: 0 14px;
+  border: 1px solid var(--atelier-line);
+  border-radius: 999px;
+  background: #ffffff0d;
+  color: var(--atelier-ink);
+  font: inherit;
+}
+
+.typotheque__sample input:focus-visible {
+  outline: 2px solid var(--atelier-ink);
+  outline-offset: 2px;
+}
+
+.typotheque__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 8px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.typo-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px 18px;
+  border-radius: 12px;
+  background: var(--fond);
+  color: var(--ink);
+}
+
+.typo-card__head {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.typo-card__name {
+  font-weight: 500;
+}
+
+.typo-card__category,
+.typo-card__note,
+.typo-card__meta {
+  color: var(--ink-soft);
+}
+
+.typo-card__sample {
+  min-height: 2.1em;
+  font-size: 34px;
+  line-height: 1.05;
+  overflow-wrap: anywhere;
+}
+
+.typo-card__alphabet {
+  font-size: 18px;
+}
+
+.typo-card__sample,
+.typo-card__alphabet {
+  transition: opacity 200ms;
+}
+
+.typo-card[data-ready='false'] .typo-card__sample,
+.typo-card[data-ready='false'] .typo-card__alphabet {
+  opacity: 0.2;
+}
+
+.typo-card__note {
+  font-size: 12px;
+}
+
+.typo-card__meta {
+  margin-top: auto;
+  font-size: 11px;
+}
+
+.typo-card__roles {
+  display: flex;
+  gap: 4px;
+}
+
+.typo-card__roles button {
+  flex: 1;
+  padding: 6px 8px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink);
+  font-size: 12px;
+}
+
+.typo-card__roles button:hover {
+  border-color: var(--ink-soft);
+}
+
+.typo-card__roles button[aria-pressed='true'] {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--fond);
+}
+
+.typo-card button:focus-visible {
+  outline-color: var(--ink);
+}
+
+@media (max-width: 760px) {
+  .echelle {
+    padding: 20px 16px 8px;
+  }
+
+  .echelle li {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 6px;
+  }
+}

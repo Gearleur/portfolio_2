@@ -6,6 +6,7 @@ import type { Inks } from '../color';
 import { Range } from '../controls';
 import { percent, ratio } from '../format';
 import { Specimen, SpecimenPreview } from '../Specimen';
+import { Temoin } from '../Temoin';
 import { ACCENT, APPOINT, FOND, INKS } from '../tokens';
 import { useWaveSignal } from '../useWave';
 
@@ -40,12 +41,6 @@ function verdict(check: Check, value: number) {
   if (value >= 4.5) return { label: 'AA', ok: true };
   return value >= 3 ? { label: 'Grand texte seulement', ok: false } : { label: 'Illisible', ok: false };
 }
-
-const PROJETS = [
-  ['01', 'Projet témoin A', 'En production', '2025'],
-  ['02', 'Projet témoin B', 'Pilote', '2025'],
-  ['03', 'Projet témoin C', 'Prototype', '2024'],
-];
 
 /** Step 2: the ink family that goes with the background and the accent. */
 export function CouleursStep() {
@@ -102,49 +97,6 @@ export function CouleursStep() {
   ].join('\n');
 
   const style = { '--ink': colors.ink, '--ink-soft': colors.soft, '--line': colors.line, color: colors.ink } as CSSProperties;
-  const temoin = (
-    <div className="temoin">
-      <header className="temoin__top">
-        <p className="temoin__brand">Alexandre Teixeira</p>
-        <p className="temoin__nav">
-          <span aria-current="page">Projets</span>
-          <span>À propos</span>
-          <span>CV</span>
-          <span>Contact</span>
-        </p>
-      </header>
-      <div className="temoin__intro">
-        <p className="temoin__title">
-          AI engineer, du prototype à la <mark>production</mark>.
-        </p>
-        <dl className="temoin__facts">
-          <div>
-            <dt>Rôle</dt>
-            <dd>AI engineer</dd>
-          </div>
-          <div>
-            <dt>Approche</dt>
-            <dd>Du prototype à la production</dd>
-          </div>
-          <div>
-            <dt>Langues</dt>
-            <dd>Français · English</dd>
-          </div>
-        </dl>
-      </div>
-      <ol className="temoin__index">
-        {PROJETS.map(([number, name, stage, year]) => (
-          <li key={number}>
-            <span>{number}</span>
-            <span>{name}</span>
-            <span>{stage}</span>
-            <span>{year}</span>
-          </li>
-        ))}
-      </ol>
-    </div>
-  );
-
   return (
     <section className="atelier-step" aria-labelledby="step-couleurs">
       <header className="atelier-step__head">
@@ -206,7 +158,7 @@ export function CouleursStep() {
         <div className="atelier-stage">
           <div className="atelier-stage__frame">
             <Specimen settings={FOND} waveSignal={waveSignal} style={style}>
-              {temoin}
+              <Temoin />
             </Specimen>
           </div>
           <div className="atelier-stage__bar">
@@ -270,7 +222,7 @@ export function CouleursStep() {
 
       {open && (
         <SpecimenPreview settings={FOND} style={style} label="Page témoin en plein écran" onClose={close}>
-          {temoin}
+          <Temoin />
         </SpecimenPreview>
       )}
     </section>
