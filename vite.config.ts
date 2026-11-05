@@ -10,6 +10,6 @@ export default defineConfig({
   preview: { headers: Object.fromEntries(vercelConfig.headers[0].headers.map(({ key, value }) => [key, value])) },
   build: {
     sourcemap: false,
-    rolldownOptions: { input: ['index.html', 'cv/fr/index.html', 'cv/en/index.html'] },
+    rolldownOptions: { input: ['index.html', 'cv/fr/index.html', 'cv/en/index.html', 'atelier/index.html'] },
   },
 });

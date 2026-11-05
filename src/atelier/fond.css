@@ -1,0 +1,23 @@
+.fond {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: var(--fond);
+}
+
+.fond__wave {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* The grain sits above the wave, so the colour reads as grainy pigment. */
+.fond::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--grain);
+  background-size: var(--grain-size);
+  opacity: var(--grain-strength);
+  pointer-events: none;
+}

@@ -1,0 +1,30 @@
+/* ============================================================
+   Design tokens shared by the Atelier and the Vitrine.
+   Decisions and their status live in docs/atelier/README.md.
+   Tokens that are not plain CSS (background recipe, wave)
+   live in tokens.ts.
+   ============================================================ */
+
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/InterVariable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+:root {
+  /* Coquelicot, validated at step 1: cube cursor, text selection, highlights.
+     Mirrors ACCENT in tokens.ts. */
+  --accent: #e0301f;
+  --on-accent: #ffffff;
+
+  /* Inks « Noir », validated at step 2. Mirror INK_COLORS in tokens.ts. */
+  --ink: #161614;
+  --ink-soft: #636361;
+  --line: #dededd;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--on-accent);
+}

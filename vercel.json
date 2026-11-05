@@ -47,6 +47,8 @@
     { "source": "/cv/fr", "destination": "/cv/fr/index.html" },
     { "source": "/cv/fr/", "destination": "/cv/fr/index.html" },
     { "source": "/cv/en", "destination": "/cv/en/index.html" },
-    { "source": "/cv/en/", "destination": "/cv/en/index.html" }
+    { "source": "/cv/en/", "destination": "/cv/en/index.html" },
+    { "source": "/atelier", "destination": "/atelier/index.html" },
+    { "source": "/atelier/", "destination": "/atelier/index.html" }
   ]
 }

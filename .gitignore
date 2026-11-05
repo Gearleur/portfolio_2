@@ -9,3 +9,5 @@ node_modules
 .codex
 playwright-report
 test-results
+# Third-party screenshots for the Atelier moodboard: kept local, the repo is public.
+docs/atelier/references/
