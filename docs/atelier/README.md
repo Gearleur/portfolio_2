@@ -626,11 +626,8 @@ construite comme celle de Rachel Chen :
   colonnes, cartes, décisions, question, compromis, chiffres clés) ;
 - **la lecture au milieu** : le texte sur 6 colonnes (6 à 11 sur 16), les images,
   colonnes et chiffres sur 8 (5 à 12), la miniature sur 10 ;
-- **à gauche, le sommaire et la barre de défilement** : le sommaire suit la
-  lecture. La barre est une colonne de traits fins : ceux qui sont au niveau de
-  la lecture s'allongent en vague, le trait courant est en accent, et un trait
-  plus marqué indique le début de chaque partie. On peut cliquer ou glisser
-  dessus. À droite restent le nom, la nav et le contact ;
+- **à gauche, le sommaire** : il suit la lecture, et chaque ligne mène à sa
+  partie. À droite restent le nom, la nav et le contact ;
 - **les tailles** : texte à 15 px, titres de partie à 29 px, chiffres à 58 px ;
 - **les schémas** : encore en gris, numérotés, avec ce qu'ils montreront.
 
@@ -732,6 +729,7 @@ un bon argument dans un portfolio.
 | 74 | 2026-11-06 | SNCF GPT : **3 000+ utilisateurs par jour** (et non par mois), cohérent avec le Journal du Net (2 500 par jour en juin 2024) ; seul au début, en équipe à partir de SNCF Groupe GPT. Lien du Journal du Net gardé. Page projet montée dans l'Atelier, à valider : fil, titre, accroche, cartel, miniature en grand, dix parties aux titres en phrases, sommaire dans la colonne de droite qui suit la lecture. | « Garde, c'est parfait avec le lien ; je crois qu'en fait c'était 3 000 utilisateurs quotidiens » · « J'étais avec une équipe à partir du moment où on a fait SNCF GPT Groupe » · « On peut faire la page » | 7 |
 | 75 | 2026-11-06 | **Tailles en vrai** : le plein écran de l'Atelier s'ouvre en taille réelle (il agrandissait la page de 1440 px à la largeur de la fenêtre, ×1,33 sur 1920 px) ; le texte et les étiquettes passent à **15 px**, comme chez Rachel Chen. Page projet : **la lecture au milieu**, texte sur 6 colonnes centrées, images sur 8. | « Tout est beaucoup trop gros ; quand c'est déployé sur Vercel c'est plus petit » · « Le menu sur le côté et tout est un peu trop petit ; je veux que ce soit la même taille [que Rachel] » · « Lire au milieu comme rachelchen.tech/projects/openai, c'est quand même plus agréable » | 7 |
 | 76 | 2026-11-06 | Page projet : le **sommaire passe à gauche**, comme chez Rachel Chen, avec une **barre de défilement en vague de traits**. Les traits au niveau de la lecture s'allongent, toute la colonne ondule un peu, le début de chaque partie est marqué, et on peut cliquer ou glisser dessus. Le nom, la nav et le contact restent à droite. | « Le sommaire, tu peux le mettre à gauche » · « Je veux une sorte de vague avec des traits pour la barre de scroll, et qu'elle soit aussi sur la gauche » | 7 |
+| 77 | 2026-11-06 | Barre de défilement en vague **retirée**. Le sommaire reste seul à gauche, et la page défile normalement. | « Enlève cette barre de scroll, ça fait too much » | 7 |
 
 ---
 
