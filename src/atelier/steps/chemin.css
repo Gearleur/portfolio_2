@@ -320,16 +320,16 @@
   margin-top: auto;
 }
 
-/* Each project captioned like a work in a museum: title in italics, year. */
-.m-work {
+/* Each project captioned like a work in a museum, small: the title in italics
+   one step above the text (×1.25), then « · organisation · year » in soft ink. */
+.m-work em {
   font-family: var(--font-display);
-  font-size: calc(var(--size-display) * 0.3 * var(--u));
+  font-size: calc(var(--size-text) * var(--type-ratio) * var(--u));
   font-style: italic;
-  line-height: 1.15;
 }
 
-.m-work .m-t + .m-t {
-  font-style: normal;
+.m-work__meta {
+  color: var(--ink-soft);
 }
 
 /* Blocks: every run of words becomes a grey bar of the same size. */

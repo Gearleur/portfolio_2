@@ -70,7 +70,7 @@ export function CheminStep() {
       <p className="atelier-step__note">
         Retenu : la nav latérale à droite. Le contenu part du bord gauche sur 12 colonnes : la phrase-titre, puis
         seulement Actuellement, Précédemment et Formation, puis les projets en cartes, légendés comme des œuvres (titre
-        en italique, année). Le nom, la nav et le contact ferment la page à droite sur 3 colonnes. Les textes sont un premier jet tiré de ton CV : on les écrit ensemble à
+        en italique · organisation · année). Le nom, la nav et le contact ferment la page à droite sur 3 colonnes. Les textes sont un premier jet tiré de ton CV : on les écrit ensemble à
         l’étape 7.
       </p>
 
