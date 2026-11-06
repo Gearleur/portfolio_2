@@ -198,14 +198,13 @@
 }
 
 /* Phone, 390 × 844, on 4 columns. Text and labels step down for the small
-   screen (a proposal: 14 px and 11 px). The headline takes the full width on
-   two lines: 40 px is the most « AI engineer, du prototype » allows.
+   screen (a proposal: 14 px and 11 px); the headline stays imposing at 68 px.
    The side column folds into a 44 px strip along the right edge. */
 
 .mobile {
   --u: calc(100cqw / 390);
   --cols: 4;
-  --size-display: 40;
+  --size-display: 68;
   --size-text: 14;
   --size-label: 11;
 
@@ -273,11 +272,6 @@
   position: relative;
   z-index: 3;
   margin-right: calc(-44 * var(--u));
-}
-
-.mobile .m-line {
-  display: block;
-  white-space: nowrap;
 }
 
 .mobile .m-img {

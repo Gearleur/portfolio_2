@@ -470,7 +470,7 @@ téléphone et un éventuel twist restent à faire.
 **Version téléphone, premier tour.** Un écran de 390 × 844 sur une grille de 4
 colonnes (gouttières et marges de 16 px, la même unité de 4 px). La typo descend
 pour le petit écran, en proposition : titre 40 px, texte 14 px, étiquettes
-11 px (le titre traverse ensuite la tranche, sur deux lignes à 40 px : journal n° 50 et 51). Trois façons de replier la colonne de droite, vues menu fermé ou ouvert :
+11 px (le titre passe ensuite à 68 px et traverse la tranche : journal n° 50 à 53). Trois façons de replier la colonne de droite, vues menu fermé ou ouvert :
 
 - **Barre en haut** : le nom à gauche, « Menu » à droite ; le menu ouvre la
   colonne de droite en plein écran, alignée à droite, la nav en serif ;
@@ -590,6 +590,7 @@ un bon argument dans un portfolio.
 | 50 | 2026-11-06 | Titre téléphone plus imposant : 68 px (au lieu de 40), sur trois lignes qui vont jusqu'à la marge droite et traversent la tranche, comme les images. Le nom et « Menu » descendent dans le bas de la tranche. | « Qu'il prenne plus de largeur, qu'il soit plus imposant » | 5 |
 | 51 | 2026-11-06 | Titre téléphone sur deux lignes, coupé après « prototype » : 40 px, la plus grande taille où « AI engineer, du prototype » tient de la marge gauche à la marge droite en traversant la tranche. | « Essaie de le mettre sur deux lignes, mais c'est exactement ça » | 5 |
 | 52 | 2026-11-06 | Le carré final ne clignote plus en continu : il reste allumé et, toutes les 30 s, s'éteint en douceur pendant environ 0,6 s (fondu de 0,15 s de chaque côté). | « Moins vite, là ça prend le regard, c'est stressant ; qu'il disparaisse vraiment occasionnellement, genre toutes les 30 s » | 5 |
+| 53 | 2026-11-06 | Retour au titre téléphone à 68 px sur trois lignes (journal n° 50) : plus imposant que la version à deux lignes. | « En fait, le titre mobile revient comme avant, plus gros » | 5 |
 
 ---
 
