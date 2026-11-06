@@ -1,12 +1,18 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useCopyText } from '../../hooks/useCopyText';
-import { Maquette } from '../Maquettes';
+import { Maquette, MaquetteMobile } from '../Maquettes';
 import { Specimen, SpecimenPreview } from '../Specimen';
 import { ESPACES, FOND } from '../tokens';
 import { useWaveSignal } from '../useWave';
 import './chemin.css';
 
 const STORAGE_KEY = 'atelier:chemin:v2';
+const PHONE_COLUMNS = 4;
+
+const PHONE_STATES = [
+  { menuOpen: false, name: 'Menu fermé', note: 'La tranche le long du bord droit, ton nom écrit à la verticale. Les images des projets passent par-dessus jusqu’au bord de l’écran.' },
+  { menuOpen: true, name: 'Menu ouvert', note: 'Le panneau glisse depuis la droite, sur 82 % de la largeur : la nav en serif, FR · EN, le contact en bas.' },
+];
 
 function loadBlocks() {
   try {
@@ -62,9 +68,10 @@ export function CheminStep() {
         </span>
       </header>
       <p className="atelier-step__note">
-        Retenu : la nav latérale à droite. Le contenu part du bord gauche sur 12 colonnes (la phrase-titre, la bio, les
-        infos, puis les projets en cartes) ; le nom, la nav et le contact ferment la page à droite sur 3 colonnes. Les
-        textes sont provisoires : ils viendront à l’étape 7.
+        Retenu : la nav latérale à droite. Le contenu part du bord gauche sur 12 colonnes : la phrase-titre, puis
+        seulement Actuellement, Précédemment et Formation, puis les projets en cartes. Le nom, la nav et le contact
+        ferment la page à droite sur 3 colonnes. Les textes sont un premier jet tiré de ton CV : on les écrit ensemble à
+        l’étape 7.
       </p>
 
       <div className="atelier-builder">
@@ -116,6 +123,43 @@ export function CheminStep() {
             </div>
           </div>
         </div>
+      </div>
+
+      <div className="telephone">
+        <h3>
+          Version téléphone{' '}
+          <span>
+            Retenue : la tranche à droite. Écran de 390 × 844, grille de {PHONE_COLUMNS} colonnes ; titre 40 px, texte 14 px,
+            étiquettes 11 px (proposition).
+          </span>
+        </h3>
+        <div className="telephone__tools">
+          <div className="atelier-segment" role="group" aria-label="Contenu des téléphones">
+            <button type="button" aria-pressed={!blocks} onClick={() => setBlocks(false)}>
+              Texte
+            </button>
+            <button type="button" aria-pressed={blocks} onClick={() => setBlocks(true)}>
+              Blocs
+            </button>
+          </div>
+        </div>
+        <ul className="phones">
+          {PHONE_STATES.map((phone) => (
+            <li key={phone.name}>
+              <figure className="phone">
+                <div className="phone__frame">
+                  <Specimen settings={FOND} waveSignal={waveSignal}>
+                    <MaquetteMobile menuOpen={phone.menuOpen} blocks={blocks} columns={showGrid ? PHONE_COLUMNS : undefined} />
+                  </Specimen>
+                </div>
+                <figcaption>
+                  <strong>{phone.name}</strong>
+                  {phone.note}
+                </figcaption>
+              </figure>
+            </li>
+          ))}
+        </ul>
       </div>
 
       {open && (

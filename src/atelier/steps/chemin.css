@@ -1,18 +1,10 @@
-/* Step 5: the Vitrine's first screen at 1440 × 900, laid on the validated
-   grid (--cols, --gutter, --margin, --space-*) with the validated type. Sizes
-   are px at a 1440 px page (--u), like the témoin. Retained layout: the content
-   on 12 columns from the left edge, the side column on the last 3. */
+/* Step 5: the Vitrine's first screen laid on the validated grid (--cols,
+   --gutter, --margin, --space-*) with the validated type. Sizes are px at the
+   page width (--u): 1440 for .maquette, 390 for the phone (.mobile). */
 
-.maquette {
-  --u: calc(100cqw / 1440);
-
+:is(.maquette, .mobile) {
   position: absolute;
   inset: 0;
-  display: grid;
-  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
-  grid-template-rows: auto minmax(0, 1fr);
-  column-gap: calc(var(--gutter) * var(--u));
-  padding: calc(var(--space-6) * var(--u)) calc(var(--margin) * var(--u));
   overflow: hidden;
   isolation: isolate;
   color: var(--ink);
@@ -21,7 +13,7 @@
   line-height: 1.45;
 }
 
-.maquette :where(p, ul, ol, dl, dd) {
+:is(.maquette, .mobile) :where(p, ul, ol, dl, dd) {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -35,33 +27,39 @@
   text-transform: var(--label-case);
 }
 
-/* The side column closes the page on the right. */
-.m-side {
-  display: flex;
-  flex-direction: column;
-  grid-area: 1 / 14 / 3 / 17;
-  align-items: flex-end;
-  gap: calc(var(--space-7) * var(--u));
-  text-align: right;
-}
-
 .m-name {
   font-weight: 500;
 }
 
-.m-nav {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: calc(var(--space-2) * var(--u));
+.m-title {
+  font-family: var(--font-display);
+  font-size: calc(var(--size-display) * var(--u));
+  font-weight: var(--display-weight);
+  letter-spacing: var(--display-tracking);
+  line-height: var(--display-leading);
 }
 
-.m-nav [aria-current] {
+.m-facts dt {
+  margin-bottom: calc(var(--space-1) * var(--u));
+}
+
+.m-facts dd + dd {
+  margin-top: calc(var(--space-1) * var(--u));
+}
+
+.m-img {
+  display: block;
+  aspect-ratio: 4 / 3;
+  background: color-mix(in oklch, var(--ink) 7%, var(--fond));
+}
+
+/* The current page: a small accent square before it. */
+:is(.m-nav, .m-menu__nav) [aria-current] {
   position: relative;
   color: var(--ink);
 }
 
-.m-nav [aria-current]::before {
+:is(.m-nav, .m-menu__nav) [aria-current]::before {
   content: '';
   position: absolute;
   top: 50%;
@@ -72,18 +70,47 @@
   translate: 0 -50%;
 }
 
-.m-lang {
+/* Desktop, 1440 × 900. Retained layout: the content on 12 columns from the left
+   edge, the side column on the last 3. */
+
+.maquette {
+  --u: calc(100cqw / 1440);
+
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  grid-template-rows: auto minmax(0, 1fr);
+  column-gap: calc(var(--gutter) * var(--u));
+  padding: calc(var(--space-6) * var(--u)) calc(var(--margin) * var(--u));
+}
+
+.maquette .m-side {
+  display: flex;
+  flex-direction: column;
+  grid-area: 1 / 14 / 3 / 17;
+  align-items: flex-end;
+  gap: calc(var(--space-7) * var(--u));
+  text-align: right;
+}
+
+.maquette .m-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: calc(var(--space-2) * var(--u));
+}
+
+.maquette .m-lang {
   margin-top: calc(var(--space-4) * var(--u));
 }
 
-.m-contact {
+.maquette .m-contact {
   display: flex;
   flex-direction: column;
   gap: calc(var(--space-1) * var(--u));
   margin-top: auto;
 }
 
-.m-hero {
+.maquette .m-hero {
   display: grid;
   grid-area: 1 / 1 / 2 / 13;
   grid-template-columns: subgrid;
@@ -92,61 +119,239 @@
   padding-top: calc(var(--space-8) * var(--u));
 }
 
-.m-title {
+.maquette .m-title {
   grid-column: 1 / -1;
-  font-family: var(--font-display);
-  font-size: calc(var(--size-display) * var(--u));
-  font-weight: var(--display-weight);
-  letter-spacing: var(--display-tracking);
-  line-height: var(--display-leading);
 }
 
-.m-bio {
-  grid-column: 1 / span 5;
-}
-
-.m-facts {
+.maquette .m-facts {
   display: grid;
   grid-column: 1 / -1;
   grid-template-columns: subgrid;
 }
 
-.m-facts > div {
+.maquette .m-facts > div {
   grid-column: span 4;
 }
 
-.m-facts dt {
-  margin-bottom: calc(var(--space-1) * var(--u));
-}
-
-.m-visuals {
+.maquette .m-visuals {
   display: grid;
   grid-area: 2 / 1 / 3 / 13;
   grid-template-columns: subgrid;
   margin-top: calc(var(--space-8) * var(--u));
 }
 
-.m-visuals li {
+.maquette .m-visuals li {
   display: grid;
   grid-column: span 4;
   align-content: start;
   gap: calc(var(--space-2) * var(--u));
 }
 
-.m-img {
-  display: block;
-  aspect-ratio: 4 / 3;
-  background: color-mix(in oklch, var(--ink) 7%, var(--fond));
+/* Phone, 390 × 844, on 4 columns. The type steps down for the small screen
+   (a proposal: headline 40 px, text 14 px, labels 11 px). The side column
+   folds into a 44 px strip along the right edge. */
+
+.mobile {
+  --u: calc(100cqw / 390);
+  --cols: 4;
+  --size-display: 40;
+  --size-text: 14;
+  --size-label: 11;
+
+  display: flex;
+  flex-direction: column;
+  padding: 0 calc((44 + var(--margin)) * var(--u)) 0 calc(var(--margin) * var(--u));
+}
+
+.mobile .m-hero {
+  display: grid;
+  row-gap: calc(var(--space-5) * var(--u));
+  padding-top: calc(var(--space-7) * var(--u));
+}
+
+.mobile .m-facts {
+  display: grid;
+  row-gap: calc(var(--space-3) * var(--u));
+}
+
+.mobile .m-visuals {
+  display: grid;
+  row-gap: calc(var(--space-6) * var(--u));
+  margin-top: calc(var(--space-7) * var(--u));
+}
+
+.mobile .m-visuals li {
+  display: grid;
+  gap: calc(var(--space-2) * var(--u));
+}
+
+/* The strip: its rule and background sit under the images, which run over it
+   to the screen edge; its words stay on top. */
+.m-strip {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: calc(44 * var(--u));
+  padding: calc(var(--space-5) * var(--u)) 0;
+}
+
+.m-strip::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-left: 1px solid var(--line);
+  background: var(--fond);
+}
+
+.m-strip > * {
+  position: relative;
+  z-index: 4;
+  writing-mode: vertical-rl;
+  rotate: 180deg;
+}
+
+.mobile .m-img {
+  position: relative;
+  z-index: 2;
+  margin-right: calc((44 + var(--margin)) * -1 * var(--u));
+}
+
+/* The open menu: the desktop side column, right-aligned, over the page. */
+.m-menu {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: calc(var(--space-7) * var(--u));
+  width: 82%;
+  padding: calc(var(--space-5) * var(--u)) calc(var(--margin) * var(--u)) calc(var(--space-6) * var(--u));
+  border-left: 1px solid var(--line);
+  background: var(--fond);
+  text-align: right;
+}
+
+.m-menu__nav {
+  display: grid;
+  justify-items: end;
+  gap: calc(var(--space-2) * var(--u));
+  font-family: var(--font-display);
+  font-size: calc(var(--size-display) * 0.8 * var(--u));
+  line-height: 1.1;
+}
+
+.m-menu__nav [aria-current]::before {
+  left: calc(-18 * var(--u));
+  width: calc(8 * var(--u));
+  height: calc(8 * var(--u));
+}
+
+.m-menu .m-contact {
+  display: grid;
+  justify-items: end;
+  gap: calc(var(--space-1) * var(--u));
+  margin-top: auto;
 }
 
 /* Blocks: every run of words becomes a grey bar of the same size. */
-.maquette[data-blocks] .m-t {
+:is(.maquette, .mobile)[data-blocks] .m-t {
   background: color-mix(in oklch, var(--ink) 16%, var(--fond));
   color: transparent;
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
 }
 
-.maquette[data-blocks] mark .m-t {
+:is(.maquette, .mobile)[data-blocks] mark .m-t {
   background: none;
+}
+
+/* The phone section of the Atelier: three screens side by side. */
+
+.telephone {
+  margin-top: 40px;
+}
+
+.telephone h3 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 12px;
+  margin: 0 0 12px;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.telephone h3 span {
+  color: var(--atelier-dim);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.telephone__tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.phones {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 32px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.phone {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  margin: 0;
+}
+
+.phone__frame {
+  position: relative;
+  width: min(100%, 320px);
+  aspect-ratio: 390 / 844;
+  overflow: hidden;
+  border-radius: 28px;
+  box-shadow: 0 0 0 1px var(--atelier-line), 0 0 0 7px #ffffff0a;
+}
+
+.phone figcaption {
+  max-width: 320px;
+  color: var(--atelier-dim);
+  font-size: 12px;
+}
+
+.phone figcaption strong {
+  display: block;
+  margin-bottom: 2px;
+  color: var(--atelier-ink);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+@media (max-width: 900px) {
+  .phones {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+  }
+}
+
+.m-menu__nav .m-lang {
+  margin-top: calc(var(--space-4) * var(--u));
+  color: var(--ink-soft);
+  font-family: var(--font-label);
+  font-size: calc(var(--size-label) * var(--u));
 }

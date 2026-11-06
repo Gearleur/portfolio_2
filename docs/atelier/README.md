@@ -467,6 +467,44 @@ colonnes 14 à 16, alignés à droite. Les dix-sept pistes explorées restent da
 l'historique Git (commit `0022543`) et sont retirées du code. La version
 téléphone et un éventuel twist restent à faire.
 
+**Version téléphone, premier tour.** Un écran de 390 × 844 sur une grille de 4
+colonnes (gouttières et marges de 16 px, la même unité de 4 px). La typo descend
+pour le petit écran, en proposition : titre 40 px, texte 14 px, étiquettes
+11 px. Trois façons de replier la colonne de droite, vues menu fermé ou ouvert :
+
+- **Barre en haut** : le nom à gauche, « Menu » à droite ; le menu ouvre la
+  colonne de droite en plein écran, alignée à droite, la nav en serif ;
+- **Barre en bas** : le nom reste en haut à droite, la nav et FR · EN passent
+  dans une barre en bas, sous le pouce ; rien à ouvrir ;
+- **Tranche à droite** : la colonne se replie en une tranche fine le long du
+  bord droit, le nom écrit à la verticale, et s'ouvre en panneau sur 82 % de la
+  largeur.
+
+**Téléphone, retenu : la tranche à droite**, avec un twist : les images des
+projets passent par-dessus la tranche jusqu'au bord de l'écran, ce qui casse sa
+ligne ; le nom et « Menu » restent lisibles au-dessus. Barre en haut et barre
+en bas sont retirées du code.
+
+**Le contenu de l'en-tête, premier jet.** La bio et les infos Rôle, Approche,
+Langues répétaient la phrase-titre : elles disparaissent. Comme sur la page de
+Rachel Chen, l'en-tête ne garde que trois blocs, tirés de ton CV :
+
+- **Actuellement** : Mikky, un compagnon de bureau pour piloter ses agents de
+  code ; recherche @ UCL, imagerie médicale 3D ;
+- **Précédemment** : ingénieur IA @ SNCF (SNCF GPT, synthèse de réunions) ;
+  ingénieur IA @ Renault / Alpine ;
+- **Formation** : UTC, ingénieur en informatique, 2022 – 2026 ; Shanghai
+  University, semestre en IA, 2024 – 2025.
+
+Les cartes montrent de vrais projets : SNCF GPT (SNCF, 2023), Synthèse de
+réunions (SNCF, 2025), Whiteboard AMDEC (Renault / Alpine, 2025). Les mots
+définitifs s'écrivent avec toi à l'étape 7.
+
+**Tes corrections** : Actuellement devient « Étudiant » ; Précédemment,
+« Ingénieur IA @ SNCF (SNCF GPT agentique, RFI, synthèse de réunions) » puis
+« Ingénieur IA @ Renault / Alpine » ; Formation, « UTC, 2022 – 2026 » et
+« Shanghai University, 2024 – 2025 ».
+
 ### Étape 6 — Les composants
 
 Un par un, chacun avec ses états :
@@ -541,6 +579,10 @@ un bon argument dans un portfolio.
 | 39 | 2026-11-06 | Préférées pour l'instant : Colonnes, Nav latérale, Agence, Affiche suisse. Troisième tour : Journal, Cartel, Plan, Manuel. Quatre coins, Couverture et Lookbook mis de côté. | « Encore d'autres à me proposer » | 5 |
 | 40 | 2026-11-06 | Deux variantes chacune pour Colonnes (index d'abord, trois colonnes), Nav latérale (liste, à droite) et Agence (plein cadre, index seul). Panneau rangé par famille. | « Propose des variantes de Colonnes, Nav latérale et Agence » | 5 |
 | 41 | 2026-11-06 | **Étape 5 validée** (BAT) : nav latérale à droite. Les autres pistes sont retirées du code et gardées dans l'historique (`0022543`). | « Nav latérale à droite, j'aime bien, on part là-dessus » | 5 |
+| 42 | 2026-11-06 | Version téléphone ouverte : trois façons de replier la colonne de droite (barre en haut, barre en bas, tranche à droite), grille de 4 colonnes, typo proposée à 40 · 14 · 11 px. | « C'est parti pour la version mobile » | 5 |
+| 43 | 2026-11-06 | Téléphone : **tranche à droite**, les images passent par-dessus jusqu'au bord de l'écran. Barre en haut et barre en bas retirées. | « Je veux la tranche à droite, mais les rectangles d'image passent par-dessus : ça casse le truc » | 5 |
+| 44 | 2026-11-06 | En-tête réduit à Actuellement, Précédemment et Formation (premier jet tiré du CV) ; la bio et Rôle, Approche, Langues disparaissent. | « Un truc plus simple, sans que ça se répète » · « Currently, previously et mes formations » | 5 |
+| 45 | 2026-11-06 | En-tête corrigé : Actuellement « Étudiant » ; Précédemment « Ingénieur IA @ SNCF (SNCF GPT agentique, RFI, synthèse de réunions) », « Ingénieur IA @ Renault / Alpine » ; Formation « UTC, 2022 – 2026 », « Shanghai University, 2024 – 2025 ». | Tes corrections | 5 |
 
 ---
 
