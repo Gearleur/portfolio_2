@@ -36,11 +36,11 @@ export type Projet = {
 
 export const SNCF_GPT: Projet = {
   nom: 'SNCF GPT',
-  accroche: 'Un assistant pour le support DevOps, devenu l’IA générative du groupe SNCF.',
+  accroche: 'Un assistant IA pour le support DevOps, point de départ de SNCF Groupe GPT, l’IA générative du groupe.',
   chiffres: [
-    { value: '82 %', text: 'des incidents de niveau 1 d’un jeu de tickets de test résolus par l’assistant (mesure interne)' },
-    { value: '500+', text: 'personnes habilitées à la fin du stage' },
-    { value: '3 000+', text: 'utilisateurs par jour, une fois l’outil branché sur Jira, SharePoint et d’autres sources' },
+    { value: '82 %', text: 'des tickets de niveau 1 résolus par l’assistant support, sur un jeu de test (mesure interne)' },
+    { value: '500+', text: 'personnes habilitées sur SNCF Groupe GPT à la fin du stage' },
+    { value: '3 000+', text: 'utilisateurs par jour sur SNCF Groupe GPT, une fois branché sur Jira, SharePoint et d’autres sources' },
   ],
   cartel: [
     ['Équipe', 'Seul sur le prototype · à trois sur le démonstrateur · à deux pour la production'],
@@ -62,13 +62,13 @@ export const SNCF_GPT: Projet = {
           items: [
             { lead: 'Prototype', text: 'Seul, de septembre à novembre.' },
             { lead: 'Démonstrateur', text: 'À trois, en quatre jours.' },
-            { lead: 'Production', text: 'De décembre à février.' },
+            { lead: 'Production', text: 'À deux, de décembre à février.' },
           ],
         },
         {
           type: 'texte',
           lead: 'Le problème : la réponse existe déjà, mais un expert la cherche quand même.',
-          text: 'La plupart des tickets de niveau 1 se règlent avec la documentation. Pourtant, ils mobilisent des experts, qui n’avancent plus sur leurs propres sujets.',
+          text: 'Les tickets de niveau 1 se règlent souvent avec la documentation. Mais sur 1 200 projets, le support mobilise les ingénieurs de l’Usine, qui n’avancent plus sur leurs propres sujets.',
         },
         {
           type: 'visuel',
@@ -78,7 +78,7 @@ export const SNCF_GPT: Projet = {
         {
           type: 'texte',
           lead: 'L’opportunité : l’IA générative arrivait, et tout était à construire.',
-          text: 'En 2023, la SNCF commençait à peine à s’y intéresser. Il n’y avait ni équipe IA ni méthode.',
+          text: 'En 2023, la SNCF commençait à peine à s’y intéresser. L’équipe IA de l’Usine venait d’être créée : il n’y avait encore ni méthode ni outil.',
         },
       ],
     },
@@ -143,7 +143,7 @@ export const SNCF_GPT: Projet = {
           items: [
             {
               lead: 'Entraîner notre propre modèle.',
-              text: 'Des millions d’euros de calcul et une équipe dédiée : écarté.',
+              text: 'Des millions en calcul et une équipe dédiée : écarté d’emblée.',
             },
             {
               lead: 'Fine-tuner un modèle existant.',
@@ -185,7 +185,7 @@ export const SNCF_GPT: Projet = {
         {
           type: 'texte',
           lead: 'Les retours.',
-          text: 'Les équipes DevOps ont adoré. L’outil a ensuite grandi : j’ai branché SNCF Groupe GPT sur Jira ; après mon départ, SharePoint et d’autres sources du groupe ont suivi, et l’outil a dépassé 3 000 utilisateurs par jour.',
+          text: 'Les équipes DevOps ont adoré l’assistant. SNCF Groupe GPT, lui, a grandi : je l’ai branché sur Jira ; après mon départ, SharePoint et d’autres sources du groupe ont suivi, jusqu’à plus de 3 000 utilisateurs par jour.',
         },
       ],
     },

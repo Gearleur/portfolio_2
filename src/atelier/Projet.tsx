@@ -138,6 +138,8 @@ function Blocs({ blocs, figures }: { blocs: Bloc[]; figures: Map<Bloc, number> }
 export function ProjetMaquette({ projet, onRetour }: { projet: Projet; onRetour?: () => void }) {
   const ref = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(projet.sections[0].id);
+  // A section chosen in the table of contents stays marked while the page scrolls to it.
+  const chosen = useRef<{ id: string; timer: number } | null>(null);
 
   // Figures are numbered through the page, the hero thumbnail first.
   const figures = new Map<Bloc, number>();
@@ -145,25 +147,50 @@ export function ProjetMaquette({ projet, onRetour }: { projet: Projet; onRetour?
   for (const section of projet.sections)
     for (const bloc of section.blocs) if (bloc.type === 'visuel' || bloc.type === 'decision') figures.set(bloc, ++count);
 
-  // The table of contents follows the section being read.
+  // The table of contents follows the section being read: the last one whose
+  // top has passed a reading line, 30 % down the screen. The last sections can
+  // never scroll up to that line, so over the last screen of the page the line
+  // slides down to the bottom: at the very end, the last section is the one read.
   useEffect(() => {
     const page = ref.current;
     if (!page) return;
+    const release = () => {
+      if (chosen.current) window.clearTimeout(chosen.current.timer);
+      chosen.current = null;
+    };
     const update = () => {
-      const line = page.scrollTop + page.clientHeight * 0.3;
+      // After a click, keep the chosen section until the scrolling has stopped.
+      if (chosen.current) {
+        window.clearTimeout(chosen.current.timer);
+        chosen.current.timer = window.setTimeout(release, 200);
+        return;
+      }
+      const left = page.scrollHeight - page.clientHeight - page.scrollTop;
+      const end = Math.min(1, Math.max(0, 1 - left / page.clientHeight));
+      const line = page.scrollTop + page.clientHeight * (0.3 + 0.7 * end) - 1;
       const sections = [...page.querySelectorAll<HTMLElement>('[data-section]')];
       const current = sections.filter((section) => section.offsetTop <= line).pop() ?? sections[0];
       if (current) setActive(current.dataset.section ?? '');
     };
     update();
     page.addEventListener('scroll', update, { passive: true });
-    return () => page.removeEventListener('scroll', update);
+    // The reader takes over: follow the reading again.
+    const events = ['wheel', 'touchstart', 'keydown'] as const;
+    for (const event of events) page.addEventListener(event, release, { passive: true });
+    return () => {
+      release();
+      page.removeEventListener('scroll', update);
+      for (const event of events) page.removeEventListener(event, release);
+    };
   }, []);
 
   const go = (id: string) => {
     const page = ref.current;
     const section = page?.querySelector<HTMLElement>(`[data-section="${id}"]`);
     if (!page || !section) return;
+    if (chosen.current) window.clearTimeout(chosen.current.timer);
+    chosen.current = { id, timer: window.setTimeout(() => (chosen.current = null), 1200) };
+    setActive(id);
     const smooth = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     page.scrollTo({ top: section.offsetTop - page.clientHeight * 0.08, behavior: smooth ? 'smooth' : 'auto' });
   };

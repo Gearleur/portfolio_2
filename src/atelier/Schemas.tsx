@@ -17,7 +17,11 @@ export type Ecran = 'liste' | 'incident' | 'reponse' | 'conversation';
 
 type Ton = 'accent' | 'faible';
 
-/** Arrow heads, ink and accent, under ids unique to each drawing. */
+/**
+ * Arrow heads, ink and accent, under ids unique to each drawing: the cursor's
+ * agent pointer, drawn straight like the back link's arrow (journal n° 80),
+ * its tip on the end of the line. The same size whatever the stroke.
+ */
 function Defs({ id }: { id: string }) {
   return (
     <defs>
@@ -25,14 +29,15 @@ function Defs({ id }: { id: string }) {
         <marker
           key={suffix}
           id={`${id}-tete${suffix}`}
-          viewBox="0 0 8 8"
-          refX="7.5"
-          refY="4"
-          markerWidth="7"
-          markerHeight="7"
+          viewBox="0 0 10 10"
+          refX="10"
+          refY="5"
+          markerWidth="9"
+          markerHeight="9"
+          markerUnits="userSpaceOnUse"
           orient="auto-start-reverse"
         >
-          <path d="M0 0 L8 4 L0 8 Z" className={`sc-tete${suffix && ' sc-tete--accent'}`} />
+          <path d="M10 5 L0 0 L3.5 5 L0 10 Z" className={`sc-tete${suffix && ' sc-tete--accent'}`} />
         </marker>
       ))}
     </defs>
@@ -114,15 +119,18 @@ function Parcours() {
           {[0, 1, 2, 3].map((i) => (
             <Fleche key={i} id={id} d={`M${x(i) + 120} 96 H${x(i + 1)}`} />
           ))}
-          <path className="sc-filet" d={`M${x(2) + 60} 136 V142 H${x(4) + 60} V136`} />
-          <text className="sc-petit" x={x(3) + 60} y={156} textAnchor="middle">
+          <path className="sc-trait sc-trait--faible" d={`M${x(2) + 60} 64 V56 H${x(4) + 60} V64`} />
+          <text className="sc-petit" x={x(3) + 60} y={48} textAnchor="middle">
             escalade
           </text>
-          <text className="sc-petit sc-accent-texte" x={x(4) + 120} y={58} textAnchor="end">
-            des experts pris sur leurs sujets
+          <text className="sc-petit sc-accent-texte" x={x(4) + 120} y={140} textAnchor="end">
+            des ingénieurs pris
+          </text>
+          <text className="sc-petit sc-accent-texte" x={x(4) + 120} y={154} textAnchor="end">
+            sur leurs propres sujets
           </text>
           <Boite x={x(2) - 15} y={178} w={150} h={52} titre="Documentation" sous="Markdown sur GitLab" pointille />
-          <Fleche id={id} d={`M${x(2) + 60} 178 V126`} ton="accent" pointille />
+          <Fleche id={id} d={`M${x(2) + 60} 178 V122`} ton="accent" pointille />
           <text className="sc-petit sc-accent-texte" x={x(2) + 148} y={198}>
             la réponse y est souvent déjà,
           </text>
@@ -440,8 +448,8 @@ function Pdf() {
       {(id) => (
         <>
           {page}
-          <Fleche id={id} d="M180 120 C 210 120, 210 70, 240 70" />
-          <Fleche id={id} d="M180 140 C 210 140, 210 190, 240 190" ton="accent" />
+          <Fleche id={id} d="M180 120 C 215 120, 215 72, 246 72" />
+          <Fleche id={id} d="M180 140 C 215 140, 215 192, 246 192" ton="accent" />
           <text className="sc-titre" x="250" y="34">
             Parseur à règles
           </text>
@@ -511,10 +519,15 @@ function Agent() {
           <text className="sc-petit" x="505" y="56" textAnchor="middle">
             quand il sait
           </text>
+          <text className="sc-petit" x="485" y="146" textAnchor="middle">
+            ses outils
+          </text>
+          <path className="sc-trait" d="M450 153 H520" />
+          <path className="sc-trait" d="M520 127 V247" />
           {['Recherche doc', 'Graphe de la doc', 'Incidents résolus', 'Reformulation'].map((titre, i) => (
             <g key={titre}>
               <Boite x={560} y={112 + i * 40} w={150} h={30} titre={titre} pointille />
-              <path className="sc-trait sc-trait--pointille" d={`M450 153 C 505 153, 505 ${127 + i * 40}, 560 ${127 + i * 40}`} />
+              <Fleche id={id} d={`M520 ${127 + i * 40} H560`} />
             </g>
           ))}
         </>

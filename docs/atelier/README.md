@@ -643,7 +643,9 @@ construite comme celle de Rachel Chen :
   sur le chemin qui compte. Tirés du rapport de stage : le parcours d'un ticket,
   l'écran de l'assistant (et ses quatre recadrages dans les cartes), la carte des
   pistes, les sources, la recherche hybride, la lecture des PDF, l'agent ReAct,
-  le pipeline CI/CD. Le plan d'architecture en voies est retiré.
+  le pipeline CI/CD. Le plan d'architecture en voies est retiré. Les flèches
+  reprennent la pointe du curseur, dessinée droite comme celle du retour, et
+  gardent la même taille quel que soit le trait.
 
 ### Étape 8 — La Vitrine
 
@@ -749,6 +751,7 @@ un bon argument dans un portfolio.
 | 80 | 2026-11-06 | La flèche du retour, redessinée **droite** : la tête à encoche de la pointe, rendue symétrique et pointée vers la gauche, alignée sur les capitales (elle était tournée de travers). | « Mets le curseur de façon propre s'il te plaît, il n'est pas droit » | 7 |
 | 81 | 2026-11-06 | **Les résultats d'abord** : les trois chiffres clés (82 %, 500+, 3 000+) passent en tête de la page, sous l'accroche, entre deux filets. La partie Résultats, à la fin, garde le reste (comité exécutif, présentations, presse) sans répéter les chiffres. | « Est-ce qu'on ne mettrait pas les résultats en premier, et à la fin ? » | 7 |
 | 82 | 2026-11-06 | **Schémas techniques** de la page SNCF GPT, à plat, sans surcouche argentée : parcours d'un ticket, écran de l'assistant (et ses recadrages dans les cartes), carte des pistes, sources gardées et écartées, recherche hybride, lecture des PDF, agent ReAct, pipeline CI/CD. Le plan d'architecture en voies est retiré des décisions. | « Je veux des schémas techniques et pas une surcouche argentée ; s'il lit l'article, il va vouloir comprendre ; des schémas clairs, efficaces » · « Les décisions techniques, tu peux supprimer ce schéma ; pour le reste je te laisse faire avec le rapport de stage » | 7 |
+| 83 | 2026-11-06 | **Relecture critique** de SNCF GPT. L'accroche dit « point de départ de SNCF Groupe GPT » au lieu de « devenu ». Chaque chiffre dit à quel outil il se rapporte (assistant support ou SNCF Groupe GPT). « Ni équipe IA » contredisait « premier membre de l'équipe IA ». Les ingénieurs de l'Usine, pas « des experts », sont pris sur leurs sujets. Les retours ne mélangent plus les deux outils. **Flèches** des schémas : la pointe du curseur, à taille fixe ; le crochet « escalade » ne croise plus la flèche de la doc ; les outils de l'agent partent d'un même bus. **Sommaire** : la partie 10 est détectée en bas de page, et la partie cliquée reste marquée pendant le défilement. | « Repasse sur l'article de façon critique » · « Revois les schémas et les flèches, des fois il y a des bugs ; essaie de réutiliser notre curseur pour les flèches » · « Quand on scrolle jusqu'en bas, le 10 n'est pas détecté dans le sommaire » | 7 |
 
 ---
 
