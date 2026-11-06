@@ -193,8 +193,8 @@ La palette Snow crimson est gardée en appoint (journal n° 23) :
 | 4 | Espaces et grille | Le rythme et les colonnes | Validé le 2026-11-06 |
 | 5 | Le chemin de fer | La composition de la Vitrine | Validé le 2026-11-06 |
 | 6 | Les composants | Chaque brique, une par une | Validé le 2026-11-06 |
-| 7 | Le contenu | Tes projets et tes textes | En cours |
-| 8 | La Vitrine | La page assemblée | — |
+| 7 | Le contenu | Tes projets et tes textes | En cours (SNCF GPT et Whiteboard AMDEC faits) |
+| 8 | La Vitrine | La page assemblée | Première version en ligne sur `/portfolio/` |
 | 9 | Mouvement et finitions | Survols, apparitions, mobile, accessibilité | — |
 | 10 | Mise en ligne | Le lien depuis le bureau, le déploiement | — |
 
@@ -688,6 +688,22 @@ construite comme celle de Rachel Chen :
 On assemble `/portfolio/` avec uniquement les pièces validées. Si quelque chose
 manque, on revient d'abord dans l'Atelier.
 
+**Première version en ligne (journal n° 99)**, avant la fin de l'étape 7, pour
+que la page soit accessible. Elle est faite de `portfolio/index.html` et de
+`src/portfolio/` :
+- la Vitrine en taille réelle sur ordinateur, et en version téléphone sous
+  720 px ;
+- chaque page projet a sa propre adresse (`#sncf-gpt`, `#whiteboard-amdec`),
+  qu'on peut partager ;
+- le retour ramène là où on était ;
+- en `noindex` tant que la page n'est pas finie.
+
+Ce qui reste :
+- Synthèse de réunions ;
+- la nav (À propos, CV, Contact) et les liens de contact ;
+- l'anglais ;
+- le lien depuis le bureau rétro.
+
 ### Étape 9 — Mouvement et finitions
 
 Survols, apparitions, éventuellement un grain qui vit. On passe ensuite au mobile,
@@ -803,6 +819,7 @@ un bon argument dans un portfolio.
 | 96 | 2026-11-06 | **Texte de Whiteboard AMDEC validé**, et le projet **passe en deuxième** dans la Vitrine (avant Synthèse de réunions). Sa page est montée sur le modèle de SNCF GPT : logo Renault dans le titre, chiffres du point de départ, neuf parties, huit schémas techniques à plat (grille AMDEC, tableau blanc, pile déployée, boucle de créativité, graphe des agents, nuage d'idées, RAG et CAG, outils des agents). La miniature est faite à part. | « Vas-y, c'est bon, le texte, on peut l'implémenter ; et mets-le en deuxième comme article, pas en troisième » | 7 |
 | 97 | 2026-11-06 | Whiteboard AMDEC : le **logo Alpine** remplace celui de Renault dans le titre (le « A » du fichier officiel fourni, sans le mot), collé au dernier mot pour ne jamais passer seul à la ligne. Ta **miniature** est sur la carte de la Vitrine et en tête de page. Tous les schémas des pages projet ont un **fond à points**. | « Mets le logo d'Alpine plutôt que Renault en haut » · « Pour les schémas, c'est pas bête, tu peux mettre un fond avec des points » · « Je t'ai donné aussi la miniature à mettre » · « Va chercher le logo d'Alpine propre » | 7 |
 | 98 | 2026-11-06 | Les **grands titres suivent la largeur de la page**, comme la mise en page : 72 px à 1440 px, 96 px à 1920 px, 128 px à 2560 px, jamais moins de 72 px. Le titre de l'accueil tient ainsi sur deux lignes en taille réelle, comme dans la vue ×1,33. Les titres des pages projet suivent la même règle ; le texte courant reste à 15 px. | « En taille réelle le titre est trop petit, il doit être sur deux lignes comme en ×1,33 » | 7 |
+| 99 | 2026-11-06 | **La Vitrine est en ligne sur `/portfolio/`**, même inachevée : l'accueil et les deux pages projet, en taille réelle et sur téléphone. Chaque projet a son adresse (`#sncf-gpt`, `#whiteboard-amdec`). La page est en `noindex` pour l'instant. Le travail est commité et poussé. | « Commit et push, et fais en sorte pour l'instant d'avoir cette page sur /portfolio et qu'elle soit accessible même si ce n'est pas fini ; on reprendra la suite plus tard » | 8 |
 
 ---
 

@@ -1,0 +1,25 @@
+/* The Vitrine at /portfolio/ (journal n° 99): the Atelier's stage filling
+   the window, the page scrolling inside it. */
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  overflow: hidden;
+  background: var(--fond);
+}
+
+.vitrine {
+  position: fixed;
+  inset: 0;
+  height: 100dvh;
+}
+
+/* On a touch screen there is no pointer to draw. */
+@media (hover: none) {
+  .vitrine .curseur {
+    display: none;
+  }
+}

@@ -89,7 +89,7 @@ type MaquetteMobileProps = MaquetteProps & {
  * The same first screen on a 390 × 844 phone. The side column folds into a thin
  * strip along the right edge; the project images run over it.
  */
-export function MaquetteMobile({ menuOpen, onMenu, glisse, blocks, columns, images }: MaquetteMobileProps) {
+export function MaquetteMobile({ menuOpen, onMenu, glisse, blocks, columns, images, onOuvrir }: MaquetteMobileProps) {
   const ref = useRef<HTMLDivElement>(null);
 
   useTranche(ref, '.m-img');
@@ -104,7 +104,7 @@ export function MaquetteMobile({ menuOpen, onMenu, glisse, blocks, columns, imag
         </button>
       </div>
       <Hero />
-      <Visuals images={images} />
+      <Visuals images={images} onOuvrir={onOuvrir} />
       <div className="m-menu" data-open={menuOpen ? '' : undefined} inert={!menuOpen}>
         <button type="button" className="m-label" onClick={() => onMenu?.(false)}>
           <T>Fermer</T>
