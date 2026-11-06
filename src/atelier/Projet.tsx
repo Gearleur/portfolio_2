@@ -230,12 +230,9 @@ export function ProjetMaquette({ projet, onRetour }: { projet: Projet; onRetour?
 
       <article className="p-contenu">
         <header className="p-entete">
-          <p className="p-chez m-label">
-            <Marque id={projet.chez.logo} className="p-chez__logo" />
-            <T>{projet.chez.equipe}</T>
-          </p>
           <h1 className="p-titre">
             <T>{projet.nom}</T>
+            <Marque id={projet.logo} className="p-titre__logo" />
           </h1>
           <p className="p-accroche">
             <T>{projet.accroche}</T>
@@ -263,14 +260,6 @@ export function ProjetMaquette({ projet, onRetour }: { projet: Projet; onRetour?
               </div>
             ))}
           </dl>
-          <ul className="p-outils m-label" aria-label="Outils">
-            {projet.outils.map((outil) => (
-              <li key={outil.nom}>
-                {outil.logo ? <Marque id={outil.logo} /> : <span className="p-outils__sans" aria-hidden="true" />}
-                <T>{outil.nom}</T>
-              </li>
-            ))}
-          </ul>
           <Visuel legende={`${projet.nom}, détail de l’aiguillage.`} n={1}>
             <Miniature />
           </Visuel>

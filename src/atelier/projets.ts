@@ -28,20 +28,18 @@ export type Chiffre = { value: string; text: string };
 
 export type Projet = {
   nom: string;
-  /** Where it was done: the company's mark and the team, above the title. */
-  chez: { logo: LogoId; equipe: string };
+  /** The company's mark, in the title line (journal n° 85). */
+  logo: LogoId;
   accroche: string;
   /** The key figures, first thing under the line (journal n° 81). */
   chiffres: Chiffre[];
   cartel: [string, string][];
-  /** The tools, with their marks when Simple Icons has them. */
-  outils: { nom: string; logo?: LogoId }[];
   sections: Section[];
 };
 
 export const SNCF_GPT: Projet = {
   nom: 'SNCF GPT',
-  chez: { logo: 'sncf', equipe: 'e.SNCF Solutions · Usine Logicielle, Lyon' },
+  logo: 'sncf',
   accroche: 'Un assistant IA pour le support DevOps, point de départ de SNCF Groupe GPT, l’IA générative du groupe.',
   chiffres: [
     { value: '82 %', text: 'des tickets de niveau 1 résolus par l’assistant support, sur un jeu de test (mesure interne)' },
@@ -52,24 +50,6 @@ export const SNCF_GPT: Projet = {
     ['Équipe', 'Seul sur le prototype · à trois sur le démonstrateur · à deux pour la production'],
     ['Période', 'Septembre 2023 – février 2024, à Lyon'],
     ['Rôle', 'Ingénieur IA stagiaire : recherche, RAG, agent, CI/CD, mise en production'],
-  ],
-  outils: [
-    { nom: 'Python', logo: 'python' },
-    { nom: 'Azure OpenAI' },
-    { nom: 'Azure AI Search' },
-    { nom: 'Streamlit', logo: 'streamlit' },
-    { nom: 'Flask', logo: 'flask' },
-    { nom: 'Figma', logo: 'figma' },
-    { nom: 'ServiceNow' },
-    { nom: 'GitLab', logo: 'gitlab' },
-    { nom: 'Jenkins', logo: 'jenkins' },
-    { nom: 'Docker', logo: 'docker' },
-    { nom: 'SonarQube', logo: 'sonarqube' },
-    { nom: 'Checkmarx', logo: 'checkmarx' },
-    { nom: 'Artifactory', logo: 'jfrog' },
-    { nom: 'Ansible', logo: 'ansible' },
-    { nom: 'Vault', logo: 'vault' },
-    { nom: 'Jira', logo: 'jira' },
   ],
   sections: [
     {
