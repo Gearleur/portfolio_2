@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 import { Maquette, MaquetteMobile } from '../Maquettes';
 import { Miniature } from '../Miniature';
 import { ProjetMaquette, ProjetMobile } from '../Projet';
-import { SNCF_GPT } from '../projets';
+import { PROJETS, SNCF_GPT } from '../projets';
 import { Specimen, SpecimenPreview } from '../Specimen';
 import { FOND, FOND_LECTURE } from '../tokens';
 import { useWaveSignal } from '../useWave';
@@ -66,6 +66,14 @@ export function ContenuStep() {
   const [menuProjet, setMenuProjet] = useState(false);
   // The first stage goes from the project page back to the Vitrine and in again.
   const [vue, setVue] = useState<'projet' | 'vitrine'>('projet');
+  // Which project page is shown, by its number on the Vitrine.
+  const [numero, setNumero] = useState('01');
+  const projet = PROJETS[numero] ?? SNCF_GPT;
+  const ouvrir = (n: string) => {
+    if (!PROJETS[n]) return;
+    setNumero(n);
+    setVue('projet');
+  };
   const [waveSignal, playWave] = useWaveSignal();
   const close = useCallback(() => setPreview(null), []);
   const images = { '01': <Miniature /> };
@@ -88,14 +96,21 @@ export function ContenuStep() {
         <div className="atelier-panel">
           <fieldset>
             <legend>La page projet</legend>
+            <div className="atelier-segment" role="group" aria-label="Page projet affichée">
+              {Object.entries(PROJETS).map(([n, item]) => (
+                <button key={n} type="button" aria-pressed={n === numero} onClick={() => ouvrir(n)}>
+                  {item?.nom}
+                </button>
+              ))}
+            </div>
             <p className="atelier-panel__note">
-              Construite comme celle de Rachel Chen : le titre, l’accroche, le cartel et la miniature, puis dix parties
-              aux titres en phrases, lues au milieu de la page. Le fond sans l’onde, pour lire tranquille. Huit schémas
-              techniques à plat, tirés du rapport de stage, et l’écran de l’assistant redessiné dans les cartes.
+              Construite comme celle de Rachel Chen : le titre, l’accroche, les chiffres, le cartel et la miniature, puis
+              des parties aux titres en phrases, lues au milieu de la page. Le fond sans l’onde, pour lire tranquille.
+              Des schémas techniques à plat, et l’écran du produit redessiné dans les cartes.
             </p>
             <p className="atelier-panel__note">
-              En haut à gauche, « ← Projets / SNCF GPT » ramène à la Vitrine ; plus bas, le sommaire suit la lecture
-              (carré accent) et chaque ligne mène à sa partie.
+              En haut à gauche, « ← Projets » ramène à la Vitrine ; plus bas, le sommaire suit la lecture (carré
+              accent) et chaque ligne mène à sa partie.
             </p>
           </fieldset>
 
@@ -112,19 +127,19 @@ export function ContenuStep() {
           <div className="atelier-stage__frame">
             {vue === 'projet' ? (
               <Specimen settings={FOND_LECTURE}>
-                <ProjetMaquette projet={SNCF_GPT} onRetour={() => setVue('vitrine')} />
+                <ProjetMaquette key={numero} projet={projet} onRetour={() => setVue('vitrine')} />
               </Specimen>
             ) : (
               <Specimen settings={FOND} waveSignal={waveSignal}>
-                <Maquette blocks={false} images={images} onOuvrir={() => setVue('projet')} />
+                <Maquette blocks={false} images={images} onOuvrir={ouvrir} />
               </Specimen>
             )}
           </div>
           <div className="atelier-stage__bar">
             <p>
               {vue === 'projet'
-                ? 'La page SNCF GPT : fais défiler ; « ← Projets » ramène à la Vitrine'
-                : 'La Vitrine : clique sur la carte SNCF GPT pour ouvrir sa page'}
+                ? `La page ${projet.nom} : fais défiler ; « ← Projets » ramène à la Vitrine`
+                : 'La Vitrine : clique sur une carte pour ouvrir sa page'}
             </p>
             <div>
               <button type="button" onClick={() => setPreview('projet')}>
@@ -218,7 +233,8 @@ export function ContenuStep() {
                 <div className="phone__frame" ref={phone.section ? scrollToSection(phone.section) : undefined}>
                   <Specimen settings={FOND_LECTURE}>
                     <ProjetMobile
-                      projet={SNCF_GPT}
+                      key={numero}
+                      projet={projet}
                       menuOpen={phone.section ? false : menuProjet}
                       onMenu={phone.section ? undefined : setMenuProjet}
                     />
@@ -237,10 +253,10 @@ export function ContenuStep() {
       {preview && (
         <SpecimenPreview
           settings={preview === 'projet' ? FOND_LECTURE : FOND}
-          label={preview === 'projet' ? 'La page SNCF GPT en plein écran' : 'La Vitrine en plein écran'}
+          label={preview === 'projet' ? `La page ${projet.nom} en plein écran` : 'La Vitrine en plein écran'}
           onClose={close}
         >
-          {preview === 'projet' ? <ProjetMaquette projet={SNCF_GPT} /> : <Maquette blocks={false} images={images} />}
+          {preview === 'projet' ? <ProjetMaquette projet={projet} /> : <Maquette blocks={false} images={images} />}
         </SpecimenPreview>
       )}
     </section>

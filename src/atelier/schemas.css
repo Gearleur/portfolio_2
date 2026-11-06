@@ -188,3 +188,121 @@
   fill: var(--fond);
   stroke: none;
 }
+
+/* Whiteboard AMDEC's diagrams (journal n° 96). */
+.schema .sc-gras {
+  font-weight: 600;
+}
+
+.schema .sc-micro-encre {
+  fill: var(--ink-soft);
+  font-size: 9px;
+}
+
+.schema .sc-mono--petit {
+  font-size: 9.5px;
+}
+
+.sc-filet-encre {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 0.8;
+}
+
+.sc-cellule {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.5;
+}
+
+.sc-point-grille {
+  fill: color-mix(in oklch, var(--ink) 22%, var(--fond));
+}
+
+.sc-avatar {
+  fill: var(--fond);
+  stroke: var(--ink);
+  stroke-width: 1;
+}
+
+.sc-outil {
+  fill: var(--fond);
+  stroke: var(--ink-soft);
+  stroke-width: 0.8;
+}
+
+.sc-outil--actif {
+  fill: var(--ink);
+  stroke: var(--ink);
+}
+
+/* A cursor on the board: the site's pointer with a name tag; an agent's in
+   the accent, an engineer's in ink. */
+.sc-curseur polygon,
+.sc-curseur rect {
+  fill: var(--accent);
+}
+
+.sc-curseur--encre polygon,
+.sc-curseur--encre rect {
+  fill: var(--ink);
+}
+
+.schema .sc-curseur text {
+  fill: #fff;
+  font-size: 8.5px;
+  font-weight: 500;
+}
+
+/* An engineer's note, written by hand: the display face in italics. */
+.sc-note rect {
+  fill: color-mix(in oklch, var(--accent) 6%, var(--fond));
+  stroke: var(--ink);
+  stroke-width: 0.8;
+}
+
+.sc-note path {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1;
+}
+
+.schema .sc-note text {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-style: italic;
+}
+
+.sc-focus.sc-note rect {
+  stroke: var(--accent);
+  stroke-width: 2;
+}
+
+.sc-gpu {
+  fill: color-mix(in oklch, var(--ink) 6%, var(--fond));
+  stroke: var(--ink);
+  stroke-width: 0.8;
+}
+
+.sc-contexte {
+  fill: color-mix(in oklch, var(--ink) 18%, var(--fond));
+}
+
+.sc-grappe {
+  fill: color-mix(in oklch, var(--ink) 4%, var(--fond));
+  stroke: var(--ink-soft);
+  stroke-width: 0.8;
+  stroke-dasharray: 3 3;
+}
+
+.sc-isolee {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.2;
+}
+
+.sc-element {
+  fill: color-mix(in oklch, var(--ink) 5%, var(--fond));
+  stroke: var(--ink-soft);
+  stroke-width: 0.8;
+}

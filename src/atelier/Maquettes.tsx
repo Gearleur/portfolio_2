@@ -40,8 +40,8 @@ const ENTETE: [string, Part[][]][] = [
 // Captioned like works in a museum, small and minimal: title in italics · organisation, year.
 const PROJECTS = [
   { number: '01', name: 'SNCF GPT', org: 'SNCF', year: '2023' },
-  { number: '02', name: 'Synthèse de réunions', org: 'SNCF', year: '2025' },
-  { number: '03', name: 'Whiteboard AMDEC', org: 'Renault / Alpine', year: '2025' },
+  { number: '02', name: 'Whiteboard AMDEC', org: 'Renault / Alpine', year: '2025' },
+  { number: '03', name: 'Synthèse de réunions', org: 'SNCF', year: '2025' },
 ];
 const CONTACT = ['E-mail', 'LinkedIn', 'GitHub'];
 
@@ -52,7 +52,7 @@ type MaquetteProps = {
   columns?: number;
   /** Pictures for the project cards, by project number; the others stay grey. */
   images?: Partial<Record<string, ReactNode>>;
-  /** Opens a project's page when its card is clicked (the Atelier's step 7). */
+  /** Opens a project's page when its card is clicked (the Atelier's step 7); the caller ignores projects without one. */
   onOuvrir?: (number: string) => void;
 };
 
@@ -192,7 +192,7 @@ const Visuals = ({ images, onOuvrir }: Pick<MaquetteProps, 'images' | 'onOuvrir'
         key={project.number}
         data-cursor="projet"
         data-cursor-label="Voir le projet"
-        onClick={onOuvrir && images?.[project.number] ? () => onOuvrir(project.number) : undefined}
+        onClick={onOuvrir ? () => onOuvrir(project.number) : undefined}
       >
         <span className="m-img">{images?.[project.number]}</span>
         <span className="m-work">

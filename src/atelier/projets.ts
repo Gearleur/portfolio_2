@@ -30,6 +30,8 @@ export type Projet = {
   nom: string;
   /** The company's mark, in the title line (journal n° 85). */
   logo: LogoId;
+  /** The thumbnail at the top of the page, if drawn in the Atelier; its caption either way. */
+  miniature: { aiguillage: boolean; legende: string };
   accroche: string;
   /** The key figures, first thing under the line (journal n° 81). */
   chiffres: Chiffre[];
@@ -40,6 +42,7 @@ export type Projet = {
 export const SNCF_GPT: Projet = {
   nom: 'SNCF GPT',
   logo: 'sncf',
+  miniature: { aiguillage: true, legende: 'SNCF GPT, détail de l’aiguillage.' },
   accroche: 'Un assistant IA pour le support DevOps, point de départ de SNCF Groupe GPT, l’IA générative du groupe.',
   chiffres: [
     { value: '82 %', text: 'des tickets de niveau 1 résolus par l’assistant support, sur un jeu de test (mesure interne)' },
@@ -316,3 +319,235 @@ export const SNCF_GPT: Projet = {
     },
   ],
 };
+
+/** Whiteboard AMDEC, the Vitrine's second project (journal n° 96). */
+export const WHITEBOARD_AMDEC: Projet = {
+  nom: 'Whiteboard AMDEC',
+  logo: 'renault',
+  miniature: { aiguillage: false, legende: 'La miniature de la Vitrine, faite à part.' },
+  accroche: 'Un tableau blanc où des agents IA aident les ingénieurs d’Alpine à construire leurs analyses de risques.',
+  chiffres: [
+    { value: '6 mois', text: 'd’ateliers pour une AMDEC, au départ' },
+    { value: '4 à 5', text: 'ingénieurs autour de fichiers Excel' },
+    { value: '8 GPU', text: 'A100 pour faire tourner nos propres modèles' },
+  ],
+  cartel: [
+    ['Équipe', 'Quatre étudiants ; seul sur le produit, le logiciel et l’IA'],
+    ['Période', 'Mars – juin 2025, mission de Junior-Entreprise'],
+    ['Rôle', 'Conception du produit, agents, RAG, déploiement des modèles'],
+  ],
+  sections: [
+    {
+      id: 'vue',
+      nav: 'Vue d’ensemble',
+      titre: 'Comment aider des ingénieurs à trouver tout ce qui peut lâcher sur une voiture ?',
+      blocs: [
+        {
+          type: 'texte',
+          text: 'Une AMDEC passe un système en revue, composant par composant. Pour chacun, on liste ses modes de défaillance, leurs effets et leurs causes, et on les cote. Le client était le groupe Renault ; nous avons surtout travaillé avec Alpine, l’équipe la plus moteur.',
+        },
+        {
+          type: 'colonnes',
+          items: [
+            { lead: 'Ateliers', text: 'Observer comment les ingénieurs construisent une AMDEC.' },
+            { lead: 'Agents', text: 'Les faire proposer des défaillances, et sortir des évidences.' },
+            { lead: 'Tableau blanc', text: 'Sortir d’Excel pour une surface partagée.' },
+          ],
+        },
+        {
+          type: 'texte',
+          lead: 'Le problème : six mois d’ateliers dans des fichiers Excel.',
+          text: 'Une AMDEC mobilisait quatre à cinq ingénieurs pendant six mois, dans des tableurs devenus très complexes.',
+        },
+        { type: 'visuel', schema: 'amdec', legende: 'Une AMDEC classique : la grille, ses colonnes et ses cotes.' },
+        {
+          type: 'texte',
+          lead: 'L’opportunité : des modèles capables de lire les anciennes AMDEC et la documentation des pièces,',
+          text: 'pour proposer une première version que les ingénieurs corrigent, au lieu de partir d’une page blanche. L’objectif de la mission : passer de six mois à deux.',
+        },
+      ],
+    },
+    {
+      id: 'solution',
+      nav: 'La solution',
+      titre: 'Un tableau blanc, comme Miro, où des agents posent l’analyse et où les ingénieurs la reprennent à la main.',
+      blocs: [
+        { type: 'visuel', schema: 'whiteboard', legende: 'L’écran du tableau blanc, redessiné.' },
+        {
+          type: 'texte',
+          text: 'Le tableau est écrit en TypeScript, sur une bibliothèque de tableau blanc existante. Les agents y posent des tableaux de défaillances générés, et ils lisent tout ce qui s’y trouve. Les ingénieurs, eux, écrivent, ajoutent et déplacent des éléments, comme sur un vrai tableau.',
+        },
+      ],
+    },
+    {
+      id: 'ingenieur',
+      nav: 'Ce que fait l’ingénieur',
+      titre: 'Ce que fait l’ingénieur',
+      blocs: [
+        {
+          type: 'cartes',
+          items: [
+            { ecran: 'wb-systeme', lead: 'Poser le système.', text: 'Les sous-systèmes et leurs composants, sur le tableau.' },
+            { ecran: 'wb-agents', lead: 'Lancer les agents.', text: 'Ils proposent modes de défaillance, effets et causes, en tableaux.' },
+            { ecran: 'wb-main', lead: 'Reprendre à la main.', text: 'Écrire, corriger, ajouter ce qui manque.' },
+            {
+              ecran: 'wb-sources',
+              lead: 'S’appuyer sur l’existant.',
+              text: 'Les anciennes AMDEC et la documentation des pièces nourrissent chaque proposition.',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: 'methode',
+      nav: 'Observer, expliquer',
+      titre: 'J’ai d’abord observé les ateliers, puis j’ai dû expliquer l’IA.',
+      blocs: [
+        {
+          type: 'texte',
+          lead: 'Observer.',
+          text: 'J’ai suivi des ateliers d’AMDEC et décortiqué d’anciennes analyses, pour voir comment les ingénieurs les construisaient. La demande était un outil pour aider à créer des AMDEC. Sortir d’Excel pour un tableau blanc interactif, c’est le produit que j’ai imaginé et proposé.',
+        },
+        {
+          type: 'texte',
+          lead: 'Expliquer.',
+          text: 'Ce n’était pas évident pour tout le monde : ce qu’est un LLM, comment il fonctionne, ce dont il a besoin. Au début, certains utilisaient la barre de ChatGPT comme un moteur de recherche. Il fallait accompagner avant de livrer.',
+        },
+      ],
+    },
+    {
+      id: 'modeles',
+      nav: 'Nos modèles',
+      titre: 'Ni API, ni cloud : j’ai fait tourner nos propres modèles.',
+      blocs: [
+        {
+          type: 'colonnes',
+          items: [
+            { lead: 'Une API.', text: 'Pas d’accès au fournisseur cloud du groupe au départ : impossible.' },
+            { lead: 'Un grand benchmark.', text: 'Coûteux, long, et dépassé dans trois mois par le prochain modèle : je l’ai déconseillé.' },
+            {
+              lead: 'Des modèles ouverts, chez nous.',
+              text: 'Les meilleurs du printemps 2025 : Mistral Small 3.1, Gemma 3 de Google et Qwen3, servis avec vLLM sur huit GPU A100.',
+            },
+          ],
+        },
+        {
+          type: 'texte',
+          lead: 'Faire tourner un GPU.',
+          text: 'J’ai déployé les modèles moi-même : vLLM, puis la mise à jour des pilotes et des frameworks NVIDIA du serveur. C’est là que j’ai appris l’infrastructure d’un modèle, sous la couche d’API.',
+        },
+        { type: 'visuel', schema: 'pile', legende: 'Ce qui tournait sur le serveur, des GPU au tableau blanc.' },
+      ],
+    },
+    {
+      id: 'creativite',
+      nav: 'Sortir des évidences',
+      titre: 'Le cœur : pousser les agents au-delà des évidences.',
+      blocs: [
+        {
+          type: 'texte',
+          lead: 'Le plus dur',
+          text: 'n’était pas de générer des défaillances, mais d’éviter les évidences. Un modèle donne d’abord les réponses de tout le monde. Pour une AMDEC, ce sont les défaillances système moins attendues qui comptent.',
+        },
+        {
+          type: 'texte',
+          lead: 'Une boucle de créativité.',
+          text: 'Les agents génèrent des idées. Chacune est classée et projetée dans un espace d’embeddings. On voit lesquelles se ressemblent, et on relance l’exploration vers les plus éloignées, au lieu de les écarter.',
+        },
+        { type: 'visuel', schema: 'boucle', legende: 'La boucle : générer, plonger, classer, garder les idées éloignées, relancer.' },
+      ],
+    },
+    {
+      id: 'decisions',
+      nav: 'Décisions',
+      titre: 'Les décisions techniques',
+      blocs: [
+        {
+          type: 'decision',
+          n: 1,
+          lead: 'Un agent par sous-système, un superviseur au-dessus.',
+          text: 'Un seul agent noyait son contexte. Chaque sous-système a donc son agent, et un superviseur garde la vue d’ensemble pour que les agents ne partent pas tous dans la même direction. Construit avec Google ADK et LangGraph.',
+          visuel: 'Le graphe des agents.',
+          schema: 'agents',
+        },
+        {
+          type: 'decision',
+          n: 2,
+          lead: 'Mesurer la nouveauté plutôt que la deviner.',
+          text: 'La distance entre embeddings dit si une idée est neuve ou une redite.',
+          visuel: 'Un nuage d’idées : les grappes de redites et les idées isolées.',
+          schema: 'nuage',
+        },
+        {
+          type: 'decision',
+          n: 3,
+          lead: 'Le RAG pour l’historique, le CAG pour la pièce.',
+          text: 'Les anciennes AMDEC sont trop nombreuses : on y cherche (RAG). La documentation technique de la pièce étudiée tient dans le contexte : on la charge en entier (CAG).',
+          visuel: 'Les deux chemins jusqu’au modèle.',
+          schema: 'ragcag',
+        },
+        {
+          type: 'decision',
+          n: 4,
+          lead: 'Les agents voient le tableau.',
+          text: 'Ils lisent les éléments posés par les ingénieurs et y écrivent à leur tour : l’humain et l’IA travaillent sur la même surface.',
+          visuel: 'Les outils des agents sur le tableau.',
+          schema: 'outils',
+        },
+      ],
+    },
+    {
+      id: 'prototype',
+      nav: 'Un prototype',
+      titre: 'Un prototype, pas un produit.',
+      blocs: [
+        { type: 'texte', lead: 'Ce qui a marché.', text: 'Le tableau blanc et les agents fonctionnaient de bout en bout.' },
+        {
+          type: 'texte',
+          lead: 'Ce qui n’a pas abouti.',
+          text: 'Avec des modèles locaux moins puissants, les propositions n’étaient pas assez bonnes pour convaincre, et l’objectif des deux mois n’a pas pu être mesuré. Des étudiants ont repris le projet après nous.',
+        },
+        {
+          type: 'texte',
+          lead: 'Ce qui reste.',
+          text: 'L’agencement des agents, les boucles de créativité et l’intégration du RAG et du CAG. Avec les modèles d’aujourd’hui, c’est la partie qui compte, et elle tient.',
+        },
+        {
+          type: 'compromis',
+          text: 'Avec des modèles locaux, la qualité plafonnait. Mais c’était la seule façon de commencer sans accès au cloud, et l’architecture se branchera sur un meilleur modèle sans changer.',
+        },
+      ],
+    },
+    {
+      id: 'apports',
+      nav: 'Ce que ça m’a apporté',
+      titre: 'Ce que ça m’a apporté',
+      blocs: [
+        {
+          type: 'texte',
+          lead: 'L’adoption passe avant la technologie.',
+          text: 'On arrive avec des outils puissants chez des gens qui font leur métier depuis des années. Le plus important est d’accompagner, d’expliquer et d’écouter.',
+        },
+        {
+          type: 'texte',
+          lead: 'Ne pas benchmarker l’état de l’art.',
+          text: 'Les modèles changent tous les trois mois. Mieux vaut une architecture où l’on change de modèle facilement.',
+        },
+        {
+          type: 'texte',
+          lead: 'Diviser pour garder le contexte propre.',
+          text: 'Un agent par sous-système, un superviseur pour l’ensemble.',
+        },
+        {
+          type: 'texte',
+          lead: 'La créativité se construit.',
+          text: 'Un modèle seul donne la réponse moyenne. Une boucle qui mesure la nouveauté va chercher plus loin.',
+        },
+      ],
+    },
+  ],
+};
+
+/** The project pages, by their number on the Vitrine. */
+export const PROJETS: Partial<Record<string, Projet>> = { '01': SNCF_GPT, '02': WHITEBOARD_AMDEC };

@@ -659,9 +659,22 @@ construite comme celle de Rachel Chen :
   les images de l'accueil, la miniature et les schémas passent par-dessus la
   tranche, et ton nom et « Menu » s'allument en accent là où ils passent dessous.
   « Menu » ouvre le sommaire au-dessus de la nav ;
-- **Whiteboard AMDEC, la miniature** : retirée de l'Atelier. Tu l'as faite avec
-  un autre agent (journal n° 95). Le texte de la page est dans
-  `docs/atelier/contenu/03-whiteboard-amdec.md`.
+- **Whiteboard AMDEC**, deuxième projet de la Vitrine (texte dans
+  `docs/atelier/contenu/02-whiteboard-amdec.md`). Sa page suit le même modèle
+  que SNCF GPT, avec le logo Renault (à l'encre) dans le titre et neuf parties.
+  La miniature a été faite à part, avec un autre agent ; en attendant, son
+  emplacement est gris. Huit schémas à plat :
+  - la grille AMDEC dans Excel ;
+  - l'écran du tableau blanc, avec ses quatre recadrages pour les cartes ;
+  - la pile déployée, des 8 A100 au tableau ;
+  - la boucle de créativité ;
+  - le graphe des agents ;
+  - le nuage d'idées dans l'espace des embeddings ;
+  - les chemins RAG et CAG ;
+  - les outils des agents sur le tableau.
+
+  Dans l'Atelier, un bouton choisit la page affichée, et chaque carte de la
+  Vitrine ouvre la sienne.
 - **l'anglais, préparé** : les libellés des schémas existent en français et en
   anglais (`src/atelier/langue.ts`). Le texte anglais de la page reste à brancher. Les logos viennent de Simple
   Icons (CC0), sauf Jenkins (CC BY-SA 3.0, le projet Jenkins). Azure, ServiceNow
@@ -785,6 +798,7 @@ un bon argument dans un portfolio.
 | 93 | 2026-11-06 | Miniature Whiteboard AMDEC, **quatrième tour, d'après ta référence** (une planche de turboréacteur ; le style seulement, l'image n'est pas reprise). Un turboréacteur de 23 étages en trait crème sur ardoise avec une grille, des étiquettes en boîte à chasse fixe. Les étages s'écartent puis se referment, les aubes tournent doucement. **Trois toutes petites flèches rouges** glissent de pièce en pièce, sans colorer les pièces. Les trois finitions précédentes sont retirées. | « Prends ça comme base, simplifie et ajoute du motion ; garde la couleur et tout du schéma, les traits ; les agents, quelque chose de discret avec des toutes petites flèches, pas cheap ; pas de couleur sur les éléments cliqués, juste les flèches qui se déplacent, toutes rouges comme notre couleur » | 7 |
 | 94 | 2026-11-06 | Miniature Whiteboard AMDEC : on repart de zéro avec une **affiche fixe**, sans motion, **bleu électrique avec des touches de rouge**, d'après tes références (étiquettes industrielles, affiches à grille, affiche bleue). On y trouve une berlinette Alpine cotée avec deux agents, la grille quittée pour l'inédit, une étiquette produit (agents, modèles, GPU), des capitales condensées (Big Shoulders), du large (Mona Sans) et de la mono (Geist Mono). | « Oublie ce qu'on a fait ; adapte ces idées à la couleur d'Alpine avec des éléments Alpine ; j'adore le bleu de la dernière image, tout en bleu, un poster bleu avec des touches de rouge et des annotations techniques ; plus de motion, un truc statique » | 7 |
 | 95 | 2026-11-06 | Miniature Whiteboard AMDEC **retirée** de l'Atelier (composant, styles, gros plan et carte de la Vitrine) : tu l'as faite avec un autre agent. Les quatre tours précédents restent dans l'historique (commits 1189514 à bdb94a2). | « Supprime la miniature, je l'ai faite avec un autre agent » | 7 |
+| 96 | 2026-11-06 | **Texte de Whiteboard AMDEC validé**, et le projet **passe en deuxième** dans la Vitrine (avant Synthèse de réunions). Sa page est montée sur le modèle de SNCF GPT : logo Renault dans le titre, chiffres du point de départ, neuf parties, huit schémas techniques à plat (grille AMDEC, tableau blanc, pile déployée, boucle de créativité, graphe des agents, nuage d'idées, RAG et CAG, outils des agents). La miniature est faite à part. | « Vas-y, c'est bon, le texte, on peut l'implémenter ; et mets-le en deuxième comme article, pas en troisième » | 7 |
 
 ---
 

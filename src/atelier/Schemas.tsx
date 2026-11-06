@@ -13,10 +13,37 @@ import './schemas.css';
  * width they are shown at.
  */
 
-export type SchemaId = 'parcours' | 'assistant' | 'pistes' | 'sources' | 'recherche' | 'pdf' | 'agent' | 'pipeline';
+export type SchemaId =
+  | 'parcours'
+  | 'assistant'
+  | 'pistes'
+  | 'sources'
+  | 'recherche'
+  | 'pdf'
+  | 'agent'
+  | 'pipeline'
+  | 'amdec'
+  | 'whiteboard'
+  | 'pile'
+  | 'boucle'
+  | 'agents'
+  | 'nuage'
+  | 'ragcag'
+  | 'outils';
 
-/** A part of the assistant's screen, for the four cards of « Ce que voit le support ». */
-export type Ecran = 'liste' | 'incident' | 'reponse' | 'conversation';
+/**
+ * A part of a screen, for the four cards of a project page: the SNCF GPT
+ * assistant's, or the Whiteboard AMDEC's (wb-).
+ */
+export type Ecran =
+  | 'liste'
+  | 'incident'
+  | 'reponse'
+  | 'conversation'
+  | 'wb-systeme'
+  | 'wb-agents'
+  | 'wb-main'
+  | 'wb-sources';
 
 type Ton = 'accent' | 'faible';
 
@@ -153,7 +180,7 @@ function Parcours() {
 
 /* 2 · The assistant's screen, redrawn as a wireframe (report, fig. 7.10). A
    card shows one part of it, framed upright and outlined in the accent. */
-const CADRES: Record<Ecran, string> = {
+const CADRES: Partial<Record<Ecran, string>> = {
   liste: '0 0 150 200',
   incident: '160 100 270 360',
   reponse: '446 10 270 360',
@@ -168,7 +195,7 @@ function EcranAssistant({ focus }: { focus?: Ecran }) {
   return (
     <svg
       className="schema schema--ecran"
-      viewBox={focus ? CADRES[focus] : '0 0 720 420'}
+      viewBox={(focus && CADRES[focus]) || '0 0 720 420'}
       role="img"
       aria-label={tr('L’écran de l’assistant : la liste des tickets, l’incident résumé, la réponse avec ses sources, la conversation', 'The assistant’s screen: the ticket list, the summarised incident, the answer with its sources, the conversation')}
     >
@@ -599,6 +626,569 @@ function Pipeline() {
   );
 }
 
+
+/* ——— Whiteboard AMDEC (journal n° 96), from Alexandre's account of the mission ——— */
+
+/** A seeded random sequence, so a drawing is the same at every render. */
+function alea(seed: number) {
+  let value = seed;
+  return () => {
+    value = (value * 16807) % 2147483647;
+    return value / 2147483647;
+  };
+}
+
+/* 9 · A classic AMDEC: the spreadsheet, its columns, merged cells, and the
+   highest risk priority number in the accent. */
+const AMDEC_COLS = [18, 92, 84, 116, 104, 104, 32, 32, 32, 46];
+const AMDEC_LIGNES: [number, number, number][] = [
+  [8, 3, 4],
+  [6, 4, 3],
+  [9, 2, 6],
+  [7, 3, 3],
+  [5, 5, 2],
+  [8, 4, 5],
+  [6, 2, 4],
+  [7, 3, 2],
+];
+
+function Amdec() {
+  const tr = useTr();
+  const heads = [
+    '',
+    tr('Composant', 'Component'),
+    tr('Fonction', 'Function'),
+    tr('Mode de défaillance', 'Failure mode'),
+    tr('Effet', 'Effect'),
+    tr('Cause', 'Cause'),
+    'G',
+    'O',
+    'D',
+    tr('IPR', 'RPN'),
+  ];
+  const x = (i: number) => 10 + AMDEC_COLS.slice(0, i).reduce((a, b) => a + b, 0);
+  const right = x(AMDEC_COLS.length);
+  const rpns = AMDEC_LIGNES.map(([g, o, d]) => g * o * d);
+  const max = Math.max(...rpns);
+  const row = (i: number) => 44 + i * 20;
+  const groupes: [string, number, number][] = [
+    [tr('Disque', 'Disc'), 0, 3],
+    [tr('Étrier', 'Caliper'), 3, 3],
+    [tr('Plaquettes', 'Pads'), 6, 2],
+  ];
+  return (
+    <Svg h={236} label={tr('Une AMDEC classique : une grille Excel, composant par composant, avec les modes de défaillance, effets, causes et leurs cotes G, O, D', 'A classic FMEA: a spreadsheet, component by component, with failure modes, effects, causes and their S, O, D ratings')}>
+      {() => (
+        <>
+          <rect className="sc-cadre" x="10" y="10" width={right - 10} height={row(8) - 10} />
+          <rect className="sc-zone" x="10" y="10" width={right - 10} height="14" />
+          <rect className="sc-zone" x="10" y="24" width="18" height={row(8) - 24} />
+          {AMDEC_COLS.slice(1).map((_, i) => (
+            <text key={i} className="sc-micro-encre" x={(x(i + 1) + x(i + 2)) / 2} y="20" textAnchor="middle">
+              {String.fromCharCode(65 + i)}
+            </text>
+          ))}
+          {heads.map((head, i) => (
+            <text key={i} className="sc-petit sc-gras" x={x(i) + 5} y="38">
+              {head}
+            </text>
+          ))}
+          {AMDEC_COLS.slice(1).map((_, i) => (
+            <path key={i} className="sc-filet-encre" d={`M${x(i + 1)} 10 V${row(8)}`} />
+          ))}
+          <path className="sc-filet-encre" d={`M10 24 H${right} M10 44 H${right}`} />
+          {AMDEC_LIGNES.map((_, i) => (
+            <Fragment key={i}>
+              <path className="sc-filet" d={`M${groupes.some(([, start]) => start === i) ? 10 : x(2)} ${row(i)} H${right}`} />
+              <text className="sc-micro-encre" x="19" y={row(i) + 13} textAnchor="middle">
+                {i + 3}
+              </text>
+            </Fragment>
+          ))}
+          {groupes.map(([nom, start, n]) => (
+            <text key={nom} className="sc-petit" x={x(1) + 5} y={row(start) + (n * 20) / 2 + 4}>
+              {nom}
+            </text>
+          ))}
+          {AMDEC_LIGNES.map(([g, o, d], i) => (
+            <Fragment key={i}>
+              {[2, 3, 4, 5].map((c) => (
+                <rect key={c} className="sc-barre" x={x(c) + 5} y={row(i) + 8} width={(AMDEC_COLS[c] - 12) * (0.5 + ((i * 7 + c * 3) % 5) / 10)} height="4" rx="2" />
+              ))}
+              {[g, o, d].map((value, k) => (
+                <text key={k} className="sc-mono" x={x(6 + k) + AMDEC_COLS[6 + k] / 2} y={row(i) + 14} textAnchor="middle">
+                  {value}
+                </text>
+              ))}
+              <text className={`sc-mono${rpns[i] === max ? ' sc-accent-texte' : ''}`} x={x(9) + AMDEC_COLS[9] / 2} y={row(i) + 14} textAnchor="middle">
+                {rpns[i]}
+              </text>
+              {rpns[i] === max && <rect className="sc-cellule" x={x(9) + 2} y={row(i) + 2} width={AMDEC_COLS[9] - 4} height="16" />}
+            </Fragment>
+          ))}
+          <text className="sc-petit" x={right} y="226" textAnchor="end">
+            {tr('… et des centaines de lignes', '… and hundreds of rows')}
+          </text>
+          <text className="sc-petit sc-accent-texte" x="10" y="226">
+            {tr('6 mois d’ateliers · 4 à 5 ingénieurs · IPR = G × O × D', '6 months of workshops · 4–5 engineers · RPN = S × O × D')}
+          </text>
+        </>
+      )}
+    </Svg>
+  );
+}
+
+/* 10 · The whiteboard, redrawn as a wireframe: the system, an agent's
+   table, an engineer's note, the agents and sources. A card shows one part
+   of it, framed upright and outlined in the accent. */
+const CADRES_WB: Record<string, string> = {
+  'wb-systeme': '44 34 216 288',
+  'wb-agents': '258 40 285 380',
+  'wb-main': '52 176 180 240',
+  'wb-sources': '560 34 160 213',
+};
+
+/** An agent's or an engineer's cursor on the board: the site's pointer, small. */
+const Curseur = ({ x, y, nom, encre }: { x: number; y: number; nom: string; encre?: boolean }) => (
+  <g className={encre ? 'sc-curseur sc-curseur--encre' : 'sc-curseur'}>
+    <polygon points={`${x},${y} ${x},${y + 11} ${x + 2.75},${y + 8.25} ${x + 7.8},${y + 7.8}`} />
+    <rect x={x + 8} y={y + 9} width={nom.length * 5.2 + 8} height="11" rx="2" />
+    <text x={x + 12} y={y + 17}>
+      {nom}
+    </text>
+  </g>
+);
+
+function Whiteboard({ focus }: { focus?: Ecran }) {
+  const tr = useTr();
+  const id = useId().replace(/[^\w-]/g, '');
+  const on = (part: Ecran) => (focus === part ? ' sc-focus' : '');
+  const barres = (x: number, y: number, widths: number[], step = 9) =>
+    widths.map((w, i) => <rect key={i} className="sc-barre" x={x} y={y + i * step} width={w} height="4" rx="2" />);
+  const enfants = [tr('Disque', 'Disc'), tr('Étrier', 'Caliper'), tr('Plaquettes', 'Pads'), tr('Maître-cyl.', 'Master cyl.')];
+  return (
+    <svg
+      className="schema schema--ecran"
+      viewBox={focus ? CADRES_WB[focus] : '0 0 720 420'}
+      role="img"
+      aria-label={tr('Le tableau blanc : le système posé par l’ingénieur, un tableau de défaillances proposé par un agent, une note écrite à la main, les agents et les sources', 'The whiteboard: the system laid out by the engineer, a failure table proposed by an agent, a handwritten note, the agents and sources')}
+    >
+      <defs>
+        <pattern id={`${id}-points`} width="14" height="14" patternUnits="userSpaceOnUse">
+          <circle cx="1" cy="1" r="0.8" className="sc-point-grille" />
+        </pattern>
+      </defs>
+      <rect className="sc-cadre" x="0.5" y="0.5" width="719" height="419" rx="6" />
+      <rect x="40" y="30" width="520" height="389" fill={`url(#${id}-points)`} />
+      {/* Top bar and toolbar. */}
+      <path className="sc-filet-encre" d="M1 30 H719 M40 30 V419 M560 30 V419" />
+      <text className="sc-titre" x="52" y="20">
+        Whiteboard AMDEC
+      </text>
+      <text className="sc-sous" x="180" y="20">
+        / {tr('Freinage avant', 'Front brakes')}
+      </text>
+      {[0, 1].map((i) => (
+        <circle key={i} className="sc-avatar" cx={672 + i * 14} cy="15" r="6" />
+      ))}
+      <rect className="sc-agent" x="700" y="10" width="10" height="10" />
+      {[0, 1, 2, 3, 4, 5].map((i) => (
+        <rect key={i} className={i === 0 ? 'sc-outil sc-outil--actif' : 'sc-outil'} x="11" y={44 + i * 28} width="18" height="18" rx="3" />
+      ))}
+
+      {/* The system the engineer lays out. */}
+      <g className={`sc-boite${on('wb-systeme')}`}>
+        <rect x="70" y="56" width="150" height="30" rx="3" />
+        <text className="sc-titre" x="80" y="75">
+          {tr('Système de freinage', 'Braking system')}
+        </text>
+      </g>
+      <path className="sc-trait" d="M145 86 V100 M85 100 H205 M85 100 V112 M125 100 V112 M165 100 V112 M205 100 V112" />
+      {enfants.map((nom, i) => (
+        <g key={nom} className={`sc-boite${on('wb-systeme')}`}>
+          <rect x={58 + i * 40} y="112" width="38" height="58" rx="3" />
+          <text className="sc-micro-encre" x={77 + i * 40} y="146" textAnchor="middle" transform={`rotate(-90 ${77 + i * 40} 141)`}>
+            {nom}
+          </text>
+        </g>
+      ))}
+
+      {/* A table of failures, placed by an agent. */}
+      <g className={`sc-boite${on('wb-agents')}`}>
+        <rect x="270" y="56" width="270" height="168" rx="3" />
+      </g>
+      <rect className="sc-zone" x="271" y="57" width="268" height="22" />
+      <text className="sc-titre" x="280" y="72">
+        {tr('Étrier · défaillances', 'Caliper · failures')}
+      </text>
+      <rect className="sc-agent" x="486" y="62" width="9" height="9" />
+      <text className="sc-micro-encre" x="499" y="70">
+        {tr('agent', 'agent')}
+      </text>
+      {[tr('Mode', 'Mode'), tr('Effet', 'Effect'), tr('Cause', 'Cause'), 'G O D'].map((head, i) => (
+        <text key={head} className="sc-micro-encre" x={280 + i * 66} y="92">
+          {head}
+        </text>
+      ))}
+      <path className="sc-filet-encre" d="M270 97 H540" />
+      {[0, 1, 2, 3, 4].map((i) => (
+        <g key={i} className={on('wb-agents')}>
+          {barres(280, 106 + i * 24, [52])}
+          {barres(346, 106 + i * 24, [50 - (i % 3) * 8])}
+          {barres(412, 106 + i * 24, [46 - (i % 2) * 10])}
+          <text className="sc-mono sc-mono--petit" x="478" y={111 + i * 24}>
+            {['8 3 4', '6 4 3', '9 2 6', '7 3 3', '5 5 2'][i]}
+          </text>
+          <path className="sc-filet" d={`M270 ${118 + i * 24} H540`} />
+        </g>
+      ))}
+      <Curseur x={448} y={212} nom={tr('agent freinage', 'brakes agent')} />
+
+      {/* The engineer's note, by hand, linked to a row. */}
+      <g className={`sc-note${on('wb-main')}`} transform="rotate(-2.5 140 294)">
+        <rect x="64" y="246" width="160" height="96" rx="2" />
+        <text x="76" y="270">
+          {tr('Grippage du piston', 'Piston seizure')}
+        </text>
+        <text x="76" y="288">
+          {tr('par corrosion ?', 'from corrosion?')}
+        </text>
+        <path d="M76 306 C100 300, 130 312, 168 304" />
+      </g>
+      <path className="sc-trait sc-trait--pointille" d="M224 280 C 250 270, 252 180, 270 178" />
+      <Curseur x={190} y={320} nom={tr('ingénieure', 'engineer')} encre />
+
+      {/* Another table, still being written. */}
+      <g className="sc-boite sc-boite--pointille">
+        <rect x="270" y="250" width="270" height="120" rx="3" />
+      </g>
+      <text className="sc-sous" x="280" y="268">
+        {tr('Plaquettes · en cours', 'Pads · in progress')}
+      </text>
+      {[0, 1, 2].map((i) => barres(280, 284 + i * 22, [200 - i * 40]))}
+
+      {/* Agents and sources. */}
+      <text className="sc-sous" x="572" y="52">
+        {tr('Agents', 'Agents')}
+      </text>
+      {[
+        [tr('Superviseur', 'Supervisor'), true],
+        [tr('Freinage', 'Brakes'), true],
+        [tr('Suspension', 'Suspension'), false],
+        [tr('Motorisation', 'Powertrain'), false],
+      ].map(([nom, actif], i) => (
+        <g key={nom as string}>
+          <circle className={actif ? 'sc-agent' : 'sc-point'} cx="578" cy={66 + i * 16} r="3" />
+          <text className="sc-petit" x="588" y={70 + i * 16}>
+            {nom as string}
+          </text>
+        </g>
+      ))}
+      <g className={on('wb-sources')}>
+        <text className="sc-sous" x="572" y="148">
+          Sources
+        </text>
+        <g className="sc-boite">
+          <rect x="572" y="156" width="136" height="34" rx="3" />
+          <text className="sc-petit sc-gras" x="580" y="170">
+            {tr('Anciennes AMDEC', 'Past FMEAs')}
+          </text>
+          <text className="sc-micro-encre" x="580" y="183">
+            RAG · 38 {tr('documents', 'documents')}
+          </text>
+        </g>
+        <g className="sc-boite">
+          <rect x="572" y="196" width="136" height="34" rx="3" />
+          <text className="sc-petit sc-gras" x="580" y="210">
+            {tr('Doc de l’étrier', 'Caliper docs')}
+          </text>
+          <text className="sc-micro-encre" x="580" y="223">
+            CAG · {tr('chargée en entier', 'loaded whole')}
+          </text>
+        </g>
+      </g>
+    </svg>
+  );
+}
+
+/* 11 · What had to run on the server: from the GPUs to the whiteboard. */
+function Pile() {
+  const tr = useTr();
+  const couches: { titre: string; sous: string; logos?: LogoId[] }[] = [
+    { titre: 'Whiteboard', sous: 'TypeScript', logos: ['typescript'] },
+    { titre: tr('Agents', 'Agents'), sous: 'Google ADK · LangGraph', logos: ['langgraph'] },
+    { titre: 'vLLM', sous: tr('une API compatible OpenAI, servie chez nous', 'an OpenAI-compatible API, served in-house') },
+    { titre: tr('Pilotes NVIDIA · CUDA', 'NVIDIA drivers · CUDA'), sous: tr('mis à jour sur le serveur', 'updated on the server'), logos: ['nvidia'] },
+  ];
+  const y = (i: number) => 10 + i * 48;
+  return (
+    <Svg h={302} label={tr('La pile déployée : huit GPU A100, les pilotes NVIDIA, vLLM, trois modèles ouverts, les agents et le tableau blanc', 'The deployed stack: eight A100 GPUs, NVIDIA drivers, vLLM, three open models, the agents and the whiteboard')}>
+      {() => (
+        <>
+          {couches.slice(0, 2).map((couche, i) => (
+            <Boite key={couche.titre} x={10} y={y(i)} w={520} h={38} titre={couche.titre} sous={couche.sous} logos={couche.logos} />
+          ))}
+          {[
+            ['Mistral Small 3.1', 'mistral'],
+            ['Gemma 3', 'gemma'],
+            ['Qwen3', 'qwen'],
+          ].map(([nom, logo], i) => (
+            <Boite key={nom} x={10 + i * 177} y={y(2)} w={166} h={38} titre={nom} sous={tr('poids ouverts', 'open weights')} logos={[logo as LogoId]} />
+          ))}
+          {couches.slice(2).map((couche, i) => (
+            <Boite key={couche.titre} x={10} y={y(3 + i)} w={520} h={38} titre={couche.titre} sous={couche.sous} logos={couche.logos} />
+          ))}
+          <g className="sc-boite sc-boite--accent">
+            <rect x="10" y={y(5)} width="520" height="48" rx="3" />
+          </g>
+          {Array.from({ length: 8 }, (_, i) => (
+            <g key={i}>
+              <rect className="sc-gpu" x={20 + i * 63} y={y(5) + 8} width="55" height="32" rx="2" />
+              <text className="sc-micro-encre" x={47.5 + i * 63} y={y(5) + 28} textAnchor="middle">
+                A100
+              </text>
+            </g>
+          ))}
+          <path className="sc-trait sc-trait--accent" d={`M546 ${y(2)} H556 V${y(5) + 48} H546`} />
+          <text className="sc-petit sc-accent-texte" x="566" y={y(3) + 10}>
+            {tr('installé et mis à jour', 'installed and updated')}
+          </text>
+          <text className="sc-petit sc-accent-texte" x="566" y={y(3) + 24}>
+            {tr('moi-même, sans cloud', 'myself, without a cloud')}
+          </text>
+          <text className="sc-petit sc-accent-texte" x="566" y={y(3) + 38}>
+            {tr('ni API', 'or an API')}
+          </text>
+          <text className="sc-micro-encre" x="566" y={y(5) + 28}>
+            8 × A100 · 80 Go
+          </text>
+        </>
+      )}
+    </Svg>
+  );
+}
+
+/* 12 · The creativity loop: generate, embed, rank by distance, keep the
+   farthest ideas and send the agents back towards them. */
+function Boucle() {
+  const tr = useTr();
+  const boxes: [string, string][] = [
+    [tr('Les agents génèrent', 'The agents generate'), tr('des défaillances', 'failure modes')],
+    ['Embeddings', tr('chaque idée, un point', 'each idea, a point')],
+    [tr('Classement', 'Ranking'), tr('par distance aux autres', 'by distance to the rest')],
+    [tr('Les plus éloignées', 'The farthest'), tr('les idées neuves', 'the new ideas')],
+  ];
+  const x = (i: number) => 10 + i * 178;
+  return (
+    <Svg h={268} label={tr('La boucle de créativité : les agents génèrent, chaque idée devient un point dans un espace d’embeddings, on classe par distance, on garde les plus éloignées et on relance l’exploration vers elles', 'The creativity loop: the agents generate, each idea becomes a point in an embedding space, ranked by distance; the farthest are kept and the exploration is sent back towards them')}>
+      {(id) => (
+        <>
+          {boxes.map(([titre, sous], i) => (
+            <Boite key={titre} x={x(i)} y={60} w={150} h={52} titre={titre} sous={sous} ton={i === 3 ? 'accent' : undefined} />
+          ))}
+          {[0, 1, 2].map((i) => (
+            <Fleche key={i} id={id} d={`M${x(i) + 150} 86 H${x(i + 1)}`} />
+          ))}
+          <Fleche id={id} d={`M${x(3) + 75} 112 V170 C ${x(3) + 75} 192, ${x(3) + 50} 198, ${x(3)} 198 H${x(0) + 105} C ${x(0) + 85} 198, ${x(0) + 75} 188, ${x(0) + 75} 170 V124 V112`} ton="accent" />
+          <text className="sc-petit sc-accent-texte" x={(x(0) + x(3)) / 2 + 75} y="216" textAnchor="middle">
+            {tr('relancer l’exploration vers elles', 'send the exploration towards them')}
+          </text>
+          <Fleche id={id} d={`M${x(2) + 75} 112 V140`} pointille />
+          <Boite x={x(2) - 5} y={140} w={160} h={30} titre={tr('Redites · regroupées', 'Repeats · grouped')} ton="faible" pointille />
+          <text className="sc-petit" x="10" y="36">
+            {tr('Un modèle seul donne la réponse moyenne. La boucle va chercher plus loin, tour après tour.', 'A model alone gives the average answer. The loop reaches further, round after round.')}
+          </text>
+          <text className="sc-petit" x="10" y="254">
+            {tr('× n tours, puis les meilleures propositions vont sur le tableau', '× n rounds, then the best proposals go on the board')}
+          </text>
+        </>
+      )}
+    </Svg>
+  );
+}
+
+/* 13 · Decision 1: one agent per subsystem, a supervisor above them, the
+   sources they share, the board they write on. */
+function Agents() {
+  const tr = useTr();
+  const agents = [tr('Freinage', 'Brakes'), tr('Suspension', 'Suspension'), tr('Motorisation', 'Powertrain'), tr('Électronique', 'Electronics')];
+  const ax = (i: number) => 10 + i * 180;
+  return (
+    <Svg h={290} label={tr('Le graphe des agents : un superviseur, un agent par sous-système avec son propre contexte, les sources partagées, le tableau blanc', 'The agent graph: a supervisor, one agent per subsystem with its own context, the shared sources, the whiteboard')}>
+      {(id) => (
+        <>
+          <Boite x={10} y={10} w={190} h={40} titre="RAG" sous={tr('anciennes AMDEC', 'past FMEAs')} pointille />
+          <Boite x={520} y={10} w={190} h={40} titre="CAG" sous={tr('doc de la pièce', 'the part’s docs')} pointille />
+          <Boite x={250} y={8} w={220} h={46} titre={tr('Superviseur', 'Supervisor')} sous={tr('la vue d’ensemble, sans doublons', 'the overview, no duplicates')} ton="accent" />
+          <rect className="sc-agent" x={456} y={14} width="9" height="9" />
+          <path className="sc-trait" d="M360 54 V84 M100 84 H640" />
+          <path className="sc-trait sc-trait--pointille" d="M105 50 V84 M615 50 V84" />
+          {agents.map((nom, i) => (
+            <Fragment key={nom}>
+              <Fleche id={id} d={`M${ax(i) + 90} 84 V110`} />
+              <Boite x={ax(i)} y={110} w={160} h={46} titre={`${tr('Agent', 'Agent')} ${nom.toLowerCase()}`} sous={tr('son propre contexte', 'its own context')} />
+              <rect className="sc-contexte" x={ax(i) + 10} y={162} width={140 - ((i * 23) % 50)} height="5" rx="2.5" />
+              <Fleche id={id} d={`M${ax(i) + 80} 172 V222`} ton="accent" />
+            </Fragment>
+          ))}
+          <Boite x={10} y={222} w={700} h={40} titre={tr('Tableau blanc', 'Whiteboard')} sous={tr('chaque agent y pose ses tableaux ; les ingénieurs les reprennent', 'each agent places its tables; the engineers take them over')} ton="accent" />
+          <text className="sc-petit" x="10" y="282">
+            Google ADK · LangGraph
+          </text>
+        </>
+      )}
+    </Svg>
+  );
+}
+
+/* 14 · Decision 2: novelty measured, not guessed. Ideas as points: tight
+   clusters of repeats, and isolated ideas worth exploring. */
+const NUAGE = (() => {
+  const r = alea(5);
+  const grappes: [number, number, number][] = [
+    [190, 120, 26],
+    [300, 92, 20],
+    [262, 172, 22],
+  ];
+  const points = grappes.flatMap(([cx, cy, rad]) =>
+    Array.from({ length: 16 }, () => {
+      const a = r() * Math.PI * 2;
+      const d = Math.sqrt(r()) * rad * 0.8;
+      return [cx + Math.cos(a) * d * 1.3, cy + Math.sin(a) * d] as [number, number];
+    }),
+  );
+  return { grappes, points };
+})();
+const ISOLEES: [number, number][] = [
+  [470, 66],
+  [520, 176],
+  [96, 206],
+];
+
+function Nuage() {
+  const tr = useTr();
+  return (
+    <Svg h={246} label={tr('Un nuage d’idées dans l’espace des embeddings : des grappes de redites, et des idées isolées à explorer', 'A cloud of ideas in embedding space: clusters of repeats, and isolated ideas to explore')}>
+      {() => (
+        <>
+          <path className="sc-filet" d="M30 226 H640 M30 226 V14" />
+          <text className="sc-micro-encre" x="640" y="240" textAnchor="end">
+            {tr('espace des embeddings (projeté en 2D)', 'embedding space (projected to 2D)')}
+          </text>
+          {NUAGE.grappes.map(([cx, cy, rad], i) => (
+            <ellipse key={i} className="sc-grappe" cx={cx} cy={cy} rx={rad * 1.45} ry={rad * 1.15} />
+          ))}
+          {NUAGE.points.map(([x, y], i) => (
+            <circle key={i} className="sc-point" cx={x} cy={y} r="2.6" />
+          ))}
+          <text className="sc-petit" x="190" y="76" textAnchor="middle">
+            {tr('redites', 'repeats')}
+          </text>
+          {ISOLEES.map(([x, y], i) => (
+            <g key={i}>
+              <circle className="sc-isolee" cx={x} cy={y} r="8" />
+              <circle className="sc-agent" cx={x} cy={y} r="3.2" />
+            </g>
+          ))}
+          <path className="sc-trait sc-trait--pointille" d="M470 66 L326 90" />
+          <text className="sc-mono sc-mono--petit sc-accent-texte" x="392" y="66">
+            d = 0,71
+          </text>
+          <text className="sc-petit sc-accent-texte" x="482" y="64">
+            {tr('idée isolée → à explorer', 'isolated idea → explore')}
+          </text>
+          <text className="sc-petit sc-accent-texte" x="532" y="180">
+            {tr('défaillance système inattendue', 'unexpected system failure')}
+          </text>
+        </>
+      )}
+    </Svg>
+  );
+}
+
+/* 15 · Decision 3: RAG for the history, CAG for the part. */
+function RagCag() {
+  const tr = useTr();
+  return (
+    <Svg h={222} label={tr('Deux chemins jusqu’au modèle : les anciennes AMDEC par une recherche (RAG), la documentation de la pièce chargée en entier (CAG)', 'Two paths to the model: past FMEAs through a search (RAG), the part’s documentation loaded whole (CAG)')}>
+      {(id) => (
+        <>
+          <text className="sc-sous" x="10" y="18">
+            {tr('RAG · on cherche', 'RAG · search')}
+          </text>
+          <Boite x={10} y={28} w={150} h={46} titre={tr('Anciennes AMDEC', 'Past FMEAs')} sous={tr('des centaines de lignes', 'hundreds of rows')} />
+          <Boite x={190} y={28} w={120} h={46} titre={tr('Index', 'Index')} sous={tr('vectoriel', 'vector')} />
+          <Boite x={340} y={28} w={120} h={46} titre={tr('Recherche', 'Search')} sous={tr('les plus proches', 'the closest')} />
+          <Fleche id={id} d="M160 51 H190" />
+          <Fleche id={id} d="M310 51 H340" />
+          <text className="sc-sous" x="10" y="136">
+            {tr('CAG · on charge tout', 'CAG · load it all')}
+          </text>
+          <Boite x={10} y={146} w={150} h={46} titre={tr('Doc de la pièce', 'The part’s docs')} sous={tr('tient dans le contexte', 'fits in the context')} />
+          <Boite x={190} y={146} w={270} h={46} titre={tr('Chargée en entier', 'Loaded whole')} sous={tr('à chaque appel, sans recherche', 'on every call, no search')} />
+          <Fleche id={id} d="M160 169 H190" />
+          <Boite x={540} y={86} w={170} h={50} titre={tr('Agent', 'Agent')} sous={tr('contexte = passages + doc', 'context = passages + docs')} ton="accent" />
+          <Fleche id={id} d="M460 51 C 500 51, 500 104, 528 104 H540" ton="accent" />
+          <Fleche id={id} d="M460 169 C 500 169, 500 118, 528 118 H540" ton="accent" />
+        </>
+      )}
+    </Svg>
+  );
+}
+
+/* 16 · Decision 4: the agents see the board. They and the engineers work on
+   the same surface, through the board's tools. */
+function Outils() {
+  const tr = useTr();
+  const agent = ['lire_tableau()', 'poser_tableau()', 'annoter()', 'relier()'];
+  const humain = [tr('écrire', 'write'), tr('ajouter', 'add'), tr('déplacer', 'move')];
+  return (
+    <Svg h={226} label={tr('Les agents et les ingénieurs sur la même surface : les outils des agents sur le tableau, et ce que font les ingénieurs', 'Agents and engineers on the same surface: the agents’ tools on the board, and what the engineers do')}>
+      {(id) => (
+        <>
+          <Boite x={10} y={28} w={150} h={168} titre={tr('Agents', 'Agents')} sous={tr('superviseur + 4', 'supervisor + 4')} ton="accent" />
+          <rect className="sc-agent" x={146} y={34} width="8" height="8" />
+          <Boite x={570} y={48} w={140} h={128} titre={tr('Ingénieurs', 'Engineers')} sous={tr('à la main', 'by hand')} />
+          <g className="sc-boite">
+            <rect x="290" y="16" width="160" height="192" rx="3" />
+          </g>
+          <text className="sc-titre" x="300" y="34">
+            {tr('Tableau blanc', 'Whiteboard')}
+          </text>
+          {[0, 1, 2].map((i) => (
+            <rect key={i} className="sc-element" x={302 + (i % 2) * 70} y={48 + i * 48} width="64" height="38" rx="2" />
+          ))}
+          <text className="sc-petit" x="370" y="200" textAnchor="middle">
+            {tr('la même surface', 'the same surface')}
+          </text>
+          {agent.map((nom, i) => {
+            const y = 48 + i * 40;
+            return (
+              <Fragment key={nom}>
+                <Fleche id={id} d={i === 0 ? `M290 ${y} H160` : `M160 ${y} H290`} ton="accent" />
+                <text className="sc-mono sc-mono--petit" x="225" y={y - 5} textAnchor="middle">
+                  {nom}
+                </text>
+              </Fragment>
+            );
+          })}
+          {humain.map((nom, i) => {
+            const y = 72 + i * 40;
+            return (
+              <Fragment key={nom}>
+                <Fleche id={id} d={`M570 ${y} H450`} />
+                <text className="sc-petit" x="510" y={y - 5} textAnchor="middle">
+                  {nom}
+                </text>
+              </Fragment>
+            );
+          })}
+        </>
+      )}
+    </Svg>
+  );
+}
+
 const SCHEMAS: Record<SchemaId, () => ReactNode> = {
   parcours: Parcours,
   assistant: () => <EcranAssistant />,
@@ -608,6 +1198,14 @@ const SCHEMAS: Record<SchemaId, () => ReactNode> = {
   pdf: Pdf,
   agent: Agent,
   pipeline: Pipeline,
+  amdec: Amdec,
+  whiteboard: () => <Whiteboard />,
+  pile: Pile,
+  boucle: Boucle,
+  agents: Agents,
+  nuage: Nuage,
+  ragcag: RagCag,
+  outils: Outils,
 };
 
 /** One of the project page's diagrams. */
@@ -616,7 +1214,7 @@ export function Schema({ id }: { id: SchemaId }) {
   return <Drawing />;
 }
 
-/** A part of the assistant's screen, framed upright for a card. */
+/** A part of a project's screen, framed upright for a card. */
 export function EcranCadre({ focus }: { focus: Ecran }) {
-  return <EcranAssistant focus={focus} />;
+  return focus.startsWith('wb-') ? <Whiteboard focus={focus} /> : <EcranAssistant focus={focus} />;
 }

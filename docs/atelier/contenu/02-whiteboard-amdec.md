@@ -27,7 +27,7 @@ leurs analyses de risques.
 
 - **6 mois** d'ateliers pour une AMDEC ;
 - **4 à 5** ingénieurs autour de fichiers Excel ;
-- **8** GPU A100 pour faire tourner nos propres modèles.
+- **8 GPU** A100 pour faire tourner nos propres modèles.
 
 | | |
 | --- | --- |

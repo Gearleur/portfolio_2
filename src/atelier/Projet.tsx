@@ -39,7 +39,7 @@ function Visuel({ children, legende, n }: { children?: ReactNode; legende: strin
       <span className="p-visuel__image">{children}</span>
       <figcaption className="m-label">
         <T>
-          Fig. {two(n)} — {children ? '' : 'À dessiner : '}
+          Fig. {two(n)} — {children || n === 1 ? '' : 'À dessiner : '}
           {legende}
         </T>
       </figcaption>
@@ -264,8 +264,8 @@ function Article({ projet, cadrage }: { projet: Projet; cadrage: 'paysage' | 'po
             </div>
           ))}
         </dl>
-        <Visuel legende={`${projet.nom}, détail de l’aiguillage.`} n={1}>
-          <Miniature cadrage={cadrage} />
+        <Visuel legende={projet.miniature.legende} n={1}>
+          {projet.miniature.aiguillage && <Miniature cadrage={cadrage} />}
         </Visuel>
       </header>
 
