@@ -137,14 +137,20 @@ const Contact = () => (
 
 const Hero = () => (
   <div className="m-hero">
+    {/* Two lines on the phone (.m-line); on the desktop they flow and wrap as one. */}
     <p className="m-title">
-      <T>AI engineer, du prototype à la </T>
-      {/* The full stop, as a blinking accent square: the page is alive. It never wraps alone. */}
-      <span className="m-nowrap">
-        <mark>
-          <T>production</T>
-        </mark>
-        <span className="m-blink" aria-hidden="true" />
+      <span className="m-line">
+        <T>AI engineer, du prototype </T>
+      </span>
+      <span className="m-line">
+        <T>à la </T>
+        {/* The full stop, as a blinking accent square: the page is alive. It never wraps alone. */}
+        <span className="m-nowrap">
+          <mark>
+            <T>production</T>
+          </mark>
+          <span className="m-blink" aria-hidden="true" />
+        </span>
       </span>
     </p>
     <dl className="m-facts">

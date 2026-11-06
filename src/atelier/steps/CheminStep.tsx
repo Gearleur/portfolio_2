@@ -129,8 +129,8 @@ export function CheminStep() {
         <h3>
           Version téléphone{' '}
           <span>
-            Retenue : la tranche à droite. Écran de 390 × 844, grille de {PHONE_COLUMNS} colonnes ; titre 68 px, qui traverse
-            la tranche comme les images ; texte 14 px, étiquettes 11 px (proposition).
+            Retenue : la tranche à droite. Écran de 390 × 844, grille de {PHONE_COLUMNS} colonnes ; titre 40 px sur deux lignes,
+            qui traverse la tranche comme les images ; texte 14 px, étiquettes 11 px (proposition).
           </span>
         </h3>
         <div className="telephone__tools">
