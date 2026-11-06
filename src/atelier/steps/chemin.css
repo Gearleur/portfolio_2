@@ -143,6 +143,9 @@
 
 .maquette {
   --u: calc(100cqw / 1440);
+  /* The big titles follow the page's width, as the layout does (journal
+     n° 98): 72 px at 1440 px, 96 px at 1920 px; never below their size. */
+  --display-fluide: max(calc(var(--size-display) * var(--u)), calc(var(--size-display) * 100cqw / 1440));
 
   display: grid;
   grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
@@ -199,6 +202,7 @@
 
 .maquette .m-title {
   grid-column: 1 / -1;
+  font-size: var(--display-fluide);
 }
 
 .maquette .m-facts {

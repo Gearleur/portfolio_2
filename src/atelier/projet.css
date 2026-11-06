@@ -52,7 +52,7 @@
 
 .p-titre {
   font-family: var(--font-display);
-  font-size: calc(var(--size-display) * var(--u));
+  font-size: var(--display-fluide, calc(var(--size-display) * var(--u)));
   font-weight: var(--display-weight);
   letter-spacing: var(--display-tracking);
   line-height: var(--display-leading);
