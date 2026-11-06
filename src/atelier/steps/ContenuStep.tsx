@@ -21,7 +21,7 @@ const PHONES = [
   {
     id: 'defile',
     name: 'En défilant',
-    note: 'L’image passe sous la tranche ; « Menu » et ton nom restent dessus et prennent le fond accent, comme un survol.',
+    note: 'L’image passe sous la tranche ; « Menu » et ton nom restent dessus, en accent seulement là où l’image passe dessous.',
     scrolled: true,
   },
 ];
@@ -49,8 +49,8 @@ export function ContenuStep() {
       </header>
       <p className="atelier-step__note">
         Chaque projet a sa page, construite comme celle de Rachel Chen, et sa miniature. Pour SNCF GPT : un aiguillage à
-        trois voies dessiné comme une planche d’ingénierie de la voie, gravé dans l’alu irisé. Sur une carte, c’est une
-        texture qui donne envie de cliquer ; en gros plan, tout se lit. Le texte est dans
+        trois voies dessiné comme un détail de planche d’ingénierie de la voie, dans un cercle, gravé dans l’alu irisé.
+        Sur une carte, c’est une texture qui donne envie de cliquer ; en gros plan, tout se lit. Le texte est dans
         docs/atelier/contenu/01-sncf-gpt.md.
       </p>
 
@@ -59,9 +59,9 @@ export function ContenuStep() {
           <fieldset>
             <legend>Miniature</legend>
             <p className="atelier-panel__note">
-              Retenus : l’aiguillage, en alu irisé. Rails en filets, longues traverses, aiguilles, cœurs et
-              contre-rails ; le titre et la référence du dossier en haut à droite ; en bas à gauche, des marquages
-              comme au coin d’une vitre de voiture. La lumière suit la souris.
+              Retenus : l’aiguillage en vue de détail, dans un cercle bordé de micro-texte, en alu irisé. Rails en
+              filets, longues traverses, aiguilles, cœurs et contre-rails ; « SNCF GPT » en haut à gauche ; la
+              référence et des marquages comme au coin d’une vitre de voiture en bas. La lumière suit la souris.
             </p>
           </fieldset>
 
@@ -100,7 +100,7 @@ export function ContenuStep() {
 
       <div className="miniatures">
         <h3>
-          En gros plan <span>La planche entière, pour voir les détails.</span>
+          En gros plan <span>La miniature d’ordinateur, pour voir les détails.</span>
         </h3>
         <span className="miniatures__plan">
           <Miniature />
@@ -121,7 +121,7 @@ export function ContenuStep() {
               <figure className="phone">
                 <div className="phone__frame" ref={phone.scrolled ? scrollToPicture : undefined}>
                   <Specimen settings={FOND} waveSignal={waveSignal}>
-                    <MaquetteMobile blocks={false} menuOpen={false} images={{ '01': <Miniature cadrage="detail" /> }} />
+                    <MaquetteMobile blocks={false} menuOpen={false} images={{ '01': <Miniature cadrage="portrait" /> }} />
                   </Specimen>
                 </div>
                 <figcaption>

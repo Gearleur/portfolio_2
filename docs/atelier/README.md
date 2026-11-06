@@ -581,13 +581,12 @@ en micrographie, puis épuré :
   les aiguilles, les deux cœurs et leurs contre-rails, les axes en trait mixte ;
   les cotes d'écartement (1 435) et d'angle ; les quatre destinations. Le cube
   accent est l'agent ;
-- **en haut à droite** : le titre en grand et la référence du dossier, rien
-  d'autre ;
-- **en bas à gauche** : des marquages comme au coin d'une vitre de voiture. On y
-  trouve un logo « Atelier A.T. », des tampons ronds (A7, cycle, RAG, CI/CD, FR),
-  des codes et un code-date en points ;
-- **le cadre** : des zones A à F et 1 à 4, un chaînage, un micro-texte dans la
-  marge.
+- **le titre** et la référence du dossier, sans autre information ;
+- **des marquages** comme au coin d'une vitre de voiture : un logo « Atelier
+  A.T. » et des tampons ronds (A7, cycle, RAG, CI/CD, FR).
+
+(La planche entière, avec son cadre à zones, son chaînage et ses codes, a été
+remplacée par la vue de détail : journal n° 69 et 71.)
 
 Sur une carte, la planche est une texture qui donne envie de cliquer ; en gros
 plan, tout se lit. La géométrie (rails, traverses, cœurs) est calculée dans
@@ -597,8 +596,14 @@ plan, tout se lit. La géométrie (rails, traverses, cœurs) est calculée dans
 cercle bordé de micro-texte. « SNCF GPT » est en haut, à la taille des
 étiquettes ; la référence et les tampons sont sous le cercle. Planche et
 Rallongée sont retirées. La bande de la tranche passe sous les images, mais ton
-nom et « Menu » restent dessus : quand une image passe sous eux, ils prennent le
-fond accent, comme un survol.
+nom et « Menu » restent dessus. Ils prennent le fond accent, comme un survol,
+mais seulement sur la partie qu'une image recouvre : le bord orange suit
+exactement le bord de l'image pendant le défilement.
+
+**Sur ordinateur aussi, la vue de détail** remplace la planche entière. Elle
+est agrandie pour la carte en paysage : le cercle à gauche, « *SNCF GPT* » en
+grand en haut à gauche (serif italique, comme les cartels), la référence en bas
+à gauche et les tampons en bas à droite.
 
 **La grille des projets change** : deux projets par rangée sur 6 colonnes
 chacun, soit la largeur des trois cartes d'avant. Le troisième vient sous le
@@ -698,6 +703,8 @@ un bon argument dans un portfolio.
 | 67 | 2026-11-06 | Miniature : l'**Aiguillage** retenu (Ligne et Plaque retirées), redessiné en planche d'ingénierie micrographique : rails en double filet, longues traverses, aiguilles, cœurs, contre-rails, cotes, cartouche, nomenclature, micro-texte. Lisible en gros plan, texture sur une carte. | « On part sur ça, mais les rails ne font pas assez technique, trop cheap ; des détails plus petits, plus techniques, quelque chose de plus micrographique ; pas grave si la miniature ne parle pas, le tout c'est qu'on veuille cliquer dessus » | 7 |
 | 68 | 2026-11-06 | Planche épurée : titre plus grand, en haut à droite avec la seule référence du dossier ; bulles, nomenclature, notes et code-barres retirés ; en bas à gauche, des marquages façon vitre de voiture (logo, tampons ronds, petits mots techniques, code-date). Trois cadrages téléphone à comparer : Planche, Rallongée, Détail. Vitrine : **deux projets par rangée** (6 colonnes chacun, la largeur des trois cartes d'avant), le troisième sous le deuxième, en diagonale ; la page défile, la nav et la tranche restent en place. | « Le titre un peu plus gros, enlève des infos, il y en a trop ; ajoute des logos, des certifs, des trucs industriels en petit, comme en bas des fenêtres de voiture » · « En haut à droite, titre plus réf. dossier, plus épuré » · « Pour le mobile, peut-être la rallonger pour montrer qu'elle est coupée mais que c'est fait exprès » · « Deux projets sur la page, un en dessous du deuxième, en diagonale ; deux projets font la taille de trois maintenant » | 7 |
 | 69 | 2026-11-06 | Téléphone : la **vue de détail** retenue (Planche et Rallongée retirées) ; « SNCF GPT » remplace « Détail A · 2:1 », à la même taille. La bande de la tranche passe sous les images ; le nom et « Menu » restent dessus et prennent le fond accent quand une image passe sous eux. | « Pour le cadrage du téléphone je veux le 3 » · « Juste le menu et Alexandre Teixeira qui passent par-dessus ; un fond orange genre hover quand ils passent sur l'image » · « Rajoute SNCF GPT, pas trop gros, à la place de détail et de la même taille » | 7 |
+| 70 | 2026-11-06 | Le fond accent du nom et de « Menu » ne couvre que la partie au-dessus d'une image et suit son bord au défilement (une copie accent du mot, masquée). Essai : la vue de détail agrandie sur la carte d'ordinateur, à comparer à la planche. | « Le hover sur Menu et Alexandre Teixeira uniquement sur les images, de façon dynamique sur le texte, pas tout ou rien » · « Utilise l'image mobile pour le desktop, adaptée en plus grand, juste pour voir » | 7 |
+| 71 | 2026-11-06 | Sur ordinateur aussi, la **vue de détail** (la planche entière est retirée), avec « *SNCF GPT* » plus grand en haut à gauche, en serif italique. Le micro-texte fait exactement un tour du cercle. | « Je préfère Détail pour la version desktop aussi, mais écris SNCF GPT plus gros en haut à gauche ; sinon on est bon » | 7 |
 
 ---
 

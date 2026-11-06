@@ -89,21 +89,31 @@ type MaquetteMobileProps = MaquetteProps & {
 export function MaquetteMobile({ menuOpen, onMenu, glisse, blocks, columns, images }: MaquetteMobileProps) {
   const ref = useRef<HTMLDivElement>(null);
 
-  // The name and « Menu » stay over the pictures that run over the strip; while
-  // one passes under them, they take an accent background (data-over).
+  // The name and « Menu » stay over the pictures that run over the strip; where
+  // one passes under them, and only there, they take an accent background: an
+  // accent copy of the word (data-text) shows through a mask (--over).
   useEffect(() => {
     const page = ref.current;
     if (!page) return;
     const words = [...page.querySelectorAll<HTMLElement>('.m-strip > *')];
+    for (const word of words) word.dataset.text = word.textContent ?? '';
     const update = () => {
       const pictures = [...page.querySelectorAll('.m-img')].map((picture) => picture.getBoundingClientRect());
       for (const word of words) {
         const box = word.getBoundingClientRect();
-        const over = pictures.some(
-          (picture) =>
-            box.left < picture.right && box.right > picture.left && box.top < picture.bottom && box.bottom > picture.top,
-        );
-        word.toggleAttribute('data-over', over);
+        const spans = pictures
+          .filter((picture) => box.left < picture.right && box.right > picture.left)
+          .map((picture) => [Math.max(box.top, picture.top), Math.min(box.bottom, picture.bottom)])
+          .filter(([top, bottom]) => bottom > top)
+          .map(([top, bottom]) => [((top - box.top) / box.height) * 100, ((bottom - box.top) / box.height) * 100]);
+        // The word is turned half a turn: « to top » runs from its visual top down.
+        const stops = spans.flatMap(([from, to]) => [
+          `transparent ${from.toFixed(2)}%`,
+          `#000 ${from.toFixed(2)}%`,
+          `#000 ${to.toFixed(2)}%`,
+          `transparent ${to.toFixed(2)}%`,
+        ]);
+        word.style.setProperty('--over', `linear-gradient(to top, transparent, ${stops.join(', ')}${stops.length ? ', ' : ''}transparent)`);
       }
     };
     update();

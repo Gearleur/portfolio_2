@@ -88,7 +88,7 @@ export function Charte() {
     {
       label: 'Miniatures',
       value: 'Alu irisé',
-      note: 'Une planche d’ingénierie ferroviaire en micrographie (SNCF GPT : un aiguillage à trois voies), gravée dans de l’aluminium brossé où se reflètent les couleurs de l’onde ; la lumière suit la souris. Sur téléphone, une vue de détail dans un cercle.',
+      note: 'Un détail de planche d’ingénierie ferroviaire en micrographie, dans un cercle (SNCF GPT : un aiguillage à trois voies), gravé dans de l’aluminium brossé où se reflètent les couleurs de l’onde ; la lumière suit la souris.',
       step: 7,
     },
     { label: 'Lumière', value: 'Aucune', note: 'Pas d’ombre de fenêtre', step: 1 },

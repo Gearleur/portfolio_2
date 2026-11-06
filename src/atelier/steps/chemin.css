@@ -308,19 +308,28 @@
 }
 
 .m-strip > * {
+  position: relative;
   padding: calc(6 * var(--u)) calc(3 * var(--u));
   writing-mode: vertical-rl;
   rotate: 180deg;
-  transition:
-    background-color 0.2s,
-    color 0.2s;
 }
 
 /* Over a picture, the name and « Menu » take an accent background, like a
-   hover (step 7, journal n° 69); MaquetteMobile sets data-over as the page scrolls. */
-.m-strip > [data-over] {
+   hover, only where the picture is under them (step 7, journal n° 70): an
+   accent copy of the word, masked to the parts over a picture. MaquetteMobile
+   sets --over (the mask) as the page scrolls. */
+.m-strip > [data-text]::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  padding: inherit;
   background: var(--accent);
   color: var(--on-accent);
+  mask-image: var(--over, linear-gradient(transparent, transparent));
+}
+
+:is(.maquette, .mobile)[data-blocks] .m-strip > [data-text]::after {
+  display: none;
 }
 
 /* The headline runs over the strip too, to the right margin. */

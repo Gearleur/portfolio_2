@@ -79,8 +79,8 @@ const Agent = ({ x, y, size }: { x: number; y: number; size: number }) => (
   <rect className="miniature__agent" x={x - size / 2} y={y - size / 2} width={size} height={size} />
 );
 
-/** SNCF GPT's thumbnail: the three-way turnout, in iridescent aluminium, framed whole or for a phone. */
-export function Miniature({ cadrage = 'planche' }: { cadrage?: Cadrage }) {
+/** SNCF GPT's thumbnail: the three-way turnout in a detail view, in iridescent aluminium. */
+export function Miniature({ cadrage = 'paysage' }: { cadrage?: Cadrage }) {
   return (
     <Metal cadrage={cadrage}>
       <Aiguillage cadrage={cadrage} />

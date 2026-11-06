@@ -3,7 +3,7 @@ import { across, at, intersect, nearest, offset, polyline, sampleTrack, yAt } fr
 import type { Pt, Sample } from './voies';
 
 /*
- * SNCF GPT's thumbnail, retained at step 7 (journal n° 67 and 68): a three-way turnout
+ * SNCF GPT's thumbnail, retained at step 7 (journal n° 67 to 71): a three-way turnout
  * drawn like a track engineering sheet. The ticket comes in from the left; at
  * the switch the agent (the accent cube) sends it to the documentation, the
  * incidents already solved, or the DevOps tools. 400 × 300 units.
@@ -81,12 +81,16 @@ const CHECK_RAILS = [
 const ANGLE = Math.max(...DOC.map(({ t }) => Math.atan2(-t[1], t[0])));
 const ARC = 26;
 
-/** How the sheet is framed: whole on a card, a circled detail on a phone (journal n° 69). */
-export type Cadrage = 'planche' | 'detail';
+/**
+ * The thumbnail is a detail view: the turnout enlarged in a circle (journal
+ * n° 69 and 71), upright on a phone, landscape on a desktop card.
+ */
+export type Cadrage = 'portrait' | 'paysage';
 
-const VIEWS: Record<Cadrage, string> = {
-  planche: '0 0 400 300',
-  detail: '96 60 210 262',
+/** The view box, and where the title, the reference and the markings go. */
+const LAYOUTS: Record<Cadrage, { view: string; title: Pt; ref: Pt; marks: Pt }> = {
+  portrait: { view: '96 60 210 262', title: [104, 74], ref: [104, 300], marks: [190, 64] },
+  paysage: { view: '56 56 330 248', title: [64, 84], ref: [64, 290], marks: [262, 36] },
 };
 
 /** A cross-hair target. */
@@ -97,7 +101,9 @@ const Target = ({ at: [x, y] }: { at: Pt }) => (
   </g>
 );
 
-const MICROPRINT = 'SNCF GPT · RAG · AGENT REACT · AZURE OPENAI · AI SEARCH · CI/CD · LYON 2023 · '.repeat(6);
+// The microprint runs once round the circle: four repeats, spaced to the circumference exactly.
+const MICROPRINT = 'SNCF GPT · RAG · AGENT REACT · AZURE OPENAI · AI SEARCH · CI/CD · LYON 2023 · '.repeat(4);
+const RING = 94;
 
 const hexagon = (x: number, y: number, r: number) =>
   [0, 60, 120, 180, 240, 300]
@@ -106,21 +112,15 @@ const hexagon = (x: number, y: number, r: number) =>
 
 /**
  * Industrial markings, like those etched in the corner of a car window: the
- * maker's mark, round certification stamps with short technical words, and a
- * date code in dots (16 November 2023, the prototype's first showing).
+ * maker's mark and round certification stamps with short technical words.
  */
-function Marquages({ x = 0, y = 0, compact = false }: { x?: number; y?: number; compact?: boolean }) {
+function Marquages({ at: [x, y] }: { at: Pt }) {
   return (
     <g transform={`translate(${x} ${y})`}>
       <rect className="aig__plein" x="22" y="215.4" width="6" height="6" />
       <text className="aig__marque" x="31.5" y="221">
         Atelier A.T.
       </text>
-      {!compact && (
-        <text className="aig__micro" x="22" y="229.6">
-          Prototypé · qualifié · déployé
-        </text>
-      )}
 
       <g className="aig__sigle">
         <circle className="aig__trait" cx="29" cy="243" r="6.6" />
@@ -151,27 +151,6 @@ function Marquages({ x = 0, y = 0, compact = false }: { x?: number; y?: number; 
         </text>
       </g>
 
-      {!compact && (
-        <>
-          <text className="aig__micro" x="22" y="259">
-            23R-001116 · DOT 1435 M23
-          </text>
-          <text className="aig__micro" x="22" y="265">
-            AS-REACT · Azure OpenAI
-          </text>
-          <g className="aig__plein">
-            {[0, 1, 2].map((i) => (
-              <circle key={i} cx={23 + i * 3} cy="272.6" r="0.9" />
-            ))}
-            {[0, 1, 2, 3].map((i) => (
-              <circle key={i} cx={40 + i * 3} cy="272.6" r="0.9" />
-            ))}
-          </g>
-          <text className="aig__micro" x="32" y="273.8">
-            23
-          </text>
-        </>
-      )}
     </g>
   );
 }
@@ -250,111 +229,57 @@ function Voie({ clip }: { clip: string }) {
   );
 }
 
-/** The sheet's frame: two borders, zone letters and numbers, microprint in the margin, a chainage. */
-function Feuille({ margin }: { margin: string }) {
-  return (
-    <>
-      <rect className="aig__fin" x="6" y="6" width="388" height="288" fill="none" />
-      <rect className="aig__trait" x="12" y="12" width="376" height="276" fill="none" />
-      {['A', 'B', 'C', 'D', 'E', 'F'].map((letter, i) => (
-        <g key={letter}>
-          <path className="aig__fin" d={`M${12 + (376 / 6) * i} 6 v6`} />
-          <text className="aig__micro" x={12 + (376 / 6) * (i + 0.5)} y="10.4" textAnchor="middle">
-            {letter}
-          </text>
-        </g>
-      ))}
-      {['1', '2', '3', '4'].map((number, i) => (
-        <g key={number}>
-          <path className="aig__fin" d={`M6 ${12 + (276 / 4) * i} h6`} />
-          <text className="aig__micro" x="9" y={12 + (276 / 4) * (i + 0.5) + 1.2} textAnchor="middle">
-            {number}
-          </text>
-        </g>
-      ))}
-      <text className="aig__microprint" x="14" y="292" clipPath={`url(#${margin})`}>
-        {MICROPRINT}
-      </text>
-
-      <path className="aig__fin" d="M20 26 H252" />
-      {Array.from({ length: 30 }, (_, i) => (
-        <path key={i} className="aig__fin" d={`M${20 + i * 8} 26 v${i % 5 === 0 ? -4 : -2}`} />
-      ))}
-      {[0, 1, 2, 3, 4, 5].map((i) => (
-        <text key={i} className="aig__micro" x={20 + i * 40} y="20">
-          {`0+${String(i * 40).padStart(3, '0')}`}
-        </text>
-      ))}
-    </>
-  );
-}
-
-/** Top right: the title, large, and the file reference. */
-const Titre = () => (
-  <g>
-    <text className="aig__titre" x="382" y="48" textAnchor="end">
-      SNCF GPT
-    </text>
-    <path className="aig__fin" d="M270 56 H382" />
-    <text className="aig__micro" x="382" y="63" textAnchor="end">
-      Réf. dossier 01-SNCF-GPT
-    </text>
-    <text className="aig__micro" x="382" y="69" textAnchor="end">
-      Pl. 01/04 · Rév. C · 2023
-    </text>
-  </g>
-);
-
-export function Aiguillage({ cadrage = 'planche' }: { cadrage?: Cadrage }) {
+export function Aiguillage({ cadrage = 'paysage' }: { cadrage?: Cadrage }) {
   const id = useId().replace(/[^\w-]/g, '');
-  const [sheet, margin, lens, ring] = ['feuille', 'marge', 'loupe', 'anneau'].map((name) => `${id}-${name}`);
+  const [sheet, lens, ring] = ['feuille', 'loupe', 'anneau'].map((name) => `${id}-${name}`);
+  const { view, title, ref, marks } = LAYOUTS[cadrage];
 
   return (
-    <svg className="miniature__plan aig" viewBox={VIEWS[cadrage]} aria-hidden="true">
+    <svg className="miniature__plan aig" viewBox={view} aria-hidden="true">
       <defs>
         <clipPath id={sheet}>
           <rect x="12" y="12" width="376" height="276" />
         </clipPath>
-        <clipPath id={margin}>
-          <rect x="12" y="288" width="376" height="6" />
-        </clipPath>
         <clipPath id={lens}>
           <circle cx="196" cy="176" r="86" />
         </clipPath>
-        <path id={ring} d="M196 82 A94 94 0 1 1 195.99 82" />
+        <path id={ring} d={`M196 ${176 - RING} A${RING} ${RING} 0 1 1 195.99 ${176 - RING}`} />
       </defs>
 
-      {cadrage === 'detail' ? (
+      <g clipPath={`url(#${lens})`}>
+        <Voie clip={sheet} />
+      </g>
+      <circle className="aig__trait" cx="196" cy="176" r="86" fill="none" />
+      <circle className="aig__fin" cx="196" cy="176" r="90" fill="none" />
+      <text className="aig__microprint">
+        <textPath href={`#${ring}`} textLength={(2 * Math.PI * RING).toFixed(1)} lengthAdjust="spacing">
+          {MICROPRINT}
+        </textPath>
+      </text>
+
+      {/* The title: at the size of the labels on a phone, in the serif italic of the cartels on a desktop card. */}
+      {cadrage === 'portrait' ? (
         <>
-          {/* A detail view: the turnout enlarged in a circle, the title under it. */}
-          <g clipPath={`url(#${lens})`}>
-            <Voie clip={sheet} />
-          </g>
-          <circle className="aig__trait" cx="196" cy="176" r="86" fill="none" />
-          <circle className="aig__fin" cx="196" cy="176" r="90" fill="none" />
-          <text className="aig__microprint">
-            <textPath href={`#${ring}`}>{MICROPRINT}</textPath>
-          </text>
-          <text className="aig__micro aig__micro--titre" x="104" y="74">
+          <text className="aig__micro aig__micro--titre" x={title[0]} y={title[1]}>
             SNCF GPT
           </text>
-          <path className="aig__fin" d="M104 77 H134" />
-          <text className="aig__micro" x="104" y="300">
-            Réf. dossier 01-SNCF-GPT
-          </text>
-          <text className="aig__micro" x="104" y="306">
-            Détail A · 2:1 · Pl. 01/04
-          </text>
-          <Marquages x={190} y={64} compact />
+          <path className="aig__fin" d={`M${title[0]} ${title[1] + 3} h30`} />
         </>
       ) : (
         <>
-          <Feuille margin={margin} />
-          <Titre />
-          <Voie clip={sheet} />
-          <Marquages />
+          <text className="aig__titre" x={title[0]} y={title[1]}>
+            SNCF GPT
+          </text>
+          <path className="aig__fin" d={`M${title[0]} ${title[1] + 6} h72`} />
         </>
       )}
+      <text className="aig__micro" x={ref[0]} y={ref[1]}>
+        Réf. dossier 01-SNCF-GPT
+      </text>
+      <text className="aig__micro" x={ref[0]} y={ref[1] + 6}>
+        Détail A · 2:1 · Pl. 01/04
+      </text>
+      <Marquages at={marks} />
     </svg>
   );
 }

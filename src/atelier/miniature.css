@@ -107,7 +107,7 @@
 /* Aiguillage: a track engineering sheet, in hairlines and micro type. It is
    texture on a card and reads in close-up. */
 .aig__titre {
-  font: italic 400 30px/1 'Instrument Serif', Georgia, serif;
+  font: italic 400 24px/1 'Instrument Serif', Georgia, serif;
 }
 
 /* The detail view's title, at the size of its labels, a little bolder. */
@@ -211,7 +211,7 @@
   }
 }
 
-/* On a phone the card takes the detail view's proportions. */
-.m-img:has(> .miniature[data-cadrage='detail']) {
+/* On a phone the card takes the upright detail view's proportions. */
+.m-img:has(> .miniature[data-cadrage='portrait']) {
   aspect-ratio: 210 / 262;
 }
