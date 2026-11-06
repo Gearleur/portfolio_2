@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useRef, useState } from 'react';
-import type { CSSProperties, ReactNode } from 'react';
+import type { CSSProperties, ReactNode, RefObject } from 'react';
 import { Contact, Name, NavList, T } from './Maquettes';
 import { Marque } from './Marque';
 import { Miniature } from './Miniature';
@@ -132,21 +132,13 @@ function Blocs({ blocs, figures }: { blocs: Bloc[]; figures: Map<Bloc, number> }
 }
 
 /**
- * A project page in the Vitrine's frame, like Rachel Chen's case studies: the
- * reading down the middle; on the left, the table of contents, which follows
- * the reading; on the right, the name, nav and contact.
+ * The table of contents' tracking, for a page that scrolls in `ref`: the
+ * section being read, and a way to scroll to one.
  */
-export function ProjetMaquette({ projet, onRetour }: { projet: Projet; onRetour?: () => void }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [active, setActive] = useState(projet.sections[0].id);
+function useSommaire(ref: RefObject<HTMLDivElement | null>, first: string) {
+  const [active, setActive] = useState(first);
   // A section chosen in the table of contents stays marked while the page scrolls to it.
   const chosen = useRef<{ id: string; timer: number } | null>(null);
-
-  // Figures are numbered through the page, the hero thumbnail first.
-  const figures = new Map<Bloc, number>();
-  let count = 1;
-  for (const section of projet.sections)
-    for (const bloc of section.blocs) if (bloc.type === 'visuel' || bloc.type === 'decision') figures.set(bloc, ++count);
 
   // The table of contents follows the section being read: the last one whose
   // top has passed a reading line, 30 % down the screen. The last sections can
@@ -183,7 +175,7 @@ export function ProjetMaquette({ projet, onRetour }: { projet: Projet; onRetour?
       page.removeEventListener('scroll', update);
       for (const event of events) page.removeEventListener(event, release);
     };
-  }, []);
+  }, [ref]);
 
   const go = (id: string) => {
     const page = ref.current;
@@ -196,30 +188,117 @@ export function ProjetMaquette({ projet, onRetour }: { projet: Projet; onRetour?
     page.scrollTo({ top: section.offsetTop - page.clientHeight * 0.08, behavior: smooth ? 'smooth' : 'auto' });
   };
 
+  return { active, go };
+}
+
+/** Back to the projects: the cursor's agent pointer (step 6), drawn straight, and the page's trail. */
+function Retour({ nom, onRetour }: { nom: string; onRetour?: () => void }) {
+  return (
+    <p className="p-retour m-label">
+      <button type="button" onClick={onRetour}>
+        <svg className="p-retour__fleche" viewBox="0 0 10 10" aria-hidden="true">
+          <polygon points="0,5 10,0 6.5,5 10,10" />
+        </svg>
+        <T>Projets</T>
+      </button>
+      <T> / {nom}</T>
+    </p>
+  );
+}
+
+/** The table of contents: numbered, the section being read marked by the accent square. */
+function Sommaire({ projet, active, onGo }: { projet: Projet; active: string; onGo: (id: string) => void }) {
+  return (
+    <ol className="p-sommaire m-label">
+      {projet.sections.map((section, index) => (
+        <li key={section.id} aria-current={section.id === active ? 'location' : undefined}>
+          <button type="button" data-cursor="cube" onClick={() => onGo(section.id)}>
+            <span className="p-sommaire__n">{two(index + 1)}</span>
+            <T>{section.nav}</T>
+          </button>
+        </li>
+      ))}
+    </ol>
+  );
+}
+
+/** The page's words and pictures: the header, then the sections. */
+function Article({ projet, cadrage }: { projet: Projet; cadrage: 'paysage' | 'portrait' }) {
+  // Figures are numbered through the page, the hero thumbnail first.
+  const figures = new Map<Bloc, number>();
+  let count = 1;
+  for (const section of projet.sections)
+    for (const bloc of section.blocs) if (bloc.type === 'visuel' || bloc.type === 'decision') figures.set(bloc, ++count);
+
+  return (
+    <article className="p-contenu">
+      <header className="p-entete">
+        <h1 className="p-titre">
+          <T>{projet.nom}</T>
+          <Marque id={projet.logo} className="p-titre__logo" />
+        </h1>
+        <p className="p-accroche">
+          <T>{projet.accroche}</T>
+        </p>
+        {/* The results first: the key figures, before the cartel; the rest closes the page. */}
+        <ul className="p-chiffres" style={{ '--n': projet.chiffres.length } as CSSProperties}>
+          {projet.chiffres.map((chiffre) => (
+            <li key={chiffre.value}>
+              <span className="p-chiffre">
+                <T>{chiffre.value}</T>
+              </span>
+              <T>{chiffre.text}</T>
+            </li>
+          ))}
+        </ul>
+        <dl className="p-cartel">
+          {projet.cartel.map(([term, value]) => (
+            <div key={term}>
+              <dt className="m-label">
+                <T>{term}</T>
+              </dt>
+              <dd>
+                <T>{value}</T>
+              </dd>
+            </div>
+          ))}
+        </dl>
+        <Visuel legende={`${projet.nom}, détail de l’aiguillage.`} n={1}>
+          <Miniature cadrage={cadrage} />
+        </Visuel>
+      </header>
+
+      {projet.sections.map((section, index) => (
+        <section key={section.id} className="p-section" data-section={section.id}>
+          <p className="p-section__n m-label">
+            <T>
+              {two(index + 1)} — {section.nav}
+            </T>
+          </p>
+          <h2 className="p-section__titre">
+            <T>{section.titre}</T>
+          </h2>
+          <Blocs blocs={section.blocs} figures={figures} />
+        </section>
+      ))}
+    </article>
+  );
+}
+
+/**
+ * A project page in the Vitrine's frame, like Rachel Chen's case studies: the
+ * reading down the middle; on the left, the table of contents, which follows
+ * the reading; on the right, the name, nav and contact.
+ */
+export function ProjetMaquette({ projet, onRetour }: { projet: Projet; onRetour?: () => void }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const { active, go } = useSommaire(ref, projet.sections[0].id);
+
   return (
     <div ref={ref} className="maquette projet">
       <nav className="p-gauche" aria-label="Sommaire">
-        {/* Back to the projects, top left: the trail of the page. */}
-        <p className="p-retour m-label">
-          <button type="button" onClick={onRetour}>
-            {/* The cursor's agent pointer (step 6), drawn straight: symmetric, pointing back. */}
-            <svg className="p-retour__fleche" viewBox="0 0 10 10" aria-hidden="true">
-              <polygon points="0,5 10,0 6.5,5 10,10" />
-            </svg>
-            <T>Projets</T>
-          </button>
-          <T> / {projet.nom}</T>
-        </p>
-        <ol className="p-sommaire m-label">
-          {projet.sections.map((section, index) => (
-            <li key={section.id} aria-current={section.id === active ? 'location' : undefined}>
-              <button type="button" data-cursor="cube" onClick={() => go(section.id)}>
-                <span className="p-sommaire__n">{two(index + 1)}</span>
-                <T>{section.nav}</T>
-              </button>
-            </li>
-          ))}
-        </ol>
+        <Retour nom={projet.nom} onRetour={onRetour} />
+        <Sommaire projet={projet} active={active} onGo={go} />
       </nav>
 
       <div className="m-side">
@@ -228,57 +307,56 @@ export function ProjetMaquette({ projet, onRetour }: { projet: Projet; onRetour?
         <Contact />
       </div>
 
-      <article className="p-contenu">
-        <header className="p-entete">
-          <h1 className="p-titre">
-            <T>{projet.nom}</T>
-            <Marque id={projet.logo} className="p-titre__logo" />
-          </h1>
-          <p className="p-accroche">
-            <T>{projet.accroche}</T>
-          </p>
-          {/* The results first: the key figures, before the cartel; the rest closes the page. */}
-          <ul className="p-chiffres" style={{ '--n': projet.chiffres.length } as CSSProperties}>
-            {projet.chiffres.map((chiffre) => (
-              <li key={chiffre.value}>
-                <span className="p-chiffre">
-                  <T>{chiffre.value}</T>
-                </span>
-                <T>{chiffre.text}</T>
-              </li>
-            ))}
-          </ul>
-          <dl className="p-cartel">
-            {projet.cartel.map(([term, value]) => (
-              <div key={term}>
-                <dt className="m-label">
-                  <T>{term}</T>
-                </dt>
-                <dd>
-                  <T>{value}</T>
-                </dd>
-              </div>
-            ))}
-          </dl>
-          <Visuel legende={`${projet.nom}, détail de l’aiguillage.`} n={1}>
-            <Miniature />
-          </Visuel>
-        </header>
+      <Article projet={projet} cadrage="paysage" />
+    </div>
+  );
+}
 
-        {projet.sections.map((section, index) => (
-          <section key={section.id} className="p-section" data-section={section.id}>
-            <p className="p-section__n m-label">
-              <T>
-                {two(index + 1)} — {section.nav}
-              </T>
-            </p>
-            <h2 className="p-section__titre">
-              <T>{section.titre}</T>
-            </h2>
-            <Blocs blocs={section.blocs} figures={figures} />
-          </section>
-        ))}
-      </article>
+/**
+ * The same page on a 390 × 844 phone (journal n° 86): the strip on the right,
+ * as on the Vitrine; the back link at the top; one column of reading, the
+ * figures and cartel stacked, the diagrams scrolling sideways at a readable
+ * size. « Menu » slides in the table of contents above the nav.
+ */
+export function ProjetMobile({
+  projet,
+  onRetour,
+  menuOpen,
+  onMenu,
+}: {
+  projet: Projet;
+  onRetour?: () => void;
+  menuOpen: boolean;
+  onMenu?: (open: boolean) => void;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const { active, go } = useSommaire(ref, projet.sections[0].id);
+
+  return (
+    <div ref={ref} className="mobile projet projet--mobile" data-glisse="">
+      <div className="m-strip">
+        <Name />
+        <button type="button" className="m-label" onClick={() => onMenu?.(true)}>
+          <T>Menu</T>
+        </button>
+      </div>
+      <Retour nom={projet.nom} onRetour={onRetour} />
+      <Article projet={projet} cadrage="portrait" />
+      <div className="m-menu" data-open={menuOpen ? '' : undefined} inert={!menuOpen}>
+        <button type="button" className="m-label" onClick={() => onMenu?.(false)}>
+          <T>Fermer</T>
+        </button>
+        <Sommaire
+          projet={projet}
+          active={active}
+          onGo={(id) => {
+            onMenu?.(false);
+            go(id);
+          }}
+        />
+        <NavList className="m-menu__nav" />
+        <Contact />
+      </div>
     </div>
   );
 }

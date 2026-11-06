@@ -1,5 +1,6 @@
 import { Fragment, useId } from 'react';
 import type { ReactNode } from 'react';
+import { useTr } from './langue';
 import type { LogoId } from './logos';
 import { Pastilles } from './Marque';
 import './schemas.css';
@@ -107,16 +108,17 @@ function Svg({ h, children, label }: { h: number; children: (id: string) => Reac
 /* 1 · A ticket's path, from the project to the experts; the answer is already
    in the documentation, next to the first level (report, fig. 4.7). */
 function Parcours() {
+  const tr = useTr();
   const boxes: { titre: string; sous: string; logos?: LogoId[] }[] = [
-    { titre: 'Projet', sous: '1 200 projets' },
+    { titre: tr('Projet', 'Project'), sous: tr('1 200 projets', '1,200 projects') },
     { titre: 'Ticket', sous: 'ServiceNow' },
-    { titre: 'Support N1', sous: 'ServiceDesk', logos: ['sncf'] },
-    { titre: 'Support eUL', sous: 'outillage, pipelines', logos: ['sncf'] },
-    { titre: 'Experts eUL', sous: 'build, déploiement', logos: ['sncf'] },
+    { titre: tr('Support N1', 'Level-1 support'), sous: 'ServiceDesk', logos: ['sncf'] },
+    { titre: tr('Support eUL', 'Factory support'), sous: tr('outillage, pipelines', 'tooling, pipelines'), logos: ['sncf'] },
+    { titre: tr('Experts eUL', 'Factory experts'), sous: tr('build, déploiement', 'build, deployment'), logos: ['sncf'] },
   ];
   const x = (i: number) => 10 + i * 145;
   return (
-    <Svg h={250} label="Le parcours d’un ticket, du projet aux experts, avec la documentation à côté du support de niveau 1">
+    <Svg h={250} label={tr('Le parcours d’un ticket, du projet aux experts, avec la documentation à côté du support de niveau 1', 'A ticket’s path, from the project to the experts, with the documentation next to level-1 support')}>
       {(id) => (
         <>
           {boxes.map((box, i) => (
@@ -127,21 +129,21 @@ function Parcours() {
           ))}
           <path className="sc-trait sc-trait--faible" d={`M${x(2) + 60} 64 V56 H${x(4) + 60} V64`} />
           <text className="sc-petit" x={x(3) + 60} y={48} textAnchor="middle">
-            escalade
+            {tr('escalade', 'escalation')}
           </text>
           <text className="sc-petit sc-accent-texte" x={x(4) + 120} y={140} textAnchor="end">
-            des ingénieurs pris
+            {tr('des ingénieurs pris', 'engineers taken off')}
           </text>
           <text className="sc-petit sc-accent-texte" x={x(4) + 120} y={154} textAnchor="end">
-            sur leurs propres sujets
+            {tr('sur leurs propres sujets', 'their own work')}
           </text>
-          <Boite x={x(2) - 15} y={178} w={150} h={52} titre="Documentation" sous="Markdown sur GitLab" pointille logos={['gitlab']} />
+          <Boite x={x(2) - 15} y={178} w={150} h={52} titre="Documentation" sous={tr('Markdown sur GitLab', 'Markdown on GitLab')} pointille logos={['gitlab']} />
           <Fleche id={id} d={`M${x(2) + 60} 178 V122`} ton="accent" pointille />
           <text className="sc-petit sc-accent-texte" x={x(2) + 148} y={198}>
-            la réponse y est souvent déjà,
+            {tr('la réponse y est souvent déjà,', 'the answer is often already there,')}
           </text>
           <text className="sc-petit sc-accent-texte" x={x(2) + 148} y={212}>
-            pour les tickets de niveau 1
+            {tr('pour les tickets de niveau 1', 'for level-1 tickets')}
           </text>
         </>
       )}
@@ -159,6 +161,7 @@ const CADRES: Record<Ecran, string> = {
 };
 
 function EcranAssistant({ focus }: { focus?: Ecran }) {
+  const tr = useTr();
   const on = (part: Ecran) => (focus === part ? ' sc-focus' : '');
   const barres = (x: number, y: number, widths: number[], step = 10) =>
     widths.map((w, i) => <rect key={i} className="sc-barre" x={x} y={y + i * step} width={w} height="4" rx="2" />);
@@ -167,16 +170,16 @@ function EcranAssistant({ focus }: { focus?: Ecran }) {
       className="schema schema--ecran"
       viewBox={focus ? CADRES[focus] : '0 0 720 420'}
       role="img"
-      aria-label="L’écran de l’assistant : la liste des tickets, l’incident résumé, la réponse avec ses sources, la conversation"
+      aria-label={tr('L’écran de l’assistant : la liste des tickets, l’incident résumé, la réponse avec ses sources, la conversation', 'The assistant’s screen: the ticket list, the summarised incident, the answer with its sources, the conversation')}
     >
       <rect className="sc-cadre" x="0.5" y="0.5" width="719" height="419" rx="6" />
       {/* Left: the open tickets and the settings. */}
       <rect className="sc-zone" x="1" y="1" width="150" height="418" />
       <text className="sc-titre" x="14" y="30">
-        Assistant support
+        {tr('Assistant support', 'Support assistant')}
       </text>
       <text className="sc-sous" x="14" y="62">
-        Incidents en cours
+        {tr('Incidents en cours', 'Open incidents')}
       </text>
       <g className={`sc-boite${on('liste')}`}>
         <rect x="14" y="72" width="122" height="26" rx="3" />
@@ -186,14 +189,14 @@ function EcranAssistant({ focus }: { focus?: Ecran }) {
         <path className="sc-trait" d="M120 82 l4 4 l4 -4" />
       </g>
       <text className="sc-sous" x="14" y="124">
-        Température
+        {tr('Température', 'Temperature')}
       </text>
       <path className="sc-trait" d="M14 138 H136" />
       <circle className="sc-agent" cx="88" cy="138" r="4" />
       <g className="sc-boite">
         <rect x="14" y="156" width="64" height="24" rx="3" />
         <text className="sc-sous" x="24" y="172">
-          Traiter
+          {tr('Traiter', 'Process')}
         </text>
       </g>
 
@@ -207,18 +210,18 @@ function EcranAssistant({ focus }: { focus?: Ecran }) {
       {barres(166, 64, [250, 190])}
       <path className="sc-filet" d="M166 96 H430" />
       <text className="sc-sous" x="166" y="116">
-        Informations extraites
+        {tr('Informations extraites', 'Extracted information')}
       </text>
       <g className={`sc-boite${on('incident')}`}>
         <rect x="166" y="124" width="262" height="70" rx="3" />
         <text className="sc-petit" x="178" y="144">
-          Projet · code ••••
+          {tr('Projet · code ••••', 'Project · code ••••')}
         </text>
         <text className="sc-petit" x="178" y="162">
-          Type d’incident · build (CI)
+          {tr('Type d’incident · build (CI)', 'Incident type · build (CI)')}
         </text>
         <text className="sc-petit" x="178" y="180">
-          Lien vers le job · ••••
+          {tr('Lien vers le job · ••••', 'Job link · ••••')}
         </text>
       </g>
       <text className="sc-sous" x="166" y="218">
@@ -228,7 +231,7 @@ function EcranAssistant({ focus }: { focus?: Ecran }) {
         <path key={i} className={`sc-lien${on('reponse')}`} d={`M166 ${232 + i * 14} H${380 - i * 40}`} />
       ))}
       <text className="sc-sous" x="166" y="290">
-        Tickets similaires
+        {tr('Tickets similaires', 'Similar tickets')}
       </text>
       {[0, 1].map((i) => (
         <g key={i} className="sc-boite">
@@ -239,7 +242,7 @@ function EcranAssistant({ focus }: { focus?: Ecran }) {
 
       {/* Right: the answer, in steps, each with its sources. */}
       <text className="sc-titre" x="456" y="30">
-        Réponse
+        {tr('Réponse', 'Answer')}
       </text>
       {barres(456, 44, [240, 200])}
       <g className={on('reponse')}>
@@ -261,7 +264,7 @@ function EcranAssistant({ focus }: { focus?: Ecran }) {
       <g className={`sc-boite${on('conversation')}`}>
         <rect x="166" y="372" width="540" height="32" rx="16" />
         <text className="sc-sous" x="184" y="392">
-          Guider l’assistant…
+          {tr('Guider l’assistant…', 'Guide the assistant…')}
         </text>
         <path className="sc-plein" d="M684 382 L696 388 L684 394 Z" />
       </g>
@@ -270,28 +273,31 @@ function EcranAssistant({ focus }: { focus?: Ecran }) {
 }
 
 /* 3 · What the study covered (report, fig. 7.4), as a map. */
-const PISTES: { label: string; angle: number; leaves: string[] }[] = [
-  { label: 'Problèmes du RAG', angle: -90, leaves: ['Hallucinations', 'Coût', 'Contexte ignoré'] },
-  { label: 'Données', angle: -25, leaves: ['Nettoyage', 'Découpage', 'Vision', 'Augmentation'] },
-  { label: 'Azure', angle: 32, leaves: ['Blob Storage', 'AI Search · index', 'Web App'] },
-  { label: 'Prompting', angle: 95, leaves: ['Chain-of-Thought', 'Self-consistency', 'Tree of Thoughts'] },
-  { label: 'Agents', angle: 152, leaves: ['ReAct', 'Outils', 'Multi-agents'] },
-  { label: 'Recherche', angle: -150, leaves: ['Multi-vecteurs', 'Rerankers · BM25', 'Graph RAG'] },
+type Mots = [fr: string, en: string];
+
+const PISTES: { label: Mots; angle: number; leaves: Mots[] }[] = [
+  { label: ['Problèmes du RAG', 'RAG problems'], angle: -90, leaves: [['Hallucinations', 'Hallucinations'], ['Coût', 'Cost'], ['Contexte ignoré', 'Ignored context']] },
+  { label: ['Données', 'Data'], angle: -25, leaves: [['Nettoyage', 'Cleaning'], ['Découpage', 'Chunking'], ['Vision', 'Vision'], ['Augmentation', 'Augmentation']] },
+  { label: ['Azure', 'Azure'], angle: 32, leaves: [['Blob Storage', 'Blob Storage'], ['AI Search · index', 'AI Search · index'], ['Web App', 'Web App']] },
+  { label: ['Prompting', 'Prompting'], angle: 95, leaves: [['Chain-of-Thought', 'Chain-of-Thought'], ['Self-consistency', 'Self-consistency'], ['Tree of Thoughts', 'Tree of Thoughts']] },
+  { label: ['Agents', 'Agents'], angle: 152, leaves: [['ReAct', 'ReAct'], ['Outils', 'Tools'], ['Multi-agents', 'Multi-agent']] },
+  { label: ['Recherche', 'Search'], angle: -150, leaves: [['Multi-vecteurs', 'Multi-vector'], ['Rerankers · BM25', 'Rerankers · BM25'], ['Graph RAG', 'Graph RAG']] },
 ];
 
 function Pistes() {
+  const tr = useTr();
   const cx = 360;
   const cy = 205;
   const at = (angle: number, r: number) => [cx + r * Math.cos((angle * Math.PI) / 180), cy + r * Math.sin((angle * Math.PI) / 180)];
   return (
-    <Svg h={410} label="La carte des pistes explorées pendant l’étude : données, recherche, agents, prompting, problèmes du RAG, Azure">
+    <Svg h={410} label={tr('La carte des pistes explorées pendant l’étude : données, recherche, agents, prompting, problèmes du RAG, Azure', 'A map of what the study covered: data, search, agents, prompting, RAG problems, Azure')}>
       {() => (
         <>
           {PISTES.map((piste) => {
             const [bx, by] = at(piste.angle, 92);
             const spread = 19;
             return (
-              <g key={piste.label}>
+              <g key={piste.label[0]}>
                 <path className="sc-filet" d={`M${cx} ${cy} L${bx} ${by}`} />
                 {piste.leaves.map((leaf, i) => {
                   const angle = piste.angle + (i - (piste.leaves.length - 1) / 2) * spread;
@@ -299,7 +305,7 @@ function Pistes() {
                   const right = Math.cos((angle * Math.PI) / 180) >= 0.2;
                   const left = Math.cos((angle * Math.PI) / 180) <= -0.2;
                   return (
-                    <g key={leaf}>
+                    <g key={leaf[0]}>
                       <path className="sc-filet" d={`M${bx} ${by} L${lx} ${ly}`} />
                       <circle className="sc-point" cx={lx} cy={ly} r="2.5" />
                       <text
@@ -308,14 +314,14 @@ function Pistes() {
                         y={ly + (right || left ? 4 : ly < cy ? -8 : 15)}
                         textAnchor={right ? 'start' : left ? 'end' : 'middle'}
                       >
-                        {leaf}
+                        {tr(...leaf)}
                       </text>
                     </g>
                   );
                 })}
                 <circle className="sc-noeud" cx={bx} cy={by} r="4" />
                 <text className="sc-titre" x={bx} y={by + (by < cy ? -10 : 18)} textAnchor="middle">
-                  {piste.label}
+                  {tr(...piste.label)}
                 </text>
               </g>
             );
@@ -332,14 +338,15 @@ function Pistes() {
 
 /* 4 · Decision 1: the sources kept and the ones left out (report, 7.2.3). */
 function Sources() {
+  const tr = useTr();
   const sources = [
-    { titre: 'Documentation de l’Usine', sous: 'Markdown sur GitLab · à jour, structurée', garde: true, logos: ['gitlab'] as LogoId[] },
-    { titre: 'Incidents résolus', sous: 'ServiceNow · JSON · les solutions passées', garde: true },
-    { titre: 'Forum', sous: 'riche, mais souvent daté', garde: false },
-    { titre: 'Fil d’actualité', sous: 'temps réel · trop mouvant pour un index', garde: false },
+    { titre: tr('Documentation de l’Usine', 'The Factory’s documentation'), sous: tr('Markdown sur GitLab · à jour, structurée', 'Markdown on GitLab · current, structured'), garde: true, logos: ['gitlab'] as LogoId[] },
+    { titre: tr('Incidents résolus', 'Solved incidents'), sous: tr('ServiceNow · JSON · les solutions passées', 'ServiceNow · JSON · past fixes'), garde: true },
+    { titre: 'Forum', sous: tr('riche, mais souvent daté', 'rich, but often dated'), garde: false },
+    { titre: tr('Fil d’actualité', 'News feed'), sous: tr('temps réel · trop mouvant pour un index', 'real time · too fluid to index'), garde: false },
   ];
   return (
-    <Svg h={236} label="Les sources gardées, la documentation et les incidents résolus, et les sources écartées, le forum et le fil d’actualité">
+    <Svg h={236} label={tr('Les sources gardées, la documentation et les incidents résolus, et les sources écartées, le forum et le fil d’actualité', 'The sources kept, the documentation and solved incidents, and the ones left out, the forum and the news feed')}>
       {(id) => (
         <>
           {sources.map((source, i) => {
@@ -364,7 +371,7 @@ function Sources() {
                     <path className="sc-trait sc-trait--faible sc-trait--pointille" d={`M280 ${y + 22} H316`} />
                     <path className="sc-trait sc-trait--faible" d={`M322 ${y + 16} l12 12 M334 ${y + 16} l-12 12`} />
                     <text className="sc-petit" x={344} y={y + 26}>
-                      écarté
+                      {tr('écarté', 'left out')}
                     </text>
                   </>
                 )}
@@ -372,9 +379,9 @@ function Sources() {
             );
           })}
           <text className="sc-petit" x={470} y={140}>
-            après nettoyage, découpage et embeddings
+            {tr('après nettoyage, découpage et embeddings', 'after cleaning, chunking and embeddings')}
           </text>
-          <Boite x={470} y={56} w={240} h={64} titre="Index Azure AI Search" sous="texte, vecteurs et métadonnées" ton="accent" />
+          <Boite x={470} y={56} w={240} h={64} titre={tr('Index Azure AI Search', 'Azure AI Search index')} sous={tr('texte, vecteurs et métadonnées', 'text, vectors and metadata')} ton="accent" />
         </>
       )}
     </Svg>
@@ -383,16 +390,17 @@ function Sources() {
 
 /* 5 · Decision 2: hybrid search (report, 7.2.6). */
 function Recherche() {
+  const tr = useTr();
   return (
-    <Svg h={210} label="La recherche hybride : mots-clés et vecteurs en parallèle, fusionnés, puis reclassés">
+    <Svg h={210} label={tr('La recherche hybride : mots-clés et vecteurs en parallèle, fusionnés, puis reclassés', 'Hybrid search: keywords and vectors in parallel, fused, then reranked')}>
       {(id) => (
         <>
-          <Boite x={10} y={79} w={100} h={52} titre="Question" sous="du ticket" />
-          <Boite x={150} y={20} w={176} h={52} titre="Mots-clés · BM25" sous="codes d’erreur, noms d’outils" />
-          <Boite x={150} y={138} w={176} h={52} titre="Vecteurs · ADA-002" sous="1 536 dimensions · le sens" />
-          <Boite x={366} y={79} w={104} h={52} titre="Fusion" sous="un classement" />
-          <Boite x={500} y={79} w={106} h={52} titre="Reclassement" sous="sémantique" />
-          <Boite x={630} y={79} w={80} h={52} titre="Passages" sous="→ modèle" ton="accent" />
+          <Boite x={10} y={79} w={100} h={52} titre="Question" sous={tr('du ticket', 'from the ticket')} />
+          <Boite x={150} y={20} w={176} h={52} titre={tr('Mots-clés · BM25', 'Keywords · BM25')} sous={tr('codes d’erreur, noms d’outils', 'error codes, tool names')} />
+          <Boite x={150} y={138} w={176} h={52} titre={tr('Vecteurs · ADA-002', 'Vectors · ADA-002')} sous={tr('1 536 dimensions · le sens', '1,536 dimensions · meaning')} />
+          <Boite x={366} y={79} w={104} h={52} titre="Fusion" sous={tr('un classement', 'one ranking')} />
+          <Boite x={500} y={79} w={106} h={52} titre={tr('Reclassement', 'Reranking')} sous={tr('sémantique', 'semantic')} />
+          <Boite x={630} y={79} w={80} h={52} titre="Passages" sous={tr('→ modèle', '→ model')} ton="accent" />
           <Fleche id={id} d="M110 96 C 124 96, 124 46, 138 46 H150" />
           <Fleche id={id} d="M110 114 C 124 114, 124 164, 138 164 H150" />
           <Fleche id={id} d="M326 46 C 340 46, 340 96, 354 96 H366" />
@@ -407,6 +415,7 @@ function Recherche() {
 
 /* 6 · Decision 3: the same PDF, read by rules and by a model (report, 8.3.2). */
 function Pdf() {
+  const tr = useTr();
   const page = (
     <g>
       <rect className="sc-cadre" x="10" y="20" width="170" height="226" rx="2" />
@@ -438,7 +447,7 @@ function Pdf() {
         </g>
       ))}
       <text className="sc-petit" x="10" y="12">
-        Le document : deux colonnes, un tableau
+        {tr('Le document : deux colonnes, un tableau', 'The document: two columns, one table')}
       </text>
     </g>
   );
@@ -451,17 +460,17 @@ function Pdf() {
     </g>
   );
   return (
-    <Svg h={256} label="Le même PDF lu par un parseur à règles, dans le désordre et le tableau cassé, puis par Azure Document Intelligence, dans l’ordre et le tableau gardé">
+    <Svg h={256} label={tr('Le même PDF lu par un parseur à règles, dans le désordre et le tableau cassé, puis par Azure Document Intelligence, dans l’ordre et le tableau gardé', 'The same PDF read by a rule-based parser, out of order with the table broken, then by Azure Document Intelligence, in order with the table kept')}>
       {(id) => (
         <>
           {page}
           <Fleche id={id} d="M180 120 C 210 120, 210 72, 234 72 H246" />
           <Fleche id={id} d="M180 140 C 210 140, 210 192, 234 192 H246" ton="accent" />
           <text className="sc-titre" x="250" y="34">
-            Parseur à règles
+            {tr('Parseur à règles', 'Rule-based parser')}
           </text>
           <text className="sc-sous" x="250" y="50">
-            le texte dans l’ordre du fichier, le tableau en morceaux
+            {tr('le texte dans l’ordre du fichier, le tableau en morceaux', 'text in file order, the table in pieces')}
           </text>
           {bloc(250, 60, '1')}
           {bloc(312, 60, '3')}
@@ -474,7 +483,7 @@ function Pdf() {
             Azure Document Intelligence
           </text>
           <text className="sc-sous" x="250" y="170">
-            l’ordre de lecture, les colonnes et le tableau reconnus
+            {tr('l’ordre de lecture, les colonnes et le tableau reconnus', 'reading order, columns and table recognised')}
           </text>
           {bloc(250, 180, '1', 56, 'accent')}
           {bloc(312, 180, '2', 56, 'accent')}
@@ -484,7 +493,7 @@ function Pdf() {
             <path d="M436 196 H586 M436 212 H586 M486 180 V228 M536 180 V228" />
           </g>
           <text className="sc-petit" x="596" y="208">
-            4 · un tableau
+            {tr('4 · un tableau', '4 · one table')}
           </text>
           <path className="sc-trait sc-trait--accent" d="M680 202 l6 7 l12 -14" />
         </>
@@ -496,14 +505,15 @@ function Pdf() {
 /* 7 · Decision 4: from searching before every answer to a ReAct agent that
    chooses its tools (report, 9.2.3 to 9.2.5). */
 function Agent() {
+  const tr = useTr();
   return (
-    <Svg h={300} label="Avant : la recherche puis le modèle, toujours. Après : un agent ReAct qui pense, agit avec ses outils, observe, et recommence jusqu’à pouvoir répondre">
+    <Svg h={300} label={tr('Avant : la recherche puis le modèle, toujours. Après : un agent ReAct qui pense, agit avec ses outils, observe, et recommence jusqu’à pouvoir répondre', 'Before: search then the model, every time. After: a ReAct agent that thinks, acts with its tools, observes, and loops until it can answer')}>
       {(id) => (
         <>
           <text className="sc-titre" x="10" y="18">
-            Avant · une recherche à chaque fois
+            {tr('Avant · une recherche à chaque fois', 'Before · a search every time')}
           </text>
-          {['Question', 'Recherche', 'Modèle', 'Réponse'].map((titre, i) => (
+          {['Question', tr('Recherche', 'Search'), tr('Modèle', 'Model'), tr('Réponse', 'Answer')].map((titre, i) => (
             <Boite key={titre} x={40} y={36 + i * 64} w={170} h={40} titre={titre} />
           ))}
           {[0, 1, 2].map((i) => (
@@ -512,26 +522,26 @@ function Agent() {
           <path className="sc-filet" d="M262 10 V290" />
 
           <text className="sc-titre" x="290" y="18">
-            Après · un agent ReAct
+            {tr('Après · un agent ReAct', 'After · a ReAct agent')}
           </text>
-          <Boite x={300} y={40} w={150} h={46} titre="Pensée" sous="que me manque-t-il ?" ton="accent" />
-          <Boite x={300} y={130} w={150} h={46} titre="Action" sous="appelle un outil" />
-          <Boite x={300} y={220} w={150} h={46} titre="Observation" sous="lit le résultat" />
+          <Boite x={300} y={40} w={150} h={46} titre={tr('Pensée', 'Thought')} sous={tr('que me manque-t-il ?', 'what am I missing?')} ton="accent" />
+          <Boite x={300} y={130} w={150} h={46} titre="Action" sous={tr('appelle un outil', 'calls a tool')} />
+          <Boite x={300} y={220} w={150} h={46} titre="Observation" sous={tr('lit le résultat', 'reads the result')} />
           <Fleche id={id} d="M375 86 V130" ton="accent" />
           <Fleche id={id} d="M375 176 V220" ton="accent" />
           <Fleche id={id} d="M300 243 C 266 243, 266 63, 286 63 H300" ton="accent" />
           <rect className="sc-agent" x={432} y={48} width="10" height="10" />
-          <Boite x={560} y={40} w={150} h={46} titre="Réponse" sous="avec ses sources" ton="accent" />
+          <Boite x={560} y={40} w={150} h={46} titre={tr('Réponse', 'Answer')} sous={tr('avec ses sources', 'with its sources')} ton="accent" />
           <Fleche id={id} d="M450 63 H560" ton="accent" />
           <text className="sc-petit" x="505" y="56" textAnchor="middle">
-            quand il sait
+            {tr('quand il sait', 'once it knows')}
           </text>
           <text className="sc-petit" x="485" y="146" textAnchor="middle">
-            ses outils
+            {tr('ses outils', 'its tools')}
           </text>
           <path className="sc-trait" d="M450 153 H520" />
           <path className="sc-trait" d="M520 127 V247" />
-          {['Recherche doc', 'Graphe de la doc', 'Incidents résolus', 'Reformulation'].map((titre, i) => (
+          {[tr('Recherche doc', 'Doc search'), tr('Graphe de la doc', 'Doc graph'), tr('Incidents résolus', 'Solved incidents'), tr('Reformulation', 'Rephrasing')].map((titre, i) => (
             <g key={titre}>
               <Boite x={560} y={112 + i * 40} w={150} h={30} titre={titre} pointille />
               <Fleche id={id} d={`M520 ${127 + i * 40} H560`} />
@@ -546,20 +556,21 @@ function Agent() {
 /* 8 · The Usine Logicielle's pipeline, from the commit to production
    (report, fig. 9.1 and 9.2.1). */
 function Pipeline() {
+  const tr = useTr();
   const ci: { titre: string; sous: string; logos?: LogoId[] }[] = [
     { titre: 'GitLab', sous: 'code · webhook', logos: ['gitlab'] },
-    { titre: 'Jenkins', sous: 'orchestre le build', logos: ['jenkins'] },
-    { titre: 'Build', sous: 'conteneur dédié', logos: ['docker'] },
-    { titre: 'Tests unitaires', sous: 'à chaque build', logos: ['python'] },
-    { titre: 'Qualité, sécurité', sous: 'SonarQube, Checkmarx', logos: ['checkmarx', 'sonarqube'] },
+    { titre: 'Jenkins', sous: tr('orchestre le build', 'runs the build'), logos: ['jenkins'] },
+    { titre: 'Build', sous: tr('conteneur dédié', 'dedicated container'), logos: ['docker'] },
+    { titre: tr('Tests unitaires', 'Unit tests'), sous: tr('à chaque build', 'on every build'), logos: ['python'] },
+    { titre: tr('Qualité, sécurité', 'Quality, security'), sous: 'SonarQube, Checkmarx', logos: ['checkmarx', 'sonarqube'] },
   ];
   const x = (i: number) => 10 + i * 141;
   return (
-    <Svg h={300} label="Le pipeline : GitLab, Jenkins, build, tests unitaires, qualité et sécurité, puis Artifactory, Ansible avec les secrets de Vault, et Azure">
+    <Svg h={300} label={tr('Le pipeline : GitLab, Jenkins, build, tests unitaires, qualité et sécurité, puis Artifactory, Ansible avec les secrets de Vault, et Azure', 'The pipeline: GitLab, Jenkins, build, unit tests, quality and security, then Artifactory, Ansible with secrets from Vault, and Azure')}>
       {(id) => (
         <>
           <text className="sc-sous" x="10" y="18">
-            Intégration continue
+            {tr('Intégration continue', 'Continuous integration')}
           </text>
           {ci.map((box, i) => (
             <Boite key={box.titre} x={x(i)} y={30} w={i === 4 ? 144 : 124} h={52} {...box} />
@@ -568,19 +579,19 @@ function Pipeline() {
             <Fleche key={i} id={id} d={`M${x(i) + 124} 56 H${x(i + 1)}`} />
           ))}
           <text className="sc-petit" x={x(1)} y={100}>
-            récupère les dépendances dans Artifactory
+            {tr('récupère les dépendances dans Artifactory', 'pulls dependencies from Artifactory')}
           </text>
 
           <text className="sc-sous" x="10" y="160">
-            Déploiement continu
+            {tr('Déploiement continu', 'Continuous delivery')}
           </text>
           <Fleche id={id} d={`M${x(4) + 72} 82 V172`} ton="accent" />
-          <Boite x={x(4)} y={172} w={144} h={52} titre="Artifactory" sous="binaires, image" ton="accent" logos={['jfrog']} />
-          <Boite x={x(2) + 30} y={172} w={150} h={52} titre="Ansible" sous="déploie l’artefact" ton="accent" logos={['ansible']} />
-          <Boite x={x(0)} y={172} w={190} h={52} titre="Azure" sous="l’application en production" ton="accent" />
+          <Boite x={x(4)} y={172} w={144} h={52} titre="Artifactory" sous={tr('binaires, image', 'binaries, image')} ton="accent" logos={['jfrog']} />
+          <Boite x={x(2) + 30} y={172} w={150} h={52} titre="Ansible" sous={tr('déploie l’artefact', 'deploys the artifact')} ton="accent" logos={['ansible']} />
+          <Boite x={x(0)} y={172} w={190} h={52} titre="Azure" sous={tr('l’application en production', 'the app in production')} ton="accent" />
           <Fleche id={id} d={`M${x(4)} 198 H${x(2) + 180}`} ton="accent" />
           <Fleche id={id} d={`M${x(2) + 30} 198 H${x(0) + 190}`} ton="accent" />
-          <Boite x={x(2) + 30} y={250} w={150} h={40} titre="Vault · les secrets" pointille logos={['vault']} />
+          <Boite x={x(2) + 30} y={250} w={150} h={40} titre={tr('Vault · les secrets', 'Vault · secrets')} pointille logos={['vault']} />
           <Fleche id={id} d={`M${x(2) + 105} 250 V224`} pointille />
         </>
       )}

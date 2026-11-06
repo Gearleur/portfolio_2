@@ -358,3 +358,91 @@
   background: var(--accent);
   translate: 0 -50%;
 }
+
+/* Phone, 390 × 844 (journal n° 86): the Vitrine's phone frame (the strip on
+   the right, « Menu »), one column of reading. These rules come last so they
+   win over the desktop measures of the same weight. */
+.mobile.projet--mobile .p-retour {
+  padding-top: calc(var(--space-5) * var(--u));
+}
+
+.mobile.projet--mobile .p-contenu {
+  display: block;
+  padding-bottom: calc(var(--space-8) * var(--u));
+}
+
+.mobile.projet--mobile :is(.p-entete, .p-section) {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.mobile.projet--mobile :is(.p-entete, .p-section) > * {
+  grid-column: 1 / -1;
+}
+
+.mobile.projet--mobile .p-entete {
+  padding-top: calc(var(--space-6) * var(--u));
+}
+
+.mobile.projet--mobile .p-titre {
+  font-size: calc(48 * var(--u));
+}
+
+.mobile.projet--mobile .p-section {
+  margin-top: calc((var(--space-7) + var(--space-5)) * var(--u));
+}
+
+/* Figures and cartel stacked, columns stacked, cards two by two. */
+.mobile.projet--mobile :is(.p-chiffres, .p-colonnes, .p-cartel) {
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: calc(var(--space-4) * var(--u));
+}
+
+.mobile.projet--mobile .p-cartes {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.mobile.projet--mobile .p-chiffre {
+  font-size: calc(48 * var(--u));
+}
+
+/* The thumbnail upright, as on the Vitrine's phone cards. */
+.p-visuel__image:has(.miniature[data-cadrage='portrait']) {
+  aspect-ratio: 210 / 262;
+}
+
+/* Diagrams keep a readable size (640 of their 720 units) and scroll sideways. */
+.mobile.projet--mobile .p-visuel__image:has(.schema) {
+  overflow-x: auto;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+}
+
+.mobile.projet--mobile .p-visuel__image:has(.schema)::-webkit-scrollbar {
+  display: none;
+}
+
+.mobile.projet--mobile .p-visuel__image .schema {
+  width: calc(640 * var(--u));
+  max-width: none;
+}
+
+.mobile.projet--mobile .p-visuel:has(.schema) figcaption::after {
+  content: ' · glisser →';
+  color: var(--accent);
+}
+
+/* The table of contents, in the menu panel above the nav. */
+.m-menu .p-sommaire {
+  align-items: flex-end;
+  padding: 0;
+}
+
+.m-menu .p-sommaire button {
+  text-align: right;
+}
+
+/* With the table of contents, the menu panel can be taller than the screen. */
+.projet--mobile .m-menu {
+  overflow-y: auto;
+  scrollbar-width: none;
+}

@@ -648,7 +648,14 @@ construite comme celle de Rachel Chen :
   gardent la même taille quel que soit le trait ;
 - **les marques** (`src/atelier/logos.ts`) : le logo SNCF dans la ligne du
   titre, à la hauteur des capitales ; des pastilles de marque sur les boîtes
-  des schémas. Les logos viennent de Simple
+  des schémas.
+- **sur téléphone** (`ProjetMobile`) : le cadre de la Vitrine, avec la tranche
+  à droite et « Menu ». Le retour est en haut, la lecture sur une colonne. Les
+  chiffres et le cartel sont empilés, les cartes deux par deux, la miniature en
+  portrait. Les schémas gardent une taille lisible et glissent de côté. « Menu »
+  ouvre le sommaire au-dessus de la nav ;
+- **l'anglais, préparé** : les libellés des schémas existent en français et en
+  anglais (`src/atelier/langue.ts`). Le texte anglais de la page reste à brancher. Les logos viennent de Simple
   Icons (CC0), sauf Jenkins (CC BY-SA 3.0, le projet Jenkins). Azure, ServiceNow
   et OpenAI n'y sont pas, ils restent en texte. Les images du rapport de stage
   ne sont pas reprises : ce sont des documents internes SNCF.
@@ -760,6 +767,7 @@ un bon argument dans un portfolio.
 | 83 | 2026-11-06 | **Relecture critique** de SNCF GPT. L'accroche dit « point de départ de SNCF Groupe GPT » au lieu de « devenu ». Chaque chiffre dit à quel outil il se rapporte (assistant support ou SNCF Groupe GPT). « Ni équipe IA » contredisait « premier membre de l'équipe IA ». Les ingénieurs de l'Usine, pas « des experts », sont pris sur leurs sujets. Les retours ne mélangent plus les deux outils. **Flèches** des schémas : la pointe du curseur, à taille fixe ; le crochet « escalade » ne croise plus la flèche de la doc ; les outils de l'agent partent d'un même bus. **Sommaire** : la partie 10 est détectée en bas de page, et la partie cliquée reste marquée pendant le défilement. | « Repasse sur l'article de façon critique » · « Revois les schémas et les flèches, des fois il y a des bugs ; essaie de réutiliser notre curseur pour les flèches » · « Quand on scrolle jusqu'en bas, le 10 n'est pas détecté dans le sommaire » | 7 |
 | 84 | 2026-11-06 | **De la couleur et des marques** sur la page SNCF GPT : le logo SNCF au-dessus du titre avec « e.SNCF Solutions · Usine Logicielle, Lyon » ; une rangée de 16 outils avec leurs logos en couleur ; des pastilles de marque sur les boîtes des schémas (SNCF, GitLab, Jenkins, Docker, Python, SonarQube, Checkmarx, JFrog, Ansible, Vault). Les flèches courbes finissent par un bout droit, pour que la pointe ne se torde plus. | « Petit raté sur la flèche de ce schéma en haut à gauche » · « Rajouter de la couleur, des icônes ; montrer que c'est quand même à la SNCF ; là il n'y a pas de logo, c'est impersonnel » | 7 |
 | 85 | 2026-11-06 | En tête de page, la rangée de logos d'outils et la ligne « e.SNCF Solutions · Usine Logicielle, Lyon » sont **retirées**. Le **logo SNCF** passe dans la ligne du titre, juste après « SNCF GPT », à la hauteur des capitales. Les pastilles des schémas restent. | « Tous les logos au début, supprime ; e.SNCF Solutions · Usine Logicielle, Lyon, supprime ça aussi ; garde le logo mais intègre-le, ne le mets pas tout seul au-dessus ; sinon le reste c'est pas mal » | 7 |
+| 86 | 2026-11-06 | **Page projet sur téléphone** : le cadre de la Vitrine (tranche, Menu), une colonne, les chiffres et le cartel empilés, la miniature en portrait. Les schémas, à taille lisible, glissent de côté. Le sommaire est dans le panneau Menu et suit la lecture jusqu'à la partie 10. Les libellés des schémas sont préparés en anglais, le texte anglais reste à faire. | « Fais la version téléphone maintenant et on est bon ; ensuite on va attaquer la partie Alpine » | 7 |
 
 ---
 

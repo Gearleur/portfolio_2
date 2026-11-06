@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import { Maquette, MaquetteMobile } from '../Maquettes';
 import { Miniature } from '../Miniature';
-import { ProjetMaquette } from '../Projet';
+import { ProjetMaquette, ProjetMobile } from '../Projet';
 import { SNCF_GPT } from '../projets';
 import { Specimen, SpecimenPreview } from '../Specimen';
 import { FOND, FOND_LECTURE } from '../tokens';
@@ -28,6 +28,31 @@ const PHONES = [
   },
 ];
 
+/** The project page on a phone: at the top, then at a diagram, which scrolls sideways. */
+const PHONES_PROJET = [
+  {
+    id: 'projet',
+    name: 'La page projet',
+    note: 'Le retour en haut, le titre, les chiffres empilés. « Menu » ouvre le sommaire au-dessus de la nav.',
+    section: undefined,
+  },
+  {
+    id: 'schema',
+    name: 'Un schéma',
+    note: 'Les schémas gardent une taille lisible : on les fait glisser de côté.',
+    section: 'decisions',
+  },
+] as const;
+
+/** Scrolls a phone's project page to a section. */
+function scrollToSection(id: string) {
+  return (frame: HTMLDivElement | null) => {
+    const page = frame?.querySelector<HTMLElement>('.mobile');
+    const section = page?.querySelector<HTMLElement>(`[data-section="${id}"]`);
+    if (page && section) page.scrollTop = section.offsetTop + section.offsetHeight * 0.18;
+  };
+}
+
 /** Scrolls a phone page so its first picture sits under the strip's words. */
 function scrollToPicture(frame: HTMLDivElement | null) {
   const page = frame?.querySelector<HTMLElement>('.mobile');
@@ -38,6 +63,7 @@ function scrollToPicture(frame: HTMLDivElement | null) {
 /** Step 7: the words and pictures of each project, starting with SNCF GPT. */
 export function ContenuStep() {
   const [preview, setPreview] = useState<'vitrine' | 'projet' | null>(null);
+  const [menuProjet, setMenuProjet] = useState(false);
   // The first stage goes from the project page back to the Vitrine and in again.
   const [vue, setVue] = useState<'projet' | 'vitrine'>('projet');
   const [waveSignal, playWave] = useWaveSignal();
@@ -177,6 +203,25 @@ export function ContenuStep() {
                 <div className="phone__frame" ref={phone.scrolled ? scrollToPicture : undefined}>
                   <Specimen settings={FOND} waveSignal={waveSignal}>
                     <MaquetteMobile blocks={false} menuOpen={false} images={{ '01': <Miniature cadrage="portrait" /> }} />
+                  </Specimen>
+                </div>
+                <figcaption>
+                  <strong>{phone.name}</strong>
+                  {phone.note}
+                </figcaption>
+              </figure>
+            </li>
+          ))}
+          {PHONES_PROJET.map((phone) => (
+            <li key={phone.id}>
+              <figure className="phone">
+                <div className="phone__frame" ref={phone.section ? scrollToSection(phone.section) : undefined}>
+                  <Specimen settings={FOND_LECTURE}>
+                    <ProjetMobile
+                      projet={SNCF_GPT}
+                      menuOpen={phone.section ? false : menuProjet}
+                      onMenu={phone.section ? undefined : setMenuProjet}
+                    />
                   </Specimen>
                 </div>
                 <figcaption>
