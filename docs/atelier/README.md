@@ -550,7 +550,7 @@ en français. On ne commite un texte qu'une fois validé, sans nom de collègue,
 nom interne et sans capture d'application interne. Les sources privées, comme ton
 rapport de stage, restent hors du dépôt.
 
-- **SNCF GPT** (`01-sncf-gpt.md`) : troisième jet, tiré du rapport de stage TN09
+- **SNCF GPT** (`01-sncf-gpt.md`) : texte français validé, tiré du rapport de stage TN09
   et calé partie par partie sur la page de Rachel. On montre d'abord le produit
   (la solution, puis ce que voit le support), puis la construction : l'écoute et
   la lecture, les options explorées, le prototype et ses tests, les décisions, la
@@ -706,6 +706,7 @@ un bon argument dans un portfolio.
 | 70 | 2026-11-06 | Le fond accent du nom et de « Menu » ne couvre que la partie au-dessus d'une image et suit son bord au défilement (une copie accent du mot, masquée). Essai : la vue de détail agrandie sur la carte d'ordinateur, à comparer à la planche. | « Le hover sur Menu et Alexandre Teixeira uniquement sur les images, de façon dynamique sur le texte, pas tout ou rien » · « Utilise l'image mobile pour le desktop, adaptée en plus grand, juste pour voir » | 7 |
 | 71 | 2026-11-06 | Sur ordinateur aussi, la **vue de détail** (la planche entière est retirée), avec « *SNCF GPT* » plus grand en haut à gauche, en serif italique. Le micro-texte fait exactement un tour du cercle. | « Je préfère Détail pour la version desktop aussi, mais écris SNCF GPT plus gros en haut à gauche ; sinon on est bon » | 7 |
 | 72 | 2026-11-06 | SNCF GPT, ce qu'on peut publier : les **82 %**, à présenter comme une mesure interne sur un jeu de tickets de test ; les **3 000+ utilisateurs par mois**, atteints dans un second temps, quand SNCF Groupe GPT a été branché sur SharePoint, Jira et d'autres sources ; les chiffres de l'Usine Logicielle (1 200 projets, 4 500 utilisateurs). Le travail avec les équipes DevOps s'est fait main dans la main. | « Les 82 %, c'est une mesure interne mais sur des tickets de test » · « Ils ont adoré, les équipes DevOps, j'étais main dans la main avec eux ; c'est ensuite devenu SNCF GPT Groupe connecté à SharePoint, Jira… c'est les 3 000 utilisateurs, dans un deuxième temps » · « Oui » | 7 |
+| 73 | 2026-11-06 | **Texte français de SNCF GPT validé.** On y précise que tu étais seul au début et que tu as branché Jira (SharePoint est venu après ton départ). BFM Business est retiré faute de trace retrouvée ; à la place, l'article du Journal du Net (juin 2024) sur SNCF Groupe GPT. Les images et les schémas viennent ensuite. | « Jira oui, SharePoint non, j'ai quitté à ce moment-là » · « Je n'arrive pas à retrouver [BFM] » · « Ouais c'est bien, faut dire qu'au début j'étais tout seul sur le projet » · « On rajoutera des images, des schémas » | 7 |
 
 ---
 
