@@ -48,7 +48,7 @@ Un assistant pour le support DevOps, devenu l'IA générative du groupe SNCF.
 L'Usine Logicielle d'e.SNCF fournit l'intégration et le déploiement continus à tous
 les projets du groupe : plus de 1 200 projets et 4 500 utilisateurs. J'ai été le
 premier membre de sa nouvelle équipe IA, pendant 24 semaines. Au début, j'étais
-seul sur le projet.
+seul sur le projet ; à partir de SNCF Groupe GPT, j'ai travaillé en équipe.
 
 *Trois tuiles :* **Prototype** · **Démonstrateur** · **Production**
 
@@ -127,7 +127,7 @@ l'interface. C'est devenu SNCF Groupe GPT.
 
 **Les retours.** Les équipes DevOps ont adoré. L'outil a ensuite grandi : j'ai
 branché SNCF Groupe GPT sur Jira ; après mon départ, SharePoint et d'autres
-sources du groupe ont suivi, et l'outil a dépassé 3 000 utilisateurs par mois.
+sources du groupe ont suivi, et l'outil a dépassé 3 000 utilisateurs par jour.
 
 ## 7. Les décisions techniques
 
@@ -174,11 +174,10 @@ l'Usine sait maintenant déployer et maintenir l'application.**
 
 ## 9. Résultats
 
-- Présenté au comité exécutif du groupe, qui a demandé de l'ouvrir à tout le groupe.
 - Sur un jeu de tickets de test, **82 %** des incidents de niveau 1 résolus par
   l'assistant (mesure interne).
 - Plus de 500 personnes habilitées à la fin du stage, puis **plus de 3 000
-  utilisateurs par mois** une fois l'outil branché sur Jira, SharePoint et
+  utilisateurs par jour** une fois l'outil branché sur Jira, SharePoint et
   d'autres sources du groupe.
 - Présenté au comité exécutif du groupe, qui a demandé de l'ouvrir à tout le groupe.
 - Présenté à plus de 350 personnes de la direction, puis au TechAndFest de Grenoble
