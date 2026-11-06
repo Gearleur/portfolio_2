@@ -51,9 +51,6 @@
 }
 
 .p-titre {
-  display: flex;
-  align-items: center;
-  gap: 0.22em;
   font-family: var(--font-display);
   font-size: calc(var(--size-display) * var(--u));
   font-weight: var(--display-weight);
@@ -63,11 +60,18 @@
 
 /* The company's mark in the title line, its red block about the height of
    the capitals (journal n° 85). */
+.p-titre__fin {
+  white-space: nowrap;
+}
+
 .p-titre__logo {
-  flex: none;
+  display: inline-block;
   width: 1.3em;
   height: 1.3em;
-  translate: 0 -0.04em;
+  /* It follows the last word, even when the title wraps; centred on the
+     capitals, it does not make the line taller. */
+  margin: -0.3em 0 -0.3em 0.22em;
+  vertical-align: baseline;
 }
 
 .projet .p-accroche {
@@ -230,11 +234,34 @@
   aspect-ratio: 4 / 3;
 }
 
+/* A thumbnail made outside the Atelier, as a picture (journal n° 97). */
+.p-visuel__image:has(> img) {
+  aspect-ratio: 4 / 3;
+  background: none;
+}
+
+.p-visuel__image > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 /* A drawn diagram keeps its own proportions, on the paper. */
 .p-visuel__image:has(.schema),
 .p-carte__image:has(.schema) {
   aspect-ratio: auto;
   background: none;
+}
+
+/* The diagrams sit on a dotted ground, like a whiteboard (journal n° 97); the
+   boxes are paper-filled, so the dots stop at them. It scrolls with a
+   diagram that slides sideways on a phone. */
+.p-visuel__image:has(> .schema) {
+  padding: calc(var(--space-4) * var(--u));
+  background-image: radial-gradient(circle, color-mix(in oklch, var(--ink) 24%, transparent) 0.9px, transparent 1.3px);
+  background-size: calc(14 * var(--u)) calc(14 * var(--u));
+  background-attachment: local;
 }
 
 .p-carte__image .schema {

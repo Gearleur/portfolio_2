@@ -235,8 +235,12 @@ function Article({ projet, cadrage }: { projet: Projet; cadrage: 'paysage' | 'po
     <article className="p-contenu">
       <header className="p-entete">
         <h1 className="p-titre">
-          <T>{projet.nom}</T>
-          <Marque id={projet.logo} className="p-titre__logo" />
+          {/* The mark stays with the last word, so it never wraps alone. */}
+          <T>{projet.nom.split(' ').slice(0, -1).join(' ')} </T>
+          <span className="p-titre__fin">
+            <T>{projet.nom.split(' ').at(-1)}</T>
+            <Marque id={projet.logo} className="p-titre__logo" />
+          </span>
         </h1>
         <p className="p-accroche">
           <T>{projet.accroche}</T>
@@ -266,6 +270,7 @@ function Article({ projet, cadrage }: { projet: Projet; cadrage: 'paysage' | 'po
         </dl>
         <Visuel legende={projet.miniature.legende} n={1}>
           {projet.miniature.aiguillage && <Miniature cadrage={cadrage} />}
+          {projet.miniature.image && <img src={projet.miniature.image} alt="" />}
         </Visuel>
       </header>
 

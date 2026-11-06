@@ -4,6 +4,7 @@
  */
 
 import type { LogoId } from './logos';
+import whiteboardAmdec from './medias/whiteboard-amdec.webp';
 import type { Ecran, SchemaId } from './Schemas';
 
 /** A run of text, opened by a bold lead; `href` links the whole of it. */
@@ -30,8 +31,8 @@ export type Projet = {
   nom: string;
   /** The company's mark, in the title line (journal n° 85). */
   logo: LogoId;
-  /** The thumbnail at the top of the page, if drawn in the Atelier; its caption either way. */
-  miniature: { aiguillage: boolean; legende: string };
+  /** The thumbnail at the top of the page: drawn in the Atelier (the turnout) or a picture; its caption. */
+  miniature: { aiguillage?: boolean; image?: string; legende: string };
   accroche: string;
   /** The key figures, first thing under the line (journal n° 81). */
   chiffres: Chiffre[];
@@ -323,8 +324,8 @@ export const SNCF_GPT: Projet = {
 /** Whiteboard AMDEC, the Vitrine's second project (journal n° 96). */
 export const WHITEBOARD_AMDEC: Projet = {
   nom: 'Whiteboard AMDEC',
-  logo: 'renault',
-  miniature: { aiguillage: false, legende: 'La miniature de la Vitrine, faite à part.' },
+  logo: 'alpine',
+  miniature: { image: whiteboardAmdec, legende: 'Whiteboard AMDEC, l’affiche du projet.' },
   accroche: 'Un tableau blanc où des agents IA aident les ingénieurs d’Alpine à construire leurs analyses de risques.',
   chiffres: [
     { value: '6 mois', text: 'd’ateliers pour une AMDEC, au départ' },

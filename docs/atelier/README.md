@@ -661,9 +661,11 @@ construite comme celle de Rachel Chen :
   « Menu » ouvre le sommaire au-dessus de la nav ;
 - **Whiteboard AMDEC**, deuxième projet de la Vitrine (texte dans
   `docs/atelier/contenu/02-whiteboard-amdec.md`). Sa page suit le même modèle
-  que SNCF GPT, avec le logo Renault (à l'encre) dans le titre et neuf parties.
-  La miniature a été faite à part, avec un autre agent ; en attendant, son
-  emplacement est gris. Huit schémas à plat :
+  que SNCF GPT, avec le « A » d'Alpine (le fichier officiel que tu as fourni, en
+  bleu #006FBA) collé au dernier mot du titre, et neuf parties. La miniature
+  est ton affiche, faite avec un autre agent (`src/atelier/medias/whiteboard-amdec.webp`),
+  sur la carte de la Vitrine et en tête de page. Huit schémas à plat, sur un fond
+  à points comme un tableau blanc, comme ceux de SNCF GPT :
   - la grille AMDEC dans Excel ;
   - l'écran du tableau blanc, avec ses quatre recadrages pour les cartes ;
   - la pile déployée, des 8 A100 au tableau ;
@@ -799,6 +801,7 @@ un bon argument dans un portfolio.
 | 94 | 2026-11-06 | Miniature Whiteboard AMDEC : on repart de zéro avec une **affiche fixe**, sans motion, **bleu électrique avec des touches de rouge**, d'après tes références (étiquettes industrielles, affiches à grille, affiche bleue). On y trouve une berlinette Alpine cotée avec deux agents, la grille quittée pour l'inédit, une étiquette produit (agents, modèles, GPU), des capitales condensées (Big Shoulders), du large (Mona Sans) et de la mono (Geist Mono). | « Oublie ce qu'on a fait ; adapte ces idées à la couleur d'Alpine avec des éléments Alpine ; j'adore le bleu de la dernière image, tout en bleu, un poster bleu avec des touches de rouge et des annotations techniques ; plus de motion, un truc statique » | 7 |
 | 95 | 2026-11-06 | Miniature Whiteboard AMDEC **retirée** de l'Atelier (composant, styles, gros plan et carte de la Vitrine) : tu l'as faite avec un autre agent. Les quatre tours précédents restent dans l'historique (commits 1189514 à bdb94a2). | « Supprime la miniature, je l'ai faite avec un autre agent » | 7 |
 | 96 | 2026-11-06 | **Texte de Whiteboard AMDEC validé**, et le projet **passe en deuxième** dans la Vitrine (avant Synthèse de réunions). Sa page est montée sur le modèle de SNCF GPT : logo Renault dans le titre, chiffres du point de départ, neuf parties, huit schémas techniques à plat (grille AMDEC, tableau blanc, pile déployée, boucle de créativité, graphe des agents, nuage d'idées, RAG et CAG, outils des agents). La miniature est faite à part. | « Vas-y, c'est bon, le texte, on peut l'implémenter ; et mets-le en deuxième comme article, pas en troisième » | 7 |
+| 97 | 2026-11-06 | Whiteboard AMDEC : le **logo Alpine** remplace celui de Renault dans le titre (le « A » du fichier officiel fourni, sans le mot), collé au dernier mot pour ne jamais passer seul à la ligne. Ta **miniature** est sur la carte de la Vitrine et en tête de page. Tous les schémas des pages projet ont un **fond à points**. | « Mets le logo d'Alpine plutôt que Renault en haut » · « Pour les schémas, c'est pas bête, tu peux mettre un fond avec des points » · « Je t'ai donné aussi la miniature à mettre » · « Va chercher le logo d'Alpine propre » | 7 |
 
 ---
 

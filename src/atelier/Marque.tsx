@@ -5,8 +5,8 @@ import type { LogoId } from './logos';
 export function Marque({ id, className }: { id: LogoId; className?: string }) {
   const logo = LOGOS[id];
   return (
-    <svg className={className ?? 'marque'} viewBox="0 0 24 24" role="img" aria-label={logo.titre}>
-      <path d={logo.path} fill={logo.couleur} />
+    <svg className={className ?? 'marque'} viewBox={'viewBox' in logo ? logo.viewBox : '0 0 24 24'} role="img" aria-label={logo.titre}>
+      <path d={logo.path} fill={logo.couleur} fillRule={'regle' in logo ? logo.regle : undefined} />
     </svg>
   );
 }
