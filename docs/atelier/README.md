@@ -591,6 +591,8 @@ un bon argument dans un portfolio.
 | 51 | 2026-11-06 | Titre téléphone sur deux lignes, coupé après « prototype » : 40 px, la plus grande taille où « AI engineer, du prototype » tient de la marge gauche à la marge droite en traversant la tranche. | « Essaie de le mettre sur deux lignes, mais c'est exactement ça » | 5 |
 | 52 | 2026-11-06 | Le carré final ne clignote plus en continu : il reste allumé et, toutes les 30 s, s'éteint en douceur pendant environ 0,6 s (fondu de 0,15 s de chaque côté). | « Moins vite, là ça prend le regard, c'est stressant ; qu'il disparaisse vraiment occasionnellement, genre toutes les 30 s » | 5 |
 | 53 | 2026-11-06 | Retour au titre téléphone à 68 px sur trois lignes (journal n° 50) : plus imposant que la version à deux lignes. | « En fait, le titre mobile revient comme avant, plus gros » | 5 |
+| 54 | 2026-11-06 | Trois twists à comparer, chacun avec son interrupteur dans l'Atelier : **cartes qui traversent** (sur ordinateur, la troisième carte s'étire sous la colonne de droite jusqu'au bord), **chiffres qui défilent** (82 %, 3 000+, 90 %, 8 × A100 dans la colonne, ou en ligne verticale le long de la tranche), **cartels** (titre en italique et année, programme, technique en guise de médium). | « Fais une version où on peut activer et désactiver les twists pour comparer » | 5 |
+| 55 | 2026-11-06 | Twists : on garde les **cartels**, réduits au minimum (titre en italique et année, sur une ligne) ; chiffres qui défilent et cartes qui traversent sont retirés. | « Chiffres, on oublie ; cartel, ça peut être bien mais minimaliste au possible ; carte qui traverse, on oublie » | 5 |
 
 ---
 

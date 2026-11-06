@@ -320,6 +320,18 @@
   margin-top: auto;
 }
 
+/* Each project captioned like a work in a museum: title in italics, year. */
+.m-work {
+  font-family: var(--font-display);
+  font-size: calc(var(--size-display) * 0.3 * var(--u));
+  font-style: italic;
+  line-height: 1.15;
+}
+
+.m-work .m-t + .m-t {
+  font-style: normal;
+}
+
 /* Blocks: every run of words becomes a grey bar of the same size. */
 :is(.maquette, .mobile)[data-blocks] .m-t {
   background: color-mix(in oklch, var(--ink) 16%, var(--fond));

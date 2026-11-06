@@ -35,10 +35,11 @@ const ENTETE: [string, Part[][]][] = [
     ],
   ],
 ];
+// Captioned like works in a museum, as minimal as possible: title in italics, year.
 const PROJECTS = [
-  { number: '01', name: 'SNCF GPT', meta: 'SNCF · 2023' },
-  { number: '02', name: 'Synthèse de réunions', meta: 'SNCF · 2025' },
-  { number: '03', name: 'Whiteboard AMDEC', meta: 'Renault / Alpine · 2025' },
+  { number: '01', name: 'SNCF GPT', year: '2023' },
+  { number: '02', name: 'Synthèse de réunions', year: '2025' },
+  { number: '03', name: 'Whiteboard AMDEC', year: '2025' },
 ];
 const CONTACT = ['E-mail', 'LinkedIn', 'GitHub'];
 
@@ -177,11 +178,9 @@ const Visuals = () => (
     {PROJECTS.map((project) => (
       <li key={project.number}>
         <span className="m-img" />
-        <span>
+        <span className="m-work">
           <T>{project.name}</T>
-        </span>
-        <span className="m-label">
-          <T>{project.meta}</T>
+          <T>, {project.year}</T>
         </span>
       </li>
     ))}

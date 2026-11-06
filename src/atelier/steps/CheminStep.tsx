@@ -6,7 +6,7 @@ import { ESPACES, FOND } from '../tokens';
 import { useWaveSignal } from '../useWave';
 import './chemin.css';
 
-const STORAGE_KEY = 'atelier:chemin:v2';
+const STORAGE_KEY = 'atelier:chemin:v4';
 const PHONE_COLUMNS = 4;
 
 const PHONE_STATES = [
@@ -69,8 +69,8 @@ export function CheminStep() {
       </header>
       <p className="atelier-step__note">
         Retenu : la nav latérale à droite. Le contenu part du bord gauche sur 12 colonnes : la phrase-titre, puis
-        seulement Actuellement, Précédemment et Formation, puis les projets en cartes. Le nom, la nav et le contact
-        ferment la page à droite sur 3 colonnes. Les textes sont un premier jet tiré de ton CV : on les écrit ensemble à
+        seulement Actuellement, Précédemment et Formation, puis les projets en cartes, légendés comme des œuvres (titre
+        en italique, année). Le nom, la nav et le contact ferment la page à droite sur 3 colonnes. Les textes sont un premier jet tiré de ton CV : on les écrit ensemble à
         l’étape 7.
       </p>
 
@@ -98,7 +98,7 @@ export function CheminStep() {
           </fieldset>
 
           <div className="atelier-panel__footer">
-            <button type="button" onClick={() => copy('Chemin de fer : nav latérale à droite')}>
+            <button type="button" onClick={() => copy('Chemin de fer : nav latérale à droite · projets en cartels minimalistes')}>
               {state === 'copied' ? 'Copié' : state === 'error' ? 'Copie impossible' : 'Copier mes réglages'}
             </button>
           </div>
