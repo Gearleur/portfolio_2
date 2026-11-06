@@ -191,7 +191,7 @@ La palette Snow crimson est gardée en appoint (journal n° 23) :
 | 2 | Les couleurs | La palette complète : encres, gris, états, contrastes | Validé le 2026-11-05 |
 | 3 | La typo | Le couple de polices et l'échelle de tailles | Validé le 2026-11-05 |
 | 4 | Espaces et grille | Le rythme et les colonnes | Validé le 2026-11-06 |
-| 5 | Le chemin de fer | La composition de la Vitrine | En cours |
+| 5 | Le chemin de fer | La composition de la Vitrine | Validé le 2026-11-06 |
 | 6 | Les composants | Chaque brique, une par une | — |
 | 7 | Le contenu | Tes projets et tes textes | — |
 | 8 | La Vitrine | La page assemblée | — |
@@ -459,6 +459,14 @@ Mises de côté), chaque famille avec sa version classique et deux variantes :
 - **Agence · index seul** : la phrase, un petit aperçu du projet survolé, la
   fiche technique sur toute la largeur.
 
+**Retenu : Nav latérale à droite.** Le contenu part du bord gauche sur 12
+colonnes : la phrase-titre, la bio sur 5 colonnes, les trois infos sur 4
+colonnes chacune, puis les projets en cartes de 4 colonnes avec leur visuel.
+Le nom, la nav (avec FR · EN) et le contact ferment la page à droite, sur les
+colonnes 14 à 16, alignés à droite. Les dix-sept pistes explorées restent dans
+l'historique Git (commit `0022543`) et sont retirées du code. La version
+téléphone et un éventuel twist restent à faire.
+
 ### Étape 6 — Les composants
 
 Un par un, chacun avec ses états :
@@ -532,6 +540,7 @@ un bon argument dans un portfolio.
 | 38 | 2026-11-06 | Deuxième tour du chemin de fer : quatre classiques (Couverture, Lookbook, Agence, Affiche suisse), chacun avec une piste de twist. | « D'autres propositions comme les magazines de mode, les cabinets d'architectes, de designers » | 5 |
 | 39 | 2026-11-06 | Préférées pour l'instant : Colonnes, Nav latérale, Agence, Affiche suisse. Troisième tour : Journal, Cartel, Plan, Manuel. Quatre coins, Couverture et Lookbook mis de côté. | « Encore d'autres à me proposer » | 5 |
 | 40 | 2026-11-06 | Deux variantes chacune pour Colonnes (index d'abord, trois colonnes), Nav latérale (liste, à droite) et Agence (plein cadre, index seul). Panneau rangé par famille. | « Propose des variantes de Colonnes, Nav latérale et Agence » | 5 |
+| 41 | 2026-11-06 | **Étape 5 validée** (BAT) : nav latérale à droite. Les autres pistes sont retirées du code et gardées dans l'historique (`0022543`). | « Nav latérale à droite, j'aime bien, on part là-dessus » | 5 |
 
 ---
 

@@ -15,7 +15,7 @@ const STEPS: Step[] = [
   { n: 2, name: 'Les couleurs', status: 'valide' },
   { n: 3, name: 'La typo', status: 'valide' },
   { n: 4, name: 'Espaces et grille', status: 'valide' },
-  { n: 5, name: 'Chemin de fer', status: 'en-cours' },
+  { n: 5, name: 'Chemin de fer', status: 'valide' },
   { n: 6, name: 'Composants', status: 'a-venir' },
   { n: 7, name: 'Contenu', status: 'a-venir' },
   { n: 8, name: 'Vitrine', status: 'a-venir' },

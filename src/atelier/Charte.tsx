@@ -62,6 +62,12 @@ export function Charte() {
       note: `Colonnes de ${px(column)} · gouttières ${px(ESPACES.gutter)} · marges ${px(ESPACES.margin)}, pour une page de 1440 px`,
       step: 4,
     },
+    {
+      label: 'Composition',
+      value: 'Nav latérale à droite',
+      note: 'Le contenu sur 12 colonnes depuis le bord gauche ; le nom, la nav et le contact sur les 3 dernières.',
+      step: 5,
+    },
     { label: 'Grain', value: percent(grain.strength), note: `Taille ${percent(grain.size)} · irrégularité ${percent(grain.irregularity)}`, step: 1 },
     {
       label: 'Onde',
