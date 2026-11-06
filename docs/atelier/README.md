@@ -519,7 +519,8 @@ projet, tag/filtre, **et tes propres composants** quand tu les apportes.
   d'agent** (10 × 14 px, comme un curseur de collaboration) sur un projet ou un
   lien, avec « Voir le projet » en petit à côté d'une carte. Pas de curseur sur
   téléphone ;
-- **Le lien @** : filet clair qui passe à l'accent au survol ;
+- **Le lien @** : filet clair qui passe à l'accent au survol ; pas de main
+  du système, seulement la pointe ;
 - **La nav** : au survol, un soulignement accent de 1 px, comme les liens @ ;
   la page en cours garde son carré accent ;
 - **Le menu sur téléphone** : **Glisse**, le panneau arrive du bord droit en
@@ -623,6 +624,7 @@ un bon argument dans un portfolio.
 | 60 | 2026-11-06 | Curseur plus discret : il reste un cube sur le menu ; barre de 1,5 px et 20 px au plus ; la flèche devient une petite pointe de 10 × 14 px avec une étiquette de 10 px. Nav soulignée en accent. | « Sur le menu le cube doit rester un cube, soulignement en rouge ; la barre beaucoup trop grande ; la flèche trop grosse, je veux un truc discret et plus petit » | 6 |
 | 61 | 2026-11-06 | Barre sur le texte à 2,5 px. Deux autres formes sur un projet à comparer avec la pointe : Équerre et Cube. Menu : Glisse gardée, Déplie et Fondu remplacées par Échelle, Glisse courte et Volet, autour de 0,2 s. | « Un peu plus épais sur le texte » · « propose-moi d'autres curseurs » · « une animation où on veut l'information rapidement, genre 0,90 → 1 » | 6 |
 | 62 | 2026-11-06 | **Étape 6 validée.** Menu téléphone : Glisse (0,5 s) ; Échelle, Glisse courte et Volet retirés. Sur un projet : la Pointe gardée ; Équerre et Cube retirés. Les rôles de la palette d'appoint passent à l'étape 8. | « Glisse 0,5 s, c'est bon, on peut continuer » · « il est beaucoup mieux, celui que tu m'as donné » | 6 |
+| 63 | 2026-11-06 | Plus de main du système sur les liens @ (écoles, entreprises) : seule la petite pointe dessinée. Sur les téléphones de l'Atelier, la flèche du système reste pour pouvoir toucher « Menu ». | « Il y a la main quand on survole les liens des universités et des entreprises ; enlève la main, garde la flèche uniquement » | 6 |
 
 ---
 

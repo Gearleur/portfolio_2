@@ -26,7 +26,6 @@
   background: none;
   color: inherit;
   font: inherit;
-  cursor: none;
 }
 
 .m-label {
@@ -453,9 +452,15 @@
   box-shadow: 0 0 0 1px var(--atelier-line), 0 0 0 7px #ffffff0a;
 }
 
-/* A phone has no pointer: no cursor on the phone screens. */
+/* A phone has no pointer: no drawn cursor on the phone screens. The system
+   arrow stays, so « Menu » can still be clicked in the Atelier. */
 .phone__frame .curseur {
   display: none;
+}
+
+.phone__frame .specimen,
+.phone__frame .specimen * {
+  cursor: default;
 }
 
 .phone figcaption {

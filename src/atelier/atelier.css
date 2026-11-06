@@ -621,8 +621,14 @@ a.atelier-steps__item:hover,
   inset: 0;
   overflow: hidden;
   container-type: size;
-  cursor: none;
   font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* The drawn cursor replaces the system one on the whole stage: no hand over
+   the links, only the small pointer. */
+.specimen,
+.specimen * {
+  cursor: none;
 }
 
 .specimen__text {
