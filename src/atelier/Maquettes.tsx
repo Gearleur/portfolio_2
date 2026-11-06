@@ -35,7 +35,7 @@ const ENTETE: [string, Part[][]][] = [
     ],
   ],
 ];
-// Captioned like works in a museum, small and minimal: title in italics · organisation · year.
+// Captioned like works in a museum, small and minimal: title in italics · organisation, year.
 const PROJECTS = [
   { number: '01', name: 'SNCF GPT', org: 'SNCF', year: '2023' },
   { number: '02', name: 'Synthèse de réunions', org: 'SNCF', year: '2025' },
@@ -185,7 +185,7 @@ const Visuals = () => (
           <span className="m-work__meta">
             <T>
               {' · '}
-              {project.org} · {project.year}
+              {project.org}, {project.year}
             </T>
           </span>
         </span>

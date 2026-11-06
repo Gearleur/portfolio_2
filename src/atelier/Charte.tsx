@@ -65,7 +65,7 @@ export function Charte() {
     {
       label: 'Composition',
       value: 'Nav latérale à droite',
-      note: 'Le contenu sur 12 colonnes depuis le bord gauche ; le nom, la nav et le contact sur les 3 dernières. Sur téléphone, une tranche à droite que le titre et les images traversent. Projets légendés en petits cartels : titre en italique · organisation · année.',
+      note: 'Le contenu sur 12 colonnes depuis le bord gauche ; le nom, la nav et le contact sur les 3 dernières. Sur téléphone, une tranche à droite que le titre et les images traversent. Projets légendés en petits cartels : titre en italique · organisation, année.',
       step: 5,
     },
     { label: 'Grain', value: percent(grain.strength), note: `Taille ${percent(grain.size)} · irrégularité ${percent(grain.irregularity)}`, step: 1 },

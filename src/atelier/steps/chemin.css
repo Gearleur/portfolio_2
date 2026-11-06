@@ -321,7 +321,7 @@
 }
 
 /* Each project captioned like a work in a museum, small: the title in italics
-   one step above the text (×1.25), then « · organisation · year » in soft ink. */
+   one step above the text (×1.25), then « · organisation, year » in soft ink. */
 .m-work em {
   font-family: var(--font-display);
   font-size: calc(var(--size-text) * var(--type-ratio) * var(--u));

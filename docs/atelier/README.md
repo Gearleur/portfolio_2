@@ -594,6 +594,7 @@ un bon argument dans un portfolio.
 | 54 | 2026-11-06 | Trois twists à comparer, chacun avec son interrupteur dans l'Atelier : **cartes qui traversent** (sur ordinateur, la troisième carte s'étire sous la colonne de droite jusqu'au bord), **chiffres qui défilent** (82 %, 3 000+, 90 %, 8 × A100 dans la colonne, ou en ligne verticale le long de la tranche), **cartels** (titre en italique et année, programme, technique en guise de médium). | « Fais une version où on peut activer et désactiver les twists pour comparer » | 5 |
 | 55 | 2026-11-06 | Twists : on garde les **cartels**, réduits au minimum (titre en italique et année, sur une ligne) ; chiffres qui défilent et cartes qui traversent sont retirés. | « Chiffres, on oublie ; cartel, ça peut être bien mais minimaliste au possible ; carte qui traverse, on oublie » | 5 |
 | 56 | 2026-11-06 | Cartel en petit : *titre* · organisation · année, séparés par un point médian. Le titre en italique à 16 px (un palier au-dessus du texte), le reste à la taille du texte, en encre douce. | « Un rond au milieu pour séparer company, date ; écris ça en petit, là c'est vraiment trop gros » | 5 |
+| 57 | 2026-11-06 | Cartel : une virgule entre l'organisation et l'année (*SNCF GPT* · SNCF, 2023). | « Enlève le point entre la company et la date, mets une virgule » | 5 |
 
 ---
 
