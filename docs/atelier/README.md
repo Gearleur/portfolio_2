@@ -550,7 +550,7 @@ en français. On ne commite un texte qu'une fois validé, sans nom de collègue,
 nom interne et sans capture d'application interne. Les sources privées, comme ton
 rapport de stage, restent hors du dépôt.
 
-- **SNCF GPT** (`01-sncf-gpt.md`) : deuxième jet, tiré du rapport de stage TN09
+- **SNCF GPT** (`01-sncf-gpt.md`) : troisième jet, tiré du rapport de stage TN09
   et calé partie par partie sur la page de Rachel. On montre d'abord le produit
   (la solution, puis ce que voit le support), puis la construction : l'écoute et
   la lecture, les options explorées, le prototype et ses tests, les décisions, la
@@ -705,6 +705,7 @@ un bon argument dans un portfolio.
 | 69 | 2026-11-06 | Téléphone : la **vue de détail** retenue (Planche et Rallongée retirées) ; « SNCF GPT » remplace « Détail A · 2:1 », à la même taille. La bande de la tranche passe sous les images ; le nom et « Menu » restent dessus et prennent le fond accent quand une image passe sous eux. | « Pour le cadrage du téléphone je veux le 3 » · « Juste le menu et Alexandre Teixeira qui passent par-dessus ; un fond orange genre hover quand ils passent sur l'image » · « Rajoute SNCF GPT, pas trop gros, à la place de détail et de la même taille » | 7 |
 | 70 | 2026-11-06 | Le fond accent du nom et de « Menu » ne couvre que la partie au-dessus d'une image et suit son bord au défilement (une copie accent du mot, masquée). Essai : la vue de détail agrandie sur la carte d'ordinateur, à comparer à la planche. | « Le hover sur Menu et Alexandre Teixeira uniquement sur les images, de façon dynamique sur le texte, pas tout ou rien » · « Utilise l'image mobile pour le desktop, adaptée en plus grand, juste pour voir » | 7 |
 | 71 | 2026-11-06 | Sur ordinateur aussi, la **vue de détail** (la planche entière est retirée), avec « *SNCF GPT* » plus grand en haut à gauche, en serif italique. Le micro-texte fait exactement un tour du cercle. | « Je préfère Détail pour la version desktop aussi, mais écris SNCF GPT plus gros en haut à gauche ; sinon on est bon » | 7 |
+| 72 | 2026-11-06 | SNCF GPT, ce qu'on peut publier : les **82 %**, à présenter comme une mesure interne sur un jeu de tickets de test ; les **3 000+ utilisateurs par mois**, atteints dans un second temps, quand SNCF Groupe GPT a été branché sur SharePoint, Jira et d'autres sources ; les chiffres de l'Usine Logicielle (1 200 projets, 4 500 utilisateurs). Le travail avec les équipes DevOps s'est fait main dans la main. | « Les 82 %, c'est une mesure interne mais sur des tickets de test » · « Ils ont adoré, les équipes DevOps, j'étais main dans la main avec eux ; c'est ensuite devenu SNCF GPT Groupe connecté à SharePoint, Jira… c'est les 3 000 utilisateurs, dans un deuxième temps » · « Oui » | 7 |
 
 ---
 
