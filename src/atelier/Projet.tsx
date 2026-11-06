@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useRef, useState } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
 import { Contact, Name, NavList, T } from './Maquettes';
+import { Marque } from './Marque';
 import { Miniature } from './Miniature';
 import { EcranCadre, Schema } from './Schemas';
 import type { Bloc, Phrase, Projet } from './projets';
@@ -229,6 +230,10 @@ export function ProjetMaquette({ projet, onRetour }: { projet: Projet; onRetour?
 
       <article className="p-contenu">
         <header className="p-entete">
+          <p className="p-chez m-label">
+            <Marque id={projet.chez.logo} className="p-chez__logo" />
+            <T>{projet.chez.equipe}</T>
+          </p>
           <h1 className="p-titre">
             <T>{projet.nom}</T>
           </h1>
@@ -258,6 +263,14 @@ export function ProjetMaquette({ projet, onRetour }: { projet: Projet; onRetour?
               </div>
             ))}
           </dl>
+          <ul className="p-outils m-label" aria-label="Outils">
+            {projet.outils.map((outil) => (
+              <li key={outil.nom}>
+                {outil.logo ? <Marque id={outil.logo} /> : <span className="p-outils__sans" aria-hidden="true" />}
+                <T>{outil.nom}</T>
+              </li>
+            ))}
+          </ul>
           <Visuel legende={`${projet.nom}, détail de l’aiguillage.`} n={1}>
             <Miniature />
           </Visuel>

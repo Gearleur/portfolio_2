@@ -1,5 +1,7 @@
 import { Fragment, useId } from 'react';
 import type { ReactNode } from 'react';
+import type { LogoId } from './logos';
+import { Pastilles } from './Marque';
 import './schemas.css';
 
 /*
@@ -53,6 +55,7 @@ function Boite({
   sous,
   ton,
   pointille,
+  logos,
 }: {
   x: number;
   y: number;
@@ -62,6 +65,8 @@ function Boite({
   sous?: string;
   ton?: Ton;
   pointille?: boolean;
+  /** Brand marks, as tabs on the box's top edge. */
+  logos?: LogoId[];
 }) {
   return (
     <g className={`sc-boite${ton ? ` sc-boite--${ton}` : ''}${pointille ? ' sc-boite--pointille' : ''}`}>
@@ -74,6 +79,7 @@ function Boite({
           {sous}
         </text>
       )}
+      {logos && <Pastilles ids={logos} right={x + w - 8} top={y} />}
     </g>
   );
 }
@@ -101,12 +107,12 @@ function Svg({ h, children, label }: { h: number; children: (id: string) => Reac
 /* 1 · A ticket's path, from the project to the experts; the answer is already
    in the documentation, next to the first level (report, fig. 4.7). */
 function Parcours() {
-  const boxes = [
+  const boxes: { titre: string; sous: string; logos?: LogoId[] }[] = [
     { titre: 'Projet', sous: '1 200 projets' },
     { titre: 'Ticket', sous: 'ServiceNow' },
-    { titre: 'Support N1', sous: 'ServiceDesk' },
-    { titre: 'Support eUL', sous: 'outillage, pipelines' },
-    { titre: 'Experts eUL', sous: 'build, déploiement' },
+    { titre: 'Support N1', sous: 'ServiceDesk', logos: ['sncf'] },
+    { titre: 'Support eUL', sous: 'outillage, pipelines', logos: ['sncf'] },
+    { titre: 'Experts eUL', sous: 'build, déploiement', logos: ['sncf'] },
   ];
   const x = (i: number) => 10 + i * 145;
   return (
@@ -129,7 +135,7 @@ function Parcours() {
           <text className="sc-petit sc-accent-texte" x={x(4) + 120} y={154} textAnchor="end">
             sur leurs propres sujets
           </text>
-          <Boite x={x(2) - 15} y={178} w={150} h={52} titre="Documentation" sous="Markdown sur GitLab" pointille />
+          <Boite x={x(2) - 15} y={178} w={150} h={52} titre="Documentation" sous="Markdown sur GitLab" pointille logos={['gitlab']} />
           <Fleche id={id} d={`M${x(2) + 60} 178 V122`} ton="accent" pointille />
           <text className="sc-petit sc-accent-texte" x={x(2) + 148} y={198}>
             la réponse y est souvent déjà,
@@ -327,7 +333,7 @@ function Pistes() {
 /* 4 · Decision 1: the sources kept and the ones left out (report, 7.2.3). */
 function Sources() {
   const sources = [
-    { titre: 'Documentation de l’Usine', sous: 'Markdown sur GitLab · à jour, structurée', garde: true },
+    { titre: 'Documentation de l’Usine', sous: 'Markdown sur GitLab · à jour, structurée', garde: true, logos: ['gitlab'] as LogoId[] },
     { titre: 'Incidents résolus', sous: 'ServiceNow · JSON · les solutions passées', garde: true },
     { titre: 'Forum', sous: 'riche, mais souvent daté', garde: false },
     { titre: 'Fil d’actualité', sous: 'temps réel · trop mouvant pour un index', garde: false },
@@ -349,9 +355,10 @@ function Sources() {
                   sous={source.sous}
                   ton={source.garde ? undefined : 'faible'}
                   pointille={!source.garde}
+                  logos={'logos' in source ? source.logos : undefined}
                 />
                 {source.garde ? (
-                  <Fleche id={id} d={`M280 ${y + 22} C 380 ${y + 22}, 380 ${74 + i * 26}, 470 ${74 + i * 26}`} ton="accent" />
+                  <Fleche id={id} d={`M280 ${y + 22} C 370 ${y + 22}, 370 ${74 + i * 26}, 456 ${74 + i * 26} H470`} ton="accent" />
                 ) : (
                   <>
                     <path className="sc-trait sc-trait--faible sc-trait--pointille" d={`M280 ${y + 22} H316`} />
@@ -386,10 +393,10 @@ function Recherche() {
           <Boite x={366} y={79} w={104} h={52} titre="Fusion" sous="un classement" />
           <Boite x={500} y={79} w={106} h={52} titre="Reclassement" sous="sémantique" />
           <Boite x={630} y={79} w={80} h={52} titre="Passages" sous="→ modèle" ton="accent" />
-          <Fleche id={id} d="M110 96 C 130 96, 130 46, 150 46" />
-          <Fleche id={id} d="M110 114 C 130 114, 130 164, 150 164" />
-          <Fleche id={id} d="M326 46 C 346 46, 346 96, 366 96" />
-          <Fleche id={id} d="M326 164 C 346 164, 346 114, 366 114" />
+          <Fleche id={id} d="M110 96 C 124 96, 124 46, 138 46 H150" />
+          <Fleche id={id} d="M110 114 C 124 114, 124 164, 138 164 H150" />
+          <Fleche id={id} d="M326 46 C 340 46, 340 96, 354 96 H366" />
+          <Fleche id={id} d="M326 164 C 340 164, 340 114, 354 114 H366" />
           <Fleche id={id} d="M470 105 H500" ton="accent" />
           <Fleche id={id} d="M606 105 H630" ton="accent" />
         </>
@@ -448,8 +455,8 @@ function Pdf() {
       {(id) => (
         <>
           {page}
-          <Fleche id={id} d="M180 120 C 215 120, 215 72, 246 72" />
-          <Fleche id={id} d="M180 140 C 215 140, 215 192, 246 192" ton="accent" />
+          <Fleche id={id} d="M180 120 C 210 120, 210 72, 234 72 H246" />
+          <Fleche id={id} d="M180 140 C 210 140, 210 192, 234 192 H246" ton="accent" />
           <text className="sc-titre" x="250" y="34">
             Parseur à règles
           </text>
@@ -512,7 +519,7 @@ function Agent() {
           <Boite x={300} y={220} w={150} h={46} titre="Observation" sous="lit le résultat" />
           <Fleche id={id} d="M375 86 V130" ton="accent" />
           <Fleche id={id} d="M375 176 V220" ton="accent" />
-          <Fleche id={id} d="M300 243 C 262 243, 262 63, 300 63" ton="accent" />
+          <Fleche id={id} d="M300 243 C 266 243, 266 63, 286 63 H300" ton="accent" />
           <rect className="sc-agent" x={432} y={48} width="10" height="10" />
           <Boite x={560} y={40} w={150} h={46} titre="Réponse" sous="avec ses sources" ton="accent" />
           <Fleche id={id} d="M450 63 H560" ton="accent" />
@@ -539,12 +546,12 @@ function Agent() {
 /* 8 · The Usine Logicielle's pipeline, from the commit to production
    (report, fig. 9.1 and 9.2.1). */
 function Pipeline() {
-  const ci = [
-    { titre: 'GitLab', sous: 'code · webhook' },
-    { titre: 'Jenkins', sous: 'orchestre le build' },
-    { titre: 'Build', sous: 'conteneur dédié' },
-    { titre: 'Tests unitaires', sous: 'à chaque build' },
-    { titre: 'Qualité, sécurité', sous: 'SonarQube, Checkmarx' },
+  const ci: { titre: string; sous: string; logos?: LogoId[] }[] = [
+    { titre: 'GitLab', sous: 'code · webhook', logos: ['gitlab'] },
+    { titre: 'Jenkins', sous: 'orchestre le build', logos: ['jenkins'] },
+    { titre: 'Build', sous: 'conteneur dédié', logos: ['docker'] },
+    { titre: 'Tests unitaires', sous: 'à chaque build', logos: ['python'] },
+    { titre: 'Qualité, sécurité', sous: 'SonarQube, Checkmarx', logos: ['checkmarx', 'sonarqube'] },
   ];
   const x = (i: number) => 10 + i * 141;
   return (
@@ -568,12 +575,12 @@ function Pipeline() {
             Déploiement continu
           </text>
           <Fleche id={id} d={`M${x(4) + 72} 82 V172`} ton="accent" />
-          <Boite x={x(4)} y={172} w={144} h={52} titre="Artifactory" sous="binaires, image" ton="accent" />
-          <Boite x={x(2) + 30} y={172} w={150} h={52} titre="Ansible" sous="déploie l’artefact" ton="accent" />
+          <Boite x={x(4)} y={172} w={144} h={52} titre="Artifactory" sous="binaires, image" ton="accent" logos={['jfrog']} />
+          <Boite x={x(2) + 30} y={172} w={150} h={52} titre="Ansible" sous="déploie l’artefact" ton="accent" logos={['ansible']} />
           <Boite x={x(0)} y={172} w={190} h={52} titre="Azure" sous="l’application en production" ton="accent" />
           <Fleche id={id} d={`M${x(4)} 198 H${x(2) + 180}`} ton="accent" />
           <Fleche id={id} d={`M${x(2) + 30} 198 H${x(0) + 190}`} ton="accent" />
-          <Boite x={x(2) + 30} y={250} w={150} h={40} titre="Vault · les secrets" pointille />
+          <Boite x={x(2) + 30} y={250} w={150} h={40} titre="Vault · les secrets" pointille logos={['vault']} />
           <Fleche id={id} d={`M${x(2) + 105} 250 V224`} pointille />
         </>
       )}

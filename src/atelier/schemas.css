@@ -181,3 +181,10 @@
 .sc-focus.sc-lien {
   opacity: 1;
 }
+
+/* Brand marks on the boxes' top edge (journal n° 84): a paper patch breaks
+   the border behind each one. */
+.schema rect.sc-pastille {
+  fill: var(--fond);
+  stroke: none;
+}

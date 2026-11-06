@@ -35,7 +35,7 @@
   margin: 0;
 }
 
-.projet :is(.p-entete, .p-section) > :is(.p-visuel, .p-colonnes, .p-cartes, .p-chiffres, .p-cartel) {
+.projet :is(.p-entete, .p-section) > :is(.p-visuel, .p-colonnes, .p-cartes, .p-chiffres, .p-cartel, .p-outils) {
   grid-column: 5 / 13;
 }
 
@@ -75,6 +75,51 @@
 
 .p-cartel dd {
   margin: 0;
+}
+
+/* Where it was done, above the title: the company's mark in its colour and
+   the team (journal n° 84). */
+.projet .p-chez {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space-3) * var(--u));
+  margin-bottom: calc(var(--space-2) * -1 * var(--u));
+}
+
+.p-chez__logo {
+  width: calc(56 * var(--u));
+  height: calc(56 * var(--u));
+  margin-block: calc(-18 * var(--u));
+}
+
+/* The tools, each with its mark in its own colour; a small square when the
+   brand's mark is not available. */
+.projet .p-outils {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--space-2) * var(--u)) calc(var(--space-4) * var(--u));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.p-outils li {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--space-1) * 1.5 * var(--u));
+  color: var(--ink);
+}
+
+.p-outils .marque {
+  width: 1.1em;
+  height: 1.1em;
+}
+
+.p-outils__sans {
+  width: 0.5em;
+  height: 0.5em;
+  margin-inline: 0.3em;
+  background: var(--ink-soft);
 }
 
 /* Sections: a rule, a numbered label, a sentence heading, then the blocks. */
