@@ -43,7 +43,7 @@
   grid-column: 4 / 14;
 }
 
-/* Header: the trail, the name in the display size, the line, the cartel, the thumbnail. */
+/* Header: the name in the display size, the line, the cartel, the thumbnail. */
 .p-entete {
   row-gap: calc(var(--space-5) * var(--u));
   padding-top: calc(var(--space-8) * var(--u));
@@ -227,6 +227,28 @@
   align-self: start;
 }
 
+/* Back to the projects, top left, level with the name on the right. */
+.p-retour {
+  margin: 0;
+  color: var(--ink-soft);
+}
+
+.p-retour button {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  font: inherit;
+  text-decoration: underline 1px transparent;
+  text-underline-offset: 0.3em;
+  transition: text-decoration-color 0.2s;
+}
+
+.p-retour button:hover {
+  text-decoration-color: var(--accent);
+}
+
 /* Table of contents: numbered, the section being read marked by the accent
    square, like the current page in the nav. */
 .p-sommaire {
@@ -235,8 +257,9 @@
   align-items: flex-start;
   gap: calc(var(--space-2) * var(--u));
   margin: 0;
-  /* Room on the left for the accent square of the section being read. */
-  padding: calc(var(--space-8) * var(--u)) 0 0 calc(var(--space-4) * var(--u));
+  /* 240 px from the top of the page, as on Rachel Chen's; room on the left
+     for the accent square of the section being read. */
+  padding: calc((240 - var(--space-6) - var(--size-label) * 1.45) * var(--u)) 0 0 calc(var(--space-4) * var(--u));
   list-style: none;
 }
 

@@ -626,8 +626,12 @@ construite comme celle de Rachel Chen :
   colonnes, cartes, décisions, question, compromis, chiffres clés) ;
 - **la lecture au milieu** : le texte sur 6 colonnes (6 à 11 sur 16), les images,
   colonnes et chiffres sur 8 (5 à 12), la miniature sur 10 ;
-- **à gauche, le sommaire** : il suit la lecture, et chaque ligne mène à sa
-  partie. À droite restent le nom, la nav et le contact ;
+- **en haut à gauche, le retour** : « ← Projets / SNCF GPT » ramène à la Vitrine.
+  Dans l'Atelier, la carte SNCF GPT rouvre la page ;
+- **à gauche, le sommaire**, à 240 px du haut comme chez Rachel : il suit la
+  lecture, et chaque ligne mène à sa partie. À droite restent le nom, la nav et
+  le contact ;
+- **le fond sans l'onde**, qui gênait la lecture (`FOND_LECTURE`) ;
 - **les tailles** : texte à 15 px, titres de partie à 29 px, chiffres à 58 px ;
 - **les schémas** : encore en gris, numérotés, avec ce qu'ils montreront.
 
@@ -730,6 +734,7 @@ un bon argument dans un portfolio.
 | 75 | 2026-11-06 | **Tailles en vrai** : le plein écran de l'Atelier s'ouvre en taille réelle (il agrandissait la page de 1440 px à la largeur de la fenêtre, ×1,33 sur 1920 px) ; le texte et les étiquettes passent à **15 px**, comme chez Rachel Chen. Page projet : **la lecture au milieu**, texte sur 6 colonnes centrées, images sur 8. | « Tout est beaucoup trop gros ; quand c'est déployé sur Vercel c'est plus petit » · « Le menu sur le côté et tout est un peu trop petit ; je veux que ce soit la même taille [que Rachel] » · « Lire au milieu comme rachelchen.tech/projects/openai, c'est quand même plus agréable » | 7 |
 | 76 | 2026-11-06 | Page projet : le **sommaire passe à gauche**, comme chez Rachel Chen, avec une **barre de défilement en vague de traits**. Les traits au niveau de la lecture s'allongent, toute la colonne ondule un peu, le début de chaque partie est marqué, et on peut cliquer ou glisser dessus. Le nom, la nav et le contact restent à droite. | « Le sommaire, tu peux le mettre à gauche » · « Je veux une sorte de vague avec des traits pour la barre de scroll, et qu'elle soit aussi sur la gauche » | 7 |
 | 77 | 2026-11-06 | Barre de défilement en vague **retirée**. Le sommaire reste seul à gauche, et la page défile normalement. | « Enlève cette barre de scroll, ça fait too much » | 7 |
+| 78 | 2026-11-06 | Page projet : **pas d'onde** (fond clair et grain seulement, pour la lecture) ; le **sommaire descend à 240 px** du haut ; en haut à gauche, un **retour « ← Projets / SNCF GPT »** qui remplace le fil au-dessus du titre. | « Sur la page projet je ne veux pas d'onde, ça empêche la lecture » · « Le sommaire un peu plus bas » · « Un truc qui permet de revenir en arrière sur les projets en haut à gauche : ← work / SNCF GPT » | 7 |
 
 ---
 

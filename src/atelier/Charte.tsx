@@ -73,7 +73,7 @@ export function Charte() {
       label: 'Onde',
       value: 'Neige vermillon',
       swatch: `conic-gradient(${wave.colors.join(', ')})`,
-      note: `Du coin haut droit vers le bas gauche. Arrivée à ${percent(wave.first)}, puis ${percent(wave.echo)} toutes les ${wave.every} s environ.`,
+      note: `Du coin haut droit vers le bas gauche. Arrivée à ${percent(wave.first)}, puis ${percent(wave.echo)} toutes les ${wave.every} s environ. Absente des pages projet, pour la lecture.`,
       step: 1,
     },
     {

@@ -4,7 +4,7 @@ import { Miniature, PlanArchitecture } from '../Miniature';
 import { ProjetMaquette } from '../Projet';
 import { SNCF_GPT } from '../projets';
 import { Specimen, SpecimenPreview } from '../Specimen';
-import { FOND } from '../tokens';
+import { FOND, FOND_LECTURE } from '../tokens';
 import { useWaveSignal } from '../useWave';
 import './chemin.css';
 import './contenu.css';
@@ -38,6 +38,8 @@ function scrollToPicture(frame: HTMLDivElement | null) {
 /** Step 7: the words and pictures of each project, starting with SNCF GPT. */
 export function ContenuStep() {
   const [preview, setPreview] = useState<'vitrine' | 'projet' | null>(null);
+  // The first stage goes from the project page back to the Vitrine and in again.
+  const [vue, setVue] = useState<'projet' | 'vitrine'>('projet');
   const [waveSignal, playWave] = useWaveSignal();
   const close = useCallback(() => setPreview(null), []);
   const images = { '01': <Miniature /> };
@@ -61,33 +63,43 @@ export function ContenuStep() {
           <fieldset>
             <legend>La page projet</legend>
             <p className="atelier-panel__note">
-              Construite comme celle de Rachel Chen : le fil, le titre, l’accroche, le cartel et la miniature en grand,
-              puis dix parties aux titres en phrases. Le texte validé ; les schémas encore en gris, avec ce qu’ils
-              montreront.
+              Construite comme celle de Rachel Chen : le titre, l’accroche, le cartel et la miniature, puis dix parties
+              aux titres en phrases, lues au milieu de la page. Le fond sans l’onde, pour lire tranquille. Les schémas
+              encore en gris, avec ce qu’ils montreront.
             </p>
             <p className="atelier-panel__note">
-              À gauche, le sommaire : il suit la lecture (carré accent) et chaque ligne mène à sa partie. Fais
-              défiler la page.
+              En haut à gauche, « ← Projets / SNCF GPT » ramène à la Vitrine ; plus bas, le sommaire suit la lecture
+              (carré accent) et chaque ligne mène à sa partie.
             </p>
           </fieldset>
 
           <fieldset>
             <legend>Tailles</legend>
             <p className="atelier-panel__note">
-              Proposition, sur l’échelle validée : le texte courant un palier au-dessus (16 px) pour la lecture longue,
-              les titres de partie en serif à 32 px, les chiffres clés en serif à 72 px.
+              En taille réelle : le texte, le sommaire et la nav à 15 px comme chez Rachel Chen ; les titres de partie
+              en serif à 29 px, l’accroche à 23 px, les chiffres clés à 58 px.
             </p>
           </fieldset>
         </div>
 
         <div className="atelier-stage">
           <div className="atelier-stage__frame">
-            <Specimen settings={FOND} waveSignal={waveSignal}>
-              <ProjetMaquette projet={SNCF_GPT} />
-            </Specimen>
+            {vue === 'projet' ? (
+              <Specimen settings={FOND_LECTURE}>
+                <ProjetMaquette projet={SNCF_GPT} onRetour={() => setVue('vitrine')} />
+              </Specimen>
+            ) : (
+              <Specimen settings={FOND} waveSignal={waveSignal}>
+                <Maquette blocks={false} images={images} onOuvrir={() => setVue('projet')} />
+              </Specimen>
+            )}
           </div>
           <div className="atelier-stage__bar">
-            <p>La page SNCF GPT : fais défiler, clique dans le sommaire</p>
+            <p>
+              {vue === 'projet'
+                ? 'La page SNCF GPT : fais défiler ; « ← Projets » ramène à la Vitrine'
+                : 'La Vitrine : clique sur la carte SNCF GPT pour ouvrir sa page'}
+            </p>
             <div>
               <button type="button" onClick={() => setPreview('projet')}>
                 Plein écran <span aria-hidden="true">↗</span>
@@ -188,7 +200,7 @@ export function ContenuStep() {
 
       {preview && (
         <SpecimenPreview
-          settings={FOND}
+          settings={preview === 'projet' ? FOND_LECTURE : FOND}
           label={preview === 'projet' ? 'La page SNCF GPT en plein écran' : 'La Vitrine en plein écran'}
           onClose={close}
         >

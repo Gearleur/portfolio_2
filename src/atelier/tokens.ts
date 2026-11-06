@@ -56,6 +56,9 @@ export const FOND: FondSettings & { waveId: WaveCompositionId } = {
   },
 };
 
+/** Project pages keep the background without the wave, which gets in the way of reading (journal n° 78). */
+export const FOND_LECTURE: FondSettings = { ...FOND, wave: { ...FOND.wave, first: 0, echo: 0 } };
+
 /**
  * The type validated at step 3 (journal n° 32, title retuned in n° 35; text and
  * labels raised to 15 px at real size in n° 75, like Rachel Chen's). Sizes are px

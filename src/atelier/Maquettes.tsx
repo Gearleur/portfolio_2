@@ -51,6 +51,8 @@ type MaquetteProps = {
   columns?: number;
   /** Pictures for the project cards, by project number; the others stay grey. */
   images?: Partial<Record<string, ReactNode>>;
+  /** Opens a project's page when its card is clicked (the Atelier's step 7). */
+  onOuvrir?: (number: string) => void;
 };
 
 /**
@@ -58,7 +60,7 @@ type MaquetteProps = {
  * starts at the left edge, the name, nav and contact close the page on the right.
  * The explored layouts are in the history (commit 0022543).
  */
-export function Maquette({ blocks, columns, images }: MaquetteProps) {
+export function Maquette({ blocks, columns, images, onOuvrir }: MaquetteProps) {
   return (
     <div className="maquette" data-blocks={blocks ? '' : undefined}>
       {columns && <GridColumns count={columns} />}
@@ -68,7 +70,7 @@ export function Maquette({ blocks, columns, images }: MaquetteProps) {
         <Contact />
       </div>
       <Hero />
-      <Visuals images={images} />
+      <Visuals images={images} onOuvrir={onOuvrir} />
     </div>
   );
 }
@@ -217,10 +219,15 @@ const Hero = () => (
   </div>
 );
 
-const Visuals = ({ images }: Pick<MaquetteProps, 'images'>) => (
+const Visuals = ({ images, onOuvrir }: Pick<MaquetteProps, 'images' | 'onOuvrir'>) => (
   <ul className="m-visuals">
     {PROJECTS.map((project) => (
-      <li key={project.number} data-cursor="projet" data-cursor-label="Voir le projet">
+      <li
+        key={project.number}
+        data-cursor="projet"
+        data-cursor-label="Voir le projet"
+        onClick={onOuvrir && images?.[project.number] ? () => onOuvrir(project.number) : undefined}
+      >
         <span className="m-img">{images?.[project.number]}</span>
         <span className="m-work">
           <em>

@@ -132,7 +132,7 @@ function Blocs({ blocs, figures }: { blocs: Bloc[]; figures: Map<Bloc, number> }
  * reading down the middle; on the left, the table of contents, which follows
  * the reading; on the right, the name, nav and contact.
  */
-export function ProjetMaquette({ projet }: { projet: Projet }) {
+export function ProjetMaquette({ projet, onRetour }: { projet: Projet; onRetour?: () => void }) {
   const ref = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(projet.sections[0].id);
 
@@ -168,6 +168,14 @@ export function ProjetMaquette({ projet }: { projet: Projet }) {
   return (
     <div ref={ref} className="maquette projet">
       <nav className="p-gauche" aria-label="Sommaire">
+        {/* Back to the projects, top left: the trail of the page. */}
+        <p className="p-retour m-label">
+          <button type="button" onClick={onRetour}>
+            <span aria-hidden="true">← </span>
+            <T>Projets</T>
+          </button>
+          <T> / {projet.nom}</T>
+        </p>
         <ol className="p-sommaire m-label">
           {projet.sections.map((section, index) => (
             <li key={section.id} aria-current={section.id === active ? 'location' : undefined}>
@@ -188,9 +196,6 @@ export function ProjetMaquette({ projet }: { projet: Projet }) {
 
       <article className="p-contenu">
         <header className="p-entete">
-          <p className="p-fil m-label">
-            <T>Projets / {projet.nom}</T>
-          </p>
           <h1 className="p-titre">
             <T>{projet.nom}</T>
           </h1>
