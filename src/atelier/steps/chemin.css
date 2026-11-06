@@ -231,16 +231,14 @@
   position: fixed;
 }
 
-/* Phone, 390 × 844, on 4 columns. Text and labels step down for the small
-   screen (a proposal: 14 px and 11 px); the headline stays imposing at 68 px.
-   The side column folds into a 44 px strip along the right edge. */
+/* Phone, 390 × 844, on 4 columns. Text and labels keep their 15 px; the
+   headline stays imposing at 68 px. The side column folds into a 44 px strip
+   along the right edge. */
 
 .mobile {
   --u: calc(100cqw / 390);
   --cols: 4;
   --size-display: 68;
-  --size-text: 14;
-  --size-label: 11;
 
   display: flex;
   flex-direction: column;

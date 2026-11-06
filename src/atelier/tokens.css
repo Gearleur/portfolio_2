@@ -43,14 +43,15 @@
   --ink-soft: #636361;
   --line: #dededd;
 
-  /* Type, validated at step 3. Sizes are px for a 1440 px wide page, unitless
-     so the témoin can scale them. Mirror TYPO in tokens.ts. */
+  /* Type, validated at step 3; text and labels at 15 px since journal n° 75.
+     Sizes are px for a 1440 px wide page, unitless so the témoin can scale
+     them. Mirror TYPO in tokens.ts. */
   --font-display: 'Instrument Serif', Georgia, serif;
   --font-text: 'Inter', system-ui, sans-serif;
   --font-label: 'Inter', system-ui, sans-serif;
   --size-display: 72;
-  --size-text: 13;
-  --size-label: 10.5;
+  --size-text: 15;
+  --size-label: 15;
   --type-ratio: 1.25;
   --display-weight: 400;
   --display-tracking: 0.01em;

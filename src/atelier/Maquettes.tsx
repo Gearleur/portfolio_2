@@ -149,15 +149,15 @@ export function MaquetteMobile({ menuOpen, onMenu, glisse, blocks, columns, imag
 }
 
 /** A run of words, which the blocks view turns into grey bars. */
-const T = ({ children }: { children: ReactNode }) => <span className="m-t">{children}</span>;
+export const T = ({ children }: { children: ReactNode }) => <span className="m-t">{children}</span>;
 
-const Name = () => (
+export const Name = () => (
   <p className="m-name">
     <T>Alexandre Teixeira</T>
   </p>
 );
 
-const NavList = ({ className }: { className: string }) => (
+export const NavList = ({ className }: { className: string }) => (
   <ul className={className}>
     {NAV.map((item, index) => (
       <li key={item} data-cursor="cube" aria-current={index === 0 ? 'page' : undefined} style={{ '--i': index } as CSSProperties}>
@@ -170,7 +170,7 @@ const NavList = ({ className }: { className: string }) => (
   </ul>
 );
 
-const Contact = () => (
+export const Contact = () => (
   <ul className="m-contact m-label">
     {CONTACT.map((item) => (
       <li key={item} data-cursor="cube">

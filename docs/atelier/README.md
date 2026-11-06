@@ -277,6 +277,12 @@ projet), par exemple pixel + sans-serif, ou sans-serif seule à la Kalkbrenner.
 On fixe ensuite l'échelle : beaucoup de petites tailles pour l'information, une
 seule très grande pour le moment fort.
 
+**Revu à l'étape 7 (journal n° 75)** : le texte et les étiquettes passent à
+**15 px**, comme chez Rachel Chen. Les tailles d'origine (13 et 10,5 px) avaient
+été jugées dans l'Atelier, qui agrandissait la page pour remplir la fenêtre
+(×1,33 sur un écran de 1920 px). Le plein écran s'ouvre maintenant en taille
+réelle.
+
 **Premier tour.** Trois directions sur la page témoin, avec le fond, les encres
 et l'accent validés :
 
@@ -612,6 +618,18 @@ téléphone, la tranche aussi.
 
 Le tout se trouve dans `src/atelier/Miniature.tsx`.
 
+**La page projet** (`src/atelier/Projet.tsx`, textes dans `projets.ts`) est
+construite comme celle de Rachel Chen :
+
+- **en tête** : le fil, le titre, l'accroche, le cartel et la miniature ;
+- **dix parties** : un filet, un numéro, un titre en phrase, puis les blocs (texte,
+  colonnes, cartes, décisions, question, compromis, chiffres clés) ;
+- **la lecture au milieu** : le texte sur 6 colonnes (6 à 11 sur 16), les images,
+  colonnes et chiffres sur 8 (5 à 12), la miniature sur 10 ;
+- **le sommaire** : il remplace la colonne de droite et suit la lecture ;
+- **les tailles** : texte à 15 px, titres de partie à 29 px, chiffres à 58 px ;
+- **les schémas** : encore en gris, numérotés, avec ce qu'ils montreront.
+
 ### Étape 8 — La Vitrine
 
 On assemble `/portfolio/` avec uniquement les pièces validées. Si quelque chose
@@ -707,6 +725,8 @@ un bon argument dans un portfolio.
 | 71 | 2026-11-06 | Sur ordinateur aussi, la **vue de détail** (la planche entière est retirée), avec « *SNCF GPT* » plus grand en haut à gauche, en serif italique. Le micro-texte fait exactement un tour du cercle. | « Je préfère Détail pour la version desktop aussi, mais écris SNCF GPT plus gros en haut à gauche ; sinon on est bon » | 7 |
 | 72 | 2026-11-06 | SNCF GPT, ce qu'on peut publier : les **82 %**, à présenter comme une mesure interne sur un jeu de tickets de test ; les **3 000+ utilisateurs par mois**, atteints dans un second temps, quand SNCF Groupe GPT a été branché sur SharePoint, Jira et d'autres sources ; les chiffres de l'Usine Logicielle (1 200 projets, 4 500 utilisateurs). Le travail avec les équipes DevOps s'est fait main dans la main. | « Les 82 %, c'est une mesure interne mais sur des tickets de test » · « Ils ont adoré, les équipes DevOps, j'étais main dans la main avec eux ; c'est ensuite devenu SNCF GPT Groupe connecté à SharePoint, Jira… c'est les 3 000 utilisateurs, dans un deuxième temps » · « Oui » | 7 |
 | 73 | 2026-11-06 | **Texte français de SNCF GPT validé.** On y précise que tu étais seul au début et que tu as branché Jira (SharePoint est venu après ton départ). BFM Business est retiré faute de trace retrouvée ; à la place, l'article du Journal du Net (juin 2024) sur SNCF Groupe GPT. Les images et les schémas viennent ensuite. | « Jira oui, SharePoint non, j'ai quitté à ce moment-là » · « Je n'arrive pas à retrouver [BFM] » · « Ouais c'est bien, faut dire qu'au début j'étais tout seul sur le projet » · « On rajoutera des images, des schémas » | 7 |
+| 74 | 2026-11-06 | SNCF GPT : **3 000+ utilisateurs par jour** (et non par mois), cohérent avec le Journal du Net (2 500 par jour en juin 2024) ; seul au début, en équipe à partir de SNCF Groupe GPT. Lien du Journal du Net gardé. Page projet montée dans l'Atelier, à valider : fil, titre, accroche, cartel, miniature en grand, dix parties aux titres en phrases, sommaire dans la colonne de droite qui suit la lecture. | « Garde, c'est parfait avec le lien ; je crois qu'en fait c'était 3 000 utilisateurs quotidiens » · « J'étais avec une équipe à partir du moment où on a fait SNCF GPT Groupe » · « On peut faire la page » | 7 |
+| 75 | 2026-11-06 | **Tailles en vrai** : le plein écran de l'Atelier s'ouvre en taille réelle (il agrandissait la page de 1440 px à la largeur de la fenêtre, ×1,33 sur 1920 px) ; le texte et les étiquettes passent à **15 px**, comme chez Rachel Chen. Page projet : **la lecture au milieu**, texte sur 6 colonnes centrées, images sur 8. | « Tout est beaucoup trop gros ; quand c'est déployé sur Vercel c'est plus petit » · « Le menu sur le côté et tout est un peu trop petit ; je veux que ce soit la même taille [que Rachel] » · « Lire au milieu comme rachelchen.tech/projects/openai, c'est quand même plus agréable » | 7 |
 
 ---
 

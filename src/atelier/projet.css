@@ -1,0 +1,273 @@
+/* Step 7 · A project page in the Vitrine's frame (journal n° 74 and 75). The
+   reading runs down the middle of the page, as on Rachel Chen's case studies:
+   the text on 6 columns (6 to 11 of 16), the pictures, columns and figures a
+   little wider (5 to 12), the thumbnail wider still (4 to 13). The side column
+   on the right is the table of contents. Sizes are px at a 1440 px page (--u),
+   from the type scale: the text at its 15 px, headings three steps up. */
+
+.projet {
+  --p-body: calc(var(--size-text) * var(--u));
+  --p-h3: calc(var(--size-text) * var(--type-ratio) * var(--u));
+  --p-lead: calc(var(--size-text) * var(--type-ratio) * var(--type-ratio) * var(--u));
+  --p-heading: calc(var(--size-text) * var(--type-ratio) * var(--type-ratio) * var(--type-ratio) * var(--u));
+  --p-figure: calc(var(--size-display) * 0.8 * var(--u));
+  --p-gap: calc(var(--gutter) * var(--u));
+}
+
+.projet .p-contenu {
+  display: grid;
+  grid-area: 1 / 1 / 3 / 14;
+  grid-template-columns: subgrid;
+  align-content: start;
+  padding-bottom: calc(var(--space-8) * 2 * var(--u));
+}
+
+.projet :is(.p-entete, .p-section) {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+  align-content: start;
+}
+
+/* The reading measure, and the wider ones. */
+.projet :is(.p-entete, .p-section) > * {
+  grid-column: 6 / 12;
+  margin: 0;
+}
+
+.projet :is(.p-entete, .p-section) > :is(.p-visuel, .p-colonnes, .p-cartes, .p-chiffres, .p-cartel) {
+  grid-column: 5 / 13;
+}
+
+.projet .p-entete > .p-visuel {
+  grid-column: 4 / 14;
+}
+
+/* Header: the trail, the name in the display size, the line, the cartel, the thumbnail. */
+.p-entete {
+  row-gap: calc(var(--space-5) * var(--u));
+  padding-top: calc(var(--space-8) * var(--u));
+}
+
+.p-titre {
+  font-family: var(--font-display);
+  font-size: calc(var(--size-display) * var(--u));
+  font-weight: var(--display-weight);
+  letter-spacing: var(--display-tracking);
+  line-height: var(--display-leading);
+}
+
+.projet .p-accroche {
+  font-size: var(--p-lead);
+  line-height: 1.3;
+}
+
+.projet .p-cartel {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: var(--p-gap);
+  margin-top: calc(var(--space-4) * var(--u));
+}
+
+.p-cartel dt {
+  margin-bottom: calc(var(--space-1) * var(--u));
+}
+
+.p-cartel dd {
+  margin: 0;
+}
+
+/* Sections: a rule, a numbered label, a sentence heading, then the blocks. */
+.p-section {
+  row-gap: calc(var(--space-5) * var(--u));
+  margin-top: calc((var(--space-8) + var(--space-6)) * var(--u));
+}
+
+.projet .p-section__n {
+  padding-top: calc(var(--space-3) * var(--u));
+  border-top: 1px solid var(--line);
+}
+
+.p-section__titre {
+  font-family: var(--font-display);
+  font-size: var(--p-heading);
+  font-weight: var(--display-weight);
+  line-height: 1.15;
+}
+
+.projet :is(.p-texte, .p-liste, .p-question) {
+  font-size: var(--p-body);
+  line-height: 1.55;
+}
+
+.p-texte strong,
+.p-colonnes strong,
+.p-cartes strong,
+.p-liste strong {
+  font-weight: 600;
+}
+
+.p-liste {
+  display: grid;
+  row-gap: calc(var(--space-2) * var(--u));
+  padding-left: calc(var(--space-4) * var(--u));
+}
+
+.p-liste li {
+  position: relative;
+}
+
+/* List marks: small squares, the cube's family. */
+.p-liste li::before {
+  content: '';
+  position: absolute;
+  top: 0.62em;
+  left: calc(var(--space-4) * -1 * var(--u));
+  width: calc(4 * var(--u));
+  height: calc(4 * var(--u));
+  background: var(--ink-soft);
+}
+
+.p-intertitre {
+  font-family: var(--font-display);
+  font-size: var(--p-h3);
+  font-weight: var(--display-weight);
+}
+
+.projet .p-question {
+  font-family: var(--font-display);
+  font-size: var(--p-h3);
+  font-style: italic;
+}
+
+.projet .p-compromis {
+  padding-left: calc(var(--space-4) * var(--u));
+  border-left: calc(2 * var(--u)) solid var(--accent);
+  font-size: var(--p-h3);
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+/* Columns, cards and key figures share their measure evenly (--n items). */
+.projet :is(.p-colonnes, .p-cartes, .p-chiffres) {
+  display: grid;
+  grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr));
+  gap: calc(var(--space-5) * var(--u)) var(--p-gap);
+  font-size: var(--p-body);
+  line-height: 1.5;
+}
+
+.p-colonnes li {
+  padding-top: calc(var(--space-3) * var(--u));
+  border-top: 1px solid var(--line);
+}
+
+.p-colonnes strong {
+  display: block;
+  margin-bottom: calc(var(--space-1) * var(--u));
+}
+
+.p-cartes li {
+  display: grid;
+  align-content: start;
+  gap: calc(var(--space-2) * var(--u));
+}
+
+.p-carte__image {
+  display: block;
+  aspect-ratio: 3 / 4;
+  background: color-mix(in oklch, var(--ink) 7%, var(--fond));
+}
+
+/* Key figures, in the display face. */
+.p-chiffres li {
+  display: grid;
+  align-content: start;
+  gap: calc(var(--space-2) * var(--u));
+  color: var(--ink-soft);
+}
+
+.p-chiffre {
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: var(--p-figure);
+  line-height: 1;
+}
+
+/* Pictures: a grey placeholder until each one is drawn. */
+.p-visuel {
+  display: grid;
+  gap: calc(var(--space-2) * var(--u));
+  margin-block: calc(var(--space-4) * var(--u));
+}
+
+.p-visuel__image {
+  display: block;
+  aspect-ratio: 16 / 9;
+  background: color-mix(in oklch, var(--ink) 7%, var(--fond));
+}
+
+.p-visuel__image:has(.miniature) {
+  aspect-ratio: 4 / 3;
+}
+
+.p-decision {
+  display: grid;
+  row-gap: calc(var(--space-2) * var(--u));
+  margin-top: calc(var(--space-6) * var(--u));
+}
+
+/* Table of contents, in the side column: numbered, the section being read
+   marked by the accent square, like the current page in the nav. */
+.p-sommaire {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: calc(var(--space-2) * var(--u));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.p-sommaire button {
+  display: inline-flex;
+  gap: calc(var(--space-2) * var(--u));
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: right;
+  text-decoration: underline 1px transparent;
+  text-underline-offset: 0.3em;
+  transition:
+    color 0.2s,
+    text-decoration-color 0.2s;
+}
+
+.p-sommaire button:hover {
+  color: var(--ink);
+  text-decoration-color: var(--accent);
+}
+
+.p-sommaire__n {
+  opacity: 0.55;
+  font-variant-numeric: tabular-nums;
+}
+
+.p-sommaire [aria-current] {
+  position: relative;
+  color: var(--ink);
+}
+
+.p-sommaire [aria-current]::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: calc(-12 * var(--u));
+  width: calc(6 * var(--u));
+  height: calc(6 * var(--u));
+  background: var(--accent);
+  translate: 0 -50%;
+}

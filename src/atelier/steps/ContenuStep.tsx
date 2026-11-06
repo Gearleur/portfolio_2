@@ -1,6 +1,8 @@
 import { useCallback, useState } from 'react';
 import { Maquette, MaquetteMobile } from '../Maquettes';
 import { Miniature, PlanArchitecture } from '../Miniature';
+import { ProjetMaquette } from '../Projet';
+import { SNCF_GPT } from '../projets';
 import { Specimen, SpecimenPreview } from '../Specimen';
 import { FOND } from '../tokens';
 import { useWaveSignal } from '../useWave';
@@ -35,9 +37,9 @@ function scrollToPicture(frame: HTMLDivElement | null) {
 
 /** Step 7: the words and pictures of each project, starting with SNCF GPT. */
 export function ContenuStep() {
-  const [preview, setPreview] = useState(false);
+  const [preview, setPreview] = useState<'vitrine' | 'projet' | null>(null);
   const [waveSignal, playWave] = useWaveSignal();
-  const close = useCallback(() => setPreview(false), []);
+  const close = useCallback(() => setPreview(null), []);
   const images = { '01': <Miniature /> };
 
   return (
@@ -55,6 +57,47 @@ export function ContenuStep() {
       </p>
 
       <div className="atelier-builder">
+        <div className="atelier-panel">
+          <fieldset>
+            <legend>La page projet</legend>
+            <p className="atelier-panel__note">
+              Construite comme celle de Rachel Chen : le fil, le titre, l’accroche, le cartel et la miniature en grand,
+              puis dix parties aux titres en phrases. Le texte validé ; les schémas encore en gris, avec ce qu’ils
+              montreront.
+            </p>
+            <p className="atelier-panel__note">
+              À droite, sous la nav, le sommaire : il suit la lecture (carré accent) et chaque ligne mène à sa partie.
+              Fais défiler la page.
+            </p>
+          </fieldset>
+
+          <fieldset>
+            <legend>Tailles</legend>
+            <p className="atelier-panel__note">
+              Proposition, sur l’échelle validée : le texte courant un palier au-dessus (16 px) pour la lecture longue,
+              les titres de partie en serif à 32 px, les chiffres clés en serif à 72 px.
+            </p>
+          </fieldset>
+        </div>
+
+        <div className="atelier-stage">
+          <div className="atelier-stage__frame">
+            <Specimen settings={FOND} waveSignal={waveSignal}>
+              <ProjetMaquette projet={SNCF_GPT} />
+            </Specimen>
+          </div>
+          <div className="atelier-stage__bar">
+            <p>La page SNCF GPT : fais défiler, clique dans le sommaire</p>
+            <div>
+              <button type="button" onClick={() => setPreview('projet')}>
+                Plein écran <span aria-hidden="true">↗</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="atelier-builder miniatures">
         <div className="atelier-panel">
           <fieldset>
             <legend>Miniature</legend>
@@ -90,7 +133,7 @@ export function ContenuStep() {
               <button type="button" onClick={() => playWave('first')}>
                 Rejouer l’arrivée
               </button>
-              <button type="button" onClick={() => setPreview(true)}>
+              <button type="button" onClick={() => setPreview('vitrine')}>
                 Plein écran <span aria-hidden="true">↗</span>
               </button>
             </div>
@@ -144,8 +187,12 @@ export function ContenuStep() {
       </div>
 
       {preview && (
-        <SpecimenPreview settings={FOND} label="La Vitrine en plein écran" onClose={close}>
-          <Maquette blocks={false} images={images} />
+        <SpecimenPreview
+          settings={FOND}
+          label={preview === 'projet' ? 'La page SNCF GPT en plein écran' : 'La Vitrine en plein écran'}
+          onClose={close}
+        >
+          {preview === 'projet' ? <ProjetMaquette projet={SNCF_GPT} /> : <Maquette blocks={false} images={images} />}
         </SpecimenPreview>
       )}
     </section>

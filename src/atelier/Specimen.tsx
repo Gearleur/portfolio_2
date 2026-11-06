@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import type { CSSProperties, KeyboardEvent, ReactNode } from 'react';
 import { useFullscreenDialog } from '../hooks/useFullscreenDialog';
@@ -11,6 +11,8 @@ type SpecimenProps = {
   settings: FondSettings;
   waveSignal?: WaveSignal;
   style?: CSSProperties;
+  /** Draws the page at its real px sizes instead of scaling a 1440 px page to the stage. */
+  reelle?: boolean;
   children: ReactNode;
 };
 
@@ -22,7 +24,7 @@ type Shape = 'cube' | 'texte' | 'fleche';
  * and a small agent's pointer over what can be clicked (links, buttons,
  * [data-cursor]); data-cursor-label names the action beside it.
  */
-export function Specimen({ settings, waveSignal, style, children }: SpecimenProps) {
+export function Specimen({ settings, waveSignal, style, reelle, children }: SpecimenProps) {
   const stageRef = useRef<HTMLDivElement>(null);
   const cursorRef = useRef<HTMLSpanElement>(null);
   const labelRef = useRef<HTMLSpanElement>(null);
@@ -70,7 +72,7 @@ export function Specimen({ settings, waveSignal, style, children }: SpecimenProp
   }, []);
 
   return (
-    <div ref={stageRef} className="specimen" style={style}>
+    <div ref={stageRef} className="specimen" style={style} data-echelle={reelle ? 'reelle' : undefined}>
       <Fond settings={settings} waveSignal={waveSignal} />
       {children}
       <span ref={cursorRef} className="curseur" data-shape="cube" aria-hidden="true">
@@ -88,9 +90,23 @@ type SpecimenPreviewProps = SpecimenProps & {
   onClose: () => void;
 };
 
+/** How much the 1440 px page is enlarged or reduced to fill the window. */
+function useScale() {
+  const [width, setWidth] = useState(() => window.innerWidth);
+  useEffect(() => {
+    const resize = () => setWidth(window.innerWidth);
+    window.addEventListener('resize', resize);
+    return () => window.removeEventListener('resize', resize);
+  }, []);
+  return { width, scale: width / 1440 };
+}
+
 export function SpecimenPreview({ settings, style, label, tools, onClose, children }: SpecimenPreviewProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [waveSignal, playWave] = useWaveSignal();
+  // Full screen shows the real px by default, as the deployed site does.
+  const [reelle, setReelle] = useState(true);
+  const { width, scale } = useScale();
   useFullscreenDialog({ backgroundSelector: '.atelier-canvas', onClose, ref });
 
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
@@ -112,11 +128,15 @@ export function SpecimenPreview({ settings, style, label, tools, onClose, childr
       tabIndex={-1}
       onKeyDown={handleKeyDown}
     >
-      <Specimen settings={settings} waveSignal={waveSignal} style={style}>
+      <Specimen settings={settings} waveSignal={waveSignal} style={style} reelle={reelle}>
         {children}
       </Specimen>
       <div className="atelier-preview__bar">
         {tools}
+        <button type="button" aria-pressed={reelle} onClick={() => setReelle(!reelle)}>
+          {reelle ? 'Taille réelle' : `Mise à l’échelle ×${scale.toFixed(2).replace('.', ',')}`}
+          <span className="atelier-preview__info">{width} px</span>
+        </button>
         <button type="button" onClick={() => playWave('first')}>
           Arrivée <kbd>A</kbd>
         </button>

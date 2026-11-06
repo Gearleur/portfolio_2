@@ -57,13 +57,14 @@ export const FOND: FondSettings & { waveId: WaveCompositionId } = {
 };
 
 /**
- * The type validated at step 3 (journal n° 32, title retuned in n° 35). Sizes are px for a 1440 px wide
- * page; `font` is the typothèque id. tokens.css mirrors it.
+ * The type validated at step 3 (journal n° 32, title retuned in n° 35; text and
+ * labels raised to 15 px at real size in n° 75, like Rachel Chen's). Sizes are px
+ * for a 1440 px wide page; `font` is the typothèque id. tokens.css mirrors it.
  */
 export const TYPO = {
   display: { font: 'instrument-serif', family: 'Instrument Serif', size: 72, tracking: 0.01, weight: 400 },
-  text: { font: 'inter', family: 'Inter', size: 13 },
-  label: { font: 'inter', family: 'Inter', size: 10.5, caps: false },
+  text: { font: 'inter', family: 'Inter', size: 15 },
+  label: { font: 'inter', family: 'Inter', size: 15, caps: false },
   /** Subheadings step up from the text by this ratio. */
   ratio: 1.25,
 };

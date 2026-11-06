@@ -536,6 +536,11 @@ a.atelier-steps__item:hover,
 
 .atelier-panel__footer button,
 .atelier-stage__bar button,
+.atelier-preview__info {
+  color: var(--atelier-dim);
+  font-variant-numeric: tabular-nums;
+}
+
 .atelier-preview__bar button,
 .atelier-button {
   display: inline-flex;
@@ -625,6 +630,13 @@ a.atelier-steps__item:hover,
      are placed in the stage, not in the browser window. */
   contain: layout;
   font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* Real size: the page's px are true px, whatever the window's width; the
+   columns stretch or shrink with it, as on the deployed site. Without it, the
+   Atelier scales a 1440 px page to fit the stage. */
+.specimen[data-echelle='reelle'] :is(.maquette, .temoin) {
+  --u: 1px;
 }
 
 /* The drawn cursor replaces the system one on the whole stage: no hand over
