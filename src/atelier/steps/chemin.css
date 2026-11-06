@@ -19,6 +19,16 @@
   list-style: none;
 }
 
+:is(.maquette, .mobile) :where(button) {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: none;
+}
+
 .m-label {
   color: var(--ink-soft);
   font-family: var(--font-label);
@@ -332,6 +342,51 @@
   color: var(--ink-soft);
 }
 
+/* Step 6 · Nav hover: a plain 1 px underline in the accent, like the @ links. */
+:is(.m-nav, .m-menu__nav) li {
+  text-decoration: underline 1px transparent;
+  text-underline-offset: 0.3em;
+  transition: text-decoration-color 0.2s;
+}
+
+.m-menu__nav li {
+  text-underline-offset: 0.12em;
+}
+
+:is(.m-nav, .m-menu__nav) li:hover {
+  color: var(--ink);
+  text-decoration-color: var(--accent);
+}
+
+/* Step 6 · The phone menu. Still pages show it or not; with data-glisse it
+   slides in from the right edge in 0.5 s, and hides once closed. */
+.mobile:not([data-glisse]) .m-menu:not([data-open]) {
+  display: none;
+}
+
+.mobile[data-glisse] .m-menu {
+  translate: 100% 0;
+  transition:
+    translate 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0s linear 0.5s;
+}
+
+.mobile[data-glisse] .m-menu:not([data-open]) {
+  visibility: hidden;
+}
+
+.mobile[data-glisse] .m-menu[data-open] {
+  translate: 0 0;
+  transition: translate 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile[data-glisse] .m-menu {
+    transition-duration: 0s;
+    transition-delay: 0s;
+  }
+}
+
 /* Blocks: every run of words becomes a grey bar of the same size. */
 :is(.maquette, .mobile)[data-blocks] .m-t {
   background: color-mix(in oklch, var(--ink) 16%, var(--fond));
@@ -375,7 +430,7 @@
 
 .phones {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 32px;
   margin: 0;
   padding: 0;
@@ -396,6 +451,11 @@
   overflow: hidden;
   border-radius: 28px;
   box-shadow: 0 0 0 1px var(--atelier-line), 0 0 0 7px #ffffff0a;
+}
+
+/* A phone has no pointer: no cursor on the phone screens. */
+.phone__frame .curseur {
+  display: none;
 }
 
 .phone figcaption {

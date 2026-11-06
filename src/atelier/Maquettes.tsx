@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import { GridColumns } from './Temoin';
 
 // The Vitrine's first screen, drafted from the CV: the sentence, then only
@@ -73,33 +73,35 @@ export function Maquette({ blocks, columns }: MaquetteProps) {
 type MaquetteMobileProps = MaquetteProps & {
   /** Shows the open menu panel. */
   menuOpen: boolean;
+  /** Makes « Menu » and « Fermer » work; without it the phone is a still. */
+  onMenu?: (open: boolean) => void;
+  /** Slides the menu in from the right edge (step 6); without it the menu just appears. */
+  glisse?: boolean;
 };
 
 /**
  * The same first screen on a 390 × 844 phone. The side column folds into a thin
  * strip along the right edge; the project images run over it.
  */
-export function MaquetteMobile({ menuOpen, blocks, columns }: MaquetteMobileProps) {
+export function MaquetteMobile({ menuOpen, onMenu, glisse, blocks, columns }: MaquetteMobileProps) {
   return (
-    <div className="mobile" data-blocks={blocks ? '' : undefined}>
+    <div className="mobile" data-blocks={blocks ? '' : undefined} data-glisse={glisse ? '' : undefined}>
       {columns && <GridColumns count={columns} />}
       <div className="m-strip">
         <Name />
-        <p className="m-label">
+        <button type="button" className="m-label" onClick={() => onMenu?.(true)}>
           <T>Menu</T>
-        </p>
+        </button>
       </div>
       <Hero />
       <Visuals />
-      {menuOpen && (
-        <div className="m-menu">
-          <p className="m-label">
-            <T>Fermer</T>
-          </p>
-          <NavList className="m-menu__nav" />
-          <Contact />
-        </div>
-      )}
+      <div className="m-menu" data-open={menuOpen ? '' : undefined} inert={!menuOpen}>
+        <button type="button" className="m-label" onClick={() => onMenu?.(false)}>
+          <T>Fermer</T>
+        </button>
+        <NavList className="m-menu__nav" />
+        <Contact />
+      </div>
     </div>
   );
 }
@@ -116,11 +118,11 @@ const Name = () => (
 const NavList = ({ className }: { className: string }) => (
   <ul className={className}>
     {NAV.map((item, index) => (
-      <li key={item} aria-current={index === 0 ? 'page' : undefined}>
+      <li key={item} data-cursor="cube" aria-current={index === 0 ? 'page' : undefined} style={{ '--i': index } as CSSProperties}>
         <T>{item}</T>
       </li>
     ))}
-    <li className="m-lang">
+    <li className="m-lang" data-cursor="cube" style={{ '--i': NAV.length } as CSSProperties}>
       <T>FR · EN</T>
     </li>
   </ul>
@@ -129,7 +131,7 @@ const NavList = ({ className }: { className: string }) => (
 const Contact = () => (
   <ul className="m-contact m-label">
     {CONTACT.map((item) => (
-      <li key={item}>
+      <li key={item} data-cursor="cube">
         <T>{item}</T>
       </li>
     ))}
@@ -176,7 +178,7 @@ const Hero = () => (
 const Visuals = () => (
   <ul className="m-visuals">
     {PROJECTS.map((project) => (
-      <li key={project.number}>
+      <li key={project.number} data-cursor="projet" data-cursor-label="Voir le projet">
         <span className="m-img" />
         <span className="m-work">
           <em>

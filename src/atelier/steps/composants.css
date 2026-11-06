@@ -1,0 +1,32 @@
+/* Step 6: the cursor's three shapes, still, beside their names. */
+.curseur-etats {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.curseur-etats li {
+  display: grid;
+  grid-template-columns: 136px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  color: var(--atelier-dim);
+  font-size: 12px;
+}
+
+.curseur-etats strong {
+  display: block;
+  margin-bottom: 2px;
+  color: var(--atelier-ink);
+  font-weight: 500;
+}
+
+.curseur-tuile {
+  position: relative;
+  height: 64px;
+  overflow: hidden;
+  border-radius: 10px;
+  background: var(--fond);
+}

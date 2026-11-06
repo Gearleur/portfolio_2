@@ -536,7 +536,8 @@ a.atelier-steps__item:hover,
 
 .atelier-panel__footer button,
 .atelier-stage__bar button,
-.atelier-preview__bar button {
+.atelier-preview__bar button,
+.atelier-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -549,7 +550,8 @@ a.atelier-steps__item:hover,
 
 .atelier-panel__footer button:hover,
 .atelier-stage__bar button:hover,
-.atelier-preview__bar button:hover {
+.atelier-preview__bar button:hover,
+.atelier-button:hover {
   background: #ffffff14;
 }
 
@@ -649,17 +651,78 @@ a.atelier-steps__item:hover,
   color: var(--on-accent);
 }
 
-/* The cube rests beside the text and follows the pointer on hover. */
-.specimen__cube {
+/* The cursor rests beside the text and follows the pointer on hover. It morphs
+   between three shapes drawn as 7-point polygons, so clip-path can tween them:
+   a cube at rest, a short 2.5 px bar over words (--caret, 20 px at most), a small
+   agent's pointer over what can be clicked (10 × 14 px, as in multiplayer
+   tools), its action in a small label. The pointer sits at (10, 60) in the
+   shape's box; a white halo keeps it visible over the accent. */
+.curseur {
+  --caret: 14px;
+
   position: absolute;
   top: 0;
   left: 0;
-  width: 12px;
-  height: 12px;
-  margin: -6px 0 0 -6px;
-  background: var(--accent);
+  z-index: 10;
   pointer-events: none;
+  filter: drop-shadow(0 0 1px rgb(255 255 255 / 0.9));
   translate: 62cqw 36cqh;
+}
+
+.curseur__forme {
+  position: absolute;
+  top: -60px;
+  left: -10px;
+  width: 34px;
+  height: 120px;
+  background: var(--accent);
+  clip-path: polygon(4px 54px, 4px 66px, 8px 66px, 12px 66px, 16px 66px, 16px 60px, 16px 54px);
+  transition: clip-path 0.42s cubic-bezier(0.34, 1.3, 0.64, 1);
+}
+
+.curseur[data-shape='texte'] .curseur__forme {
+  clip-path: polygon(
+    8.75px calc(60px - var(--caret) / 2),
+    8.75px calc(60px + var(--caret) / 2),
+    9.5px calc(60px + var(--caret) / 2),
+    10.5px calc(60px + var(--caret) / 2),
+    11.25px calc(60px + var(--caret) / 2),
+    11.25px 60px,
+    11.25px calc(60px - var(--caret) / 2)
+  );
+}
+
+.curseur[data-shape='fleche'] .curseur__forme {
+  clip-path: polygon(10px 60px, 10px 74px, 11.75px 72.25px, 13.5px 70.5px, 16.75px 70.25px, 20px 70px, 15px 65px);
+}
+
+.curseur__label {
+  position: absolute;
+  top: 13px;
+  left: 11px;
+  padding: 1px 5px;
+  background: var(--accent);
+  color: var(--on-accent);
+  font: 500 10px/1.4 'Inter', system-ui, sans-serif;
+  white-space: nowrap;
+  opacity: 0;
+  scale: 0.8;
+  transform-origin: 0 0;
+  transition:
+    opacity 0.2s,
+    scale 0.3s cubic-bezier(0.34, 1.3, 0.64, 1);
+}
+
+.curseur[data-labelled] .curseur__label {
+  opacity: 1;
+  scale: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .curseur__forme,
+  .curseur__label {
+    transition: none;
+  }
 }
 
 /* Témoin: a stand-in page to judge colours and type in use. Sizes are given

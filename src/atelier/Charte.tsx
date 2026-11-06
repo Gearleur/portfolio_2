@@ -45,7 +45,7 @@ export function Charte() {
       label: 'Appoint',
       value: 'Snow crimson',
       swatches: APPOINT.map((color) => color.hex),
-      note: 'Sept couleurs gardées en plus. Les rôles viendront avec les composants.',
+      note: 'Sept couleurs gardées en plus. Leurs rôles se décident en assemblant la Vitrine (étape 8).',
       step: 2,
     },
     {
@@ -76,7 +76,15 @@ export function Charte() {
       note: `Du coin haut droit vers le bas gauche. Arrivée à ${percent(wave.first)}, puis ${percent(wave.echo)} toutes les ${wave.every} s environ.`,
       step: 1,
     },
-    { label: 'Curseur', value: 'Petit cube', cube: true, note: 'Couleur accent. Sa forme exacte viendra avec les composants.', step: 1 },
+    {
+      label: 'Curseur',
+      value: 'Cube qui se transforme',
+      cube: true,
+      note: 'Couleur accent, il se déforme d’une forme à l’autre. Cube au repos et sur la nav, barre de 2,5 px sur le texte, petite pointe d’agent « Voir le projet » sur un projet. Absent sur téléphone.',
+      step: 6,
+    },
+    { label: 'Liens', value: 'Soulignés', note: 'Liens @ : filet clair qui passe à l’accent au survol. Nav : soulignement accent de 1 px au survol.', step: 6 },
+    { label: 'Menu téléphone', value: 'Glisse · 0,5 s', note: 'Le panneau arrive du bord droit, là où est la tranche, et repart de même.', step: 6 },
     { label: 'Lumière', value: 'Aucune', note: 'Pas d’ombre de fenêtre', step: 1 },
   ];
 

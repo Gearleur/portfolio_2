@@ -108,7 +108,7 @@ export function CouleursStep() {
       </header>
       <p className="atelier-step__note">
         Les encres Noir : l’encre du texte, l’encre douce des étiquettes et le filet des séparateurs. La palette
-        Snow crimson est gardée en plus, comme couleurs d’appoint ; leurs rôles viendront avec les composants.
+        Snow crimson est gardée en plus, comme couleurs d’appoint ; leurs rôles se décident en assemblant la Vitrine (étape 8).
         L’établi reste là : Brun et Marine pour comparer, « Réinitialiser » ramène aux encres validées.
       </p>
 
@@ -180,7 +180,7 @@ export function CouleursStep() {
         {
           id: 'appoint',
           title: 'Palette d’appoint',
-          note: 'Snow crimson, gardée en plus. Les rôles viendront avec les composants.',
+          note: 'Snow crimson, gardée en plus. Les rôles se décident à l’étape 8.',
           items: appoint,
         },
       ].map((group) => (

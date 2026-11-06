@@ -14,22 +14,51 @@ type SpecimenProps = {
   children: ReactNode;
 };
 
-/** A background dressed with sample content and the cube cursor. */
+type Shape = 'cube' | 'texte' | 'fleche';
+
+/**
+ * A background dressed with sample content and the cursor. The cursor is a cube
+ * at rest and over the menu ([data-cursor="cube"]), a short bar over words (.m-t)
+ * and a small agent's pointer over what can be clicked (links, buttons,
+ * [data-cursor]); data-cursor-label names the action beside it.
+ */
 export function Specimen({ settings, waveSignal, style, children }: SpecimenProps) {
   const stageRef = useRef<HTMLDivElement>(null);
-  const cubeRef = useRef<HTMLSpanElement>(null);
+  const cursorRef = useRef<HTMLSpanElement>(null);
+  const labelRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     const stage = stageRef.current;
-    const cube = cubeRef.current;
-    if (!stage || !cube) return;
+    const cursor = cursorRef.current;
+    const label = labelRef.current;
+    if (!stage || !cursor || !label) return;
+
+    let shape: Shape = 'cube';
+    const setShape = (next: Shape, action = '') => {
+      if (next !== shape) cursor.dataset.shape = shape = next;
+      if (label.textContent !== action) label.textContent = action;
+      cursor.toggleAttribute('data-labelled', action !== '');
+    };
 
     const move = (event: PointerEvent) => {
       const bounds = stage.getBoundingClientRect();
-      cube.style.translate = `${event.clientX - bounds.left}px ${event.clientY - bounds.top}px`;
+      cursor.style.translate = `${event.clientX - bounds.left}px ${event.clientY - bounds.top}px`;
+      const target = event.target instanceof Element ? event.target : null;
+      const action = target?.closest<HTMLElement>('a, button, [data-cursor]');
+      const words = target?.closest('.m-t');
+      if (action?.dataset.cursor === 'cube') return setShape('cube');
+      if (action) return setShape('fleche', action.dataset.cursorLabel);
+      if (words) {
+        // A discreet bar: about the height of the letters, never more than 20 px.
+        const size = parseFloat(getComputedStyle(words).fontSize) * 0.8;
+        cursor.style.setProperty('--caret', `${Math.min(20, Math.max(10, Math.round(size)))}px`);
+        return setShape('texte');
+      }
+      setShape('cube');
     };
     const rest = () => {
-      cube.style.translate = '';
+      cursor.style.translate = '';
+      setShape('cube');
     };
 
     stage.addEventListener('pointermove', move);
@@ -44,7 +73,10 @@ export function Specimen({ settings, waveSignal, style, children }: SpecimenProp
     <div ref={stageRef} className="specimen" style={style}>
       <Fond settings={settings} waveSignal={waveSignal} />
       {children}
-      <span ref={cubeRef} className="specimen__cube" aria-hidden="true" />
+      <span ref={cursorRef} className="curseur" data-shape="cube" aria-hidden="true">
+        <span className="curseur__forme" />
+        <span ref={labelRef} className="curseur__label" />
+      </span>
     </div>
   );
 }

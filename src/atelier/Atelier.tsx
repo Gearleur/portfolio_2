@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import type { JSX } from 'react';
 import { Charte } from './Charte';
 import { CheminStep } from './steps/CheminStep';
+import { ComposantsStep } from './steps/ComposantsStep';
 import { CouleursStep } from './steps/CouleursStep';
 import { EspacesStep } from './steps/EspacesStep';
 import { FondStep } from './steps/FondStep';
@@ -16,14 +17,14 @@ const STEPS: Step[] = [
   { n: 3, name: 'La typo', status: 'valide' },
   { n: 4, name: 'Espaces et grille', status: 'valide' },
   { n: 5, name: 'Chemin de fer', status: 'valide' },
-  { n: 6, name: 'Composants', status: 'a-venir' },
+  { n: 6, name: 'Composants', status: 'valide' },
   { n: 7, name: 'Contenu', status: 'a-venir' },
   { n: 8, name: 'Vitrine', status: 'a-venir' },
   { n: 9, name: 'Finitions', status: 'a-venir' },
   { n: 10, name: 'Mise en ligne', status: 'a-venir' },
 ];
 
-const STEP_VIEWS: Record<number, () => JSX.Element> = { 1: FondStep, 2: CouleursStep, 3: TypoStep, 4: EspacesStep, 5: CheminStep };
+const STEP_VIEWS: Record<number, () => JSX.Element> = { 1: FondStep, 2: CouleursStep, 3: TypoStep, 4: EspacesStep, 5: CheminStep, 6: ComposantsStep };
 // The step in progress, or the last one built when everything shown is validated.
 const CURRENT = STEPS.find((step) => step.status === 'en-cours')?.n ?? Math.max(...Object.keys(STEP_VIEWS).map(Number));
 

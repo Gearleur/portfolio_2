@@ -192,7 +192,7 @@ La palette Snow crimson est gardée en appoint (journal n° 23) :
 | 3 | La typo | Le couple de polices et l'échelle de tailles | Validé le 2026-11-05 |
 | 4 | Espaces et grille | Le rythme et les colonnes | Validé le 2026-11-06 |
 | 5 | Le chemin de fer | La composition de la Vitrine | Validé le 2026-11-06 |
-| 6 | Les composants | Chaque brique, une par une | — |
+| 6 | Les composants | Chaque brique, une par une | Validé le 2026-11-06 |
 | 7 | Le contenu | Tes projets et tes textes | — |
 | 8 | La Vitrine | La page assemblée | — |
 | 9 | Mouvement et finitions | Survols, apparitions, mobile, accessibilité | — |
@@ -511,6 +511,29 @@ Un par un, chacun avec ses états :
 lien, étiquette + valeur, navigation, ligne de projet (index), vignette de
 projet, tag/filtre, **et tes propres composants** quand tu les apportes.
 
+**Retenu** (validé le 2026-11-06) :
+
+- **Le curseur** : un seul élément accent qui se déforme (clip-path entre trois
+  polygones, 0,42 s, léger rebond). Cube au repos **et sur la nav** ; **barre
+  fine** sur le texte (2,5 px, 20 px de haut au plus) ; **petite pointe
+  d'agent** (10 × 14 px, comme un curseur de collaboration) sur un projet ou un
+  lien, avec « Voir le projet » en petit à côté d'une carte. Pas de curseur sur
+  téléphone ;
+- **Le lien @** : filet clair qui passe à l'accent au survol ;
+- **La nav** : au survol, un soulignement accent de 1 px, comme les liens @ ;
+  la page en cours garde son carré accent ;
+- **Le menu sur téléphone** : **Glisse**, le panneau arrive du bord droit en
+  0,5 s et repart de même ;
+- **Les projets** : les cartels de l'étape 5 (*titre* · organisation, année).
+
+Écartés : Déplie, Fondu, Échelle, Glisse courte et Volet pour le menu ; Équerre
+et Cube pour la forme sur un projet. Pas de ligne d'index ni de tag/filtre : la
+composition retenue n'en a pas besoin pour trois projets. Tu n'as pas de
+composant à toi pour l'instant.
+
+La palette d'appoint (journal n° 23) n'a servi à aucun composant : ses rôles se
+décident en assemblant la Vitrine, à l'étape 8.
+
 ### Étape 7 — Le contenu
 
 Une interview projet par projet : ce que c'était, ton rôle, l'impact, ce qui a
@@ -595,6 +618,11 @@ un bon argument dans un portfolio.
 | 55 | 2026-11-06 | Twists : on garde les **cartels**, réduits au minimum (titre en italique et année, sur une ligne) ; chiffres qui défilent et cartes qui traversent sont retirés. | « Chiffres, on oublie ; cartel, ça peut être bien mais minimaliste au possible ; carte qui traverse, on oublie » | 5 |
 | 56 | 2026-11-06 | Cartel en petit : *titre* · organisation · année, séparés par un point médian. Le titre en italique à 16 px (un palier au-dessus du texte), le reste à la taille du texte, en encre douce. | « Un rond au milieu pour séparer company, date ; écris ça en petit, là c'est vraiment trop gros » | 5 |
 | 57 | 2026-11-06 | Cartel : une virgule entre l'organisation et l'année (*SNCF GPT* · SNCF, 2023). | « Enlève le point entre la company et la date, mets une virgule » | 5 |
+| 58 | 2026-11-06 | Étape 6 ouverte. Curseur : cube au repos, barre sur le texte, flèche d'agent avec « Voir le projet » sur un projet, en se déformant d'une forme à l'autre ; absent sur téléphone. | « Quand on arrive sur du texte il devient une barre, en morphing ; sur un projet, une flèche d'agent qui guide » | 6 |
+| 59 | 2026-11-06 | Lien @ gardé tel quel ; nav soulignée de 1 px au survol. Trois ouvertures du menu téléphone à essayer : Glisse, Déplie, Fondu. | « 2 ok » · « hover du menu : juste souligné, minimaliste » · « propose-moi des choses » | 6 |
+| 60 | 2026-11-06 | Curseur plus discret : il reste un cube sur le menu ; barre de 1,5 px et 20 px au plus ; la flèche devient une petite pointe de 10 × 14 px avec une étiquette de 10 px. Nav soulignée en accent. | « Sur le menu le cube doit rester un cube, soulignement en rouge ; la barre beaucoup trop grande ; la flèche trop grosse, je veux un truc discret et plus petit » | 6 |
+| 61 | 2026-11-06 | Barre sur le texte à 2,5 px. Deux autres formes sur un projet à comparer avec la pointe : Équerre et Cube. Menu : Glisse gardée, Déplie et Fondu remplacées par Échelle, Glisse courte et Volet, autour de 0,2 s. | « Un peu plus épais sur le texte » · « propose-moi d'autres curseurs » · « une animation où on veut l'information rapidement, genre 0,90 → 1 » | 6 |
+| 62 | 2026-11-06 | **Étape 6 validée.** Menu téléphone : Glisse (0,5 s) ; Échelle, Glisse courte et Volet retirés. Sur un projet : la Pointe gardée ; Équerre et Cube retirés. Les rôles de la palette d'appoint passent à l'étape 8. | « Glisse 0,5 s, c'est bon, on peut continuer » · « il est beaucoup mieux, celui que tu m'as donné » | 6 |
 
 ---
 
