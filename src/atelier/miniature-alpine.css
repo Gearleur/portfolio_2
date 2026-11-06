@@ -1,14 +1,16 @@
-/* Step 7 · The Whiteboard AMDEC thumbnail (journal n° 90 to 93): a
-   turbofan as an engineering blueprint, cream lines on slate with a grid,
-   after the style of a reference Alexandre chose. An 18 s loop: a rest, the
-   stages slide apart, three tiny red pointers go through the parts, the
-   stages close; the blades turn slowly all along. */
+/* Step 7 · The Whiteboard AMDEC thumbnail (journal n° 90 to 94): a static
+   poster, electric blue with red touches, white linework, a light speckle.
+   Three self-hosted faces (SIL OFL): Big Shoulders Display for the condensed
+   titles, Mona Sans stretched wide, Geist Mono for the label text. */
 
 .miniature-alpine {
-  --ardoise: #2b3539;
-  --ardoise-bas: #263034;
-  --creme: #eee2c0;
-  --creme-doux: rgb(238 226 192 / 0.55);
+  --bleu: #2b37ec;
+  --bleu-centre: #3644f4;
+  --bleu-bord: #1d26c0;
+  --blanc: #f4f6ff;
+  --blanc-doux: rgb(244 246 255 / 0.55);
+  --encre: #141b7a;
+  --rouge: var(--accent, #e0301f);
 
   position: relative;
   display: block;
@@ -16,20 +18,19 @@
   height: 100%;
   overflow: hidden;
   isolation: isolate;
-  background:
-    radial-gradient(ellipse 70% 60% at 50% 55%, #303b40, transparent 75%),
-    linear-gradient(180deg, var(--ardoise), var(--ardoise-bas));
+  background: radial-gradient(ellipse 85% 80% at 48% 42%, var(--bleu-centre), var(--bleu) 55%, var(--bleu-bord));
 }
 
-/* A light grain, as on the page's background. */
+/* Light speckle, like a printed poster: the page's grain, inverted. */
 .miniature-alpine::after {
   content: '';
   position: absolute;
   inset: 0;
   background-image: var(--grain);
-  background-size: calc(var(--grain-size) / 1.6);
-  opacity: 0.12;
-  mix-blend-mode: overlay;
+  background-size: calc(var(--grain-size) / 1.4);
+  filter: invert(1);
+  mix-blend-mode: screen;
+  opacity: 0.3;
   pointer-events: none;
 }
 
@@ -41,415 +42,144 @@
   height: 100%;
 }
 
-.ma-grille-fine {
-  stroke: var(--creme);
-  stroke-width: 0.25;
-  opacity: 0.07;
-}
-
-.ma-grille-forte {
-  stroke: var(--creme);
-  stroke-width: 0.35;
-  opacity: 0.12;
-}
-
-.ma-axe {
+/* Lines. */
+.ma-cadre,
+.ma-filet,
+.ma-trait,
+.ma-fin,
+.ma-doux,
+.ma-caisse,
+.ma-roue,
+.ma-cote path,
+.ma-repere path,
+.ma-repere rect,
+.ma-grille path {
   fill: none;
-  stroke: var(--creme-doux);
-  stroke-width: 0.4;
-  stroke-dasharray: 14 3 2 3;
-}
-
-/* The stages: paper-filled, so what is behind stops at their edges. */
-.ma-corps {
-  fill: var(--ardoise);
-  stroke: var(--creme);
-  stroke-width: 0.6;
+  stroke: var(--blanc);
   stroke-linejoin: round;
 }
 
-.ma-moyeu {
-  fill: var(--ardoise);
-  stroke: var(--creme);
-  stroke-width: 0.45;
+.ma-cadre {
+  stroke-width: 0.5;
+  opacity: 0.5;
 }
 
-.ma-aubes path,
-.ma-fin {
-  fill: none;
-  stroke: var(--creme);
-  stroke-width: 0.35;
+.ma-filet {
+  stroke-width: 0.5;
 }
 
-.ma-point {
-  fill: var(--creme);
+.ma-trait {
+  stroke-width: 0.7;
 }
 
-/* Boxed labels, in a monospaced face, as on the reference sheet. */
-.ma-etiquettes path {
-  fill: none;
-  stroke: var(--creme);
+.ma-fin,
+.ma-cote path,
+.ma-repere path,
+.ma-repere rect {
   stroke-width: 0.4;
 }
 
-.ma-etiquettes rect {
-  fill: var(--ardoise);
-  stroke: var(--creme);
-  stroke-width: 0.45;
+.ma-doux {
+  stroke: var(--blanc-doux);
+  stroke-width: 0.3;
+  stroke-dasharray: 2 1.5;
 }
 
-.ma-etiquettes text,
-.ma-mono {
-  fill: var(--creme);
-  font: 400 5.4px/1 ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+.ma-tirets {
+  stroke-dasharray: 1.2 1.2;
 }
 
-.ma-mono {
-  opacity: 0.75;
+.ma-caisse {
+  fill: color-mix(in oklch, var(--bleu) 82%, var(--blanc));
+  stroke-width: 0.9;
 }
 
-.ma-titre {
-  fill: var(--creme);
-  font: italic 400 22px/1 'Instrument Serif', Georgia, serif;
+.ma-roue {
+  fill: var(--bleu);
+  stroke-width: 0.9;
 }
 
-/* The agents: tiny pointers in the cursor's red; nothing else changes. */
+.ma-repere rect {
+  fill: var(--bleu);
+}
+
+.ma-grille path {
+  stroke-width: 0.35;
+  opacity: 0.8;
+}
+
+.ma-grille .ma-fissure {
+  stroke-width: 0.5;
+  opacity: 0.6;
+}
+
+.ma-tirets-epais {
+  fill: none;
+  stroke: var(--blanc);
+  stroke-width: 2.4;
+  stroke-dasharray: 9 3 2 3 4 3;
+}
+
+/* Fills. */
+.ma-plein,
+.ma-eclat {
+  fill: var(--blanc);
+}
+
+.ma-eclat {
+  opacity: 0.85;
+}
+
+.ma-encre {
+  fill: var(--encre);
+}
+
+.ma-rouge {
+  fill: var(--rouge);
+}
+
+/* The agents: tiny pointers in the cursor's red, a hairline of white around. */
 .ma-pointe {
-  fill: var(--accent, #e0301f);
-  stroke: rgb(238 226 192 / 0.9);
+  fill: var(--rouge);
+  stroke: var(--blanc);
   stroke-width: 0.35;
   stroke-linejoin: round;
-  transform-box: fill-box;
-  transform-origin: 0 0;
 }
 
-/* ——— Motion ———
-   The blades turn slowly, all along. The 18 s loop: 0–12 % at rest ·
-   12–24 % the stages slide apart · 24–84 % apart, labelled, the pointers go
-   round · 84–96 % they close · 96–100 % at rest. */
-
-.ma-aubes {
-  animation: ma-tourne 2.4s linear infinite;
+/* Type. */
+.ma-cond {
+  fill: var(--blanc);
+  font: 800 41px/1 'Big Shoulders Display', 'Arial Narrow', sans-serif;
+  letter-spacing: -0.005em;
 }
 
-@keyframes ma-tourne {
-  to {
-    translate: 0 var(--pas);
-  }
+.ma-cond--moyen {
+  font-size: 19px;
 }
 
-.ma-etage {
-  animation: ma-eclate 18s cubic-bezier(0.65, 0, 0.25, 1) infinite both;
+.ma-large {
+  fill: var(--blanc);
+  font: 800 6.4px/1 'Mona Sans', system-ui, sans-serif;
+  font-stretch: 125%;
+  font-variation-settings: 'wdth' 125;
+  letter-spacing: 0.06em;
 }
 
-@keyframes ma-eclate {
-  0%,
-  12% {
-    translate: 0 0;
-  }
-
-  24%,
-  84% {
-    translate: calc(var(--dx) * 1px) 0;
-  }
-
-  96%,
-  100% {
-    translate: 0 0;
-  }
+.ma-large--titre {
+  font-size: 9px;
 }
 
-.ma-etiquettes {
-  animation: ma-etiquettes 18s ease-in-out infinite;
+.ma-mono {
+  fill: var(--blanc);
+  font: 500 4.4px/1 'Geist Mono', ui-monospace, monospace;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
-@keyframes ma-etiquettes {
-  0%,
-  25% {
-    opacity: 0;
-  }
-
-  29%,
-  80% {
-    opacity: 1;
-  }
-
-  83%,
-  100% {
-    opacity: 0;
-  }
+.ma-rouge-texte {
+  fill: var(--rouge);
 }
 
-.ma-agent {
-  opacity: 0;
-  animation: 18s cubic-bezier(0.45, 0, 0.2, 1) infinite;
-}
-
-.ma-agent .ma-pointe {
-  animation: 18s ease-out infinite;
-}
-
-.ma-agent--1 {
-  animation-name: ma-agent-1;
-}
-
-.ma-agent--1 .ma-pointe {
-  animation-name: ma-clic-1;
-}
-
-@keyframes ma-agent-1 {
-  0%,
-  28% {
-    opacity: 0;
-    translate: calc(var(--x1) * 1px + 18px) calc(var(--y1) * 1px + 14px);
-  }
-
-  31%,
-  38% {
-    opacity: 1;
-    translate: calc(var(--x1) * 1px) calc(var(--y1) * 1px);
-  }
-
-  42%,
-  49% {
-    opacity: 1;
-    translate: calc(var(--x2) * 1px) calc(var(--y2) * 1px);
-  }
-
-  53%,
-  62% {
-    opacity: 1;
-    translate: calc(var(--x3) * 1px) calc(var(--y3) * 1px);
-  }
-
-  64%,
-  100% {
-    opacity: 0;
-    translate: calc(var(--x3) * 1px) calc(var(--y3) * 1px);
-  }
-}
-
-@keyframes ma-clic-1 {
-  0%,
-  100% {
-    scale: 1;
-  }
-
-  31% {
-    scale: 1;
-  }
-
-  31.5% {
-    scale: 0.78;
-  }
-
-  32.2% {
-    scale: 1;
-  }
-
-  42% {
-    scale: 1;
-  }
-
-  42.5% {
-    scale: 0.78;
-  }
-
-  43.2% {
-    scale: 1;
-  }
-
-  53% {
-    scale: 1;
-  }
-
-  53.5% {
-    scale: 0.78;
-  }
-
-  54.2% {
-    scale: 1;
-  }
-}
-
-.ma-agent--2 {
-  animation-name: ma-agent-2;
-}
-
-.ma-agent--2 .ma-pointe {
-  animation-name: ma-clic-2;
-}
-
-@keyframes ma-agent-2 {
-  0%,
-  31% {
-    opacity: 0;
-    translate: calc(var(--x1) * 1px + 18px) calc(var(--y1) * 1px + 14px);
-  }
-
-  34%,
-  41% {
-    opacity: 1;
-    translate: calc(var(--x1) * 1px) calc(var(--y1) * 1px);
-  }
-
-  45%,
-  52% {
-    opacity: 1;
-    translate: calc(var(--x2) * 1px) calc(var(--y2) * 1px);
-  }
-
-  56%,
-  65% {
-    opacity: 1;
-    translate: calc(var(--x3) * 1px) calc(var(--y3) * 1px);
-  }
-
-  67%,
-  100% {
-    opacity: 0;
-    translate: calc(var(--x3) * 1px) calc(var(--y3) * 1px);
-  }
-}
-
-@keyframes ma-clic-2 {
-  0%,
-  100% {
-    scale: 1;
-  }
-
-  34% {
-    scale: 1;
-  }
-
-  34.5% {
-    scale: 0.78;
-  }
-
-  35.2% {
-    scale: 1;
-  }
-
-  45% {
-    scale: 1;
-  }
-
-  45.5% {
-    scale: 0.78;
-  }
-
-  46.2% {
-    scale: 1;
-  }
-
-  56% {
-    scale: 1;
-  }
-
-  56.5% {
-    scale: 0.78;
-  }
-
-  57.2% {
-    scale: 1;
-  }
-}
-
-.ma-agent--3 {
-  animation-name: ma-agent-3;
-}
-
-.ma-agent--3 .ma-pointe {
-  animation-name: ma-clic-3;
-}
-
-@keyframes ma-agent-3 {
-  0%,
-  34% {
-    opacity: 0;
-    translate: calc(var(--x1) * 1px + 18px) calc(var(--y1) * 1px + 14px);
-  }
-
-  37%,
-  44% {
-    opacity: 1;
-    translate: calc(var(--x1) * 1px) calc(var(--y1) * 1px);
-  }
-
-  48%,
-  55% {
-    opacity: 1;
-    translate: calc(var(--x2) * 1px) calc(var(--y2) * 1px);
-  }
-
-  59%,
-  68% {
-    opacity: 1;
-    translate: calc(var(--x3) * 1px) calc(var(--y3) * 1px);
-  }
-
-  70%,
-  100% {
-    opacity: 0;
-    translate: calc(var(--x3) * 1px) calc(var(--y3) * 1px);
-  }
-}
-
-@keyframes ma-clic-3 {
-  0%,
-  100% {
-    scale: 1;
-  }
-
-  37% {
-    scale: 1;
-  }
-
-  37.5% {
-    scale: 0.78;
-  }
-
-  38.2% {
-    scale: 1;
-  }
-
-  48% {
-    scale: 1;
-  }
-
-  48.5% {
-    scale: 0.78;
-  }
-
-  49.2% {
-    scale: 1;
-  }
-
-  59% {
-    scale: 1;
-  }
-
-  59.5% {
-    scale: 0.78;
-  }
-
-  60.2% {
-    scale: 1;
-  }
-}
-
-/* Without motion: the stages apart, labelled, the pointers on their first part. */
-@media (prefers-reduced-motion: reduce) {
-  .miniature-alpine * {
-    animation: none !important;
-  }
-
-  .ma-etage {
-    translate: calc(var(--dx) * 1px) 0;
-  }
-
-  .ma-agent {
-    opacity: 1;
-    translate: calc(var(--x1) * 1px) calc(var(--y1) * 1px);
-  }
+.ma-blanc {
+  fill: #fff;
 }

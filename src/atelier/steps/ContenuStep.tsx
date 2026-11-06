@@ -184,9 +184,8 @@ export function ContenuStep() {
         <h3>
           Whiteboard AMDEC · la miniature{' '}
           <span>
-            Un turboréacteur dessiné comme un plan : trait crème sur ardoise, grille, étiquettes en boîte. Ses étages
-            s’écartent le long de l’axe et ses aubes tournent doucement ; trois toutes petites flèches rouges passent
-            de pièce en pièce. Boucle de 18 s.
+            Une affiche fixe, bleu électrique et touches de rouge : une berlinette Alpine cotée, deux agents sur ses
+            pièces, la grille que les agents quittent pour l’inédit, et une étiquette produit (agents, modèles, GPU).
           </span>
         </h3>
         <span className="miniatures__plan">
