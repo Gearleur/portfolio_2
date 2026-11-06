@@ -586,6 +586,7 @@ un bon argument dans un portfolio.
 | 46 | 2026-11-06 | Précédemment : « Ingénieur IA @ SNCF », sans la parenthèse. | « Enlève ça » | 5 |
 | 47 | 2026-11-06 | Précédemment en une seule phrase sur deux lignes, coupée après le second « @ » : « Ingénieur IA @ SNCF, ingénieur IA @ / Renault / Alpine ». Moins linéaire qu'une ligne par poste. | « Sur deux lignes mais qui se continue, c'est moins linéaire » | 5 |
 | 48 | 2026-11-06 | Les « @ » collés au nom et liés au site de chaque organisation : @SNCF (groupe-sncf.com), @Renault (renaultgroup.com), Alpine (alpinecars.com), @UTC (utc.fr), @Shanghai University (shu.edu.cn). Soulignés d'un filet clair qui passe à l'accent au survol. | « Un @ devant UTC et Shanghai University, colle les arobases, mets le lien du site » | 5 |
+| 49 | 2026-11-06 | Le point final du titre devient un carré accent qui clignote comme un curseur (0,53 s allumé, 0,53 s éteint), fixe si l'on a demandé moins d'animations. | « Remplace le point par un carré rouge qui clignote pour montrer un peu de vie » | 5 |
 
 ---
 

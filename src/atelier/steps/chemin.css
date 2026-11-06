@@ -39,6 +39,32 @@
   line-height: var(--display-leading);
 }
 
+/* The headline's full stop: an accent square blinking like a cursor. */
+.m-nowrap {
+  white-space: nowrap;
+}
+
+.m-blink {
+  display: inline-block;
+  width: 0.2em;
+  height: 0.2em;
+  margin-left: 0.08em;
+  background: var(--accent);
+  animation: m-blink 1.06s steps(1, end) infinite;
+}
+
+@keyframes m-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .m-blink {
+    animation: none;
+  }
+}
+
 .m-facts dt {
   margin-bottom: calc(var(--space-1) * var(--u));
 }
