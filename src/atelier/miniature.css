@@ -76,32 +76,13 @@
   filter: drop-shadow(0 0.5px 0 rgb(255 255 255 / 0.85));
 }
 
-.miniature__grid {
-  opacity: 0.12;
-}
-
-.miniature__sleepers {
-  opacity: 0.5;
-}
-
-.miniature__station {
-  fill: #dfe3e6;
-  stroke: currentColor;
-  stroke-width: 0.8;
-}
-
 .miniature__agent {
   fill: var(--accent, #e0301f);
 }
 
-.miniature :is(.miniature__titre, .miniature__label, .aig__titre, .aig__micro, .aig__microprint, .aig__marque, .aig__sigle text) {
+.miniature :is(.aig__titre, .aig__micro, .aig__microprint, .aig__marque, .aig__sigle text) {
   fill: currentColor;
   text-rendering: geometricPrecision;
-}
-
-/* The serif italic of the cartels, in the title blocks. */
-.miniature__titre {
-  font: italic 400 13px/1 'Instrument Serif', Georgia, serif;
 }
 
 /* Aiguillage: a track engineering sheet, in hairlines and micro type. It is
@@ -192,17 +173,6 @@
   fill: #e6e9ec;
   stroke: currentColor;
   stroke-width: 0.35;
-}
-
-/* The full plan's small labels, read in close-up on the project page. */
-.miniature__label {
-  font: 500 5.2px/1 'Inter', system-ui, sans-serif;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-.miniature__label--agent {
-  font-weight: 600;
 }
 
 @media (prefers-reduced-motion: reduce) {

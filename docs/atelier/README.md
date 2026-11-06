@@ -577,8 +577,8 @@ ferroviaire :
 
 **Retenue : l'alu irisé.** De l'aluminium brossé, le dessin gravé dedans, les
 couleurs de l'onde reflétées comme sur un métal anodisé. La lumière suit la
-souris, dans la Vitrine aussi. Le plan détaillé est trop fin pour une carte : il
-reste pour la page projet, en grand.
+souris, dans la Vitrine aussi. Le plan détaillé, trop fin pour une carte, a
+ensuite été retiré de la page projet (journal n° 82).
 
 **Retenu : l'aiguillage**, redessiné comme une planche d'ingénierie de la voie,
 en micrographie, puis épuré :
@@ -638,7 +638,12 @@ construite comme celle de Rachel Chen :
   le contact ;
 - **le fond sans l'onde**, qui gênait la lecture (`FOND_LECTURE`) ;
 - **les tailles** : texte à 15 px, titres de partie à 29 px, chiffres à 58 px ;
-- **les schémas** : encore en gris, numérotés, avec ce qu'ils montreront.
+- **les schémas** (`src/atelier/Schemas.tsx`) : techniques et à plat, sans
+  aluminium, pour qui veut comprendre. Traits à l'encre, typo de la page, accent
+  sur le chemin qui compte. Tirés du rapport de stage : le parcours d'un ticket,
+  l'écran de l'assistant (et ses quatre recadrages dans les cartes), la carte des
+  pistes, les sources, la recherche hybride, la lecture des PDF, l'agent ReAct,
+  le pipeline CI/CD. Le plan d'architecture en voies est retiré.
 
 ### Étape 8 — La Vitrine
 
@@ -743,6 +748,7 @@ un bon argument dans un portfolio.
 | 79 | 2026-11-06 | La flèche du retour reprend la **pointe d'agent du curseur** sur les projets, en accent, tournée vers la gauche ; elle recule un peu au survol. | « La flèche, mets le curseur qu'on a mis en hover des projets, ça peut être cool de reprendre ça » | 7 |
 | 80 | 2026-11-06 | La flèche du retour, redessinée **droite** : la tête à encoche de la pointe, rendue symétrique et pointée vers la gauche, alignée sur les capitales (elle était tournée de travers). | « Mets le curseur de façon propre s'il te plaît, il n'est pas droit » | 7 |
 | 81 | 2026-11-06 | **Les résultats d'abord** : les trois chiffres clés (82 %, 500+, 3 000+) passent en tête de la page, sous l'accroche, entre deux filets. La partie Résultats, à la fin, garde le reste (comité exécutif, présentations, presse) sans répéter les chiffres. | « Est-ce qu'on ne mettrait pas les résultats en premier, et à la fin ? » | 7 |
+| 82 | 2026-11-06 | **Schémas techniques** de la page SNCF GPT, à plat, sans surcouche argentée : parcours d'un ticket, écran de l'assistant (et ses recadrages dans les cartes), carte des pistes, sources gardées et écartées, recherche hybride, lecture des PDF, agent ReAct, pipeline CI/CD. Le plan d'architecture en voies est retiré des décisions. | « Je veux des schémas techniques et pas une surcouche argentée ; s'il lit l'article, il va vouloir comprendre ; des schémas clairs, efficaces » · « Les décisions techniques, tu peux supprimer ce schéma ; pour le reste je te laisse faire avec le rapport de stage » | 7 |
 
 ---
 

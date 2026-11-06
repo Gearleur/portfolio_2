@@ -1,0 +1,183 @@
+/* Step 7 · The project page's technical diagrams (journal n° 82): flat, ink
+   strokes, the page's type, the accent for the path that matters. Sizes are
+   in the drawing's units, 720 wide, about the px they are shown at. */
+
+.schema {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* A card's framing of the screen shows only its part. */
+.schema--ecran {
+  overflow: hidden;
+}
+
+.schema text {
+  fill: var(--ink);
+  font-family: var(--font-text);
+  font-size: 12px;
+}
+
+.schema .sc-titre {
+  font-weight: 600;
+}
+
+.schema .sc-sous {
+  fill: var(--ink-soft);
+  font-size: 11px;
+}
+
+.schema .sc-petit {
+  fill: var(--ink-soft);
+  font-size: 10.5px;
+}
+
+.schema .sc-micro {
+  fill: var(--on-accent);
+  font-size: 8px;
+  font-weight: 600;
+}
+
+.schema .sc-mono {
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+}
+
+.schema .sc-accent-texte {
+  fill: var(--accent);
+}
+
+/* Boxes: paper-filled, so the strokes behind them stop at their edge. */
+.sc-boite rect {
+  fill: var(--fond);
+  stroke: var(--ink);
+  stroke-width: 1;
+}
+
+.sc-boite--accent rect {
+  stroke: var(--accent);
+  stroke-width: 1.5;
+}
+
+.sc-boite--faible rect {
+  stroke: var(--ink-soft);
+}
+
+.sc-boite--faible text {
+  fill: var(--ink-soft);
+}
+
+.sc-boite--pointille rect {
+  stroke-dasharray: 4 3;
+}
+
+.sc-trait,
+.sc-filet,
+.sc-lien {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1;
+}
+
+.sc-trait--accent {
+  stroke: var(--accent);
+  stroke-width: 1.5;
+}
+
+.sc-trait--faible {
+  stroke: var(--ink-soft);
+}
+
+.sc-trait--pointille {
+  stroke-dasharray: 4 3;
+}
+
+.sc-filet {
+  stroke: var(--line);
+}
+
+.sc-lien {
+  stroke: var(--accent);
+  stroke-width: 2;
+  stroke-linecap: round;
+  opacity: 0.55;
+}
+
+.sc-tete {
+  fill: var(--ink);
+}
+
+.sc-tete--accent {
+  fill: var(--accent);
+}
+
+.sc-plein,
+.sc-noeud {
+  fill: var(--ink);
+}
+
+.sc-point {
+  fill: var(--ink-soft);
+}
+
+.sc-agent {
+  fill: var(--accent);
+}
+
+.sc-numero {
+  fill: var(--accent);
+}
+
+/* The wireframe: the screen's frame, its side panel, text drawn as bars. */
+.sc-cadre {
+  fill: var(--fond);
+  stroke: var(--ink);
+  stroke-width: 1;
+}
+
+.sc-zone {
+  fill: color-mix(in oklch, var(--ink) 4%, var(--fond));
+}
+
+.sc-barre {
+  fill: color-mix(in oklch, var(--ink) 14%, var(--fond));
+}
+
+.sc-bloc {
+  fill: var(--fond);
+  stroke: var(--ink-soft);
+  stroke-dasharray: 3 2;
+}
+
+.sc-bloc--accent {
+  stroke: var(--accent);
+  stroke-dasharray: none;
+  stroke-width: 1.5;
+}
+
+.sc-tableau {
+  fill: none;
+  stroke: var(--ink-soft);
+}
+
+.sc-tableau--accent {
+  stroke: var(--accent);
+  stroke-width: 1.5;
+}
+
+/* A card shows one part of the screen, outlined in the accent. */
+.sc-focus > rect {
+  stroke: var(--accent);
+  stroke-width: 2;
+}
+
+.sc-focus .sc-barre {
+  fill: color-mix(in oklch, var(--accent) 45%, var(--fond));
+}
+
+.sc-focus.sc-lien {
+  opacity: 1;
+}

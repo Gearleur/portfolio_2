@@ -1,7 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
-import type { CSSProperties } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import { Contact, Name, NavList, T } from './Maquettes';
-import { Miniature, PlanArchitecture } from './Miniature';
+import { Miniature } from './Miniature';
+import { EcranCadre, Schema } from './Schemas';
 import type { Bloc, Phrase, Projet } from './projets';
 import './projet.css';
 
@@ -29,17 +30,14 @@ function Texte({ lead, text, href }: Phrase) {
   );
 }
 
-/** A picture: one already drawn, or a grey placeholder with what it will show. */
-function Visuel({ figure, legende, n }: { figure?: 'miniature' | 'plan'; legende: string; n: number }) {
+/** A picture: a diagram or the thumbnail, or a grey placeholder with what it will show. */
+function Visuel({ children, legende, n }: { children?: ReactNode; legende: string; n: number }) {
   return (
     <figure className="p-visuel">
-      <span className="p-visuel__image">
-        {figure === 'miniature' && <Miniature />}
-        {figure === 'plan' && <PlanArchitecture />}
-      </span>
+      <span className="p-visuel__image">{children}</span>
       <figcaption className="m-label">
         <T>
-          Fig. {two(n)} — {figure ? '' : 'À dessiner : '}
+          Fig. {two(n)} — {children ? '' : 'À dessiner : '}
           {legende}
         </T>
       </figcaption>
@@ -73,12 +71,23 @@ function Blocs({ blocs, figures }: { blocs: Bloc[]; figures: Map<Bloc, number> }
           </ul>
         );
       case 'colonnes':
-      case 'cartes':
         return (
-          <ul key={index} className={`p-${bloc.type}`} style={{ '--n': bloc.items.length } as CSSProperties}>
+          <ul key={index} className="p-colonnes" style={{ '--n': bloc.items.length } as CSSProperties}>
             {bloc.items.map((item) => (
               <li key={item.text}>
-                {bloc.type === 'cartes' && <span className="p-carte__image" />}
+                <Texte {...item} />
+              </li>
+            ))}
+          </ul>
+        );
+      case 'cartes':
+        return (
+          <ul key={index} className="p-cartes" style={{ '--n': bloc.items.length } as CSSProperties}>
+            {bloc.items.map((item) => (
+              <li key={item.text}>
+                <span className="p-carte__image">
+                  <EcranCadre focus={item.ecran} />
+                </span>
                 <Texte {...item} />
               </li>
             ))}
@@ -97,19 +106,26 @@ function Blocs({ blocs, figures }: { blocs: Bloc[]; figures: Map<Bloc, number> }
           </p>
         );
       case 'decision':
+        // Its label and text on the reading measure, its diagram wider, like the section's own.
         return (
-          <div key={index} className="p-decision">
+          <Fragment key={index}>
             <p className="p-decision__n m-label">
               <T>Décision {bloc.n}</T>
             </p>
             <p className="p-texte">
               <Texte lead={bloc.lead} text={bloc.text} />
             </p>
-            <Visuel legende={bloc.visuel} n={figures.get(bloc) ?? 0} />
-          </div>
+            <Visuel legende={bloc.visuel} n={figures.get(bloc) ?? 0}>
+              {bloc.schema && <Schema id={bloc.schema} />}
+            </Visuel>
+          </Fragment>
         );
       case 'visuel':
-        return <Visuel key={index} figure={bloc.figure} legende={bloc.legende} n={figures.get(bloc) ?? 0} />;
+        return (
+          <Visuel key={index} legende={bloc.legende} n={figures.get(bloc) ?? 0}>
+            {bloc.schema && <Schema id={bloc.schema} />}
+          </Visuel>
+        );
     }
   });
 }
@@ -215,7 +231,9 @@ export function ProjetMaquette({ projet, onRetour }: { projet: Projet; onRetour?
               </div>
             ))}
           </dl>
-          <Visuel figure="miniature" legende={`${projet.nom}, détail de l’aiguillage.`} n={1} />
+          <Visuel legende={`${projet.nom}, détail de l’aiguillage.`} n={1}>
+            <Miniature />
+          </Visuel>
         </header>
 
         {projet.sections.map((section, index) => (

@@ -217,9 +217,18 @@
   aspect-ratio: 4 / 3;
 }
 
-.p-decision {
-  display: grid;
-  row-gap: calc(var(--space-2) * var(--u));
+/* A drawn diagram keeps its own proportions, on the paper. */
+.p-visuel__image:has(.schema),
+.p-carte__image:has(.schema) {
+  aspect-ratio: auto;
+  background: none;
+}
+
+.p-carte__image .schema {
+  aspect-ratio: 3 / 4;
+}
+
+.projet .p-decision__n {
   margin-top: calc(var(--space-6) * var(--u));
 }
 

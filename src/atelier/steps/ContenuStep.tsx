@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { Maquette, MaquetteMobile } from '../Maquettes';
-import { Miniature, PlanArchitecture } from '../Miniature';
+import { Miniature } from '../Miniature';
 import { ProjetMaquette } from '../Projet';
 import { SNCF_GPT } from '../projets';
 import { Specimen, SpecimenPreview } from '../Specimen';
@@ -64,8 +64,8 @@ export function ContenuStep() {
             <legend>La page projet</legend>
             <p className="atelier-panel__note">
               Construite comme celle de Rachel Chen : le titre, l’accroche, le cartel et la miniature, puis dix parties
-              aux titres en phrases, lues au milieu de la page. Le fond sans l’onde, pour lire tranquille. Les schémas
-              encore en gris, avec ce qu’ils montreront.
+              aux titres en phrases, lues au milieu de la page. Le fond sans l’onde, pour lire tranquille. Huit schémas
+              techniques à plat, tirés du rapport de stage, et l’écran de l’assistant redessiné dans les cartes.
             </p>
             <p className="atelier-panel__note">
               En haut à gauche, « ← Projets / SNCF GPT » ramène à la Vitrine ; plus bas, le sommaire suit la lecture
@@ -187,15 +187,6 @@ export function ContenuStep() {
             </li>
           ))}
         </ul>
-      </div>
-
-      <div className="miniatures">
-        <h3>
-          Le plan détaillé <span>Ton architecture déployée en plan de voies, en grand sur la page projet.</span>
-        </h3>
-        <span className="miniatures__plan">
-          <PlanArchitecture />
-        </span>
       </div>
 
       {preview && (

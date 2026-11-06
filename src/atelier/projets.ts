@@ -3,6 +3,8 @@
  * (docs/atelier/contenu/). French first; the English comes next.
  */
 
+import type { Ecran, SchemaId } from './Schemas';
+
 /** A run of text, opened by a bold lead; `href` links the whole of it. */
 export type Phrase = { lead?: string; text: string; href?: string };
 
@@ -11,12 +13,13 @@ export type Bloc =
   | { type: 'intertitre'; text: string }
   | { type: 'liste'; items: Phrase[] }
   | { type: 'colonnes'; items: Phrase[] }
-  | { type: 'cartes'; items: Phrase[] }
+  /** Cards, each showing a part of the assistant's screen. */
+  | { type: 'cartes'; items: (Phrase & { ecran: Ecran })[] }
   | { type: 'question'; text: string }
   | { type: 'compromis'; text: string }
-  | { type: 'decision'; n: number; lead: string; text: string; visuel: string }
-  /** A picture: one already drawn (`figure`), or a placeholder described by its caption. */
-  | { type: 'visuel'; figure?: 'miniature' | 'plan'; legende: string };
+  | { type: 'decision'; n: number; lead: string; text: string; visuel: string; schema?: SchemaId }
+  /** A diagram (`schema`), or a placeholder described by its caption. */
+  | { type: 'visuel'; schema?: SchemaId; legende: string };
 
 export type Section = { id: string; nav: string; titre: string; blocs: Bloc[] };
 
@@ -69,7 +72,8 @@ export const SNCF_GPT: Projet = {
         },
         {
           type: 'visuel',
-          legende: 'Le parcours d’un ticket, de l’utilisateur à l’expert, avec la documentation juste à côté.',
+          schema: 'parcours',
+          legende: 'Le parcours d’un ticket, du projet aux experts, avec la documentation juste à côté du niveau 1.',
         },
         {
           type: 'texte',
@@ -84,7 +88,7 @@ export const SNCF_GPT: Projet = {
       titre:
         'Un assistant qui lit le ticket, cherche dans la documentation et les incidents déjà résolus, puis propose une résolution avec ses sources.',
       blocs: [
-        { type: 'visuel', legende: 'La maquette de l’assistant, refaite.' },
+        { type: 'visuel', schema: 'assistant', legende: 'L’écran de l’assistant, redessiné.' },
         {
           type: 'texte',
           text: 'Il ne remplace pas le support : il lui fait gagner la recherche. Chaque réponse dit d’où elle vient, et le support peut la corriger en continuant la conversation.',
@@ -99,13 +103,14 @@ export const SNCF_GPT: Projet = {
         {
           type: 'cartes',
           items: [
-            { lead: 'Choisir un ticket ouvert.', text: 'La liste vient directement de ServiceNow.' },
-            { lead: 'Lire l’incident, résumé.', text: 'L’assistant en extrait l’essentiel.' },
+            { ecran: 'liste', lead: 'Choisir un ticket ouvert.', text: 'La liste vient directement de ServiceNow.' },
+            { ecran: 'incident', lead: 'Lire l’incident, résumé.', text: 'L’assistant en extrait l’essentiel.' },
             {
+              ecran: 'reponse',
               lead: 'Une résolution en étapes, avec ses sources.',
               text: 'Les pages de documentation et les incidents similaires déjà résolus.',
             },
-            { lead: 'Continuer la conversation.', text: 'Pour préciser, corriger, creuser.' },
+            { ecran: 'conversation', lead: 'Continuer la conversation.', text: 'Pour préciser, corriger, creuser.' },
           ],
         },
       ],
@@ -125,7 +130,7 @@ export const SNCF_GPT: Projet = {
           lead: 'Lire.',
           text: 'Les papiers de recherche ont été mon école. Pour choisir l’approche, j’ai lu les études qui comparent le RAG et le fine-tuning. Pour l’agent, j’ai lu l’article ReAct (Yao et al.).',
         },
-        { type: 'visuel', legende: 'La carte des pistes explorées.' },
+        { type: 'visuel', schema: 'pistes', legende: 'La carte des pistes explorées pendant l’étude.' },
       ],
     },
     {
@@ -189,20 +194,21 @@ export const SNCF_GPT: Projet = {
       nav: 'Décisions',
       titre: 'Les décisions techniques',
       blocs: [
-        { type: 'visuel', figure: 'plan', legende: 'L’architecture déployée, en plan de voies.' },
         {
           type: 'decision',
           n: 1,
           lead: 'Peu de sources, mais fiables.',
           text: 'J’ai gardé la documentation et l’historique des incidents résolus. J’ai écarté le forum, trop daté, et le fil d’actualité, qui change en permanence.',
           visuel: 'Les sources gardées et écartées.',
+          schema: 'sources',
         },
         {
           type: 'decision',
           n: 2,
           lead: 'Une recherche hybride.',
           text: 'Les mots-clés trouvent les codes d’erreur, les vecteurs trouvent le sens, et un reclassement sémantique remonte les meilleurs passages.',
-          visuel: 'Les quatre méthodes de recherche comparées.',
+          visuel: 'La recherche hybride : mots-clés et vecteurs en parallèle, puis un reclassement sémantique.',
+          schema: 'recherche',
         },
         {
           type: 'decision',
@@ -210,6 +216,7 @@ export const SNCF_GPT: Projet = {
           lead: 'Lire les PDF avec un modèle, pas avec des règles.',
           text: 'Pour le démonstrateur, j’ai comparé deux outils sur des documents réels : un parseur à règles et Azure Document Intelligence. Seul le second gardait l’ordre de lecture et les tableaux.',
           visuel: 'Le même PDF, lu par les deux outils.',
+          schema: 'pdf',
         },
         {
           type: 'decision',
@@ -217,6 +224,7 @@ export const SNCF_GPT: Projet = {
           lead: 'Laisser le modèle chercher lui-même.',
           text: 'Au début, le système cherchait avant chaque réponse. À la fin, un agent ReAct choisit ses outils, reformule la question et suit les liens d’une documentation organisée en graphe.',
           visuel: 'Avant, après : la recherche systématique, puis la boucle de l’agent.',
+          schema: 'agent',
         },
       ],
     },
@@ -239,7 +247,7 @@ export const SNCF_GPT: Projet = {
             { text: 'déploiement sur Azure avec Ansible, secrets dans Vault.' },
           ],
         },
-        { type: 'visuel', legende: 'Le pipeline, du commit à la production.' },
+        { type: 'visuel', schema: 'pipeline', legende: 'Le pipeline de l’Usine, du commit à la production.' },
         {
           type: 'texte',
           lead: 'Repartir de zéro pour l’interface.',
