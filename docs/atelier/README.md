@@ -659,20 +659,20 @@ construite comme celle de Rachel Chen :
   les images de l'accueil, la miniature et les schémas passent par-dessus la
   tranche, et ton nom et « Menu » s'allument en accent là où ils passent dessous.
   « Menu » ouvre le sommaire au-dessus de la nav ;
-- **Whiteboard AMDEC, la miniature** (`src/atelier/MiniatureAlpine.tsx`,
-  troisième tour, à choisir). Un train épicycloïdal de 16 pièces s'ouvre
-  lentement, comme dans un film produit, avec la technique derrière :
-  - des numéros de pièces sur des filets ;
-  - un axe en trait mixte ;
-  - un cartouche discret, la marque « Atelier A.T. » et des tampons.
-
-  Trois agents, chacun dans sa couleur (rouge, ambre, menthe), cliquent une
-  pièce, qui prend leur couleur, et nomment une défaillance. La boucle dure
-  18 s, avec de longues pauses. Il n'y a ni scan, ni grille, ni anneau qui
-  tourne. Trois finitions sont à comparer :
-  - **Graphite** : sombre et froid, des pièces pleines en métal mat ;
-  - **Plan clair** : de l'encre indigo sur un blanc bleuté ;
-  - **Bleu Alpine** : une affiche plate sur le dégradé de la marque.
+- **Whiteboard AMDEC, la miniature** (`src/atelier/MiniatureAlpine.tsx`, quatrième
+  tour), dans le style d'une planche de référence choisie par toi. L'image vient
+  d'une banque d'images avec filigrane : elle n'est pas dans le dépôt, et le
+  dessin est original.
+  - **le dessin** : un turboréacteur de profil (cône d'entrée, soufflante,
+    compresseurs BP et HP, chambre de combustion, turbines HP et BP, cône
+    d'éjection), soit 23 étages ;
+  - **le style** : un trait crème sur ardoise avec une grille, des étiquettes en
+    boîte à chasse fixe sur des traits de renvoi ;
+  - **le mouvement** (boucle de 18 s) : les étages s'écartent le long de l'axe
+    puis se referment, et les aubes tournent doucement ;
+  - **les agents** : trois toutes petites flèches rouges, la pointe du curseur,
+    glissent de pièce en pièce et marquent un léger clic. Rien d'autre ne change
+    de couleur.
 
   Le texte de la page est dans `docs/atelier/contenu/03-whiteboard-amdec.md`.
 - **l'anglais, préparé** : les libellés des schémas existent en français et en
@@ -795,6 +795,7 @@ un bon argument dans un portfolio.
 | 90 | 2026-11-06 | **Whiteboard AMDEC** : texte écrit à partir de tes réponses (non commité, à relire). **Miniature, première version** : un arbre de transmission en vue éclatée sur les bleus d'Alpine avec du grain, qui s'éclate puis se réassemble. Trois agents, la pointe du curseur, cliquent chacun sur une pièce, qui s'allume, et nomment un mode de défaillance (roulement grippé, dent cassée, usure de denture). | « Pour la miniature je veux un autre truc avec un autre fond ; du motion sur un pignon de moteur qui s'éclate en long, puis qui se refusionne ; les couleurs d'Alpine ; des petites flèches qui vont sur les différentes parties en vue éclatée et qui cliquent dessus ; fais un truc ultra propre et on itérera » | 7 |
 | 91 | 2026-11-06 | Miniature Whiteboard AMDEC, **deuxième version, façon scan holographique** : un train épicycloïdal de 16 pièces qui éclate dans toutes les directions, sur un bleu acier froid (grille de plan, scan, lueur cyan, grain). Habillage : anneau de visée qui tourne, pièces numérotées, nomenclature, marque « Atelier A.T. », jauge et tampons, comme sur la planche SNCF. | « Fais un truc plus à la Iron Man, vraiment un truc complexe qui s'explose en plein de pièces ; le fond, un truc plus industriel, plus froid, mais bleu quand même ; rajoute des annotations et logos techniques comme sur le truc SNCF » | 7 |
 | 92 | 2026-11-06 | Miniature Whiteboard AMDEC, **troisième tour, plus épuré**, façon motion design Apple : plus de scan, de grille, d'anneau ni de coins. L'ouverture est lente avec de longues pauses (boucle de 18 s), les numéros sont sur des filets fins, l'étiquette est en pilule. **Une couleur par agent** : rouge, ambre, menthe. Trois finitions à comparer : Graphite, Plan clair, Bleu Alpine. | « Fais un truc avec moins d'animation, enlève le scanner, le rayon qui va de haut en bas ; fais-moi d'autres propositions, là je trouve que ça fait trop cheap ; un truc plus propre, plus épuré, plus motion design à la Apple, avec du technique derrière ; change la couleur des flèches pour montrer que ce sont des agents différents » | 7 |
+| 93 | 2026-11-06 | Miniature Whiteboard AMDEC, **quatrième tour, d'après ta référence** (une planche de turboréacteur ; le style seulement, l'image n'est pas reprise). Un turboréacteur de 23 étages en trait crème sur ardoise avec une grille, des étiquettes en boîte à chasse fixe. Les étages s'écartent puis se referment, les aubes tournent doucement. **Trois toutes petites flèches rouges** glissent de pièce en pièce, sans colorer les pièces. Les trois finitions précédentes sont retirées. | « Prends ça comme base, simplifie et ajoute du motion ; garde la couleur et tout du schéma, les traits ; les agents, quelque chose de discret avec des toutes petites flèches, pas cheap ; pas de couleur sur les éléments cliqués, juste les flèches qui se déplacent, toutes rouges comme notre couleur » | 7 |
 
 ---
 

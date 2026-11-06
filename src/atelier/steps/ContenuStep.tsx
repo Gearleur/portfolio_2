@@ -2,7 +2,6 @@ import { useCallback, useState } from 'react';
 import { Maquette, MaquetteMobile } from '../Maquettes';
 import { Miniature } from '../Miniature';
 import { MiniatureAlpine } from '../MiniatureAlpine';
-import type { VarianteAlpine } from '../MiniatureAlpine';
 import { ProjetMaquette, ProjetMobile } from '../Projet';
 import { SNCF_GPT } from '../projets';
 import { Specimen, SpecimenPreview } from '../Specimen';
@@ -62,13 +61,6 @@ function scrollToPicture(frame: HTMLDivElement | null) {
   if (page && picture) page.scrollTop = picture.offsetTop - page.clientHeight * 0.4;
 }
 
-/** The Whiteboard AMDEC thumbnail's three finishes, compared (journal n° 92). */
-const VARIANTES: { id: VarianteAlpine; name: string; note: string }[] = [
-  { id: 'graphite', name: 'Graphite', note: 'Sombre et froid, des pièces pleines en métal mat, des arêtes claires.' },
-  { id: 'clair', name: 'Plan clair', note: 'De l’encre indigo sur un blanc bleuté froid, comme une fiche technique.' },
-  { id: 'alpine', name: 'Bleu Alpine', note: 'Une affiche plate : le dessin blanc sur le dégradé Clear Hanada → Night Indigo.' },
-];
-
 /** Step 7: the words and pictures of each project, starting with SNCF GPT. */
 export function ContenuStep() {
   const [preview, setPreview] = useState<'vitrine' | 'projet' | null>(null);
@@ -77,8 +69,7 @@ export function ContenuStep() {
   const [vue, setVue] = useState<'projet' | 'vitrine'>('projet');
   const [waveSignal, playWave] = useWaveSignal();
   const close = useCallback(() => setPreview(null), []);
-  const [variante, setVariante] = useState<VarianteAlpine>('graphite');
-  const images = { '01': <Miniature />, '03': <MiniatureAlpine variante={variante} /> };
+  const images = { '01': <Miniature />, '03': <MiniatureAlpine /> };
 
   return (
     <section className="atelier-step" aria-labelledby="step-contenu">
@@ -193,20 +184,13 @@ export function ContenuStep() {
         <h3>
           Whiteboard AMDEC · la miniature{' '}
           <span>
-            Trois finitions, une animation plus calme : l’arbre s’ouvre lentement, trois agents de couleurs différentes
-            cliquent une pièce et nomment une défaillance, puis il se referme. Boucle de 18 s.
+            Un turboréacteur dessiné comme un plan : trait crème sur ardoise, grille, étiquettes en boîte. Ses étages
+            s’écartent le long de l’axe et ses aubes tournent doucement ; trois toutes petites flèches rouges passent
+            de pièce en pièce. Boucle de 18 s.
           </span>
         </h3>
-        <div className="atelier-segment" role="group" aria-label="Finition de la miniature Whiteboard AMDEC">
-          {VARIANTES.map((item) => (
-            <button key={item.id} type="button" aria-pressed={item.id === variante} onClick={() => setVariante(item.id)}>
-              {item.name}
-            </button>
-          ))}
-        </div>
-        <p className="miniatures__note">{VARIANTES.find((item) => item.id === variante)?.note}</p>
         <span className="miniatures__plan">
-          <MiniatureAlpine variante={variante} />
+          <MiniatureAlpine />
         </span>
       </div>
 

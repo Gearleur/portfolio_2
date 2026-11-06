@@ -1,17 +1,14 @@
-/* Step 7 · The Whiteboard AMDEC thumbnail (journal n° 90 to 92): a slow
-   product film with the engineering underneath. Three finishes on Alpine's
-   palette (Night Indigo, Clear Hanada, Pale Lagoon, Misted Sky), and one
-   colour per agent. An 18 s loop: a long rest, a slow opening, the agents,
-   a slow closing. */
+/* Step 7 · The Whiteboard AMDEC thumbnail (journal n° 90 to 93): a
+   turbofan as an engineering blueprint, cream lines on slate with a grid,
+   after the style of a reference Alexandre chose. An 18 s loop: a rest, the
+   stages slide apart, three tiny red pointers go through the parts, the
+   stages close; the blades turn slowly all along. */
 
 .miniature-alpine {
-  /* One colour per agent, the cursor's red first. */
-  --agent-1: #e0301f;
-  --agent-1-texte: #fff;
-  --agent-2: #f5a524;
-  --agent-2-texte: #1d1b2e;
-  --agent-3: #12b886;
-  --agent-3-texte: #fff;
+  --ardoise: #2b3539;
+  --ardoise-bas: #263034;
+  --creme: #eee2c0;
+  --creme-doux: rgb(238 226 192 / 0.55);
 
   position: relative;
   display: block;
@@ -19,69 +16,19 @@
   height: 100%;
   overflow: hidden;
   isolation: isolate;
-  background: var(--fond-alpine);
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 55%, #303b40, transparent 75%),
+    linear-gradient(180deg, var(--ardoise), var(--ardoise-bas));
 }
 
-/* Graphite: deep, cold, solid parts in a matt metal. */
-.miniature-alpine--graphite {
-  --fond-alpine:
-    radial-gradient(ellipse 58% 52% at 50% 56%, #24344a, transparent 72%),
-    radial-gradient(ellipse 70% 60% at 8% 100%, color-mix(in oklch, #4c5be0 22%, transparent), transparent 70%),
-    linear-gradient(180deg, #131c29, #0a0f17);
-  --face-haut: #56677e;
-  --face-bas: #222d3c;
-  --flanc-haut: #2a3547;
-  --flanc-bas: #111822;
-  --arete: rgb(223 251 255 / 0.62);
-  --arete-douce: rgb(223 251 255 / 0.22);
-  --texte: #e9f3f8;
-  --texte-doux: rgb(233 243 248 / 0.6);
-  --bille: #c9d8e2;
-  --grain-force: 0.16;
-}
-
-/* Plan clair: ink on a cold white, like a specification sheet. */
-.miniature-alpine--clair {
-  --fond-alpine:
-    radial-gradient(ellipse 60% 55% at 50% 55%, #ffffff, transparent 75%),
-    linear-gradient(180deg, #f3f8fb, #dbe8ef);
-  --face-haut: #ffffff;
-  --face-bas: #e2ebf1;
-  --flanc-haut: #d2dee6;
-  --flanc-bas: #b5c5d0;
-  --arete: rgb(42 36 80 / 0.85);
-  --arete-douce: rgb(42 36 80 / 0.3);
-  --texte: #2a2450;
-  --texte-doux: rgb(42 36 80 / 0.6);
-  --bille: #2a2450;
-  --grain-force: 0.1;
-}
-
-/* Bleu Alpine: a flat poster, white drawing on the brand's gradient. */
-.miniature-alpine--alpine {
-  --fond-alpine:
-    radial-gradient(ellipse 60% 55% at 92% 0%, color-mix(in oklch, #6fd8f2 55%, transparent), transparent 70%),
-    linear-gradient(160deg, #4c5be0 0%, #3a40a6 48%, #2a2450 100%);
-  --face-haut: #7280ec;
-  --face-bas: #4b56cc;
-  --flanc-haut: #3e48ad;
-  --flanc-bas: #2c2f7c;
-  --arete: rgb(223 251 255 / 0.9);
-  --arete-douce: rgb(223 251 255 / 0.35);
-  --texte: #dffbff;
-  --texte-doux: rgb(223 251 255 / 0.68);
-  --bille: #dffbff;
-  --grain-force: 0.18;
-}
-
-/* The grain over the colour, as on the page's background. */
+/* A light grain, as on the page's background. */
 .miniature-alpine::after {
   content: '';
   position: absolute;
   inset: 0;
   background-image: var(--grain);
   background-size: calc(var(--grain-size) / 1.6);
-  opacity: var(--grain-force);
+  opacity: 0.12;
   mix-blend-mode: overlay;
   pointer-events: none;
 }
@@ -94,227 +41,116 @@
   height: 100%;
 }
 
-.ma-stop-face-haut {
-  stop-color: var(--face-haut);
+.ma-grille-fine {
+  stroke: var(--creme);
+  stroke-width: 0.25;
+  opacity: 0.07;
 }
 
-.ma-stop-face-bas {
-  stop-color: var(--face-bas);
-}
-
-.ma-stop-flanc-haut {
-  stop-color: var(--flanc-haut);
-}
-
-.ma-stop-flanc-bas {
-  stop-color: var(--flanc-bas);
+.ma-grille-forte {
+  stroke: var(--creme);
+  stroke-width: 0.35;
+  opacity: 0.12;
 }
 
 .ma-axe {
   fill: none;
-  stroke: var(--arete-douce);
-  stroke-width: 0.5;
+  stroke: var(--creme-doux);
+  stroke-width: 0.4;
   stroke-dasharray: 14 3 2 3;
 }
 
-.ma-dos,
-.ma-flanc,
-.ma-face,
-.ma-allume {
-  fill-rule: evenodd;
-}
-
-.ma-dos {
-  stroke: var(--arete-douce);
-  stroke-width: 0.35;
-}
-
-.ma-face {
-  stroke: var(--arete);
+/* The stages: paper-filled, so what is behind stops at their edges. */
+.ma-corps {
+  fill: var(--ardoise);
+  stroke: var(--creme);
   stroke-width: 0.6;
   stroke-linejoin: round;
 }
 
-.ma-trait {
-  fill: none;
-  stroke: var(--arete-douce);
+.ma-moyeu {
+  fill: var(--ardoise);
+  stroke: var(--creme);
   stroke-width: 0.45;
 }
 
-.ma-bille {
-  fill: var(--bille);
-  opacity: 0.8;
-}
-
-.ma-allume {
-  opacity: 0;
-  pointer-events: none;
-}
-
-.ma-allume--1 {
-  fill: var(--agent-1);
-}
-
-.ma-allume--2 {
-  fill: var(--agent-2);
-}
-
-.ma-allume--3 {
-  fill: var(--agent-3);
-}
-
-/* Part numbers on hairlines. */
-.ma-repere path {
+.ma-aubes path,
+.ma-fin {
   fill: none;
-  stroke: var(--texte-doux);
+  stroke: var(--creme);
+  stroke-width: 0.35;
+}
+
+.ma-point {
+  fill: var(--creme);
+}
+
+/* Boxed labels, in a monospaced face, as on the reference sheet. */
+.ma-etiquettes path {
+  fill: none;
+  stroke: var(--creme);
   stroke-width: 0.4;
 }
 
-.ma-repere circle {
-  fill: var(--texte);
+.ma-etiquettes rect {
+  fill: var(--ardoise);
+  stroke: var(--creme);
+  stroke-width: 0.45;
 }
 
-.ma-repere text {
-  fill: var(--texte-doux);
-  font: 500 5px/1 'Inter', system-ui, sans-serif;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.04em;
+.ma-etiquettes text,
+.ma-mono {
+  fill: var(--creme);
+  font: 400 5.4px/1 ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
 }
 
-/* Type: the title in the cartels' serif, the rest in small capitals. */
+.ma-mono {
+  opacity: 0.75;
+}
+
 .ma-titre {
-  fill: var(--texte);
-  font: italic 400 24px/1 'Instrument Serif', Georgia, serif;
+  fill: var(--creme);
+  font: italic 400 22px/1 'Instrument Serif', Georgia, serif;
 }
 
-.ma-micro,
-.ma-marque,
-.ma-tampons text {
-  fill: var(--texte);
-  font-family: 'Inter', system-ui, sans-serif;
-  text-transform: uppercase;
-}
-
-.ma-micro {
-  font-size: 5.2px;
-  font-weight: 500;
-  letter-spacing: 0.09em;
-  opacity: 0.62;
-}
-
-.ma-marque {
-  font-size: 5.4px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  opacity: 0.85;
-}
-
-.ma-plein {
-  fill: var(--texte);
-  opacity: 0.85;
-}
-
-.ma-tampons circle,
-.ma-tampons polygon,
-.ma-tampons rect {
-  fill: none;
-  stroke: var(--texte);
-  stroke-width: 0.5;
-  opacity: 0.55;
-}
-
-.ma-tampons text {
-  font-size: 3.4px;
-  font-weight: 600;
-  text-anchor: middle;
-  opacity: 0.62;
-}
-
-/* The agents: the cursor's pointer in each agent's colour, with its white
-   halo; a soft ring where it clicks; the failure mode in a pill. */
+/* The agents: tiny pointers in the cursor's red; nothing else changes. */
 .ma-pointe {
-  filter: drop-shadow(0 0 0.8px rgb(255 255 255 / 0.95)) drop-shadow(0 1px 1.5px rgb(0 0 0 / 0.25));
+  fill: var(--accent, #e0301f);
+  stroke: rgb(238 226 192 / 0.9);
+  stroke-width: 0.35;
+  stroke-linejoin: round;
   transform-box: fill-box;
   transform-origin: 0 0;
 }
 
-.ma-onde {
-  fill: none;
-  stroke-width: 0.8;
-  opacity: 0;
-  transform-box: fill-box;
-  transform-origin: center;
+/* ——— Motion ———
+   The blades turn slowly, all along. The 18 s loop: 0–12 % at rest ·
+   12–24 % the stages slide apart · 24–84 % apart, labelled, the pointers go
+   round · 84–96 % they close · 96–100 % at rest. */
+
+.ma-aubes {
+  animation: ma-tourne 2.4s linear infinite;
 }
 
-.ma-etiquette text {
-  font: 500 6.8px/1 'Inter', system-ui, sans-serif;
+@keyframes ma-tourne {
+  to {
+    translate: 0 var(--pas);
+  }
 }
 
-.ma-renvoi {
-  fill: none;
-  stroke-width: 0.5;
-}
-
-.ma-agent--1 .ma-pointe,
-.ma-agent--1 .ma-etiquette rect {
-  fill: var(--agent-1);
-}
-
-.ma-agent--1 .ma-onde,
-.ma-agent--1 .ma-renvoi {
-  stroke: var(--agent-1);
-}
-
-.ma-agent--1 .ma-etiquette text {
-  fill: var(--agent-1-texte);
-}
-
-.ma-agent--2 .ma-pointe,
-.ma-agent--2 .ma-etiquette rect {
-  fill: var(--agent-2);
-}
-
-.ma-agent--2 .ma-onde,
-.ma-agent--2 .ma-renvoi {
-  stroke: var(--agent-2);
-}
-
-.ma-agent--2 .ma-etiquette text {
-  fill: var(--agent-2-texte);
-}
-
-.ma-agent--3 .ma-pointe,
-.ma-agent--3 .ma-etiquette rect {
-  fill: var(--agent-3);
-}
-
-.ma-agent--3 .ma-onde,
-.ma-agent--3 .ma-renvoi {
-  stroke: var(--agent-3);
-}
-
-.ma-agent--3 .ma-etiquette text {
-  fill: var(--agent-3-texte);
-}
-
-/* ——— The 18 s loop ———
-   0–14 % at rest, assembled · 14–26 % the parts open, slowly · 26–84 %
-   opened, numbered, the agents click one after another · 84–96 % the train
-   closes · 96–100 % at rest. */
-
-.ma-piece {
+.ma-etage {
   animation: ma-eclate 18s cubic-bezier(0.65, 0, 0.25, 1) infinite both;
 }
 
 @keyframes ma-eclate {
   0%,
-  14% {
+  12% {
     translate: 0 0;
   }
 
-  26%,
+  24%,
   84% {
-    translate: calc(var(--dx) * 1px) calc(var(--dy) * 1px);
+    translate: calc(var(--dx) * 1px) 0;
   }
 
   96%,
@@ -323,17 +159,17 @@
   }
 }
 
-.ma-reperes {
-  animation: ma-reperes 18s ease-in-out infinite;
+.ma-etiquettes {
+  animation: ma-etiquettes 18s ease-in-out infinite;
 }
 
-@keyframes ma-reperes {
+@keyframes ma-etiquettes {
   0%,
-  27% {
+  25% {
     opacity: 0;
   }
 
-  31%,
+  29%,
   80% {
     opacity: 1;
   }
@@ -346,14 +182,10 @@
 
 .ma-agent {
   opacity: 0;
-  translate: calc(var(--x) * 1px + 44px) calc(var(--y) * 1px + 36px);
-  animation: 18s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+  animation: 18s cubic-bezier(0.45, 0, 0.2, 1) infinite;
 }
 
-.ma-agent .ma-pointe,
-.ma-agent .ma-onde,
-.ma-agent .ma-etiquette,
-.ma-allume {
+.ma-agent .ma-pointe {
   animation: 18s ease-out infinite;
 }
 
@@ -365,107 +197,78 @@
   animation-name: ma-clic-1;
 }
 
-.ma-agent--1 .ma-onde {
-  animation-name: ma-onde-1;
-}
-
-.ma-agent--1 .ma-etiquette {
-  animation-name: ma-etiquette-1;
-}
-
-.ma-allume--1 {
-  animation-name: ma-allume-1;
-}
-
 @keyframes ma-agent-1 {
   0%,
-  32% {
+  28% {
     opacity: 0;
-    translate: calc(var(--x) * 1px + 44px) calc(var(--y) * 1px + 36px);
+    translate: calc(var(--x1) * 1px + 18px) calc(var(--y1) * 1px + 14px);
   }
 
-  34% {
+  31%,
+  38% {
     opacity: 1;
+    translate: calc(var(--x1) * 1px) calc(var(--y1) * 1px);
   }
 
-  37.5%,
-  74% {
+  42%,
+  49% {
     opacity: 1;
-    translate: calc(var(--x) * 1px) calc(var(--y) * 1px);
+    translate: calc(var(--x2) * 1px) calc(var(--y2) * 1px);
   }
 
-  78%,
+  53%,
+  62% {
+    opacity: 1;
+    translate: calc(var(--x3) * 1px) calc(var(--y3) * 1px);
+  }
+
+  64%,
   100% {
     opacity: 0;
-    translate: calc(var(--x) * 1px + 26px) calc(var(--y) * 1px - 18px);
+    translate: calc(var(--x3) * 1px) calc(var(--y3) * 1px);
   }
 }
 
 @keyframes ma-clic-1 {
   0%,
-  38%,
-  39.6%,
   100% {
     scale: 1;
   }
 
-  38.6% {
-    scale: 0.84;
-  }
-}
-
-@keyframes ma-onde-1 {
-  0%,
-  38.4% {
-    opacity: 0;
-    scale: 0.3;
+  31% {
+    scale: 1;
   }
 
-  38.9% {
-    opacity: 0.75;
+  31.5% {
+    scale: 0.78;
   }
 
-  43%,
-  100% {
-    opacity: 0;
-    scale: 1.5;
-  }
-}
-
-@keyframes ma-etiquette-1 {
-  0%,
-  38.8% {
-    opacity: 0;
-    translate: 0 2px;
+  32.2% {
+    scale: 1;
   }
 
-  40.6%,
-  73% {
-    opacity: 1;
-    translate: 0 0;
+  42% {
+    scale: 1;
   }
 
-  75.5%,
-  100% {
-    opacity: 0;
-    translate: 0 0;
-  }
-}
-
-@keyframes ma-allume-1 {
-  0%,
-  38.4% {
-    opacity: 0;
+  42.5% {
+    scale: 0.78;
   }
 
-  40%,
-  74% {
-    opacity: 0.42;
+  43.2% {
+    scale: 1;
   }
 
-  77%,
-  100% {
-    opacity: 0;
+  53% {
+    scale: 1;
+  }
+
+  53.5% {
+    scale: 0.78;
+  }
+
+  54.2% {
+    scale: 1;
   }
 }
 
@@ -477,107 +280,78 @@
   animation-name: ma-clic-2;
 }
 
-.ma-agent--2 .ma-onde {
-  animation-name: ma-onde-2;
-}
-
-.ma-agent--2 .ma-etiquette {
-  animation-name: ma-etiquette-2;
-}
-
-.ma-allume--2 {
-  animation-name: ma-allume-2;
-}
-
 @keyframes ma-agent-2 {
   0%,
-  42% {
+  31% {
     opacity: 0;
-    translate: calc(var(--x) * 1px + 44px) calc(var(--y) * 1px + 36px);
+    translate: calc(var(--x1) * 1px + 18px) calc(var(--y1) * 1px + 14px);
   }
 
-  44% {
+  34%,
+  41% {
     opacity: 1;
+    translate: calc(var(--x1) * 1px) calc(var(--y1) * 1px);
   }
 
-  47.5%,
-  77% {
+  45%,
+  52% {
     opacity: 1;
-    translate: calc(var(--x) * 1px) calc(var(--y) * 1px);
+    translate: calc(var(--x2) * 1px) calc(var(--y2) * 1px);
   }
 
-  81%,
+  56%,
+  65% {
+    opacity: 1;
+    translate: calc(var(--x3) * 1px) calc(var(--y3) * 1px);
+  }
+
+  67%,
   100% {
     opacity: 0;
-    translate: calc(var(--x) * 1px + 26px) calc(var(--y) * 1px - 18px);
+    translate: calc(var(--x3) * 1px) calc(var(--y3) * 1px);
   }
 }
 
 @keyframes ma-clic-2 {
   0%,
-  48%,
-  49.6%,
   100% {
     scale: 1;
   }
 
-  48.6% {
-    scale: 0.84;
-  }
-}
-
-@keyframes ma-onde-2 {
-  0%,
-  48.4% {
-    opacity: 0;
-    scale: 0.3;
+  34% {
+    scale: 1;
   }
 
-  48.9% {
-    opacity: 0.75;
+  34.5% {
+    scale: 0.78;
   }
 
-  53%,
-  100% {
-    opacity: 0;
-    scale: 1.5;
-  }
-}
-
-@keyframes ma-etiquette-2 {
-  0%,
-  48.8% {
-    opacity: 0;
-    translate: 0 2px;
+  35.2% {
+    scale: 1;
   }
 
-  50.6%,
-  76% {
-    opacity: 1;
-    translate: 0 0;
+  45% {
+    scale: 1;
   }
 
-  78.5%,
-  100% {
-    opacity: 0;
-    translate: 0 0;
-  }
-}
-
-@keyframes ma-allume-2 {
-  0%,
-  48.4% {
-    opacity: 0;
+  45.5% {
+    scale: 0.78;
   }
 
-  50%,
-  77% {
-    opacity: 0.42;
+  46.2% {
+    scale: 1;
   }
 
-  80%,
-  100% {
-    opacity: 0;
+  56% {
+    scale: 1;
+  }
+
+  56.5% {
+    scale: 0.78;
+  }
+
+  57.2% {
+    scale: 1;
   }
 }
 
@@ -589,126 +363,93 @@
   animation-name: ma-clic-3;
 }
 
-.ma-agent--3 .ma-onde {
-  animation-name: ma-onde-3;
-}
-
-.ma-agent--3 .ma-etiquette {
-  animation-name: ma-etiquette-3;
-}
-
-.ma-allume--3 {
-  animation-name: ma-allume-3;
-}
-
 @keyframes ma-agent-3 {
   0%,
-  52% {
+  34% {
     opacity: 0;
-    translate: calc(var(--x) * 1px + 44px) calc(var(--y) * 1px + 36px);
+    translate: calc(var(--x1) * 1px + 18px) calc(var(--y1) * 1px + 14px);
   }
 
-  54% {
+  37%,
+  44% {
     opacity: 1;
+    translate: calc(var(--x1) * 1px) calc(var(--y1) * 1px);
   }
 
-  57.5%,
-  79% {
+  48%,
+  55% {
     opacity: 1;
-    translate: calc(var(--x) * 1px) calc(var(--y) * 1px);
+    translate: calc(var(--x2) * 1px) calc(var(--y2) * 1px);
   }
 
-  83%,
+  59%,
+  68% {
+    opacity: 1;
+    translate: calc(var(--x3) * 1px) calc(var(--y3) * 1px);
+  }
+
+  70%,
   100% {
     opacity: 0;
-    translate: calc(var(--x) * 1px + 26px) calc(var(--y) * 1px - 18px);
+    translate: calc(var(--x3) * 1px) calc(var(--y3) * 1px);
   }
 }
 
 @keyframes ma-clic-3 {
   0%,
-  58%,
-  59.6%,
   100% {
     scale: 1;
   }
 
-  58.6% {
-    scale: 0.84;
+  37% {
+    scale: 1;
+  }
+
+  37.5% {
+    scale: 0.78;
+  }
+
+  38.2% {
+    scale: 1;
+  }
+
+  48% {
+    scale: 1;
+  }
+
+  48.5% {
+    scale: 0.78;
+  }
+
+  49.2% {
+    scale: 1;
+  }
+
+  59% {
+    scale: 1;
+  }
+
+  59.5% {
+    scale: 0.78;
+  }
+
+  60.2% {
+    scale: 1;
   }
 }
 
-@keyframes ma-onde-3 {
-  0%,
-  58.4% {
-    opacity: 0;
-    scale: 0.3;
-  }
-
-  58.9% {
-    opacity: 0.75;
-  }
-
-  63%,
-  100% {
-    opacity: 0;
-    scale: 1.5;
-  }
-}
-
-@keyframes ma-etiquette-3 {
-  0%,
-  58.8% {
-    opacity: 0;
-    translate: 0 2px;
-  }
-
-  60.6%,
-  78% {
-    opacity: 1;
-    translate: 0 0;
-  }
-
-  80.5%,
-  100% {
-    opacity: 0;
-    translate: 0 0;
-  }
-}
-
-@keyframes ma-allume-3 {
-  0%,
-  58.4% {
-    opacity: 0;
-  }
-
-  60%,
-  79% {
-    opacity: 0.42;
-  }
-
-  82%,
-  100% {
-    opacity: 0;
-  }
-}
-
-/* Without motion: the opened view, numbered, the three agents in place. */
+/* Without motion: the stages apart, labelled, the pointers on their first part. */
 @media (prefers-reduced-motion: reduce) {
   .miniature-alpine * {
     animation: none !important;
   }
 
-  .ma-piece {
-    translate: calc(var(--dx) * 1px) calc(var(--dy) * 1px);
+  .ma-etage {
+    translate: calc(var(--dx) * 1px) 0;
   }
 
   .ma-agent {
     opacity: 1;
-    translate: calc(var(--x) * 1px) calc(var(--y) * 1px);
-  }
-
-  .ma-allume {
-    opacity: 0.42;
+    translate: calc(var(--x1) * 1px) calc(var(--y1) * 1px);
   }
 }

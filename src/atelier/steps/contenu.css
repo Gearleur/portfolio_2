@@ -44,9 +44,3 @@
   overflow: hidden;
   border-radius: 4px;
 }
-
-.miniatures__note {
-  margin: 8px 0 12px;
-  color: var(--atelier-dim);
-  font-size: 12px;
-}
