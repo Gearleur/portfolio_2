@@ -659,23 +659,22 @@ construite comme celle de Rachel Chen :
   les images de l'accueil, la miniature et les schémas passent par-dessus la
   tranche, et ton nom et « Menu » s'allument en accent là où ils passent dessous.
   « Menu » ouvre le sommaire au-dessus de la nav ;
-- **Whiteboard AMDEC, la miniature** (`src/atelier/MiniatureAlpine.tsx`, deuxième
-  version, à itérer), façon scan holographique « Iron Man ». Un **train
-  épicycloïdal de 16 pièces** éclate le long de son axe et vers l'extérieur :
-  - les pièces : écrou, rondelle, deux roulements, quatre vis, couvercle percé,
-    couronne à denture intérieure, trois satellites, solaire, porte-satellites,
-    bride ;
-  - le fond : un bleu acier froid tiré de la palette Alpine, avec une grille de
-    plan, une ligne de scan, une lueur cyan et du grain ;
-  - l'habillage : un anneau de visée qui tourne, des coins de cadre, des pièces
-    numérotées, une nomenclature, la marque « Atelier A.T. », une jauge de scan
-    et des tampons (A7, FMEA, vLLM, 8×A100) ;
-  - les agents : trois, la pointe du curseur, cliquent chacun une pièce, qui
-    s'allume, et nomment une défaillance.
+- **Whiteboard AMDEC, la miniature** (`src/atelier/MiniatureAlpine.tsx`,
+  troisième tour, à choisir). Un train épicycloïdal de 16 pièces s'ouvre
+  lentement, comme dans un film produit, avec la technique derrière :
+  - des numéros de pièces sur des filets ;
+  - un axe en trait mixte ;
+  - un cartouche discret, la marque « Atelier A.T. » et des tampons.
 
-  La boucle dure 16 s. Sans animation, on voit la vue éclatée, numérotée, avec
-  les agents en place. Le texte de la page est dans
-  `docs/atelier/contenu/03-whiteboard-amdec.md`.
+  Trois agents, chacun dans sa couleur (rouge, ambre, menthe), cliquent une
+  pièce, qui prend leur couleur, et nomment une défaillance. La boucle dure
+  18 s, avec de longues pauses. Il n'y a ni scan, ni grille, ni anneau qui
+  tourne. Trois finitions sont à comparer :
+  - **Graphite** : sombre et froid, des pièces pleines en métal mat ;
+  - **Plan clair** : de l'encre indigo sur un blanc bleuté ;
+  - **Bleu Alpine** : une affiche plate sur le dégradé de la marque.
+
+  Le texte de la page est dans `docs/atelier/contenu/03-whiteboard-amdec.md`.
 - **l'anglais, préparé** : les libellés des schémas existent en français et en
   anglais (`src/atelier/langue.ts`). Le texte anglais de la page reste à brancher. Les logos viennent de Simple
   Icons (CC0), sauf Jenkins (CC BY-SA 3.0, le projet Jenkins). Azure, ServiceNow
@@ -795,6 +794,7 @@ un bon argument dans un portfolio.
 | 89 | 2026-11-06 | Sur téléphone, les **schémas s'ouvrent centrés** et glissent des deux côtés (« ← glisser → »). | « Centre les schémas de base » | 7 |
 | 90 | 2026-11-06 | **Whiteboard AMDEC** : texte écrit à partir de tes réponses (non commité, à relire). **Miniature, première version** : un arbre de transmission en vue éclatée sur les bleus d'Alpine avec du grain, qui s'éclate puis se réassemble. Trois agents, la pointe du curseur, cliquent chacun sur une pièce, qui s'allume, et nomment un mode de défaillance (roulement grippé, dent cassée, usure de denture). | « Pour la miniature je veux un autre truc avec un autre fond ; du motion sur un pignon de moteur qui s'éclate en long, puis qui se refusionne ; les couleurs d'Alpine ; des petites flèches qui vont sur les différentes parties en vue éclatée et qui cliquent dessus ; fais un truc ultra propre et on itérera » | 7 |
 | 91 | 2026-11-06 | Miniature Whiteboard AMDEC, **deuxième version, façon scan holographique** : un train épicycloïdal de 16 pièces qui éclate dans toutes les directions, sur un bleu acier froid (grille de plan, scan, lueur cyan, grain). Habillage : anneau de visée qui tourne, pièces numérotées, nomenclature, marque « Atelier A.T. », jauge et tampons, comme sur la planche SNCF. | « Fais un truc plus à la Iron Man, vraiment un truc complexe qui s'explose en plein de pièces ; le fond, un truc plus industriel, plus froid, mais bleu quand même ; rajoute des annotations et logos techniques comme sur le truc SNCF » | 7 |
+| 92 | 2026-11-06 | Miniature Whiteboard AMDEC, **troisième tour, plus épuré**, façon motion design Apple : plus de scan, de grille, d'anneau ni de coins. L'ouverture est lente avec de longues pauses (boucle de 18 s), les numéros sont sur des filets fins, l'étiquette est en pilule. **Une couleur par agent** : rouge, ambre, menthe. Trois finitions à comparer : Graphite, Plan clair, Bleu Alpine. | « Fais un truc avec moins d'animation, enlève le scanner, le rayon qui va de haut en bas ; fais-moi d'autres propositions, là je trouve que ça fait trop cheap ; un truc plus propre, plus épuré, plus motion design à la Apple, avec du technique derrière ; change la couleur des flèches pour montrer que ce sont des agents différents » | 7 |
 
 ---
 

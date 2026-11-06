@@ -1,17 +1,17 @@
-/* Step 7 · The Whiteboard AMDEC thumbnail (journal n° 90 and 91): a
-   holographic engineering scan on a cold, industrial steel blue drawn from
-   Alpine's palette (Night Indigo, Clear Hanada, Pale Lagoon, Misted Sky). An
-   epicyclic gear train bursts into 16 parts and closes up in a 16 s loop. */
+/* Step 7 · The Whiteboard AMDEC thumbnail (journal n° 90 to 92): a slow
+   product film with the engineering underneath. Three finishes on Alpine's
+   palette (Night Indigo, Clear Hanada, Pale Lagoon, Misted Sky), and one
+   colour per agent. An 18 s loop: a long rest, a slow opening, the agents,
+   a slow closing. */
 
 .miniature-alpine {
-  --acier: #08121f;
-  --acier-haut: #0e2034;
-  --hanada: #4c5be0;
-  --lagon: #6fd8f2;
-  --brume: #dffbff;
-  --flanc: color-mix(in oklch, var(--lagon) 12%, #0b1a2c);
-  --facette: color-mix(in oklch, var(--lagon) 22%, #0b1a2c);
-  --allume: color-mix(in oklch, var(--lagon) 58%, #0b1a2c);
+  /* One colour per agent, the cursor's red first. */
+  --agent-1: #e0301f;
+  --agent-1-texte: #fff;
+  --agent-2: #f5a524;
+  --agent-2-texte: #1d1b2e;
+  --agent-3: #12b886;
+  --agent-3-texte: #fff;
 
   position: relative;
   display: block;
@@ -19,11 +19,59 @@
   height: 100%;
   overflow: hidden;
   isolation: isolate;
-  background:
-    radial-gradient(ellipse 46% 52% at 50% 57%, color-mix(in oklch, var(--lagon) 22%, transparent), transparent 72%),
-    radial-gradient(ellipse 70% 60% at 6% 100%, color-mix(in oklch, var(--hanada) 34%, transparent), transparent 70%),
-    radial-gradient(ellipse 120% 90% at 50% 50%, transparent 55%, rgb(0 0 0 / 0.45)),
-    linear-gradient(180deg, var(--acier-haut), var(--acier));
+  background: var(--fond-alpine);
+}
+
+/* Graphite: deep, cold, solid parts in a matt metal. */
+.miniature-alpine--graphite {
+  --fond-alpine:
+    radial-gradient(ellipse 58% 52% at 50% 56%, #24344a, transparent 72%),
+    radial-gradient(ellipse 70% 60% at 8% 100%, color-mix(in oklch, #4c5be0 22%, transparent), transparent 70%),
+    linear-gradient(180deg, #131c29, #0a0f17);
+  --face-haut: #56677e;
+  --face-bas: #222d3c;
+  --flanc-haut: #2a3547;
+  --flanc-bas: #111822;
+  --arete: rgb(223 251 255 / 0.62);
+  --arete-douce: rgb(223 251 255 / 0.22);
+  --texte: #e9f3f8;
+  --texte-doux: rgb(233 243 248 / 0.6);
+  --bille: #c9d8e2;
+  --grain-force: 0.16;
+}
+
+/* Plan clair: ink on a cold white, like a specification sheet. */
+.miniature-alpine--clair {
+  --fond-alpine:
+    radial-gradient(ellipse 60% 55% at 50% 55%, #ffffff, transparent 75%),
+    linear-gradient(180deg, #f3f8fb, #dbe8ef);
+  --face-haut: #ffffff;
+  --face-bas: #e2ebf1;
+  --flanc-haut: #d2dee6;
+  --flanc-bas: #b5c5d0;
+  --arete: rgb(42 36 80 / 0.85);
+  --arete-douce: rgb(42 36 80 / 0.3);
+  --texte: #2a2450;
+  --texte-doux: rgb(42 36 80 / 0.6);
+  --bille: #2a2450;
+  --grain-force: 0.1;
+}
+
+/* Bleu Alpine: a flat poster, white drawing on the brand's gradient. */
+.miniature-alpine--alpine {
+  --fond-alpine:
+    radial-gradient(ellipse 60% 55% at 92% 0%, color-mix(in oklch, #6fd8f2 55%, transparent), transparent 70%),
+    linear-gradient(160deg, #4c5be0 0%, #3a40a6 48%, #2a2450 100%);
+  --face-haut: #7280ec;
+  --face-bas: #4b56cc;
+  --flanc-haut: #3e48ad;
+  --flanc-bas: #2c2f7c;
+  --arete: rgb(223 251 255 / 0.9);
+  --arete-douce: rgb(223 251 255 / 0.35);
+  --texte: #dffbff;
+  --texte-doux: rgb(223 251 255 / 0.68);
+  --bille: #dffbff;
+  --grain-force: 0.18;
 }
 
 /* The grain over the colour, as on the page's background. */
@@ -33,7 +81,7 @@
   inset: 0;
   background-image: var(--grain);
   background-size: calc(var(--grain-size) / 1.6);
-  opacity: 0.22;
+  opacity: var(--grain-force);
   mix-blend-mode: overlay;
   pointer-events: none;
 }
@@ -46,320 +94,267 @@
   height: 100%;
 }
 
-.ma-grille-fine {
-  stroke: var(--lagon);
-  stroke-width: 0.25;
-  opacity: 0.09;
+.ma-stop-face-haut {
+  stop-color: var(--face-haut);
 }
 
-.ma-grille-forte {
-  stroke: var(--lagon);
-  stroke-width: 0.4;
-  opacity: 0.16;
+.ma-stop-face-bas {
+  stop-color: var(--face-bas);
 }
 
-.ma-scan {
-  animation: ma-scan 6s linear infinite;
+.ma-stop-flanc-haut {
+  stop-color: var(--flanc-haut);
 }
 
-@keyframes ma-scan {
-  from {
-    translate: 0 0;
-  }
-
-  to {
-    translate: 0 340px;
-  }
-}
-
-/* The HUD. */
-.ma-hud path,
-.ma-hud circle {
-  fill: none;
-  stroke: var(--lagon);
-  stroke-width: 0.5;
-  opacity: 0.55;
-}
-
-.ma-anneau {
-  animation: ma-tourne 48s linear infinite;
-}
-
-.ma-anneau--inverse {
-  animation-duration: 30s;
-  animation-direction: reverse;
-}
-
-@keyframes ma-tourne {
-  to {
-    rotate: 360deg;
-  }
-}
-
-.ma-hud .ma-anneau-pointille {
-  stroke-dasharray: 1 4;
-  opacity: 0.4;
-}
-
-.ma-hud .ma-arc {
-  stroke-width: 1.2;
-  opacity: 0.5;
-}
-
-.ma-hud .ma-coin {
-  stroke: var(--brume);
-  stroke-width: 0.9;
-  opacity: 0.8;
+.ma-stop-flanc-bas {
+  stop-color: var(--flanc-bas);
 }
 
 .ma-axe {
   fill: none;
-  stroke: var(--brume);
+  stroke: var(--arete-douce);
   stroke-width: 0.5;
   stroke-dasharray: 14 3 2 3;
-  opacity: 0.4;
 }
 
-/* The parts: holographic, cyan faces and bright edges, a soft glow. */
-.ma-assemblage {
-  filter: drop-shadow(0 0 1.6px rgb(111 216 242 / 0.55));
-}
-
-.ma-arbre rect,
-.ma-arbre path,
 .ma-dos,
-.ma-flanc {
-  fill: var(--flanc);
+.ma-flanc,
+.ma-face,
+.ma-allume {
   fill-rule: evenodd;
 }
 
 .ma-dos {
-  stroke: var(--lagon);
+  stroke: var(--arete-douce);
   stroke-width: 0.35;
-  stroke-opacity: 0.5;
 }
 
 .ma-face {
-  fill: var(--facette);
-  fill-rule: evenodd;
-  stroke: var(--brume);
-  stroke-width: 0.7;
+  stroke: var(--arete);
+  stroke-width: 0.6;
   stroke-linejoin: round;
 }
 
 .ma-trait {
   fill: none;
-  stroke: var(--lagon);
+  stroke: var(--arete-douce);
   stroke-width: 0.45;
 }
 
 .ma-bille {
-  fill: var(--brume);
-  opacity: 0.85;
+  fill: var(--bille);
+  opacity: 0.8;
 }
 
-/* Callouts. */
-.ma-repere path,
-.ma-repere circle {
+.ma-allume {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ma-allume--1 {
+  fill: var(--agent-1);
+}
+
+.ma-allume--2 {
+  fill: var(--agent-2);
+}
+
+.ma-allume--3 {
+  fill: var(--agent-3);
+}
+
+/* Part numbers on hairlines. */
+.ma-repere path {
   fill: none;
-  stroke: var(--brume);
-  stroke-width: 0.5;
+  stroke: var(--texte-doux);
+  stroke-width: 0.4;
 }
 
 .ma-repere circle {
-  fill: rgb(8 18 31 / 0.75);
+  fill: var(--texte);
 }
 
 .ma-repere text {
-  fill: var(--brume);
-  font: 600 4.6px/1 'Inter', system-ui, sans-serif;
+  fill: var(--texte-doux);
+  font: 500 5px/1 'Inter', system-ui, sans-serif;
   font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
 }
 
 /* Type: the title in the cartels' serif, the rest in small capitals. */
 .ma-titre {
-  fill: var(--brume);
+  fill: var(--texte);
   font: italic 400 24px/1 'Instrument Serif', Georgia, serif;
 }
 
-.ma-filet {
-  stroke: var(--brume);
-  stroke-width: 0.5;
-  opacity: 0.6;
-}
-
 .ma-micro,
-.ma-nano,
 .ma-marque,
 .ma-tampons text {
-  fill: var(--brume);
+  fill: var(--texte);
   font-family: 'Inter', system-ui, sans-serif;
   text-transform: uppercase;
 }
 
 .ma-micro {
-  font-size: 5.4px;
+  font-size: 5.2px;
   font-weight: 500;
-  letter-spacing: 0.08em;
-  opacity: 0.8;
-}
-
-.ma-nano {
-  font-size: 4.1px;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  opacity: 0.6;
+  letter-spacing: 0.09em;
+  opacity: 0.62;
 }
 
 .ma-marque {
-  font-size: 5.6px;
+  font-size: 5.4px;
   font-weight: 700;
   letter-spacing: 0.14em;
+  opacity: 0.85;
 }
 
 .ma-plein {
-  fill: var(--brume);
-}
-
-.ma-jauge {
-  fill: var(--lagon);
-  opacity: 0.2;
-}
-
-.ma-jauge-pleine {
-  fill: var(--lagon);
-  transform-box: fill-box;
-  transform-origin: 0 50%;
-  animation: ma-jauge 16s linear infinite;
+  fill: var(--texte);
+  opacity: 0.85;
 }
 
 .ma-tampons circle,
 .ma-tampons polygon,
 .ma-tampons rect {
   fill: none;
-  stroke: var(--brume);
-  stroke-width: 0.6;
-  opacity: 0.85;
-}
-
-.ma-tampons .ma-fin {
-  stroke-width: 0.35;
+  stroke: var(--texte);
+  stroke-width: 0.5;
+  opacity: 0.55;
 }
 
 .ma-tampons text {
-  font-size: 3.6px;
+  font-size: 3.4px;
   font-weight: 600;
   text-anchor: middle;
-  opacity: 0.9;
+  opacity: 0.62;
 }
 
-/* The agents: the cursor's pointer in the accent, with its white halo, a
-   ripple where it clicks, and the failure mode in a small accent tag. */
+/* The agents: the cursor's pointer in each agent's colour, with its white
+   halo; a soft ring where it clicks; the failure mode in a pill. */
 .ma-pointe {
-  fill: var(--accent, #e0301f);
-  filter: drop-shadow(0 0 0.8px rgb(255 255 255 / 0.95));
+  filter: drop-shadow(0 0 0.8px rgb(255 255 255 / 0.95)) drop-shadow(0 1px 1.5px rgb(0 0 0 / 0.25));
   transform-box: fill-box;
   transform-origin: 0 0;
 }
 
 .ma-onde {
   fill: none;
-  stroke: var(--brume);
-  stroke-width: 0.9;
+  stroke-width: 0.8;
   opacity: 0;
   transform-box: fill-box;
   transform-origin: center;
 }
 
-.ma-etiquette rect {
-  fill: var(--accent, #e0301f);
-}
-
 .ma-etiquette text {
-  fill: #fff;
-  font: 500 7px/1 'Inter', system-ui, sans-serif;
+  font: 500 6.8px/1 'Inter', system-ui, sans-serif;
 }
 
 .ma-renvoi {
   fill: none;
-  stroke: var(--brume);
-  stroke-width: 0.55;
-  opacity: 0.85;
+  stroke-width: 0.5;
 }
 
-/* ——— The 16 s loop ———
-   0–5 % assembled · 5–17 % the parts fly apart, one after another · 17–80 %
-   exploded, numbered, the agents click · 81–93 % everything closes up. */
+.ma-agent--1 .ma-pointe,
+.ma-agent--1 .ma-etiquette rect {
+  fill: var(--agent-1);
+}
+
+.ma-agent--1 .ma-onde,
+.ma-agent--1 .ma-renvoi {
+  stroke: var(--agent-1);
+}
+
+.ma-agent--1 .ma-etiquette text {
+  fill: var(--agent-1-texte);
+}
+
+.ma-agent--2 .ma-pointe,
+.ma-agent--2 .ma-etiquette rect {
+  fill: var(--agent-2);
+}
+
+.ma-agent--2 .ma-onde,
+.ma-agent--2 .ma-renvoi {
+  stroke: var(--agent-2);
+}
+
+.ma-agent--2 .ma-etiquette text {
+  fill: var(--agent-2-texte);
+}
+
+.ma-agent--3 .ma-pointe,
+.ma-agent--3 .ma-etiquette rect {
+  fill: var(--agent-3);
+}
+
+.ma-agent--3 .ma-onde,
+.ma-agent--3 .ma-renvoi {
+  stroke: var(--agent-3);
+}
+
+.ma-agent--3 .ma-etiquette text {
+  fill: var(--agent-3-texte);
+}
+
+/* ——— The 18 s loop ———
+   0–14 % at rest, assembled · 14–26 % the parts open, slowly · 26–84 %
+   opened, numbered, the agents click one after another · 84–96 % the train
+   closes · 96–100 % at rest. */
 
 .ma-piece {
-  animation: ma-eclate 16s cubic-bezier(0.65, 0, 0.35, 1) infinite both;
+  animation: ma-eclate 18s cubic-bezier(0.65, 0, 0.25, 1) infinite both;
 }
 
 @keyframes ma-eclate {
   0%,
-  5% {
+  14% {
     translate: 0 0;
   }
 
-  17%,
-  80% {
+  26%,
+  84% {
     translate: calc(var(--dx) * 1px) calc(var(--dy) * 1px);
   }
 
-  92%,
+  96%,
   100% {
     translate: 0 0;
   }
 }
 
 .ma-reperes {
-  animation: ma-reperes 16s ease-out infinite;
+  animation: ma-reperes 18s ease-in-out infinite;
 }
 
 @keyframes ma-reperes {
   0%,
-  19% {
+  27% {
     opacity: 0;
   }
 
-  23%,
-  77% {
+  31%,
+  80% {
     opacity: 1;
   }
 
-  80%,
+  83%,
   100% {
     opacity: 0;
-  }
-}
-
-@keyframes ma-jauge {
-  0%,
-  17% {
-    scale: 0 1;
-  }
-
-  76%,
-  80% {
-    scale: 1 1;
-  }
-
-  84%,
-  100% {
-    scale: 0 1;
   }
 }
 
 .ma-agent {
   opacity: 0;
-  translate: calc(var(--x) * 1px + 70px) calc(var(--y) * 1px + 60px);
-  animation: 16s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+  translate: calc(var(--x) * 1px + 44px) calc(var(--y) * 1px + 36px);
+  animation: 18s cubic-bezier(0.22, 1, 0.36, 1) infinite;
 }
 
 .ma-agent .ma-pointe,
 .ma-agent .ma-onde,
-.ma-agent .ma-etiquette {
-  animation: 16s ease-out infinite;
+.ma-agent .ma-etiquette,
+.ma-allume {
+  animation: 18s ease-out infinite;
 }
 
 .ma-agent--1 {
@@ -378,78 +373,99 @@
   animation-name: ma-etiquette-1;
 }
 
+.ma-allume--1 {
+  animation-name: ma-allume-1;
+}
+
 @keyframes ma-agent-1 {
   0%,
-  23% {
+  32% {
     opacity: 0;
-    translate: calc(var(--x) * 1px + 70px) calc(var(--y) * 1px + 60px);
+    translate: calc(var(--x) * 1px + 44px) calc(var(--y) * 1px + 36px);
   }
 
-  25% {
+  34% {
     opacity: 1;
   }
 
-  30%,
-  72% {
+  37.5%,
+  74% {
     opacity: 1;
     translate: calc(var(--x) * 1px) calc(var(--y) * 1px);
   }
 
-  76%,
+  78%,
   100% {
     opacity: 0;
-    translate: calc(var(--x) * 1px + 40px) calc(var(--y) * 1px - 30px);
+    translate: calc(var(--x) * 1px + 26px) calc(var(--y) * 1px - 18px);
   }
 }
 
 @keyframes ma-clic-1 {
   0%,
-  30.5%,
-  32.5%,
+  38%,
+  39.6%,
   100% {
     scale: 1;
   }
 
-  31.4% {
-    scale: 0.78;
+  38.6% {
+    scale: 0.84;
   }
 }
 
 @keyframes ma-onde-1 {
   0%,
-  31.2% {
+  38.4% {
     opacity: 0;
-    scale: 0.2;
+    scale: 0.3;
   }
 
-  31.6% {
-    opacity: 0.9;
+  38.9% {
+    opacity: 0.75;
   }
 
-  36%,
+  43%,
   100% {
     opacity: 0;
-    scale: 1.7;
+    scale: 1.5;
   }
 }
 
 @keyframes ma-etiquette-1 {
   0%,
-  31.5% {
+  38.8% {
     opacity: 0;
-    scale: 0.8;
+    translate: 0 2px;
   }
 
-  33%,
-  70% {
+  40.6%,
+  73% {
     opacity: 1;
-    scale: 1;
+    translate: 0 0;
   }
 
-  73%,
+  75.5%,
   100% {
     opacity: 0;
-    scale: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes ma-allume-1 {
+  0%,
+  38.4% {
+    opacity: 0;
+  }
+
+  40%,
+  74% {
+    opacity: 0.42;
+  }
+
+  77%,
+  100% {
+    opacity: 0;
   }
 }
 
@@ -469,78 +485,99 @@
   animation-name: ma-etiquette-2;
 }
 
+.ma-allume--2 {
+  animation-name: ma-allume-2;
+}
+
 @keyframes ma-agent-2 {
   0%,
-  34% {
+  42% {
     opacity: 0;
-    translate: calc(var(--x) * 1px + 70px) calc(var(--y) * 1px + 60px);
+    translate: calc(var(--x) * 1px + 44px) calc(var(--y) * 1px + 36px);
   }
 
-  36% {
+  44% {
     opacity: 1;
   }
 
-  41%,
-  75% {
+  47.5%,
+  77% {
     opacity: 1;
     translate: calc(var(--x) * 1px) calc(var(--y) * 1px);
   }
 
-  79%,
+  81%,
   100% {
     opacity: 0;
-    translate: calc(var(--x) * 1px + 40px) calc(var(--y) * 1px - 30px);
+    translate: calc(var(--x) * 1px + 26px) calc(var(--y) * 1px - 18px);
   }
 }
 
 @keyframes ma-clic-2 {
   0%,
-  41.5%,
-  43.5%,
+  48%,
+  49.6%,
   100% {
     scale: 1;
   }
 
-  42.4% {
-    scale: 0.78;
+  48.6% {
+    scale: 0.84;
   }
 }
 
 @keyframes ma-onde-2 {
   0%,
-  42.2% {
+  48.4% {
     opacity: 0;
-    scale: 0.2;
+    scale: 0.3;
   }
 
-  42.6% {
-    opacity: 0.9;
+  48.9% {
+    opacity: 0.75;
   }
 
-  47%,
+  53%,
   100% {
     opacity: 0;
-    scale: 1.7;
+    scale: 1.5;
   }
 }
 
 @keyframes ma-etiquette-2 {
   0%,
-  42.5% {
+  48.8% {
     opacity: 0;
-    scale: 0.8;
+    translate: 0 2px;
   }
 
-  44%,
-  73% {
+  50.6%,
+  76% {
     opacity: 1;
-    scale: 1;
+    translate: 0 0;
   }
 
-  76%,
+  78.5%,
   100% {
     opacity: 0;
-    scale: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes ma-allume-2 {
+  0%,
+  48.4% {
+    opacity: 0;
+  }
+
+  50%,
+  77% {
+    opacity: 0.42;
+  }
+
+  80%,
+  100% {
+    opacity: 0;
   }
 }
 
@@ -560,139 +597,105 @@
   animation-name: ma-etiquette-3;
 }
 
+.ma-allume--3 {
+  animation-name: ma-allume-3;
+}
+
 @keyframes ma-agent-3 {
   0%,
-  45% {
+  52% {
     opacity: 0;
-    translate: calc(var(--x) * 1px + 70px) calc(var(--y) * 1px + 60px);
+    translate: calc(var(--x) * 1px + 44px) calc(var(--y) * 1px + 36px);
   }
 
-  47% {
+  54% {
     opacity: 1;
   }
 
-  52%,
-  78% {
+  57.5%,
+  79% {
     opacity: 1;
     translate: calc(var(--x) * 1px) calc(var(--y) * 1px);
   }
 
-  82%,
+  83%,
   100% {
     opacity: 0;
-    translate: calc(var(--x) * 1px + 40px) calc(var(--y) * 1px - 30px);
+    translate: calc(var(--x) * 1px + 26px) calc(var(--y) * 1px - 18px);
   }
 }
 
 @keyframes ma-clic-3 {
   0%,
-  52.5%,
-  54.5%,
+  58%,
+  59.6%,
   100% {
     scale: 1;
   }
 
-  53.4% {
-    scale: 0.78;
+  58.6% {
+    scale: 0.84;
   }
 }
 
 @keyframes ma-onde-3 {
   0%,
-  53.2% {
+  58.4% {
     opacity: 0;
-    scale: 0.2;
+    scale: 0.3;
   }
 
-  53.6% {
-    opacity: 0.9;
+  58.9% {
+    opacity: 0.75;
   }
 
-  58%,
+  63%,
   100% {
     opacity: 0;
-    scale: 1.7;
+    scale: 1.5;
   }
 }
 
 @keyframes ma-etiquette-3 {
   0%,
-  53.5% {
+  58.8% {
     opacity: 0;
-    scale: 0.8;
+    translate: 0 2px;
   }
 
-  55%,
-  76% {
+  60.6%,
+  78% {
     opacity: 1;
-    scale: 1;
+    translate: 0 0;
   }
 
-  79%,
+  80.5%,
   100% {
     opacity: 0;
-    scale: 1;
+    translate: 0 0;
   }
 }
 
-.ma-piece--roulement-av .ma-face {
-  animation: ma-lumiere-1 16s ease-out infinite;
-}
-
-@keyframes ma-lumiere-1 {
+@keyframes ma-allume-3 {
   0%,
-  31.2%,
-  74%,
+  58.4% {
+    opacity: 0;
+  }
+
+  60%,
+  79% {
+    opacity: 0.42;
+  }
+
+  82%,
   100% {
-    fill: var(--facette);
-  }
-
-  32%,
-  71% {
-    fill: var(--allume);
+    opacity: 0;
   }
 }
 
-.ma-piece--satellite-0 .ma-face {
-  animation: ma-lumiere-2 16s ease-out infinite;
-}
-
-@keyframes ma-lumiere-2 {
-  0%,
-  42.2%,
-  77%,
-  100% {
-    fill: var(--facette);
-  }
-
-  43%,
-  74% {
-    fill: var(--allume);
-  }
-}
-
-.ma-piece--couronne .ma-face {
-  animation: ma-lumiere-3 16s ease-out infinite;
-}
-
-@keyframes ma-lumiere-3 {
-  0%,
-  53.2%,
-  80%,
-  100% {
-    fill: var(--facette);
-  }
-
-  54%,
-  77% {
-    fill: var(--allume);
-  }
-}
-
-/* Without motion: the exploded view, numbered, the three agents in place. */
+/* Without motion: the opened view, numbered, the three agents in place. */
 @media (prefers-reduced-motion: reduce) {
-  .miniature-alpine *,
-  .ma-agent * {
+  .miniature-alpine * {
     animation: none !important;
   }
 
@@ -705,7 +708,7 @@
     translate: calc(var(--x) * 1px) calc(var(--y) * 1px);
   }
 
-  .ma-scan {
-    display: none;
+  .ma-allume {
+    opacity: 0.42;
   }
 }
