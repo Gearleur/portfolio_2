@@ -470,7 +470,7 @@ téléphone et un éventuel twist restent à faire.
 **Version téléphone, premier tour.** Un écran de 390 × 844 sur une grille de 4
 colonnes (gouttières et marges de 16 px, la même unité de 4 px). La typo descend
 pour le petit écran, en proposition : titre 40 px, texte 14 px, étiquettes
-11 px. Trois façons de replier la colonne de droite, vues menu fermé ou ouvert :
+11 px (le titre passe ensuite à 68 px, journal n° 50). Trois façons de replier la colonne de droite, vues menu fermé ou ouvert :
 
 - **Barre en haut** : le nom à gauche, « Menu » à droite ; le menu ouvre la
   colonne de droite en plein écran, alignée à droite, la nav en serif ;
@@ -587,6 +587,7 @@ un bon argument dans un portfolio.
 | 47 | 2026-11-06 | Précédemment en une seule phrase sur deux lignes, coupée après le second « @ » : « Ingénieur IA @ SNCF, ingénieur IA @ / Renault / Alpine ». Moins linéaire qu'une ligne par poste. | « Sur deux lignes mais qui se continue, c'est moins linéaire » | 5 |
 | 48 | 2026-11-06 | Les « @ » collés au nom et liés au site de chaque organisation : @SNCF (groupe-sncf.com), @Renault (renaultgroup.com), Alpine (alpinecars.com), @UTC (utc.fr), @Shanghai University (shu.edu.cn). Soulignés d'un filet clair qui passe à l'accent au survol. | « Un @ devant UTC et Shanghai University, colle les arobases, mets le lien du site » | 5 |
 | 49 | 2026-11-06 | Le point final du titre devient un carré accent qui clignote comme un curseur (0,53 s allumé, 0,53 s éteint), fixe si l'on a demandé moins d'animations. | « Remplace le point par un carré rouge qui clignote pour montrer un peu de vie » | 5 |
+| 50 | 2026-11-06 | Titre téléphone plus imposant : 68 px (au lieu de 40), sur trois lignes qui vont jusqu'à la marge droite et traversent la tranche, comme les images. Le nom et « Menu » descendent dans le bas de la tranche. | « Qu'il prenne plus de largeur, qu'il soit plus imposant » | 5 |
 
 ---
 
