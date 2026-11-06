@@ -362,8 +362,20 @@
 /* Phone, 390 × 844 (journal n° 86): the Vitrine's phone frame (the strip on
    the right, « Menu »), one column of reading. These rules come last so they
    win over the desktop measures of the same weight. */
+/* The back link stays at the top left while the page scrolls (journal n° 88):
+   a light paper chip, a little see-through and blurred, so it reads over the
+   text and the diagrams without a frame. The stage has layout containment, so
+   it stays in the phone. */
 .mobile.projet--mobile .p-retour {
-  padding-top: calc(var(--space-5) * var(--u));
+  position: fixed;
+  top: calc(var(--space-3) * var(--u));
+  left: calc((var(--margin) - var(--space-2)) * var(--u));
+  z-index: 4;
+  padding: calc(var(--space-1) * var(--u)) calc(var(--space-2) * var(--u));
+  border-radius: calc(var(--space-1) * var(--u));
+  background: color-mix(in oklch, var(--fond) 80%, transparent);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
 }
 
 .mobile.projet--mobile .p-contenu {
@@ -380,7 +392,8 @@
 }
 
 .mobile.projet--mobile .p-entete {
-  padding-top: calc(var(--space-6) * var(--u));
+  /* Room for the fixed back link above the title. */
+  padding-top: calc(var(--space-8) * var(--u));
 }
 
 .mobile.projet--mobile .p-titre {

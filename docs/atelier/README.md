@@ -650,7 +650,9 @@ construite comme celle de Rachel Chen :
   titre, à la hauteur des capitales ; des pastilles de marque sur les boîtes
   des schémas.
 - **sur téléphone** (`ProjetMobile`) : le cadre de la Vitrine, avec la tranche
-  à droite et « Menu ». Le retour est en haut, la lecture sur une colonne. Les
+  à droite et « Menu ». Le retour reste fixé en haut à gauche, sur une pastille
+  papier légère, un peu transparente et floutée. La lecture se fait sur une
+  colonne. Les
   chiffres et le cartel sont empilés, les cartes deux par deux, la miniature en
   portrait. Les schémas gardent une taille lisible et glissent de côté. Comme
   les images de l'accueil, la miniature et les schémas passent par-dessus la
@@ -771,6 +773,7 @@ un bon argument dans un portfolio.
 | 85 | 2026-11-06 | En tête de page, la rangée de logos d'outils et la ligne « e.SNCF Solutions · Usine Logicielle, Lyon » sont **retirées**. Le **logo SNCF** passe dans la ligne du titre, juste après « SNCF GPT », à la hauteur des capitales. Les pastilles des schémas restent. | « Tous les logos au début, supprime ; e.SNCF Solutions · Usine Logicielle, Lyon, supprime ça aussi ; garde le logo mais intègre-le, ne le mets pas tout seul au-dessus ; sinon le reste c'est pas mal » | 7 |
 | 86 | 2026-11-06 | **Page projet sur téléphone** : le cadre de la Vitrine (tranche, Menu), une colonne, les chiffres et le cartel empilés, la miniature en portrait. Les schémas, à taille lisible, glissent de côté. Le sommaire est dans le panneau Menu et suit la lecture jusqu'à la partie 10. Les libellés des schémas sont préparés en anglais, le texte anglais reste à faire. | « Fais la version téléphone maintenant et on est bon ; ensuite on va attaquer la partie Alpine » | 7 |
 | 87 | 2026-11-06 | Sur téléphone, la **miniature et les schémas passent par-dessus la tranche**, jusqu'au bord de l'écran, comme les images de l'accueil. Le nom et « Menu » prennent l'accent seulement là où une image passe dessous (le même effet, partagé dans `tranche.ts`). | « Fais en sorte que les schémas passent par-dessus la sidebar de droite comme les images sur la page d'accueil, pour la version mobile » | 7 |
+| 88 | 2026-11-06 | Sur téléphone, le **retour « ← Projets / SNCF GPT » reste fixé en haut à gauche** pendant le défilement. Une pastille papier légère (80 % opaque, floutée, sans bordure) le garde lisible par-dessus le texte et les schémas. | « Il manque aussi le retour en haut à gauche pour revenir en arrière ; je veux qu'il soit fixe ; à toi d'ajuster avec les schémas et le texte pour qu'il reste visible, mais je veux un truc léger » | 7 |
 
 ---
 
