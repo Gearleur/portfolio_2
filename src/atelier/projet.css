@@ -452,8 +452,9 @@
 }
 
 .mobile.projet--mobile .p-visuel:has(.schema) figcaption::after {
-  content: ' · glisser →';
+  content: ' · ← glisser →';
   color: var(--accent);
+  white-space: nowrap;
 }
 
 /* The table of contents, in the menu panel above the nav. */

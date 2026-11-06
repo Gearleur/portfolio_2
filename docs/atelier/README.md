@@ -654,7 +654,8 @@ construite comme celle de Rachel Chen :
   papier légère, un peu transparente et floutée. La lecture se fait sur une
   colonne. Les
   chiffres et le cartel sont empilés, les cartes deux par deux, la miniature en
-  portrait. Les schémas gardent une taille lisible et glissent de côté. Comme
+  portrait. Les schémas gardent une taille lisible, s'ouvrent centrés et glissent
+  des deux côtés. Comme
   les images de l'accueil, la miniature et les schémas passent par-dessus la
   tranche, et ton nom et « Menu » s'allument en accent là où ils passent dessous.
   « Menu » ouvre le sommaire au-dessus de la nav ;
@@ -774,6 +775,7 @@ un bon argument dans un portfolio.
 | 86 | 2026-11-06 | **Page projet sur téléphone** : le cadre de la Vitrine (tranche, Menu), une colonne, les chiffres et le cartel empilés, la miniature en portrait. Les schémas, à taille lisible, glissent de côté. Le sommaire est dans le panneau Menu et suit la lecture jusqu'à la partie 10. Les libellés des schémas sont préparés en anglais, le texte anglais reste à faire. | « Fais la version téléphone maintenant et on est bon ; ensuite on va attaquer la partie Alpine » | 7 |
 | 87 | 2026-11-06 | Sur téléphone, la **miniature et les schémas passent par-dessus la tranche**, jusqu'au bord de l'écran, comme les images de l'accueil. Le nom et « Menu » prennent l'accent seulement là où une image passe dessous (le même effet, partagé dans `tranche.ts`). | « Fais en sorte que les schémas passent par-dessus la sidebar de droite comme les images sur la page d'accueil, pour la version mobile » | 7 |
 | 88 | 2026-11-06 | Sur téléphone, le **retour « ← Projets / SNCF GPT » reste fixé en haut à gauche** pendant le défilement. Une pastille papier légère (80 % opaque, floutée, sans bordure) le garde lisible par-dessus le texte et les schémas. | « Il manque aussi le retour en haut à gauche pour revenir en arrière ; je veux qu'il soit fixe ; à toi d'ajuster avec les schémas et le texte pour qu'il reste visible, mais je veux un truc léger » | 7 |
+| 89 | 2026-11-06 | Sur téléphone, les **schémas s'ouvrent centrés** et glissent des deux côtés (« ← glisser → »). | « Centre les schémas de base » | 7 |
 
 ---
 

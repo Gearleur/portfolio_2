@@ -336,6 +336,23 @@ export function ProjetMobile({
   // The pictures run over the strip, as on the Vitrine's phone page.
   useTranche(ref, '.p-visuel__image');
 
+  // The diagrams, wider than the screen, open centred (journal n° 89); they
+  // scroll sideways both ways from there.
+  useEffect(() => {
+    const page = ref.current;
+    if (!page) return;
+    const centre = () => {
+      for (const image of page.querySelectorAll<HTMLElement>('.p-visuel__image')) {
+        const extra = image.scrollWidth - image.clientWidth;
+        if (extra > 0) image.scrollLeft = extra / 2;
+      }
+    };
+    centre();
+    const resize = new ResizeObserver(centre);
+    resize.observe(page);
+    return () => resize.disconnect();
+  }, []);
+
   return (
     <div ref={ref} className="mobile projet projet--mobile" data-glisse="">
       <div className="m-strip">
