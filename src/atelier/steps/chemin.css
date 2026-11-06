@@ -130,24 +130,35 @@
 }
 
 /* Desktop, 1440 × 900. Retained layout: the content on 12 columns from the left
-   edge, the side column on the last 3. */
+   edge, the side column on the last 3. The page scrolls (step 7, journal n° 68);
+   the side column stays in view. */
 
 .maquette {
   --u: calc(100cqw / 1440);
 
   display: grid;
   grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
-  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-rows: auto auto;
   column-gap: calc(var(--gutter) * var(--u));
   padding: calc(var(--space-6) * var(--u)) calc(var(--margin) * var(--u));
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.maquette::-webkit-scrollbar {
+  display: none;
 }
 
 .maquette .m-side {
+  position: sticky;
+  top: 0;
   display: flex;
   flex-direction: column;
   grid-area: 1 / 14 / 3 / 17;
+  align-self: start;
   align-items: flex-end;
   gap: calc(var(--space-7) * var(--u));
+  height: calc(100cqh - 2 * var(--space-6) * var(--u));
   text-align: right;
 }
 
@@ -196,14 +207,28 @@
   display: grid;
   grid-area: 2 / 1 / 3 / 13;
   grid-template-columns: subgrid;
+  row-gap: calc(var(--space-7) * var(--u));
   margin-top: calc(var(--space-8) * var(--u));
+  padding-bottom: calc(var(--space-8) * var(--u));
 }
 
+/* Two projects a row, each as wide as one and a half of the old cards; the
+   third sits under the second, so the projects read on a diagonal as the page
+   scrolls. */
 .maquette .m-visuals li {
   display: grid;
-  grid-column: span 4;
+  grid-column: span 6;
   align-content: start;
   gap: calc(var(--space-2) * var(--u));
+}
+
+.maquette .m-visuals li:nth-child(3) {
+  grid-column: 7 / span 6;
+}
+
+/* The column overlay stays over the screen while the page scrolls. */
+.maquette > .temoin__columns {
+  position: fixed;
 }
 
 /* Phone, 390 × 844, on 4 columns. Text and labels step down for the small
@@ -219,7 +244,13 @@
 
   display: flex;
   flex-direction: column;
-  padding: 0 calc((44 + var(--margin)) * var(--u)) 0 calc(var(--margin) * var(--u));
+  padding: 0 calc((44 + var(--margin)) * var(--u)) calc(var(--space-8) * var(--u)) calc(var(--margin) * var(--u));
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.mobile::-webkit-scrollbar {
+  display: none;
 }
 
 .mobile .m-hero {
@@ -244,13 +275,29 @@
   gap: calc(var(--space-2) * var(--u));
 }
 
-/* The strip: its rule and background sit under the headline and the images,
-   which run over it; its words, low in the strip, stay on top. */
-.m-strip {
-  position: absolute;
+/* The strip stays on the screen while the page scrolls: the stage has layout
+   containment, so a fixed element is placed in it. Its band (the rule and the
+   background) sits under the headline and the images, which run over it; its
+   words, low in the strip, stay on top of them. A fixed element stacks on its
+   own, so the band and the words are two layers. */
+.mobile::after {
+  content: '';
+  position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
+  z-index: 1;
+  width: calc(44 * var(--u));
+  border-left: 1px solid var(--line);
+  background: var(--fond);
+}
+
+.m-strip {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 4;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -260,20 +307,20 @@
   padding: calc(var(--space-5) * var(--u)) 0;
 }
 
-.m-strip::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  border-left: 1px solid var(--line);
-  background: var(--fond);
-}
-
 .m-strip > * {
-  position: relative;
-  z-index: 4;
+  padding: calc(6 * var(--u)) calc(3 * var(--u));
   writing-mode: vertical-rl;
   rotate: 180deg;
+  transition:
+    background-color 0.2s,
+    color 0.2s;
+}
+
+/* Over a picture, the name and « Menu » take an accent background, like a
+   hover (step 7, journal n° 69); MaquetteMobile sets data-over as the page scrolls. */
+.m-strip > [data-over] {
+  background: var(--accent);
+  color: var(--on-accent);
 }
 
 /* The headline runs over the strip too, to the right margin. */
@@ -289,9 +336,9 @@
   margin-right: calc((44 + var(--margin)) * -1 * var(--u));
 }
 
-/* The open menu: the desktop side column, right-aligned, over the page. */
+/* The open menu: the desktop side column, right-aligned, over the screen. */
 .m-menu {
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
   bottom: 0;

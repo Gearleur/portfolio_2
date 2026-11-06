@@ -621,6 +621,9 @@ a.atelier-steps__item:hover,
   inset: 0;
   overflow: hidden;
   container-type: size;
+  /* Layout containment: fixed elements of a page (the phone strip and menu)
+     are placed in the stage, not in the browser window. */
+  contain: layout;
   font-family: 'Inter', system-ui, sans-serif;
 }
 

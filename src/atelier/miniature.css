@@ -1,0 +1,217 @@
+/* Step 7 · The project thumbnails, in iridescent aluminium (journal n° 66):
+   brushed metal, the drawing engraved in it (a dark groove with a bright lower
+   lip), the wave's colours reflected like on anodised aluminium. The light and
+   the reflection follow the pointer. */
+
+@property --mx {
+  syntax: '<percentage>';
+  inherits: true;
+  initial-value: 28%;
+}
+
+@property --my {
+  syntax: '<percentage>';
+  inherits: true;
+  initial-value: 18%;
+}
+
+.miniature {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  isolation: isolate;
+  color: #2b3035;
+  background:
+    radial-gradient(ellipse 55% 75% at var(--mx) var(--my), rgb(255 255 255 / 0.9), rgb(255 255 255 / 0) 70%),
+    var(--brushed) 0 0 / 100% 100%,
+    linear-gradient(100deg, #8c949b 0%, #e8ecee 16%, #a7afb6 32%, #fbfcfc 48%, #959da4 66%, #e3e7ea 82%, #9ba3aa 100%);
+  transition:
+    --mx 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    --my 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.miniature::before,
+.miniature::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* The wave's colours in the metal; the arc shifts as the light moves. */
+.miniature::before {
+  background: radial-gradient(
+    circle at calc(var(--mx) + 84%) calc(var(--my) - 40%),
+    transparent 34%,
+    #dbeaf4 44%,
+    #354050 53%,
+    #8e0a1f 62%,
+    #ea3f1c 71%,
+    transparent 84%
+  );
+  mix-blend-mode: overlay;
+  opacity: 0.9;
+}
+
+/* A soft specular band, sliding with the light. */
+.miniature::after {
+  z-index: 2;
+  background: linear-gradient(
+    115deg,
+    transparent calc(var(--mx) - 30%),
+    rgb(255 255 255 / 0.35) calc(var(--mx) - 6%),
+    transparent calc(var(--mx) + 16%)
+  );
+  mix-blend-mode: soft-light;
+}
+
+.miniature__plan {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 0.5px 0 rgb(255 255 255 / 0.85));
+}
+
+.miniature__grid {
+  opacity: 0.12;
+}
+
+.miniature__sleepers {
+  opacity: 0.5;
+}
+
+.miniature__station {
+  fill: #dfe3e6;
+  stroke: currentColor;
+  stroke-width: 0.8;
+}
+
+.miniature__agent {
+  fill: var(--accent, #e0301f);
+}
+
+.miniature :is(.miniature__titre, .miniature__label, .aig__titre, .aig__micro, .aig__microprint, .aig__marque, .aig__sigle text) {
+  fill: currentColor;
+  text-rendering: geometricPrecision;
+}
+
+/* The serif italic of the cartels, in the title blocks. */
+.miniature__titre {
+  font: italic 400 13px/1 'Instrument Serif', Georgia, serif;
+}
+
+/* Aiguillage: a track engineering sheet, in hairlines and micro type. It is
+   texture on a card and reads in close-up. */
+.aig__titre {
+  font: italic 400 30px/1 'Instrument Serif', Georgia, serif;
+}
+
+/* The detail view's title, at the size of its labels, a little bolder. */
+.aig__micro--titre {
+  font-weight: 700;
+}
+
+/* The car-window markings: a maker's mark and round stamps. */
+.aig__marque {
+  fill: currentColor;
+  font: 700 5.4px/1 'Inter', system-ui, sans-serif;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.aig__sigle text {
+  fill: currentColor;
+  font: 600 3.6px/1 'Inter', system-ui, sans-serif;
+  letter-spacing: 0.04em;
+}
+
+.aig__micro {
+  font: 500 3.3px/1 'Inter', system-ui, sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Maths keep their lower case: α and tg. */
+.aig__micro--bas {
+  text-transform: none;
+}
+
+.aig__microprint {
+  font: 500 2.2px/1 'Inter', system-ui, sans-serif;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+.aig__fin,
+.aig__axe,
+.aig__rail,
+.aig__trait {
+  fill: none;
+  stroke: currentColor;
+}
+
+.aig__fin {
+  stroke-width: 0.3;
+}
+
+.aig__trait {
+  stroke-width: 0.6;
+}
+
+.aig__axe {
+  stroke-width: 0.28;
+  stroke-dasharray: 7 1.4 0.8 1.4;
+  opacity: 0.7;
+}
+
+.aig__rail {
+  stroke-width: 0.5;
+}
+
+.aig__traverses {
+  fill: rgb(43 48 53 / 0.07);
+  stroke: currentColor;
+  stroke-width: 0.32;
+}
+
+.aig__lame {
+  fill: currentColor;
+  opacity: 0.4;
+}
+
+.aig__plein {
+  fill: currentColor;
+}
+
+.aig__bulle {
+  fill: #e6e9ec;
+  stroke: currentColor;
+  stroke-width: 0.35;
+}
+
+/* The full plan's small labels, read in close-up on the project page. */
+.miniature__label {
+  font: 500 5.2px/1 'Inter', system-ui, sans-serif;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.miniature__label--agent {
+  font-weight: 600;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .miniature {
+    transition: none;
+  }
+}
+
+/* On a phone the card takes the detail view's proportions. */
+.m-img:has(> .miniature[data-cadrage='detail']) {
+  aspect-ratio: 210 / 262;
+}

@@ -65,7 +65,7 @@ export function Charte() {
     {
       label: 'Composition',
       value: 'Nav latérale à droite',
-      note: 'Le contenu sur 12 colonnes depuis le bord gauche ; le nom, la nav et le contact sur les 3 dernières. Sur téléphone, une tranche à droite que le titre et les images traversent. Projets légendés en petits cartels : titre en italique · organisation, année.',
+      note: 'Le contenu sur 12 colonnes depuis le bord gauche ; le nom, la nav et le contact sur les 3 dernières. Sur téléphone, une tranche à droite que le titre et les images traversent ; le nom et « Menu » restent dessus, sur fond accent quand une image passe. Projets deux par rangée sur 6 colonnes, le troisième sous le deuxième, en diagonale ; la page défile, la nav reste en place. Légendés en petits cartels : titre en italique · organisation, année.',
       step: 5,
     },
     { label: 'Grain', value: percent(grain.strength), note: `Taille ${percent(grain.size)} · irrégularité ${percent(grain.irregularity)}`, step: 1 },
@@ -85,6 +85,12 @@ export function Charte() {
     },
     { label: 'Liens', value: 'Soulignés', note: 'Liens @ : filet clair qui passe à l’accent au survol. Nav : soulignement accent de 1 px au survol.', step: 6 },
     { label: 'Menu téléphone', value: 'Glisse · 0,5 s', note: 'Le panneau arrive du bord droit, là où est la tranche, et repart de même.', step: 6 },
+    {
+      label: 'Miniatures',
+      value: 'Alu irisé',
+      note: 'Une planche d’ingénierie ferroviaire en micrographie (SNCF GPT : un aiguillage à trois voies), gravée dans de l’aluminium brossé où se reflètent les couleurs de l’onde ; la lumière suit la souris. Sur téléphone, une vue de détail dans un cercle.',
+      step: 7,
+    },
     { label: 'Lumière', value: 'Aucune', note: 'Pas d’ombre de fenêtre', step: 1 },
   ];
 

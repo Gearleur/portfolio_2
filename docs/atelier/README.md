@@ -193,7 +193,7 @@ La palette Snow crimson est gardée en appoint (journal n° 23) :
 | 4 | Espaces et grille | Le rythme et les colonnes | Validé le 2026-11-06 |
 | 5 | Le chemin de fer | La composition de la Vitrine | Validé le 2026-11-06 |
 | 6 | Les composants | Chaque brique, une par une | Validé le 2026-11-06 |
-| 7 | Le contenu | Tes projets et tes textes | — |
+| 7 | Le contenu | Tes projets et tes textes | En cours |
 | 8 | La Vitrine | La page assemblée | — |
 | 9 | Mouvement et finitions | Survols, apparitions, mobile, accessibilité | — |
 | 10 | Mise en ligne | Le lien depuis le bureau, le déploiement | — |
@@ -540,6 +540,73 @@ décident en assemblant la Vitrine, à l'étape 8.
 Une interview projet par projet : ce que c'était, ton rôle, l'impact, ce qui a
 bloqué, ce que tu as appris. Tu écris ou tu valides chaque texte.
 
+**Ta direction** : chaque page projet raconte comment le projet s'est construit,
+comme la page OpenAI de Rachel Chen (titres en phrases, cartel, décisions
+numérotées, leçons à la première personne). Elle tourne autour de trois questions :
+ce que j'ai mis en place, comment j'ai travaillé, ce que ça m'a apporté.
+
+Les brouillons vivent dans `docs/atelier/contenu/`, un fichier par projet, d'abord
+en français. On ne commite un texte qu'une fois validé, sans nom de collègue, sans
+nom interne et sans capture d'application interne. Les sources privées, comme ton
+rapport de stage, restent hors du dépôt.
+
+- **SNCF GPT** (`01-sncf-gpt.md`) : deuxième jet, tiré du rapport de stage TN09
+  et calé partie par partie sur la page de Rachel. On montre d'abord le produit
+  (la solution, puis ce que voit le support), puis la construction : l'écoute et
+  la lecture, les options explorées, le prototype et ses tests, les décisions, la
+  mise en production. Viennent ensuite les résultats et les leçons. Il reprend tes
+  points : la CI/CD, les papiers de recherche, l'écoute des équipes DevOps.
+
+**Les miniatures.** Pour SNCF GPT, ton schéma de l'architecture déployée
+(rapport, fig. 9.5) est redessiné en plan de voies, comme un dessin technique
+ferroviaire :
+
+- en haut, la voie de la résolution : l'agent, le modèle, l'app, les
+  utilisateurs ;
+- à gauche, le faisceau des outils de l'agent ;
+- en bas, la voie de l'ingestion ;
+- le cube accent marque l'agent, à l'aiguillage où toutes les voies se
+  rejoignent ;
+- une cote donne la durée du stage, et un cartouche porte le titre en italique.
+
+**Retenue : l'alu irisé.** De l'aluminium brossé, le dessin gravé dedans, les
+couleurs de l'onde reflétées comme sur un métal anodisé. La lumière suit la
+souris, dans la Vitrine aussi. Le plan détaillé est trop fin pour une carte : il
+reste pour la page projet, en grand.
+
+**Retenu : l'aiguillage**, redessiné comme une planche d'ingénierie de la voie,
+en micrographie, puis épuré :
+
+- **la voie** : des rails en double filet, de longues traverses sous l'appareil,
+  les aiguilles, les deux cœurs et leurs contre-rails, les axes en trait mixte ;
+  les cotes d'écartement (1 435) et d'angle ; les quatre destinations. Le cube
+  accent est l'agent ;
+- **en haut à droite** : le titre en grand et la référence du dossier, rien
+  d'autre ;
+- **en bas à gauche** : des marquages comme au coin d'une vitre de voiture. On y
+  trouve un logo « Atelier A.T. », des tampons ronds (A7, cycle, RAG, CI/CD, FR),
+  des codes et un code-date en points ;
+- **le cadre** : des zones A à F et 1 à 4, un chaînage, un micro-texte dans la
+  marge.
+
+Sur une carte, la planche est une texture qui donne envie de cliquer ; en gros
+plan, tout se lit. La géométrie (rails, traverses, cœurs) est calculée dans
+`src/atelier/voies.ts`, le dessin dans `Aiguillage.tsx`.
+
+**Sur téléphone, retenu : la vue de détail.** L'aiguillage est agrandi dans un
+cercle bordé de micro-texte. « SNCF GPT » est en haut, à la taille des
+étiquettes ; la référence et les tampons sont sous le cercle. Planche et
+Rallongée sont retirées. La bande de la tranche passe sous les images, mais ton
+nom et « Menu » restent dessus : quand une image passe sous eux, ils prennent le
+fond accent, comme un survol.
+
+**La grille des projets change** : deux projets par rangée sur 6 colonnes
+chacun, soit la largeur des trois cartes d'avant. Le troisième vient sous le
+deuxième, en diagonale. La page défile, et la nav reste en place à droite ; sur
+téléphone, la tranche aussi.
+
+Le tout se trouve dans `src/atelier/Miniature.tsx`.
+
 ### Étape 8 — La Vitrine
 
 On assemble `/portfolio/` avec uniquement les pièces validées. Si quelque chose
@@ -625,6 +692,12 @@ un bon argument dans un portfolio.
 | 61 | 2026-11-06 | Barre sur le texte à 2,5 px. Deux autres formes sur un projet à comparer avec la pointe : Équerre et Cube. Menu : Glisse gardée, Déplie et Fondu remplacées par Échelle, Glisse courte et Volet, autour de 0,2 s. | « Un peu plus épais sur le texte » · « propose-moi d'autres curseurs » · « une animation où on veut l'information rapidement, genre 0,90 → 1 » | 6 |
 | 62 | 2026-11-06 | **Étape 6 validée.** Menu téléphone : Glisse (0,5 s) ; Échelle, Glisse courte et Volet retirés. Sur un projet : la Pointe gardée ; Équerre et Cube retirés. Les rôles de la palette d'appoint passent à l'étape 8. | « Glisse 0,5 s, c'est bon, on peut continuer » · « il est beaucoup mieux, celui que tu m'as donné » | 6 |
 | 63 | 2026-11-06 | Plus de main du système sur les liens @ (écoles, entreprises) : seule la petite pointe dessinée. Sur les téléphones de l'Atelier, la flèche du système reste pour pouvoir toucher « Menu ». | « Il y a la main quand on survole les liens des universités et des entreprises ; enlève la main, garde la flèche uniquement » | 6 |
+| 64 | 2026-11-06 | Étape 7 ouverte. Les pages projet racontent comment le projet s'est construit, comme la page OpenAI de Rachel Chen : ce que j'ai mis en place, comment j'ai travaillé, ce que ça m'a apporté. Premier sujet : SNCF GPT, d'après le rapport de stage, qui reste hors du dépôt. | « Que ça ressemble à cette page, de comment on construit le projet » · « Quelque chose de plus structuré : ce que ça m'a apporté, ce que j'ai mis en place, comment j'ai bossé » | 7 |
+| 65 | 2026-11-06 | Miniature de SNCF GPT : le schéma d'architecture déployée redessiné en plan de voies technique (le cube accent est l'agent). Trois finitions à comparer : Onde et grain, Aluminium, Alu irisé. | « Reprendre les schémas de l'architecture déployée, une miniature moderne avec notre patte adaptée à la SNCF : des rails, du technique, technical graphic design, nos gradients par-dessus avec du grain ou une brillance type aluminium réfléchissant » | 7 |
+| 66 | 2026-11-06 | Finition des miniatures : **alu irisé** ; Onde et grain et Aluminium retirés. Le plan détaillé reste pour la page projet. Trois agencements lisibles en carte à comparer : Aiguillage, Ligne, Plaque. | « Alu irisé c'est le mieux, il faut qu'il soit un peu interactif » · « Beaucoup trop petits, les détails des titres ; fais un truc plus simple mais technique » | 7 |
+| 67 | 2026-11-06 | Miniature : l'**Aiguillage** retenu (Ligne et Plaque retirées), redessiné en planche d'ingénierie micrographique : rails en double filet, longues traverses, aiguilles, cœurs, contre-rails, cotes, cartouche, nomenclature, micro-texte. Lisible en gros plan, texture sur une carte. | « On part sur ça, mais les rails ne font pas assez technique, trop cheap ; des détails plus petits, plus techniques, quelque chose de plus micrographique ; pas grave si la miniature ne parle pas, le tout c'est qu'on veuille cliquer dessus » | 7 |
+| 68 | 2026-11-06 | Planche épurée : titre plus grand, en haut à droite avec la seule référence du dossier ; bulles, nomenclature, notes et code-barres retirés ; en bas à gauche, des marquages façon vitre de voiture (logo, tampons ronds, petits mots techniques, code-date). Trois cadrages téléphone à comparer : Planche, Rallongée, Détail. Vitrine : **deux projets par rangée** (6 colonnes chacun, la largeur des trois cartes d'avant), le troisième sous le deuxième, en diagonale ; la page défile, la nav et la tranche restent en place. | « Le titre un peu plus gros, enlève des infos, il y en a trop ; ajoute des logos, des certifs, des trucs industriels en petit, comme en bas des fenêtres de voiture » · « En haut à droite, titre plus réf. dossier, plus épuré » · « Pour le mobile, peut-être la rallonger pour montrer qu'elle est coupée mais que c'est fait exprès » · « Deux projets sur la page, un en dessous du deuxième, en diagonale ; deux projets font la taille de trois maintenant » | 7 |
+| 69 | 2026-11-06 | Téléphone : la **vue de détail** retenue (Planche et Rallongée retirées) ; « SNCF GPT » remplace « Détail A · 2:1 », à la même taille. La bande de la tranche passe sous les images ; le nom et « Menu » restent dessus et prennent le fond accent quand une image passe sous eux. | « Pour le cadrage du téléphone je veux le 3 » · « Juste le menu et Alexandre Teixeira qui passent par-dessus ; un fond orange genre hover quand ils passent sur l'image » · « Rajoute SNCF GPT, pas trop gros, à la place de détail et de la même taille » | 7 |
 
 ---
 

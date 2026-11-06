@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
 import { GridColumns } from './Temoin';
 
@@ -48,6 +49,8 @@ type MaquetteProps = {
   blocks: boolean;
   /** Shows the columns over the page. */
   columns?: number;
+  /** Pictures for the project cards, by project number; the others stay grey. */
+  images?: Partial<Record<string, ReactNode>>;
 };
 
 /**
@@ -55,7 +58,7 @@ type MaquetteProps = {
  * starts at the left edge, the name, nav and contact close the page on the right.
  * The explored layouts are in the history (commit 0022543).
  */
-export function Maquette({ blocks, columns }: MaquetteProps) {
+export function Maquette({ blocks, columns, images }: MaquetteProps) {
   return (
     <div className="maquette" data-blocks={blocks ? '' : undefined}>
       {columns && <GridColumns count={columns} />}
@@ -65,7 +68,7 @@ export function Maquette({ blocks, columns }: MaquetteProps) {
         <Contact />
       </div>
       <Hero />
-      <Visuals />
+      <Visuals images={images} />
     </div>
   );
 }
@@ -83,9 +86,38 @@ type MaquetteMobileProps = MaquetteProps & {
  * The same first screen on a 390 × 844 phone. The side column folds into a thin
  * strip along the right edge; the project images run over it.
  */
-export function MaquetteMobile({ menuOpen, onMenu, glisse, blocks, columns }: MaquetteMobileProps) {
+export function MaquetteMobile({ menuOpen, onMenu, glisse, blocks, columns, images }: MaquetteMobileProps) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  // The name and « Menu » stay over the pictures that run over the strip; while
+  // one passes under them, they take an accent background (data-over).
+  useEffect(() => {
+    const page = ref.current;
+    if (!page) return;
+    const words = [...page.querySelectorAll<HTMLElement>('.m-strip > *')];
+    const update = () => {
+      const pictures = [...page.querySelectorAll('.m-img')].map((picture) => picture.getBoundingClientRect());
+      for (const word of words) {
+        const box = word.getBoundingClientRect();
+        const over = pictures.some(
+          (picture) =>
+            box.left < picture.right && box.right > picture.left && box.top < picture.bottom && box.bottom > picture.top,
+        );
+        word.toggleAttribute('data-over', over);
+      }
+    };
+    update();
+    page.addEventListener('scroll', update, { passive: true });
+    const resize = new ResizeObserver(update);
+    resize.observe(page);
+    return () => {
+      page.removeEventListener('scroll', update);
+      resize.disconnect();
+    };
+  }, []);
+
   return (
-    <div className="mobile" data-blocks={blocks ? '' : undefined} data-glisse={glisse ? '' : undefined}>
+    <div ref={ref} className="mobile" data-blocks={blocks ? '' : undefined} data-glisse={glisse ? '' : undefined}>
       {columns && <GridColumns count={columns} />}
       <div className="m-strip">
         <Name />
@@ -94,7 +126,7 @@ export function MaquetteMobile({ menuOpen, onMenu, glisse, blocks, columns }: Ma
         </button>
       </div>
       <Hero />
-      <Visuals />
+      <Visuals images={images} />
       <div className="m-menu" data-open={menuOpen ? '' : undefined} inert={!menuOpen}>
         <button type="button" className="m-label" onClick={() => onMenu?.(false)}>
           <T>Fermer</T>
@@ -175,11 +207,11 @@ const Hero = () => (
   </div>
 );
 
-const Visuals = () => (
+const Visuals = ({ images }: Pick<MaquetteProps, 'images'>) => (
   <ul className="m-visuals">
     {PROJECTS.map((project) => (
       <li key={project.number} data-cursor="projet" data-cursor-label="Voir le projet">
-        <span className="m-img" />
+        <span className="m-img">{images?.[project.number]}</span>
         <span className="m-work">
           <em>
             <T>{project.name}</T>
