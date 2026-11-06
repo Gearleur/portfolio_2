@@ -5,11 +5,35 @@ import { GridColumns } from './Temoin';
 // « Actuellement », « Précédemment » and « Formation », as on Rachel Chen's
 // page. The final words are written with Alexandre at step 7.
 const NAV = ['Projets', 'À propos', 'CV', 'Contact'];
-const ENTETE: [string, string[]][] = [
-  ['Actuellement', ['Étudiant']],
-  // One sentence over two lines, broken after the second « @ » (\n, see .m-facts dd).
-  ['Précédemment', ['Ingénieur IA @ SNCF, ingénieur IA @\nRenault\u00a0/\u00a0Alpine']],
-  ['Formation', ['UTC, 2022 – 2026', 'Shanghai University, 2024 – 2025']],
+
+/** A run of text, or a link to an organisation's site. */
+type Part = string | { text: string; href: string };
+
+const at = (name: string, href: string): Part => ({ text: `@${name}`, href });
+
+const ENTETE: [string, Part[][]][] = [
+  ['Actuellement', [['Étudiant']]],
+  // One sentence over two lines, broken before « @Renault » (\n, see .m-facts dd).
+  [
+    'Précédemment',
+    [
+      [
+        'Ingénieur IA ',
+        at('SNCF', 'https://www.groupe-sncf.com'),
+        ', ingénieur IA\n',
+        at('Renault', 'https://www.renaultgroup.com'),
+        '\u00a0/\u00a0',
+        { text: 'Alpine', href: 'https://www.alpinecars.com' },
+      ],
+    ],
+  ],
+  [
+    'Formation',
+    [
+      [at('UTC', 'https://www.utc.fr'), ', 2022 – 2026'],
+      [at('Shanghai University', 'https://www.shu.edu.cn'), ', 2024 – 2025'],
+    ],
+  ],
 ];
 const PROJECTS = [
   { number: '01', name: 'SNCF GPT', meta: 'SNCF · 2023' },
@@ -126,9 +150,17 @@ const Hero = () => (
           <dt className="m-label">
             <T>{term}</T>
           </dt>
-          {lines.map((line) => (
-            <dd key={line}>
-              <T>{line}</T>
+          {lines.map((parts, index) => (
+            <dd key={index}>
+              {parts.map((part, position) =>
+                typeof part === 'string' ? (
+                  <T key={position}>{part}</T>
+                ) : (
+                  <a key={position} className="m-link" href={part.href} target="_blank" rel="noreferrer">
+                    <T>{part.text}</T>
+                  </a>
+                ),
+              )}
             </dd>
           ))}
         </div>

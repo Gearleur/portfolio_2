@@ -47,6 +47,19 @@
   white-space: pre-line;
 }
 
+/* Links to the organisations: the ink, a light underline that turns accent. */
+.m-link {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--line);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+.m-link:hover {
+  text-decoration-color: var(--accent);
+}
+
 .m-facts dd + dd {
   margin-top: calc(var(--space-1) * var(--u));
 }
