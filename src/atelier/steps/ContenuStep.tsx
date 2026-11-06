@@ -1,7 +1,6 @@
 import { useCallback, useState } from 'react';
 import { Maquette, MaquetteMobile } from '../Maquettes';
 import { Miniature } from '../Miniature';
-import { MiniatureAlpine } from '../MiniatureAlpine';
 import { ProjetMaquette, ProjetMobile } from '../Projet';
 import { SNCF_GPT } from '../projets';
 import { Specimen, SpecimenPreview } from '../Specimen';
@@ -69,7 +68,7 @@ export function ContenuStep() {
   const [vue, setVue] = useState<'projet' | 'vitrine'>('projet');
   const [waveSignal, playWave] = useWaveSignal();
   const close = useCallback(() => setPreview(null), []);
-  const images = { '01': <Miniature />, '03': <MiniatureAlpine /> };
+  const images = { '01': <Miniature /> };
 
   return (
     <section className="atelier-step" aria-labelledby="step-contenu">
@@ -178,19 +177,6 @@ export function ContenuStep() {
             </div>
           </div>
         </div>
-      </div>
-
-      <div className="miniatures">
-        <h3>
-          Whiteboard AMDEC · la miniature{' '}
-          <span>
-            Une affiche fixe, bleu électrique et touches de rouge : une berlinette Alpine cotée, deux agents sur ses
-            pièces, la grille que les agents quittent pour l’inédit, et une étiquette produit (agents, modèles, GPU).
-          </span>
-        </h3>
-        <span className="miniatures__plan">
-          <MiniatureAlpine />
-        </span>
       </div>
 
       <div className="miniatures">

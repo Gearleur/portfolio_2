@@ -659,24 +659,8 @@ construite comme celle de Rachel Chen :
   les images de l'accueil, la miniature et les schémas passent par-dessus la
   tranche, et ton nom et « Menu » s'allument en accent là où ils passent dessous.
   « Menu » ouvre le sommaire au-dessus de la nav ;
-- **Whiteboard AMDEC, la miniature** (`src/atelier/MiniatureAlpine.tsx`) : une
-  **affiche fixe**, sans animation, dans l'esprit de tes références (étiquettes
-  industrielles, affiches suisses à grille, « the grid is lying », affiche bleue
-  électrique). Elle est **bleu électrique, avec des touches de rouge** et un
-  trait blanc :
-  - **le titre** : « WHITEBOARD AMDEC. » en grand, en capitales condensées, avec
-    un point rouge ;
-  - **une berlinette Alpine** de profil, cotée (2 420, 4 180, 1 252 mm). Deux
-    agents, toutes petites flèches rouges, sont posés sur ses pièces, avec des
-    étiquettes en boîte ;
-  - **la grille que les agents quittent**, de l'évident à l'inédit, pour la
-    boucle de créativité ;
-  - **une étiquette produit** : 3 agents + 1 superviseur, ADK, LangGraph, RAG,
-    CAG ; Mistral, Gemma, Qwen ; 8×A100, vLLM ; un code-barres et une P/N ;
-  - **un bandeau** : la marque « Atelier A.T. », « RPN = G × O × D » en rouge.
-
-  Trois polices auto-hébergées (SIL OFL) : Big Shoulders Display, Mona Sans en
-  large et Geist Mono. Le texte de la page est dans
+- **Whiteboard AMDEC, la miniature** : retirée de l'Atelier. Tu l'as faite avec
+  un autre agent (journal n° 95). Le texte de la page est dans
   `docs/atelier/contenu/03-whiteboard-amdec.md`.
 - **l'anglais, préparé** : les libellés des schémas existent en français et en
   anglais (`src/atelier/langue.ts`). Le texte anglais de la page reste à brancher. Les logos viennent de Simple
@@ -800,6 +784,7 @@ un bon argument dans un portfolio.
 | 92 | 2026-11-06 | Miniature Whiteboard AMDEC, **troisième tour, plus épuré**, façon motion design Apple : plus de scan, de grille, d'anneau ni de coins. L'ouverture est lente avec de longues pauses (boucle de 18 s), les numéros sont sur des filets fins, l'étiquette est en pilule. **Une couleur par agent** : rouge, ambre, menthe. Trois finitions à comparer : Graphite, Plan clair, Bleu Alpine. | « Fais un truc avec moins d'animation, enlève le scanner, le rayon qui va de haut en bas ; fais-moi d'autres propositions, là je trouve que ça fait trop cheap ; un truc plus propre, plus épuré, plus motion design à la Apple, avec du technique derrière ; change la couleur des flèches pour montrer que ce sont des agents différents » | 7 |
 | 93 | 2026-11-06 | Miniature Whiteboard AMDEC, **quatrième tour, d'après ta référence** (une planche de turboréacteur ; le style seulement, l'image n'est pas reprise). Un turboréacteur de 23 étages en trait crème sur ardoise avec une grille, des étiquettes en boîte à chasse fixe. Les étages s'écartent puis se referment, les aubes tournent doucement. **Trois toutes petites flèches rouges** glissent de pièce en pièce, sans colorer les pièces. Les trois finitions précédentes sont retirées. | « Prends ça comme base, simplifie et ajoute du motion ; garde la couleur et tout du schéma, les traits ; les agents, quelque chose de discret avec des toutes petites flèches, pas cheap ; pas de couleur sur les éléments cliqués, juste les flèches qui se déplacent, toutes rouges comme notre couleur » | 7 |
 | 94 | 2026-11-06 | Miniature Whiteboard AMDEC : on repart de zéro avec une **affiche fixe**, sans motion, **bleu électrique avec des touches de rouge**, d'après tes références (étiquettes industrielles, affiches à grille, affiche bleue). On y trouve une berlinette Alpine cotée avec deux agents, la grille quittée pour l'inédit, une étiquette produit (agents, modèles, GPU), des capitales condensées (Big Shoulders), du large (Mona Sans) et de la mono (Geist Mono). | « Oublie ce qu'on a fait ; adapte ces idées à la couleur d'Alpine avec des éléments Alpine ; j'adore le bleu de la dernière image, tout en bleu, un poster bleu avec des touches de rouge et des annotations techniques ; plus de motion, un truc statique » | 7 |
+| 95 | 2026-11-06 | Miniature Whiteboard AMDEC **retirée** de l'Atelier (composant, styles, gros plan et carte de la Vitrine) : tu l'as faite avec un autre agent. Les quatre tours précédents restent dans l'historique (commits 1189514 à bdb94a2). | « Supprime la miniature, je l'ai faite avec un autre agent » | 7 |
 
 ---
 
