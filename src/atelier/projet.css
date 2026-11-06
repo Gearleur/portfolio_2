@@ -1,8 +1,8 @@
 /* Step 7 · A project page in the Vitrine's frame (journal n° 74 and 75). The
    reading runs down the middle of the page, as on Rachel Chen's case studies:
    the text on 6 columns (6 to 11 of 16), the pictures, columns and figures a
-   little wider (5 to 12), the thumbnail wider still (4 to 13). The side column
-   on the right is the table of contents. Sizes are px at a 1440 px page (--u),
+   little wider (5 to 12), the thumbnail wider still (4 to 13). The scroll bar
+   and the table of contents are on the left, the name and nav on the right. Sizes are px at a 1440 px page (--u),
    from the type scale: the text at its 15 px, headings three steps up. */
 
 .projet {
@@ -217,15 +217,69 @@
   margin-top: calc(var(--space-6) * var(--u));
 }
 
-/* Table of contents, in the side column: numbered, the section being read
-   marked by the accent square, like the current page in the nav. */
+/* On the left (journal n° 76): the scroll bar and the table of contents,
+   which stay in view while the page scrolls, like Rachel Chen's left column. */
+.projet .p-gauche {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: grid;
+  grid-area: 1 / 1 / 3 / 4;
+  grid-template-columns: calc(32 * var(--u)) minmax(0, 1fr);
+  align-self: start;
+  column-gap: calc(var(--space-5) * var(--u));
+  height: calc(100cqh - 2 * var(--space-6) * var(--u));
+}
+
+/* The scroll bar: a ruler of fine strokes; the wave's length and strength come
+   from Defilement (--long and --fort, 0 to 1). */
+.p-defilement {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  touch-action: none;
+}
+
+.p-trait {
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: var(--ink);
+  opacity: calc(0.18 + 0.6 * var(--fort, 0.3));
+  transform: scaleX(var(--long, 0.25));
+  transform-origin: 0 50%;
+  transition:
+    transform 0.18s ease-out,
+    opacity 0.18s ease-out;
+}
+
+/* Where a section starts: a slightly stronger stroke. */
+.p-trait[data-jalon] {
+  height: calc(1.5 * var(--u));
+}
+
+/* Level with the reading: the accent. */
+.p-trait[data-ici] {
+  background: var(--accent);
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .p-trait {
+    transition: none;
+  }
+}
+
+/* Table of contents: numbered, the section being read marked by the accent
+   square, like the current page in the nav. */
 .p-sommaire {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: flex-start;
   gap: calc(var(--space-2) * var(--u));
   margin: 0;
-  padding: 0;
+  padding: calc(var(--space-8) * var(--u)) 0 0;
   list-style: none;
 }
 
@@ -238,7 +292,7 @@
   background: none;
   color: inherit;
   font: inherit;
-  text-align: right;
+  text-align: left;
   text-decoration: underline 1px transparent;
   text-underline-offset: 0.3em;
   transition:

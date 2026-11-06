@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import type { CSSProperties } from 'react';
+import type { CSSProperties, PointerEvent as ReactPointerEvent, RefObject } from 'react';
 import { Contact, Name, NavList, T } from './Maquettes';
 import { Miniature, PlanArchitecture } from './Miniature';
 import type { Bloc, Phrase, Projet } from './projets';
@@ -127,10 +127,98 @@ function Blocs({ blocs, figures }: { blocs: Bloc[]; figures: Map<Bloc, number> }
   });
 }
 
+const TICKS = 64;
+
 /**
- * A project page in the Vitrine's frame: the side column turns into the page's
- * table of contents, which follows the reading; the content runs on the 12
- * columns from the left edge, like Rachel Chen's case studies.
+ * The page's scroll bar, on the left (journal n° 76): a column of fine
+ * strokes, like a ruler. The strokes level with the reading stretch into a
+ * wave that follows the scroll; the whole column ripples a little as it goes;
+ * a stroke marks where each section starts. Click or drag along it to scroll.
+ */
+function Defilement({ page, sections }: { page: RefObject<HTMLDivElement | null>; sections: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [marks, setMarks] = useState<number[]>([]);
+
+  useEffect(() => {
+    const scroller = page.current;
+    const ruler = ref.current;
+    if (!scroller || !ruler) return;
+    const ticks = [...ruler.querySelectorAll<HTMLElement>('.p-trait')];
+    let frame = 0;
+
+    const draw = () => {
+      frame = 0;
+      const range = scroller.scrollHeight - scroller.clientHeight;
+      const progress = range > 0 ? scroller.scrollTop / range : 0;
+      const at = progress * (TICKS - 1);
+      ticks.forEach((tick, index) => {
+        const d = (index - at) / 4.5;
+        const wave = Math.exp(-d * d);
+        const ripple = 0.5 + 0.5 * Math.sin(index * 0.45 - progress * Math.PI * 6);
+        tick.style.setProperty('--long', (0.18 + 0.1 * ripple + 0.72 * wave).toFixed(3));
+        tick.style.setProperty('--fort', (0.3 + 0.7 * wave).toFixed(3));
+        tick.toggleAttribute('data-ici', Math.round(at) === index);
+      });
+    };
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(draw);
+    };
+
+    // Where each section starts, as a stroke of the ruler.
+    const measure = () => {
+      const range = scroller.scrollHeight - scroller.clientHeight;
+      const starts = [...scroller.querySelectorAll<HTMLElement>('[data-section]')].map((section) =>
+        Math.round(Math.min(1, Math.max(0, (section.offsetTop - scroller.clientHeight * 0.08) / range)) * (TICKS - 1)),
+      );
+      setMarks(starts);
+      schedule();
+    };
+
+    measure();
+    scroller.addEventListener('scroll', schedule, { passive: true });
+    const resize = new ResizeObserver(measure);
+    resize.observe(scroller);
+    return () => {
+      cancelAnimationFrame(frame);
+      scroller.removeEventListener('scroll', schedule);
+      resize.disconnect();
+    };
+  }, [page, sections]);
+
+  // Click or drag: the page follows the pointer along the ruler.
+  const scrub = (event: ReactPointerEvent<HTMLDivElement>) => {
+    const scroller = page.current;
+    if (!scroller) return;
+    const box = event.currentTarget.getBoundingClientRect();
+    const progress = Math.min(1, Math.max(0, (event.clientY - box.top) / box.height));
+    scroller.scrollTo({ top: progress * (scroller.scrollHeight - scroller.clientHeight) });
+  };
+
+  return (
+    <div
+      ref={ref}
+      className="p-defilement"
+      data-cursor="defilement"
+      aria-hidden="true"
+      onPointerDown={(event) => {
+        event.currentTarget.setPointerCapture(event.pointerId);
+        scrub(event);
+      }}
+      onPointerMove={(event) => {
+        if (event.currentTarget.hasPointerCapture(event.pointerId)) scrub(event);
+      }}
+    >
+      {Array.from({ length: TICKS }, (_, index) => (
+        <span key={index} className="p-trait" data-jalon={marks.includes(index) ? '' : undefined} />
+      ))}
+    </div>
+  );
+}
+
+/**
+ * A project page in the Vitrine's frame, like Rachel Chen's case studies: the
+ * reading down the middle; on the left, the scroll bar and the table of
+ * contents, which follows the reading; on the right, the name, nav and contact.
  */
 export function ProjetMaquette({ projet }: { projet: Projet }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -167,9 +255,8 @@ export function ProjetMaquette({ projet }: { projet: Projet }) {
 
   return (
     <div ref={ref} className="maquette projet">
-      <div className="m-side">
-        <Name />
-        <NavList className="m-nav m-label" />
+      <nav className="p-gauche" aria-label="Sommaire">
+        <Defilement page={ref} sections={projet.sections.length} />
         <ol className="p-sommaire m-label">
           {projet.sections.map((section, index) => (
             <li key={section.id} aria-current={section.id === active ? 'location' : undefined}>
@@ -180,6 +267,11 @@ export function ProjetMaquette({ projet }: { projet: Projet }) {
             </li>
           ))}
         </ol>
+      </nav>
+
+      <div className="m-side">
+        <Name />
+        <NavList className="m-nav m-label" />
         <Contact />
       </div>
 

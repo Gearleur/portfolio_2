@@ -66,8 +66,8 @@ export function ContenuStep() {
               montreront.
             </p>
             <p className="atelier-panel__note">
-              À droite, sous la nav, le sommaire : il suit la lecture (carré accent) et chaque ligne mène à sa partie.
-              Fais défiler la page.
+              À gauche, le sommaire, qui suit la lecture (carré accent), et la barre de défilement : une vague de
+              traits qui s’allongent au niveau de la lecture. Clique ou glisse dessus.
             </p>
           </fieldset>
 
