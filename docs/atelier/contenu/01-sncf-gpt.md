@@ -37,6 +37,14 @@ introduction. Un menu des parties reste visible sur le côté.
 **SNCF GPT**
 Un assistant pour le support DevOps, devenu l'IA générative du groupe SNCF.
 
+*Les résultats d'abord (journal n° 81) :*
+
+- **82 %** des incidents de niveau 1 d'un jeu de tickets de test résolus par
+  l'assistant (mesure interne) ;
+- **500+** personnes habilitées à la fin du stage ;
+- **3 000+** utilisateurs par jour, une fois l'outil branché sur Jira,
+  SharePoint et d'autres sources.
+
 | | |
 | --- | --- |
 | Équipe | Seul sur le prototype · à trois sur le démonstrateur · à deux pour la production |
@@ -174,11 +182,8 @@ l'Usine sait maintenant déployer et maintenir l'application.**
 
 ## 9. Résultats
 
-- Sur un jeu de tickets de test, **82 %** des incidents de niveau 1 résolus par
-  l'assistant (mesure interne).
-- Plus de 500 personnes habilitées à la fin du stage, puis **plus de 3 000
-  utilisateurs par jour** une fois l'outil branché sur Jira, SharePoint et
-  d'autres sources du groupe.
+*Les chiffres sont en tête de page ; ici, le reste :*
+
 - Présenté au comité exécutif du groupe, qui a demandé de l'ouvrir à tout le groupe.
 - Présenté à plus de 350 personnes de la direction, puis au TechAndFest de Grenoble
   en 2024.

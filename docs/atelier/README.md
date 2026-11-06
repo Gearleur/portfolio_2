@@ -621,7 +621,9 @@ Le tout se trouve dans `src/atelier/Miniature.tsx`.
 **La page projet** (`src/atelier/Projet.tsx`, textes dans `projets.ts`) est
 construite comme celle de Rachel Chen :
 
-- **en tête** : le fil, le titre, l'accroche, le cartel et la miniature ;
+- **en tête** : le titre, l'accroche, **les trois chiffres clés** (les résultats
+  d'abord), le cartel et la miniature. La partie Résultats, à la fin, garde le
+  reste sans répéter les chiffres ;
 - **dix parties** : un filet, un numéro, un titre en phrase, puis les blocs (texte,
   colonnes, cartes, décisions, question, compromis, chiffres clés) ;
 - **la lecture au milieu** : le texte sur 6 colonnes (6 à 11 sur 16), les images,
@@ -740,6 +742,7 @@ un bon argument dans un portfolio.
 | 78 | 2026-11-06 | Page projet : **pas d'onde** (fond clair et grain seulement, pour la lecture) ; le **sommaire descend à 240 px** du haut ; en haut à gauche, un **retour « ← Projets / SNCF GPT »** qui remplace le fil au-dessus du titre. | « Sur la page projet je ne veux pas d'onde, ça empêche la lecture » · « Le sommaire un peu plus bas » · « Un truc qui permet de revenir en arrière sur les projets en haut à gauche : ← work / SNCF GPT » | 7 |
 | 79 | 2026-11-06 | La flèche du retour reprend la **pointe d'agent du curseur** sur les projets, en accent, tournée vers la gauche ; elle recule un peu au survol. | « La flèche, mets le curseur qu'on a mis en hover des projets, ça peut être cool de reprendre ça » | 7 |
 | 80 | 2026-11-06 | La flèche du retour, redessinée **droite** : la tête à encoche de la pointe, rendue symétrique et pointée vers la gauche, alignée sur les capitales (elle était tournée de travers). | « Mets le curseur de façon propre s'il te plaît, il n'est pas droit » | 7 |
+| 81 | 2026-11-06 | **Les résultats d'abord** : les trois chiffres clés (82 %, 500+, 3 000+) passent en tête de la page, sous l'accroche, entre deux filets. La partie Résultats, à la fin, garde le reste (comité exécutif, présentations, presse) sans répéter les chiffres. | « Est-ce qu'on ne mettrait pas les résultats en premier, et à la fin ? » | 7 |
 
 ---
 

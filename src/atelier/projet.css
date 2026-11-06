@@ -179,7 +179,13 @@
   background: color-mix(in oklch, var(--ink) 7%, var(--fond));
 }
 
-/* Key figures, in the display face. */
+/* Key figures, in the display face, first thing under the line (journal
+   n° 81), between two rules. */
+.projet .p-entete > .p-chiffres {
+  padding-block: calc(var(--space-4) * var(--u));
+  border-block: 1px solid var(--line);
+}
+
 .p-chiffres li {
   display: grid;
   align-content: start;

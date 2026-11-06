@@ -12,7 +12,6 @@ export type Bloc =
   | { type: 'liste'; items: Phrase[] }
   | { type: 'colonnes'; items: Phrase[] }
   | { type: 'cartes'; items: Phrase[] }
-  | { type: 'chiffres'; items: { value: string; text: string }[] }
   | { type: 'question'; text: string }
   | { type: 'compromis'; text: string }
   | { type: 'decision'; n: number; lead: string; text: string; visuel: string }
@@ -21,9 +20,13 @@ export type Bloc =
 
 export type Section = { id: string; nav: string; titre: string; blocs: Bloc[] };
 
+export type Chiffre = { value: string; text: string };
+
 export type Projet = {
   nom: string;
   accroche: string;
+  /** The key figures, first thing under the line (journal n° 81). */
+  chiffres: Chiffre[];
   cartel: [string, string][];
   sections: Section[];
 };
@@ -31,6 +34,11 @@ export type Projet = {
 export const SNCF_GPT: Projet = {
   nom: 'SNCF GPT',
   accroche: 'Un assistant pour le support DevOps, devenu l’IA générative du groupe SNCF.',
+  chiffres: [
+    { value: '82 %', text: 'des incidents de niveau 1 d’un jeu de tickets de test résolus par l’assistant (mesure interne)' },
+    { value: '500+', text: 'personnes habilitées à la fin du stage' },
+    { value: '3 000+', text: 'utilisateurs par jour, une fois l’outil branché sur Jira, SharePoint et d’autres sources' },
+  ],
   cartel: [
     ['Équipe', 'Seul sur le prototype · à trois sur le démonstrateur · à deux pour la production'],
     ['Période', 'Septembre 2023 – février 2024, à Lyon'],
@@ -248,14 +256,6 @@ export const SNCF_GPT: Projet = {
       nav: 'Résultats',
       titre: 'Résultats',
       blocs: [
-        {
-          type: 'chiffres',
-          items: [
-            { value: '82 %', text: 'des incidents de niveau 1 d’un jeu de tickets de test résolus par l’assistant (mesure interne)' },
-            { value: '500+', text: 'personnes habilitées à la fin du stage' },
-            { value: '3 000+', text: 'utilisateurs par jour, une fois l’outil branché sur Jira, SharePoint et d’autres sources' },
-          ],
-        },
         {
           type: 'liste',
           items: [

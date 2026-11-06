@@ -84,19 +84,6 @@ function Blocs({ blocs, figures }: { blocs: Bloc[]; figures: Map<Bloc, number> }
             ))}
           </ul>
         );
-      case 'chiffres':
-        return (
-          <ul key={index} className="p-chiffres" style={{ '--n': bloc.items.length } as CSSProperties}>
-            {bloc.items.map((item) => (
-              <li key={item.value}>
-                <span className="p-chiffre">
-                  <T>{item.value}</T>
-                </span>
-                <T>{item.text}</T>
-              </li>
-            ))}
-          </ul>
-        );
       case 'question':
         return (
           <p key={index} className="p-question">
@@ -205,6 +192,17 @@ export function ProjetMaquette({ projet, onRetour }: { projet: Projet; onRetour?
           <p className="p-accroche">
             <T>{projet.accroche}</T>
           </p>
+          {/* The results first: the key figures, before the cartel; the rest closes the page. */}
+          <ul className="p-chiffres" style={{ '--n': projet.chiffres.length } as CSSProperties}>
+            {projet.chiffres.map((chiffre) => (
+              <li key={chiffre.value}>
+                <span className="p-chiffre">
+                  <T>{chiffre.value}</T>
+                </span>
+                <T>{chiffre.text}</T>
+              </li>
+            ))}
+          </ul>
           <dl className="p-cartel">
             {projet.cartel.map(([term, value]) => (
               <div key={term}>
