@@ -37,7 +37,7 @@ const COMPOSITIONS: Composition[] = [
   {
     id: 'retenu',
     name: 'Retenu',
-    note: 'Validé le 5 nov. : Instrument Serif à 58 px pour le titre, Inter à 13 px pour le texte, à 10,5 px en minuscules pour les étiquettes.',
+    note: 'Validé le 5 nov., titre ajusté le 6 : Instrument Serif à 72 px pour le titre, Inter à 13 px pour le texte, à 10,5 px en minuscules pour les étiquettes.',
     tuning: {
       fonts: { display: TYPO.display.font, text: TYPO.text.font, label: TYPO.label.font },
       base: TYPO.text.size,

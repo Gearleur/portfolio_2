@@ -190,8 +190,8 @@ La palette Snow crimson est gardée en appoint (journal n° 23) :
 | 1 | Le fond et l'accent | La couleur du fond clair, le grain, l'onde ; l'accent | Validé le 2026-11-05 |
 | 2 | Les couleurs | La palette complète : encres, gris, états, contrastes | Validé le 2026-11-05 |
 | 3 | La typo | Le couple de polices et l'échelle de tailles | Validé le 2026-11-05 |
-| 4 | Espaces et grille | Le rythme et les colonnes | — |
-| 5 | Le chemin de fer | La composition de la Vitrine | — |
+| 4 | Espaces et grille | Le rythme et les colonnes | Validé le 2026-11-06 |
+| 5 | Le chemin de fer | La composition de la Vitrine | En cours |
 | 6 | Les composants | Chaque brique, une par une | — |
 | 7 | Le contenu | Tes projets et tes textes | — |
 | 8 | La Vitrine | La page assemblée | — |
@@ -327,7 +327,9 @@ une police payante. Parmi une vingtaine de serifs libres comparées, **Playfair*
 (OFL, graisse et largeur variables) s'en approche le plus à 500, resserrée à
 87,5 %. La composition **Frieden** la met en titre, avec Inter, plus simple,
 pour le texte et les étiquettes. Le titre gagne un curseur de largeur quand sa
-police en a l'axe.
+police en a l'axe. **Cinzel Decorative** (OFL), plus large et moins
+contrastée mais avec des déliés qui débordent, rejoint ensuite la typothèque
+comme autre piste.
 
 Un essai de **relief** enfonce les valeurs sous les étiquettes (« AI engineer »
 sous « Rôle ») dans le fond : **Incrusté** (lettres grises cernées de sombre,
@@ -335,7 +337,8 @@ le bord du haut dans l'ombre) ou **À sec** (gaufrage sans encre, moins lisible)
 avec une profondeur réglable. Sur un fond aussi clair, le liseré blanc se voit
 à peine : c'est le bord sombre qui fait le creux.
 
-**Retenu.** Instrument Serif à 58 px pour le titre (interlettrage 0), Inter à
+**Retenu.** Instrument Serif à 72 px pour le titre (interlettrage 0,010 em,
+ajusté le 6 novembre ; 58 px et 0 au départ), Inter à
 13 px pour le texte, Inter à 10,5 px en minuscules pour les étiquettes,
 sous-titres par paliers de ×1,25 (16,5 · 20,5 · 25,5 px), valeurs à plat. Les
 tailles valent pour une page de 1440 px. Elles sont dans `tokens.css` et `TYPO`
@@ -347,6 +350,31 @@ Une échelle d'espacements (4, 8, 12, 16, 24, 32, 48, 64…) et une grille de
 colonnes. Comme dans Figma, **la touche `G` affiche la grille** par-dessus
 n'importe quelle page de l'Atelier ou de la Vitrine.
 
+**Premier tour.** La page témoin se pose sur la grille : le titre couvre deux
+tiers des colonnes, chaque info un quart, et l'index range le numéro, le nom,
+l'étape et l'année dans des colonnes. Ses écarts viennent de l'échelle
+d'espacements. Trois compositions :
+
+- **Régulière** : unité de 8 px en multiples (8 · 16 · 24 · 32 · 48 · 64 · 96 ·
+  128), 12 colonnes, gouttière 24 px, marges 72 px. Proche de la page témoin
+  actuelle ;
+- **Ample** : unité de 8 px en nombre d'or (8 · 16 · 24 · 40 · 64 · 104 · 168 ·
+  272), 12 colonnes, gouttière 32 px, marges 128 px. La page respire, comme les
+  boutiques de mode ;
+- **Serrée** : unité de 4 px en multiples, 16 colonnes, gouttière 16 px, marges
+  40 px. Un index dense, à la Van Arnam.
+
+Les curseurs règlent l'unité (4 à 12 px), la progression, le nombre de colonnes
+(6, 8, 12 ou 16), la gouttière et les marges. Les colonnes s'affichent en
+accent à 10 %, comme dans Figma ; `G` les masque. La grille mobile viendra avec
+le chemin de fer.
+
+**Retenu.** Une unité de 4 px en multiples (4 · 8 · 12 · 16 · 24 · 32 · 48 ·
+64), 16 colonnes de 73 px, gouttières et marges de 16 px : la page va presque
+d'un bord à l'autre. Les valeurs sont dans `tokens.css` et `ESPACES`
+(`tokens.ts`). La disposition du texte et des éléments se retravaille à
+l'étape 5.
+
 ### Étape 5 — Le chemin de fer
 
 La Vitrine en blocs gris, sans style. Trois compositions à comparer :
@@ -356,6 +384,80 @@ La Vitrine en blocs gris, sans style. Trois compositions à comparer :
 - **Nav latérale** (Rachel Chen) : la nav à gauche, la phrase-titre, puis la grille de projets.
 
 On peut aussi en mélanger deux.
+
+**Premier tour.** Plutôt que des blocs gris seuls, chaque composition montre le
+premier écran (1440 × 900) avec la grille, la typo et les couleurs validées, et
+un texte provisoire. Le bouton **Blocs** remplace chaque mot par un pavé gris de
+la même taille, pour ne juger que la place ; `G` affiche les 16 colonnes.
+
+- **Quatre coins** : la phrase-titre seule au milieu, sur 10 colonnes ; le nom,
+  la nav, les infos et le contact dans les coins ; les projets en faisant
+  défiler.
+- **Colonnes** : la phrase-titre, la bio et les infos sur 7 colonnes à gauche,
+  l'index des projets sur 8 colonnes à droite, les visuels en bas qui
+  continuent sous l'écran.
+- **Nav latérale** : le nom, la nav et le contact sur 3 colonnes à gauche ; la
+  phrase-titre, la bio et les infos sur 12 colonnes, puis trois cartes de
+  projets avec leur visuel.
+
+**Deuxième tour : les classiques.** Quatre mises en page qui ont fait leurs
+preuves depuis longtemps dans la mode, l'architecture et le design, à tordre
+ensuite d'une façon nouvelle :
+
+- **Couverture** (magazine de mode : Vogue, The Gentlewoman) : ton nom en
+  manchette sur toute la largeur (2,6 fois le titre), le numéro et la date
+  entre deux filets, les projets en titres de une autour d'une grande image.
+  Twist possible : l'image passe devant le nom, comme le mannequin devant le
+  titre ;
+- **Lookbook** (maison de mode : The Row, Jil Sander) : le nom discret au
+  centre, les projets en silhouettes numérotées (Look 01…) sur une colonne sur
+  quatre, beaucoup de vide. Twist possible : chaque look s'ouvre sur une fiche,
+  comme l'étiquette d'un vêtement ;
+- **Agence** (cabinet d'architectes : Chipperfield, Herzog & de Meuron) : une
+  image, la phrase, les projets en fiche technique (programme, équipe, statut,
+  année). Twist possible : chaque projet raconté comme un bâtiment livré ;
+- **Affiche suisse** (Müller-Brockmann, Vignelli) : quatre colonnes d'infos sous
+  un filet, la phrase deux fois plus grande, les projets en gros chiffres.
+  Twist possible : la rigueur suisse, mais en serif, avec l'onde.
+
+La manchette et l'affiche dépassent la taille de titre validée : si l'une est
+retenue, on ajoutera cette taille à l'échelle.
+
+**Tes préférées, pour l'instant :** Colonnes, Nav latérale, Agence et Affiche
+suisse. Quatre coins, Couverture et Lookbook passent dans « Mises de côté ».
+
+**Troisième tour**, dans la même veine construite (colonnes, index, filets) :
+
+- **Journal** (quotidien grand format : FT Weekend, Le Monde) : le nom en titre
+  de journal entre un filet et un double filet, la phrase en manchette, les
+  infos en encadré, les projets en articles sur quatre colonnes séparées de
+  filets. Twist possible : un journal qui ne parle que de toi, daté du jour ;
+- **Cartel** (galerie : White Cube, Fondation Cartier) : une œuvre à la fois et
+  son cartel de musée (titre en italique, année, médium, statut). Twist
+  possible : le médium, ce sont les modèles et le code ;
+- **Plan** (dessin d'architecte) : les 16 colonnes nommées de A à P et tracées
+  sur la page, les projets en nomenclature, un cartouche (projet, auteur,
+  échelle, date, planche). Twist possible : la grille devient le décor ;
+- **Manuel** (normes graphiques : Vignelli, NASA 1975) : un en-tête courant, un
+  sommaire numéroté, la section 1.0 avec la phrase, les projets en
+  sous-sections 2.1 à 2.4, un folio. Twist possible : le portfolio lu comme le
+  mode d'emploi de ton travail.
+
+**Variantes de Colonnes, Nav latérale et Agence.** Le panneau range désormais
+les compositions par famille (Colonnes, Nav latérale, Agence, Autres pistes,
+Mises de côté), chaque famille avec sa version classique et deux variantes :
+
+- **Colonnes · index d'abord** : l'index à gauche, une vignette et un grand
+  titre serif par projet ; qui tu es à droite, en plus petit ;
+- **Colonnes · trois colonnes** : la phrase en haut, puis Qui, Projets et
+  Contact, chacune sous un filet ;
+- **Nav latérale · liste** : les projets en grands titres serif, un par ligne ;
+- **Nav latérale · à droite** : la colonne du nom et de la nav ferme la page à
+  droite ;
+- **Agence · plein cadre** : une grande image sur toute la largeur, la phrase
+  posée dessus, la fiche technique en dessous ;
+- **Agence · index seul** : la phrase, un petit aperçu du projet survolé, la
+  fiche technique sur toute la largeur.
 
 ### Étape 6 — Les composants
 
@@ -422,6 +524,14 @@ un bon argument dans un portfolio.
 | 30 | 2026-11-05 | **Playfair** entre dans la typothèque, comme la serif libre la plus proche de « Frieden ». Composition Frieden : Playfair 500 à 87,5 % en titre, Inter pour le reste. | « Celle-là en main et les autres un truc plus simple » | 3 |
 | 31 | 2026-11-05 | Essai de relief sur les valeurs sous les étiquettes : Incrusté ou À sec, profondeur réglable. | « Enfoncé dans le fond, avec des contours sombres » | 3 |
 | 32 | 2026-11-05 | **Étape 3 validée** (BAT) : Instrument Serif 58 px en titre, Inter 13 px en texte, Inter 10,5 px en minuscules pour les étiquettes, sous-titres ×1,25, valeurs à plat. La typothèque est gardée pour y revenir. | « On part sur ça, vas-y, je verrai plus tard » | 3 |
+| 33 | 2026-11-05 | Étape 4 ouverte : trois compositions d'espaces et de grille (Régulière, Ample, Serrée), touche `G`. | Ton « vas-y » | 4 |
+| 34 | 2026-11-06 | **Cinzel Decorative** (OFL) entre dans la typothèque : capitales romaines aux déliés qui débordent, l'autre piste « Frieden ». Les menus déroulants de l'Atelier passent en fond sombre, lisibles. | « Rajoute-la » · « on voit rien » | 3 |
+| 35 | 2026-11-06 | Titre ajusté : Instrument Serif à **72 px**, interlettrage 0,010 em. Le reste de la typo ne change pas. | Tes réglages copiés | 3 |
+| 36 | 2026-11-06 | **Étape 4 validée** (BAT) : unité de 4 px en multiples, 16 colonnes de 73 px, gouttières et marges de 16 px. | « Je crois que j'aime bien ça » | 4 |
+| 37 | 2026-11-06 | Étape 5 ouverte : trois placements du premier écran (Quatre coins, Colonnes, Nav latérale), vus en texte ou en blocs. | « La disposition du texte et des éléments, on peut la retravailler » | 5 |
+| 38 | 2026-11-06 | Deuxième tour du chemin de fer : quatre classiques (Couverture, Lookbook, Agence, Affiche suisse), chacun avec une piste de twist. | « D'autres propositions comme les magazines de mode, les cabinets d'architectes, de designers » | 5 |
+| 39 | 2026-11-06 | Préférées pour l'instant : Colonnes, Nav latérale, Agence, Affiche suisse. Troisième tour : Journal, Cartel, Plan, Manuel. Quatre coins, Couverture et Lookbook mis de côté. | « Encore d'autres à me proposer » | 5 |
+| 40 | 2026-11-06 | Deux variantes chacune pour Colonnes (index d'abord, trois colonnes), Nav latérale (liste, à droite) et Agence (plein cadre, index seul). Panneau rangé par famille. | « Propose des variantes de Colonnes, Nav latérale et Agence » | 5 |
 
 ---
 

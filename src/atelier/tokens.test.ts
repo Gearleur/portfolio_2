@@ -2,7 +2,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { contrastRatio, oklchToHex } from './color';
-import { ACCENT, FOND, INK_COLORS, TYPO } from './tokens';
+import { ACCENT, ESPACES, FOND, INK_COLORS, TYPO } from './tokens';
 
 // Read from disk: Vitest swaps stylesheets for empty modules, even with ?raw.
 const css = readFileSync(new URL('./tokens.css', import.meta.url), 'utf8');
@@ -34,6 +34,14 @@ describe('validated tokens', () => {
     expect(css).toContain(`--display-weight: ${TYPO.display.weight};`);
     expect(css).toContain(`--display-tracking: ${TYPO.display.tracking}em;`);
     expect(css).toContain(`--label-case: ${TYPO.label.caps ? 'uppercase' : 'none'};`);
+  });
+
+  it('keeps tokens.css in step with the spacing and the grid', () => {
+    expect(ESPACES.scale).toEqual([1, 2, 3, 4, 6, 8, 12, 16].map((step) => step * ESPACES.base));
+    ESPACES.scale.forEach((value, index) => expect(css).toContain(`--space-${index + 1}: ${value};`));
+    expect(css).toContain(`--cols: ${ESPACES.columns};`);
+    expect(css).toContain(`--gutter: ${ESPACES.gutter};`);
+    expect(css).toContain(`--margin: ${ESPACES.margin};`);
   });
 
   it('keeps both inks readable on the background (WCAG AA, 4.5:1)', () => {

@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import type { JSX } from 'react';
 import { Charte } from './Charte';
+import { CheminStep } from './steps/CheminStep';
 import { CouleursStep } from './steps/CouleursStep';
+import { EspacesStep } from './steps/EspacesStep';
 import { FondStep } from './steps/FondStep';
 import { TypoStep } from './steps/TypoStep';
 
@@ -12,8 +14,8 @@ const STEPS: Step[] = [
   { n: 1, name: 'Le fond', status: 'valide' },
   { n: 2, name: 'Les couleurs', status: 'valide' },
   { n: 3, name: 'La typo', status: 'valide' },
-  { n: 4, name: 'Espaces et grille', status: 'a-venir' },
-  { n: 5, name: 'Chemin de fer', status: 'a-venir' },
+  { n: 4, name: 'Espaces et grille', status: 'valide' },
+  { n: 5, name: 'Chemin de fer', status: 'en-cours' },
   { n: 6, name: 'Composants', status: 'a-venir' },
   { n: 7, name: 'Contenu', status: 'a-venir' },
   { n: 8, name: 'Vitrine', status: 'a-venir' },
@@ -21,7 +23,7 @@ const STEPS: Step[] = [
   { n: 10, name: 'Mise en ligne', status: 'a-venir' },
 ];
 
-const STEP_VIEWS: Record<number, () => JSX.Element> = { 1: FondStep, 2: CouleursStep, 3: TypoStep };
+const STEP_VIEWS: Record<number, () => JSX.Element> = { 1: FondStep, 2: CouleursStep, 3: TypoStep, 4: EspacesStep, 5: CheminStep };
 // The step in progress, or the last one built when everything shown is validated.
 const CURRENT = STEPS.find((step) => step.status === 'en-cours')?.n ?? Math.max(...Object.keys(STEP_VIEWS).map(Number));
 

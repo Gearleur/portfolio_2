@@ -57,13 +57,26 @@ export const FOND: FondSettings & { waveId: WaveCompositionId } = {
 };
 
 /**
- * The type validated at step 3 (journal n° 32). Sizes are px for a 1440 px wide
+ * The type validated at step 3 (journal n° 32, title retuned in n° 35). Sizes are px for a 1440 px wide
  * page; `font` is the typothèque id. tokens.css mirrors it.
  */
 export const TYPO = {
-  display: { font: 'instrument-serif', family: 'Instrument Serif', size: 58, tracking: 0, weight: 400 },
+  display: { font: 'instrument-serif', family: 'Instrument Serif', size: 72, tracking: 0.01, weight: 400 },
   text: { font: 'inter', family: 'Inter', size: 13 },
   label: { font: 'inter', family: 'Inter', size: 10.5, caps: false },
   /** Subheadings step up from the text by this ratio. */
   ratio: 1.25,
+};
+
+/**
+ * Spacing and grid validated at step 4 (journal n° 36): a 4 px unit in
+ * multiples, 16 columns. px for a 1440 px wide page; tokens.css mirrors it.
+ */
+export const ESPACES = {
+  base: 4,
+  progression: 'multiples' as const,
+  scale: [4, 8, 12, 16, 24, 32, 48, 64],
+  columns: 16,
+  gutter: 16,
+  margin: 16,
 };

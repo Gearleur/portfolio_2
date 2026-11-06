@@ -439,6 +439,20 @@ a.atelier-steps__item:hover,
   appearance: none;
 }
 
+/* The open list is drawn by the browser: some ignore color-scheme and keep a
+   white list under the light text, so its colours are set explicitly. */
+.atelier-select option,
+.atelier-field option {
+  background-color: #1f1c1b;
+  color: var(--atelier-ink);
+}
+
+.atelier-select optgroup,
+.atelier-field optgroup {
+  background-color: #1f1c1b;
+  color: var(--atelier-dim);
+}
+
 .atelier-select select:focus-visible {
   outline: 2px solid var(--atelier-ink);
   outline-offset: 2px;
@@ -776,6 +790,82 @@ a.atelier-steps__item:hover,
 
 .temoin__index span:last-child {
   text-align: right;
+}
+
+/* Step 4: the page laid on columns. --cols, --gutter, --margin, the --span-*
+   and the --space-1…8 scale are px at a 1440 px page, set by the step. */
+
+.temoin[data-grid] {
+  padding: calc(var(--space-6) * var(--u)) calc(var(--margin) * var(--u));
+}
+
+.temoin[data-grid] .temoin__nav {
+  gap: calc(var(--space-5) * var(--u));
+}
+
+.temoin[data-grid] .temoin__intro,
+.temoin[data-grid] .temoin__facts,
+.temoin[data-grid] .temoin__index li {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  column-gap: calc(var(--gutter) * var(--u));
+}
+
+.temoin[data-grid] .temoin__intro {
+  row-gap: calc(var(--space-5) * var(--u));
+}
+
+.temoin[data-grid] .temoin__title {
+  grid-column: 1 / span var(--span-title);
+  max-width: none;
+}
+
+.temoin[data-grid] .temoin__facts {
+  grid-column: 1 / -1;
+}
+
+.temoin[data-grid] .temoin__facts > div {
+  grid-column: span var(--span-fact);
+}
+
+.temoin[data-grid] .temoin__facts dt {
+  margin-bottom: calc(var(--space-1) * var(--u));
+}
+
+.temoin[data-grid] .temoin__index li {
+  padding: calc(var(--space-3) * var(--u)) 0;
+}
+
+.temoin[data-grid] .temoin__index span:nth-child(1) {
+  grid-column: span var(--span-number);
+}
+
+.temoin[data-grid] .temoin__index span:nth-child(2) {
+  grid-column: span var(--span-name);
+}
+
+.temoin[data-grid] .temoin__index span:nth-child(3) {
+  grid-column: span var(--span-stage);
+}
+
+.temoin[data-grid] .temoin__index span:nth-child(4) {
+  grid-column: span var(--span-year);
+}
+
+/* The columns over the page, in the accent at 10 %, as in Figma (key G). */
+.temoin__columns {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  column-gap: calc(var(--gutter) * var(--u));
+  padding: 0 calc(var(--margin) * var(--u));
+  pointer-events: none;
+}
+
+.temoin__columns span {
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
 }
 
 /* Nuancier: one card per colour token, click to copy its hex. */

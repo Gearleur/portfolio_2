@@ -48,14 +48,28 @@
   --font-display: 'Instrument Serif', Georgia, serif;
   --font-text: 'Inter', system-ui, sans-serif;
   --font-label: 'Inter', system-ui, sans-serif;
-  --size-display: 58;
+  --size-display: 72;
   --size-text: 13;
   --size-label: 10.5;
   --type-ratio: 1.25;
   --display-weight: 400;
-  --display-tracking: 0em;
+  --display-tracking: 0.01em;
   --display-leading: 1;
   --label-case: none;
+
+  /* Spacing and grid, validated at step 4. px for a 1440 px wide page, unitless
+     like the type. Mirror ESPACES in tokens.ts. */
+  --space-1: 4;
+  --space-2: 8;
+  --space-3: 12;
+  --space-4: 16;
+  --space-5: 24;
+  --space-6: 32;
+  --space-7: 48;
+  --space-8: 64;
+  --cols: 16;
+  --gutter: 16;
+  --margin: 16;
 }
 
 ::selection {

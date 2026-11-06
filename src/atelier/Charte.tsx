@@ -1,6 +1,6 @@
 import { oklchCss, oklchToHex } from './color';
 import { percent } from './format';
-import { ACCENT, APPOINT, FOND, INK_COLORS, TYPO } from './tokens';
+import { ACCENT, APPOINT, ESPACES, FOND, INK_COLORS, TYPO } from './tokens';
 
 // Step 0, validated on 2026-11-05 (docs/atelier/README.md, section 7).
 const BRIEF: [string, string][] = [
@@ -30,6 +30,7 @@ type Card = {
 /** Everything validated so far, at the top of the Atelier. It grows with each step. */
 export function Charte() {
   const { grain, wave } = FOND;
+  const column = (1440 - 2 * ESPACES.margin - (ESPACES.columns - 1) * ESPACES.gutter) / ESPACES.columns;
   const cards: Card[] = [
     { label: 'Accent', value: ACCENT.name, code: ACCENT.hex, swatch: ACCENT.hex, note: 'Curseur, sélection, surbrillance', step: 1 },
     { label: 'Fond', value: 'Clair et uni', code: oklchToHex(FOND.color).toUpperCase(), swatch: oklchCss(FOND.color), note: oklchCss(FOND.color), step: 1 },
@@ -53,6 +54,13 @@ export function Charte() {
       font: 'var(--font-display)',
       note: `Titre ${px(TYPO.display.size)} · texte ${px(TYPO.text.size)} · étiquettes ${px(TYPO.label.size)} en ${TYPO.label.caps ? 'capitales' : 'minuscules'} · sous-titres ×${String(TYPO.ratio).replace('.', ',')}`,
       step: 3,
+    },
+    { label: 'Espaces', value: `Unité ${px(ESPACES.base)}`, note: `En multiples : ${ESPACES.scale.join(' · ')} px`, step: 4 },
+    {
+      label: 'Grille',
+      value: `${ESPACES.columns} colonnes`,
+      note: `Colonnes de ${px(column)} · gouttières ${px(ESPACES.gutter)} · marges ${px(ESPACES.margin)}, pour une page de 1440 px`,
+      step: 4,
     },
     { label: 'Grain', value: percent(grain.strength), note: `Taille ${percent(grain.size)} · irrégularité ${percent(grain.irregularity)}`, step: 1 },
     {
