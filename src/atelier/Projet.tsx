@@ -5,6 +5,7 @@ import { Marque } from './Marque';
 import { Miniature } from './Miniature';
 import { EcranCadre, Schema } from './Schemas';
 import type { Bloc, Phrase, Projet } from './projets';
+import { useTranche } from './tranche';
 import './projet.css';
 
 const two = (n: number) => String(n).padStart(2, '0');
@@ -316,7 +317,8 @@ export function ProjetMaquette({ projet, onRetour }: { projet: Projet; onRetour?
  * The same page on a 390 × 844 phone (journal n° 86): the strip on the right,
  * as on the Vitrine; the back link at the top; one column of reading, the
  * figures and cartel stacked, the diagrams scrolling sideways at a readable
- * size. « Menu » slides in the table of contents above the nav.
+ * size. The pictures and diagrams run over the strip, like the Vitrine's
+ * (journal n° 87). « Menu » slides in the table of contents above the nav.
  */
 export function ProjetMobile({
   projet,
@@ -331,6 +333,8 @@ export function ProjetMobile({
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const { active, go } = useSommaire(ref, projet.sections[0].id);
+  // The pictures run over the strip, as on the Vitrine's phone page.
+  useTranche(ref, '.p-visuel__image');
 
   return (
     <div ref={ref} className="mobile projet projet--mobile" data-glisse="">

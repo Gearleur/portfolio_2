@@ -410,6 +410,18 @@
   aspect-ratio: 210 / 262;
 }
 
+/* The pictures and diagrams run over the strip to the screen's edge, like the
+   Vitrine's (journal n° 87); paper-backed, so the strip's rule stops at them. */
+.mobile.projet--mobile .p-visuel__image {
+  position: relative;
+  z-index: 2;
+  margin-right: calc((44 + var(--margin)) * -1 * var(--u));
+}
+
+.mobile.projet--mobile .p-visuel__image:has(.schema) {
+  background: var(--fond);
+}
+
 /* Diagrams keep a readable size (640 of their 720 units) and scroll sideways. */
 .mobile.projet--mobile .p-visuel__image:has(.schema) {
   overflow-x: auto;

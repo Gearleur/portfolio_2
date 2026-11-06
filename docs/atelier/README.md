@@ -652,8 +652,10 @@ construite comme celle de Rachel Chen :
 - **sur téléphone** (`ProjetMobile`) : le cadre de la Vitrine, avec la tranche
   à droite et « Menu ». Le retour est en haut, la lecture sur une colonne. Les
   chiffres et le cartel sont empilés, les cartes deux par deux, la miniature en
-  portrait. Les schémas gardent une taille lisible et glissent de côté. « Menu »
-  ouvre le sommaire au-dessus de la nav ;
+  portrait. Les schémas gardent une taille lisible et glissent de côté. Comme
+  les images de l'accueil, la miniature et les schémas passent par-dessus la
+  tranche, et ton nom et « Menu » s'allument en accent là où ils passent dessous.
+  « Menu » ouvre le sommaire au-dessus de la nav ;
 - **l'anglais, préparé** : les libellés des schémas existent en français et en
   anglais (`src/atelier/langue.ts`). Le texte anglais de la page reste à brancher. Les logos viennent de Simple
   Icons (CC0), sauf Jenkins (CC BY-SA 3.0, le projet Jenkins). Azure, ServiceNow
@@ -768,6 +770,7 @@ un bon argument dans un portfolio.
 | 84 | 2026-11-06 | **De la couleur et des marques** sur la page SNCF GPT : le logo SNCF au-dessus du titre avec « e.SNCF Solutions · Usine Logicielle, Lyon » ; une rangée de 16 outils avec leurs logos en couleur ; des pastilles de marque sur les boîtes des schémas (SNCF, GitLab, Jenkins, Docker, Python, SonarQube, Checkmarx, JFrog, Ansible, Vault). Les flèches courbes finissent par un bout droit, pour que la pointe ne se torde plus. | « Petit raté sur la flèche de ce schéma en haut à gauche » · « Rajouter de la couleur, des icônes ; montrer que c'est quand même à la SNCF ; là il n'y a pas de logo, c'est impersonnel » | 7 |
 | 85 | 2026-11-06 | En tête de page, la rangée de logos d'outils et la ligne « e.SNCF Solutions · Usine Logicielle, Lyon » sont **retirées**. Le **logo SNCF** passe dans la ligne du titre, juste après « SNCF GPT », à la hauteur des capitales. Les pastilles des schémas restent. | « Tous les logos au début, supprime ; e.SNCF Solutions · Usine Logicielle, Lyon, supprime ça aussi ; garde le logo mais intègre-le, ne le mets pas tout seul au-dessus ; sinon le reste c'est pas mal » | 7 |
 | 86 | 2026-11-06 | **Page projet sur téléphone** : le cadre de la Vitrine (tranche, Menu), une colonne, les chiffres et le cartel empilés, la miniature en portrait. Les schémas, à taille lisible, glissent de côté. Le sommaire est dans le panneau Menu et suit la lecture jusqu'à la partie 10. Les libellés des schémas sont préparés en anglais, le texte anglais reste à faire. | « Fais la version téléphone maintenant et on est bon ; ensuite on va attaquer la partie Alpine » | 7 |
+| 87 | 2026-11-06 | Sur téléphone, la **miniature et les schémas passent par-dessus la tranche**, jusqu'au bord de l'écran, comme les images de l'accueil. Le nom et « Menu » prennent l'accent seulement là où une image passe dessous (le même effet, partagé dans `tranche.ts`). | « Fais en sorte que les schémas passent par-dessus la sidebar de droite comme les images sur la page d'accueil, pour la version mobile » | 7 |
 
 ---
 
