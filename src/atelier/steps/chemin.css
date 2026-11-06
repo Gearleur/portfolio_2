@@ -39,7 +39,8 @@
   line-height: var(--display-leading);
 }
 
-/* The headline's full stop: an accent square blinking like a cursor. */
+/* The headline's full stop: an accent square that stays lit and, once every
+   30 s, fades out for about half a second, like a slow cursor. */
 .m-nowrap {
   white-space: nowrap;
 }
@@ -50,11 +51,17 @@
   height: 0.2em;
   margin-left: 0.08em;
   background: var(--accent);
-  animation: m-blink 1.06s steps(1, end) infinite;
+  animation: m-blink 30s linear infinite;
 }
 
 @keyframes m-blink {
-  50% {
+  0%,
+  97% {
+    opacity: 1;
+  }
+
+  97.5%,
+  99.5% {
     opacity: 0;
   }
 }

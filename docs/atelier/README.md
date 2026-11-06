@@ -589,6 +589,7 @@ un bon argument dans un portfolio.
 | 49 | 2026-11-06 | Le point final du titre devient un carré accent qui clignote comme un curseur (0,53 s allumé, 0,53 s éteint), fixe si l'on a demandé moins d'animations. | « Remplace le point par un carré rouge qui clignote pour montrer un peu de vie » | 5 |
 | 50 | 2026-11-06 | Titre téléphone plus imposant : 68 px (au lieu de 40), sur trois lignes qui vont jusqu'à la marge droite et traversent la tranche, comme les images. Le nom et « Menu » descendent dans le bas de la tranche. | « Qu'il prenne plus de largeur, qu'il soit plus imposant » | 5 |
 | 51 | 2026-11-06 | Titre téléphone sur deux lignes, coupé après « prototype » : 40 px, la plus grande taille où « AI engineer, du prototype » tient de la marge gauche à la marge droite en traversant la tranche. | « Essaie de le mettre sur deux lignes, mais c'est exactement ça » | 5 |
+| 52 | 2026-11-06 | Le carré final ne clignote plus en continu : il reste allumé et, toutes les 30 s, s'éteint en douceur pendant environ 0,6 s (fondu de 0,15 s de chaque côté). | « Moins vite, là ça prend le regard, c'est stressant ; qu'il disparaisse vraiment occasionnellement, genre toutes les 30 s » | 5 |
 
 ---
 
