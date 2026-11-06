@@ -659,6 +659,18 @@ construite comme celle de Rachel Chen :
   les images de l'accueil, la miniature et les schémas passent par-dessus la
   tranche, et ton nom et « Menu » s'allument en accent là où ils passent dessous.
   « Menu » ouvre le sommaire au-dessus de la nav ;
+- **Whiteboard AMDEC, la miniature** (`src/atelier/MiniatureAlpine.tsx`, première
+  version à itérer). Elle montre un arbre de transmission en vue éclatée, sur les
+  bleus d'Alpine (Misted Sky, Pale Lagoon, Clear Hanada, Night Indigo) avec du
+  grain, en boucle de 14 s :
+  - les pièces s'éclatent le long de l'axe ;
+  - trois agents, la pointe du curseur, viennent cliquer chacun sur une pièce,
+    qui s'allume ; une onde part du clic et une étiquette nomme une défaillance,
+    reliée par un trait de renvoi ;
+  - l'arbre se referme.
+
+  Sans animation, on voit la vue éclatée avec les trois agents en place. Le texte
+  de la page est dans `docs/atelier/contenu/03-whiteboard-amdec.md`.
 - **l'anglais, préparé** : les libellés des schémas existent en français et en
   anglais (`src/atelier/langue.ts`). Le texte anglais de la page reste à brancher. Les logos viennent de Simple
   Icons (CC0), sauf Jenkins (CC BY-SA 3.0, le projet Jenkins). Azure, ServiceNow
@@ -776,6 +788,7 @@ un bon argument dans un portfolio.
 | 87 | 2026-11-06 | Sur téléphone, la **miniature et les schémas passent par-dessus la tranche**, jusqu'au bord de l'écran, comme les images de l'accueil. Le nom et « Menu » prennent l'accent seulement là où une image passe dessous (le même effet, partagé dans `tranche.ts`). | « Fais en sorte que les schémas passent par-dessus la sidebar de droite comme les images sur la page d'accueil, pour la version mobile » | 7 |
 | 88 | 2026-11-06 | Sur téléphone, le **retour « ← Projets / SNCF GPT » reste fixé en haut à gauche** pendant le défilement. Une pastille papier légère (80 % opaque, floutée, sans bordure) le garde lisible par-dessus le texte et les schémas. | « Il manque aussi le retour en haut à gauche pour revenir en arrière ; je veux qu'il soit fixe ; à toi d'ajuster avec les schémas et le texte pour qu'il reste visible, mais je veux un truc léger » | 7 |
 | 89 | 2026-11-06 | Sur téléphone, les **schémas s'ouvrent centrés** et glissent des deux côtés (« ← glisser → »). | « Centre les schémas de base » | 7 |
+| 90 | 2026-11-06 | **Whiteboard AMDEC** : texte écrit à partir de tes réponses (non commité, à relire). **Miniature, première version** : un arbre de transmission en vue éclatée sur les bleus d'Alpine avec du grain, qui s'éclate puis se réassemble. Trois agents, la pointe du curseur, cliquent chacun sur une pièce, qui s'allume, et nomment un mode de défaillance (roulement grippé, dent cassée, usure de denture). | « Pour la miniature je veux un autre truc avec un autre fond ; du motion sur un pignon de moteur qui s'éclate en long, puis qui se refusionne ; les couleurs d'Alpine ; des petites flèches qui vont sur les différentes parties en vue éclatée et qui cliquent dessus ; fais un truc ultra propre et on itérera » | 7 |
 
 ---
 

@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
 import { Maquette, MaquetteMobile } from '../Maquettes';
 import { Miniature } from '../Miniature';
+import { MiniatureAlpine } from '../MiniatureAlpine';
 import { ProjetMaquette, ProjetMobile } from '../Projet';
 import { SNCF_GPT } from '../projets';
 import { Specimen, SpecimenPreview } from '../Specimen';
@@ -68,7 +69,7 @@ export function ContenuStep() {
   const [vue, setVue] = useState<'projet' | 'vitrine'>('projet');
   const [waveSignal, playWave] = useWaveSignal();
   const close = useCallback(() => setPreview(null), []);
-  const images = { '01': <Miniature /> };
+  const images = { '01': <Miniature />, '03': <MiniatureAlpine /> };
 
   return (
     <section className="atelier-step" aria-labelledby="step-contenu">
@@ -177,6 +178,19 @@ export function ContenuStep() {
             </div>
           </div>
         </div>
+      </div>
+
+      <div className="miniatures">
+        <h3>
+          Whiteboard AMDEC · la miniature{' '}
+          <span>
+            Une proposition : un arbre de transmission en vue éclatée, sur les bleus d’Alpine. Trois agents viennent
+            cliquer sur une pièce chacun et nomment une défaillance, puis l’arbre se referme. Boucle de 14 s.
+          </span>
+        </h3>
+        <span className="miniatures__plan">
+          <MiniatureAlpine />
+        </span>
       </div>
 
       <div className="miniatures">
