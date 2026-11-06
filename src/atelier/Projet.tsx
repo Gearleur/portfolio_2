@@ -171,7 +171,10 @@ export function ProjetMaquette({ projet, onRetour }: { projet: Projet; onRetour?
         {/* Back to the projects, top left: the trail of the page. */}
         <p className="p-retour m-label">
           <button type="button" onClick={onRetour}>
-            <span aria-hidden="true">← </span>
+            {/* The arrow is the cursor's agent pointer (step 6), turned to point back. */}
+            <svg className="p-retour__fleche" viewBox="-1 -1 12 16" aria-hidden="true">
+              <polygon points="0,0 0,14 3.5,10.5 10,10" />
+            </svg>
             <T>Projets</T>
           </button>
           <T> / {projet.nom}</T>

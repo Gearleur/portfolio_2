@@ -627,7 +627,9 @@ construite comme celle de Rachel Chen :
 - **la lecture au milieu** : le texte sur 6 colonnes (6 à 11 sur 16), les images,
   colonnes et chiffres sur 8 (5 à 12), la miniature sur 10 ;
 - **en haut à gauche, le retour** : « ← Projets / SNCF GPT » ramène à la Vitrine.
-  Dans l'Atelier, la carte SNCF GPT rouvre la page ;
+  La flèche est la pointe d'agent du curseur (étape 6), en accent, tournée vers
+  la gauche ; elle recule un peu au survol. Dans l'Atelier, la carte SNCF GPT
+  rouvre la page ;
 - **à gauche, le sommaire**, à 240 px du haut comme chez Rachel : il suit la
   lecture, et chaque ligne mène à sa partie. À droite restent le nom, la nav et
   le contact ;
@@ -735,6 +737,7 @@ un bon argument dans un portfolio.
 | 76 | 2026-11-06 | Page projet : le **sommaire passe à gauche**, comme chez Rachel Chen, avec une **barre de défilement en vague de traits**. Les traits au niveau de la lecture s'allongent, toute la colonne ondule un peu, le début de chaque partie est marqué, et on peut cliquer ou glisser dessus. Le nom, la nav et le contact restent à droite. | « Le sommaire, tu peux le mettre à gauche » · « Je veux une sorte de vague avec des traits pour la barre de scroll, et qu'elle soit aussi sur la gauche » | 7 |
 | 77 | 2026-11-06 | Barre de défilement en vague **retirée**. Le sommaire reste seul à gauche, et la page défile normalement. | « Enlève cette barre de scroll, ça fait too much » | 7 |
 | 78 | 2026-11-06 | Page projet : **pas d'onde** (fond clair et grain seulement, pour la lecture) ; le **sommaire descend à 240 px** du haut ; en haut à gauche, un **retour « ← Projets / SNCF GPT »** qui remplace le fil au-dessus du titre. | « Sur la page projet je ne veux pas d'onde, ça empêche la lecture » · « Le sommaire un peu plus bas » · « Un truc qui permet de revenir en arrière sur les projets en haut à gauche : ← work / SNCF GPT » | 7 |
+| 79 | 2026-11-06 | La flèche du retour reprend la **pointe d'agent du curseur** sur les projets, en accent, tournée vers la gauche ; elle recule un peu au survol. | « La flèche, mets le curseur qu'on a mis en hover des projets, ça peut être cool de reprendre ça » | 7 |
 
 ---
 
