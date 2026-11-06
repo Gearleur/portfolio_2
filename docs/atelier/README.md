@@ -501,8 +501,8 @@ réunions (SNCF, 2025), Whiteboard AMDEC (Renault / Alpine, 2025). Les mots
 définitifs s'écrivent avec toi à l'étape 7.
 
 **Tes corrections** : Actuellement devient « Étudiant » ; Précédemment,
-« Ingénieur IA @ SNCF (SNCF GPT agentique, RFI, synthèse de réunions) » puis
-« Ingénieur IA @ Renault / Alpine » ; Formation, « UTC, 2022 – 2026 » et
+« Ingénieur IA @ SNCF » (sans détail, journal n° 46) puis « Ingénieur IA @
+Renault / Alpine » ; Formation, « UTC, 2022 – 2026 » et
 « Shanghai University, 2024 – 2025 ».
 
 ### Étape 6 — Les composants
@@ -583,6 +583,7 @@ un bon argument dans un portfolio.
 | 43 | 2026-11-06 | Téléphone : **tranche à droite**, les images passent par-dessus jusqu'au bord de l'écran. Barre en haut et barre en bas retirées. | « Je veux la tranche à droite, mais les rectangles d'image passent par-dessus : ça casse le truc » | 5 |
 | 44 | 2026-11-06 | En-tête réduit à Actuellement, Précédemment et Formation (premier jet tiré du CV) ; la bio et Rôle, Approche, Langues disparaissent. | « Un truc plus simple, sans que ça se répète » · « Currently, previously et mes formations » | 5 |
 | 45 | 2026-11-06 | En-tête corrigé : Actuellement « Étudiant » ; Précédemment « Ingénieur IA @ SNCF (SNCF GPT agentique, RFI, synthèse de réunions) », « Ingénieur IA @ Renault / Alpine » ; Formation « UTC, 2022 – 2026 », « Shanghai University, 2024 – 2025 ». | Tes corrections | 5 |
+| 46 | 2026-11-06 | Précédemment : « Ingénieur IA @ SNCF », sans la parenthèse. | « Enlève ça » | 5 |
 
 ---
 

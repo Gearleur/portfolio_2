@@ -7,7 +7,7 @@ import { GridColumns } from './Temoin';
 const NAV = ['Projets', 'À propos', 'CV', 'Contact'];
 const ENTETE: [string, string[]][] = [
   ['Actuellement', ['Étudiant']],
-  ['Précédemment', ['Ingénieur IA @ SNCF (SNCF GPT agentique, RFI, synthèse de réunions)', 'Ingénieur IA @ Renault / Alpine']],
+  ['Précédemment', ['Ingénieur IA @ SNCF', 'Ingénieur IA @ Renault / Alpine']],
   ['Formation', ['UTC, 2022 – 2026', 'Shanghai University, 2024 – 2025']],
 ];
 const PROJECTS = [
