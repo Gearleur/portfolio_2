@@ -584,6 +584,7 @@ un bon argument dans un portfolio.
 | 44 | 2026-11-06 | En-tête réduit à Actuellement, Précédemment et Formation (premier jet tiré du CV) ; la bio et Rôle, Approche, Langues disparaissent. | « Un truc plus simple, sans que ça se répète » · « Currently, previously et mes formations » | 5 |
 | 45 | 2026-11-06 | En-tête corrigé : Actuellement « Étudiant » ; Précédemment « Ingénieur IA @ SNCF (SNCF GPT agentique, RFI, synthèse de réunions) », « Ingénieur IA @ Renault / Alpine » ; Formation « UTC, 2022 – 2026 », « Shanghai University, 2024 – 2025 ». | Tes corrections | 5 |
 | 46 | 2026-11-06 | Précédemment : « Ingénieur IA @ SNCF », sans la parenthèse. | « Enlève ça » | 5 |
+| 47 | 2026-11-06 | Précédemment en une seule phrase sur deux lignes, coupée après le second « @ » : « Ingénieur IA @ SNCF, ingénieur IA @ / Renault / Alpine ». Moins linéaire qu'une ligne par poste. | « Sur deux lignes mais qui se continue, c'est moins linéaire » | 5 |
 
 ---
 

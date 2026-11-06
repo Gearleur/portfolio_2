@@ -7,7 +7,8 @@ import { GridColumns } from './Temoin';
 const NAV = ['Projets', 'À propos', 'CV', 'Contact'];
 const ENTETE: [string, string[]][] = [
   ['Actuellement', ['Étudiant']],
-  ['Précédemment', ['Ingénieur IA @ SNCF', 'Ingénieur IA @ Renault / Alpine']],
+  // One sentence over two lines, broken after the second « @ » (\n, see .m-facts dd).
+  ['Précédemment', ['Ingénieur IA @ SNCF, ingénieur IA @\nRenault\u00a0/\u00a0Alpine']],
   ['Formation', ['UTC, 2022 – 2026', 'Shanghai University, 2024 – 2025']],
 ];
 const PROJECTS = [

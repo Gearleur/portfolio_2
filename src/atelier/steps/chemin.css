@@ -43,6 +43,10 @@
   margin-bottom: calc(var(--space-1) * var(--u));
 }
 
+.m-facts dd {
+  white-space: pre-line;
+}
+
 .m-facts dd + dd {
   margin-top: calc(var(--space-1) * var(--u));
 }
