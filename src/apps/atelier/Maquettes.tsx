@@ -1,28 +1,41 @@
 import { useRef } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
+import { profile } from '../../shared/data/profile';
+import { useChoixLangue, useLangue, useTr } from './langue';
 import { GridColumns } from './Temoin';
 import { useTranche } from './tranche';
 
 // The Vitrine's first screen, drafted from the CV: the sentence, then only
 // « Actuellement », « Précédemment » and « Formation », as on Rachel Chen's
 // page. The final words are written with Alexandre at step 7.
-const NAV = ['Projets', 'À propos', 'CV', 'Contact'];
+type Tr = (fr: string, en: string) => string;
+
+/**
+ * The nav only holds what goes somewhere: the projects, the top of the page (who I am), the CV. « Contact »
+ * is gone: the three ways to reach me are always in view, under it.
+ */
+const nav = (tr: Tr, langue: string) =>
+  [
+    { id: 'projets', texte: tr('Projets', 'Projects') },
+    { id: 'apropos', texte: tr('À propos', 'About') },
+    { id: 'cv', texte: tr('CV', 'Résumé'), href: `/documents/cv-${langue}.pdf` },
+  ] as const;
 
 /** A run of text, or a link to an organisation's site. */
 type Part = string | { text: string; href: string };
 
 const at = (name: string, href: string): Part => ({ text: `@${name}`, href });
 
-const ENTETE: [string, Part[][]][] = [
-  ['Actuellement', [['Étudiant']]],
+const entete = (tr: Tr): [string, Part[][]][] => [
+  [tr('Actuellement', 'Currently'), [[tr('Étudiant', 'Student')]]],
   // One sentence over two lines, broken before « @Renault » (\n, see .m-facts dd).
   [
-    'Précédemment',
+    tr('Précédemment', 'Previously'),
     [
       [
-        'Ingénieur IA ',
+        tr('Ingénieur IA ', 'AI engineer '),
         at('SNCF', 'https://www.groupe-sncf.com'),
-        ', ingénieur IA\n',
+        tr(', ingénieur IA\n', ', AI engineer\n'),
         at('Renault', 'https://www.renaultgroup.com'),
         '\u00a0/\u00a0',
         { text: 'Alpine', href: 'https://www.alpinecars.com' },
@@ -30,7 +43,7 @@ const ENTETE: [string, Part[][]][] = [
     ],
   ],
   [
-    'Formation',
+    tr('Formation', 'Education'),
     [
       [at('UTC', 'https://www.utc.fr'), ', 2022 – 2026'],
       [at('Shanghai University', 'https://www.shu.edu.cn'), ', 2024 – 2025'],
@@ -41,9 +54,8 @@ const ENTETE: [string, Part[][]][] = [
 const PROJECTS = [
   { number: '01', name: 'SNCF GPT', org: 'SNCF', year: '2023' },
   { number: '02', name: 'Whiteboard AMDEC', org: 'Renault / Alpine', year: '2025' },
-  { number: '03', name: 'Synthèse de réunions', org: 'SNCF', year: '2025' },
+  { number: '03', name: 'Synthèse de réunions', nameEn: 'Meeting summaries', org: 'SNCF', year: '2025' },
 ];
-const CONTACT = ['E-mail', 'LinkedIn', 'GitHub'];
 
 type MaquetteProps = {
   /** Grey blocks in place of the words, to judge the placement only. */
@@ -106,10 +118,8 @@ export function MaquetteMobile({ menuOpen, onMenu, glisse, blocks, columns, imag
       <Hero />
       <Visuals images={images} onOuvrir={onOuvrir} />
       <div className="m-menu" data-open={menuOpen ? '' : undefined} inert={!menuOpen}>
-        <button type="button" className="m-label" onClick={() => onMenu?.(false)}>
-          <T>Fermer</T>
-        </button>
-        <NavList className="m-menu__nav" />
+        <Fermer onMenu={onMenu} />
+        <NavList className="m-menu__nav" onChoix={() => onMenu?.(false)} />
         <Contact />
       </div>
     </div>
@@ -125,88 +135,153 @@ export const Name = () => (
   </p>
 );
 
-export const NavList = ({ className }: { className: string }) => (
-  <ul className={className}>
-    {NAV.map((item, index) => (
-      <li key={item} data-cursor="cube" aria-current={index === 0 ? 'page' : undefined} style={{ '--i': index } as CSSProperties}>
-        <T>{item}</T>
-      </li>
-    ))}
-    <li className="m-lang" data-cursor="cube" style={{ '--i': NAV.length } as CSSProperties}>
-      <T>FR · EN</T>
-    </li>
-  </ul>
-);
+const Fermer = ({ onMenu }: { onMenu?: (open: boolean) => void }) => {
+  const tr = useTr();
+  return (
+    <button type="button" className="m-label" onClick={() => onMenu?.(false)}>
+      <T>{tr('Fermer', 'Close')}</T>
+    </button>
+  );
+};
 
-export const Contact = () => (
-  <ul className="m-contact m-label">
-    {CONTACT.map((item) => (
-      <li key={item} data-cursor="cube">
-        <T>{item}</T>
-      </li>
-    ))}
-  </ul>
-);
+/** Scrolls the page (the desktop's or the phone's own scroller) to the projects or back to the top. */
+function defiler(depuis: Element, vers: 'projets' | 'haut') {
+  const page = depuis.closest('.maquette, .mobile');
+  if (!page) return;
+  const reduit = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const projets = page.querySelector<HTMLElement>('.m-visuals');
+  const top = vers === 'haut' || !projets ? 0 : Math.max(0, projets.offsetTop - 48);
+  page.scrollTo({ top, behavior: reduit ? 'auto' : 'smooth' });
+}
 
-const Hero = () => (
-  <div className="m-hero">
-    <p className="m-title">
-      <T>AI engineer, du prototype à la </T>
-      {/* The full stop, as an accent square that fades now and then: the page is alive. It never wraps alone. */}
-      <span className="m-nowrap">
-        <mark>
-          <T>production</T>
-        </mark>
-        <span className="m-blink" aria-hidden="true" />
-      </span>
-    </p>
-    <dl className="m-facts">
-      {ENTETE.map(([term, lines]) => (
-        <div key={term}>
-          <dt className="m-label">
-            <T>{term}</T>
-          </dt>
-          {lines.map((parts, index) => (
-            <dd key={index}>
-              {parts.map((part, position) =>
-                typeof part === 'string' ? (
-                  <T key={position}>{part}</T>
-                ) : (
-                  <a key={position} className="m-link" href={part.href} target="_blank" rel="noreferrer">
-                    <T>{part.text}</T>
-                  </a>
-                ),
-              )}
-            </dd>
-          ))}
-        </div>
+export const NavList = ({ className, onChoix }: { className: string; onChoix?: () => void }) => {
+  const tr = useTr();
+  const langue = useLangue();
+  const choisir = useChoixLangue();
+  const items = nav(tr, langue);
+  return (
+    <ul className={className}>
+      {items.map((item, index) => (
+        <li key={item.id} data-cursor="cube" aria-current={index === 0 ? 'page' : undefined} style={{ '--i': index } as CSSProperties}>
+          {'href' in item ? (
+            <a href={item.href} target="_blank" rel="noreferrer" onClick={onChoix}>
+              <T>{item.texte}</T>
+            </a>
+          ) : (
+            <a
+              href={`#${item.id}`}
+              onClick={(event) => {
+                event.preventDefault();
+                defiler(event.currentTarget, item.id === 'projets' ? 'projets' : 'haut');
+                onChoix?.();
+              }}
+            >
+              <T>{item.texte}</T>
+            </a>
+          )}
+        </li>
       ))}
-    </dl>
-  </div>
-);
-
-const Visuals = ({ images, onOuvrir }: Pick<MaquetteProps, 'images' | 'onOuvrir'>) => (
-  <ul className="m-visuals">
-    {PROJECTS.map((project) => (
-      <li
-        key={project.number}
-        data-cursor="projet"
-        data-cursor-label="Voir le projet"
-        onClick={onOuvrir ? () => onOuvrir(project.number) : undefined}
-      >
-        <span className="m-img">{images?.[project.number]}</span>
-        <span className="m-work">
-          <em>
-            <T>{project.name}</T>
-          </em>
-          <span className="m-work__meta">
-            <T>
-              {' · '}
-              {project.org}, {project.year}
-            </T>
+      <li className="m-lang" style={{ '--i': items.length } as CSSProperties}>
+        {(['fr', 'en'] as const).map((l, i) => (
+          <span key={l}>
+            {i > 0 && ' · '}
+            <button type="button" className="m-lang__choix" aria-pressed={langue === l} lang={l} onClick={() => choisir(l)}>
+              <T>{l.toUpperCase()}</T>
+            </button>
           </span>
-        </span>
+        ))}
       </li>
-    ))}
-  </ul>
-);
+    </ul>
+  );
+};
+
+/** The three ways to reach me, always one click away. */
+export const Contact = () => {
+  const tr = useTr();
+  const liens = [
+    { texte: tr('E-mail', 'Email'), href: `mailto:${profile.email}` },
+    { texte: 'LinkedIn', href: profile.linkedinUrl, externe: true },
+    { texte: 'GitHub', href: profile.githubUrl, externe: true },
+  ];
+  return (
+    <ul className="m-contact m-label">
+      {liens.map(({ texte, href, externe }) => (
+        <li key={texte} data-cursor="cube">
+          <a href={href} {...(externe ? { target: '_blank', rel: 'noreferrer' } : {})}>
+            <T>{texte}</T>
+          </a>
+        </li>
+      ))}
+    </ul>
+  );
+};
+
+const Hero = () => {
+  const tr = useTr();
+  const ENTETE = entete(tr);
+  return (
+    <div className="m-hero">
+      <p className="m-title">
+        <T>{tr('AI engineer, du prototype à la ', 'AI engineer, from prototype to ')}</T>
+        {/* The full stop, as an accent square that fades now and then: the page is alive. It never wraps alone. */}
+        <span className="m-nowrap">
+          <mark>
+            <T>production</T>
+          </mark>
+          <span className="m-blink" aria-hidden="true" />
+        </span>
+      </p>
+      <dl className="m-facts">
+        {ENTETE.map(([term, lines]) => (
+          <div key={term}>
+            <dt className="m-label">
+              <T>{term}</T>
+            </dt>
+            {lines.map((parts, index) => (
+              <dd key={index}>
+                {parts.map((part, position) =>
+                  typeof part === 'string' ? (
+                    <T key={position}>{part}</T>
+                  ) : (
+                    <a key={position} className="m-link" href={part.href} target="_blank" rel="noreferrer">
+                      <T>{part.text}</T>
+                    </a>
+                  ),
+                )}
+              </dd>
+            ))}
+          </div>
+        ))}
+      </dl>
+    </div>
+  );
+};
+
+const Visuals = ({ images, onOuvrir }: Pick<MaquetteProps, 'images' | 'onOuvrir'>) => {
+  const tr = useTr();
+  return (
+    <ul className="m-visuals" id="projets">
+      {PROJECTS.map((project) => (
+        <li
+          key={project.number}
+          data-cursor="projet"
+          data-cursor-label={tr('Voir le projet', 'View project')}
+          onClick={onOuvrir ? () => onOuvrir(project.number) : undefined}
+        >
+          <span className="m-img">{images?.[project.number]}</span>
+          <span className="m-work">
+            <em>
+              <T>{project.nameEn ? tr(project.name, project.nameEn) : project.name}</T>
+            </em>
+            <span className="m-work__meta">
+              <T>
+                {' · '}
+                {project.org}, {project.year}
+              </T>
+            </span>
+          </span>
+        </li>
+      ))}
+    </ul>
+  );
+};

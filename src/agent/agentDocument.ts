@@ -4,7 +4,7 @@ import { MachineResumeDocument } from '../apps/home/features/machine/MachineResu
 import { AgentAccess } from './AgentAccess';
 import { getAgentContext, getAgentMarkdown, getAgentProfile } from './agentContent';
 
-export function getAgentHtml() {
+function getAgentHtml() {
   const data = getAgentProfile();
   const person = {
     '@context': 'https://schema.org', '@type': 'Person', name: data.name,
@@ -25,7 +25,7 @@ export function getAgentHtml() {
   <meta name="description" content="Alexandre Teixeira — AI engineer. Complete machine-readable CV, copyable context and JSON profile.">
   <meta name="theme-color" content="#090909">
   <title>Alexandre Teixeira · Agent profile</title>
-  <link rel="icon" type="image/svg+xml" href="/assets/pwa-icon.svg">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="preload" href="/fonts/DepartureMono-Regular.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/agent/style.css">
   <link rel="alternate" type="text/markdown" href="/agent/profile.md" title="Profile as Markdown">
@@ -120,6 +120,6 @@ export function getAgentFiles(style: string): Record<string, { type: string; con
     '/agent/context.txt': { type: 'text/plain', content: getAgentContext() },
     '/agent/style.css': { type: 'text/css', content: style },
     '/agent/copy.js': { type: 'text/javascript', content: copyScript },
-    '/llms.txt': { type: 'text/plain', content: `# Alexandre Teixeira\n\n> AI engineer building AI products from business needs to production. Self-authored profile based on the English and French CVs.\n\n## Profile\n\n- [Agent profile](/agent/): Full profile in static HTML, readable without JavaScript.\n- [Profile as Markdown](/agent/profile.md): Experience, education, projects, skills and sources.\n- [Structured profile](/agent/profile.json): The same profile as JSON.\n- [Conversation context](/agent/context.txt): An optional introduction prompt followed by the profile.\n\n## Sources\n\n- [English CV](/CV_en.pdf)\n- [French CV](/CV_fr.pdf)\n- [Human portfolio](/)\n` },
+    '/llms.txt': { type: 'text/plain', content: `# Alexandre Teixeira\n\n> AI engineer building AI products from business needs to production. Self-authored profile based on the English and French CVs.\n\n## Profile\n\n- [Agent profile](/agent/): Full profile in static HTML, readable without JavaScript.\n- [Profile as Markdown](/agent/profile.md): Experience, education, projects, skills and sources.\n- [Structured profile](/agent/profile.json): The same profile as JSON.\n- [Conversation context](/agent/context.txt): An optional introduction prompt followed by the profile.\n\n## Sources\n\n- [English CV](/documents/cv-en.pdf)\n- [French CV](/documents/cv-fr.pdf)\n- [Human portfolio](/)\n` },
   };
 }

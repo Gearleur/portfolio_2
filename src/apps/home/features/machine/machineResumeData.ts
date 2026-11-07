@@ -113,7 +113,7 @@ export const machineSkillGroups = [
   },
 ];
 
-// Shared by the Machine view and its Markdown export; sourced from CV_en.pdf / CV_fr.pdf.
+// Shared by the Machine view and its Markdown export; sourced from cv-en.pdf / cv-fr.pdf.
 export const machineProfile = {
   languages: 'French (native) · English (professional) · Chinese (basic)',
   leadership: [

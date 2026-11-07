@@ -37,7 +37,7 @@ test('serves the complete profile and formats to a client without JavaScript', a
   const data = await json.json();
   expect(data.name).toBe('Alexandre Teixeira');
   expect(data.experience).toHaveLength(3);
-  expect(data.provenance.sources).toEqual(['/CV_en.pdf', '/CV_fr.pdf']);
+  expect(data.provenance.sources).toEqual(['/documents/cv-en.pdf', '/documents/cv-fr.pdf']);
   await context.close();
 });
 

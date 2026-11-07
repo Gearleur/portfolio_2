@@ -574,3 +574,58 @@
   font-family: var(--font-label);
   font-size: calc(var(--size-label) * var(--u));
 }
+
+/* The desktop name (journal n° 103): top left, fixed, in the display serif at 30 u,
+   like the headline, so it reads as a signature; the menu on the right starts lower,
+   level with the headline. */
+.maquette .m-side .m-name {
+  position: fixed;
+  z-index: 6;
+  top: calc(26 * var(--u));
+  left: calc(var(--margin) * var(--u));
+  font-family: var(--font-display);
+  font-size: calc(30 * var(--u));
+  font-weight: 400;
+  line-height: 1;
+  text-align: left;
+}
+
+.maquette .m-side {
+  padding-top: calc((var(--space-8) + var(--space-3)) * var(--u));
+}
+
+/* Links and buttons of the nav, the contact and the language switch read as the plain words they replace. */
+:is(.m-nav, .m-menu__nav, .m-contact) a {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+.m-lang__choix {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.m-lang__choix[aria-pressed='true'] {
+  color: var(--ink);
+}
+
+:is(.m-nav, .m-menu__nav, .m-contact) a:hover,
+.m-lang__choix:hover {
+  color: var(--ink);
+}
+
+/* The contact links are underlined, in the accent, under the pointer (as the nav is). */
+.m-contact a {
+  text-decoration: underline 1px transparent;
+  text-underline-offset: 0.3em;
+  transition: text-decoration-color 0.2s;
+}
+
+.m-contact a:hover,
+.m-contact a:focus-visible {
+  text-decoration-color: var(--accent);
+}

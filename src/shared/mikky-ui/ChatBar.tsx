@@ -41,7 +41,7 @@ export function ChatBar({
           )}
           {model && (
             <span className="mk-chip">
-              <span className="mk-chip__logo" style={{ '--c': '#4d6bfe' } as CSSProperties}>
+              <span className="mk-chip__logo" style={{ '--c': '#fa520f' } as CSSProperties}>
                 <Icon name="sparkle" />
               </span>
               {model}

@@ -15,3 +15,10 @@ export function useTr() {
   const langue = useLangue();
   return (fr: string, en: string) => (langue === 'en' ? en : fr);
 }
+
+/** Changes the language of the page; the Atelier, which has one language, ignores it. */
+export const ChoixLangueContext = createContext<(langue: Langue) => void>(() => {});
+
+export function useChoixLangue() {
+  return useContext(ChoixLangueContext);
+}

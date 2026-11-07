@@ -39,7 +39,7 @@ export function MachineResumeDocument({
           location: profile.location,
           linkedin: profile.linkedinUrl,
           github: profile.githubUrl,
-          source: ['CV_en.pdf', 'CV_fr.pdf'],
+          source: ['documents/cv-en.pdf', 'documents/cv-fr.pdf'],
         }, null, 2)}</code></pre>
 
         <nav className="machine-resume__links" aria-label="Contact links">
@@ -47,8 +47,8 @@ export function MachineResumeDocument({
           <a href={profile.phoneHref}>[PHONE]</a>
           <a href={profile.linkedinUrl} target="_blank" rel="noreferrer">[LINKEDIN]</a>
           <a href={profile.githubUrl} target="_blank" rel="noreferrer">[GITHUB]</a>
-          <a href="/CV_en.pdf" download>[CV_EN.PDF]</a>
-          <a href="/CV_fr.pdf" download>[CV_FR.PDF]</a>
+          <a href="/documents/cv-en.pdf" download>[CV_EN.PDF]</a>
+          <a href="/documents/cv-fr.pdf" download>[CV_FR.PDF]</a>
           <a href="/cv/en/">[VIEW CV EN]</a>
           <a href="/cv/fr/">[VOIR CV FR]</a>
           {showAgentLink && <a href="/agent/">[FOR AI AGENTS ↗]</a>}

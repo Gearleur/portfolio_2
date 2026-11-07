@@ -23,7 +23,7 @@ export function getAgentProfile() {
     },
     provenance: {
       kind: 'Self-authored professional profile based on the supplied CVs',
-      sources: ['/CV_en.pdf', '/CV_fr.pdf'],
+      sources: ['/documents/cv-en.pdf', '/documents/cv-fr.pdf'],
       dateNote: 'Periods and present-tense claims reflect the source CV, not a live employment feed.',
     },
     education: machineProfile.education.map(({ school, period, degree, courses }) => ({ school, period, degree, courses: [...courses] })),
@@ -48,8 +48,8 @@ export function getAgentMarkdown() {
 This is Alexandre Teixeira's self-authored professional profile, based on the supplied CVs.
 Dates, metrics and present-tense statements reflect these sources, not live employment updates.
 
-- [CV in English](/CV_en.pdf)
-- [CV en français](/CV_fr.pdf)
+- [CV in English](/documents/cv-en.pdf)
+- [CV en français](/documents/cv-fr.pdf)
 - [Structured profile](/agent/profile.json)
 - [Human portfolio](/)
 `;

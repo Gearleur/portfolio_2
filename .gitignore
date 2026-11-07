@@ -11,3 +11,10 @@ playwright-report
 test-results
 # Third-party screenshots for the Atelier moodboard: kept local, the repo is public.
 docs/atelier/references/
+
+# Windows download markers
+*:Zone.Identifier
+
+# Local tool state
+.claude/
+.superpowers/

@@ -57,7 +57,7 @@ ${machineProfile.role}
   "location": "${profile.location}",
   "linkedin": "${profile.linkedinUrl}",
   "github": "${profile.githubUrl}",
-  "source": ["CV_en.pdf", "CV_fr.pdf"]
+  "source": ["documents/cv-en.pdf", "documents/cv-fr.pdf"]
 }
 \`\`\`
 

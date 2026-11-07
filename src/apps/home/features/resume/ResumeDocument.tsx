@@ -14,7 +14,7 @@ export default function ResumeDocument({ language }: { language: ResumeLanguage 
     const container = pagesRef.current;
     if (!container) return;
     let disposed = false;
-    const loading = getDocument({ url: `/CV_${language}.pdf` });
+    const loading = getDocument({ url: `/documents/cv-${language}.pdf` });
 
     const render = async () => {
       try {
@@ -49,7 +49,7 @@ export default function ResumeDocument({ language }: { language: ResumeLanguage 
   return (
     <div className="resume-preview-document" data-document-status={status}>
       {status === 'loading' && <p role="status">{language === 'fr' ? 'Chargement du CV…' : 'Loading CV…'}</p>}
-      {status === 'error' && <p role="alert">{language === 'fr' ? 'L’aperçu est indisponible.' : 'The preview is unavailable.'} <a href={`/CV_${language}.pdf`} target="_blank" rel="noreferrer">{language === 'fr' ? 'Ouvrir le PDF' : 'Open PDF'}</a></p>}
+      {status === 'error' && <p role="alert">{language === 'fr' ? 'L’aperçu est indisponible.' : 'The preview is unavailable.'} <a href={`/documents/cv-${language}.pdf`} target="_blank" rel="noreferrer">{language === 'fr' ? 'Ouvrir le PDF' : 'Open PDF'}</a></p>}
       <div ref={pagesRef} />
     </div>
   );

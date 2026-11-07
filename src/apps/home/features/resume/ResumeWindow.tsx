@@ -27,7 +27,7 @@ export function ResumeWindow(props: ResumeWindowProps) {
           </select>
         </label>
         <a href={`/cv/${language}/`}>Voir la page du CV ↗</a>
-        <a href={`/CV_${language}.pdf`} download>Télécharger le PDF ↗</a>
+        <a href={`/documents/cv-${language}.pdf`} download>Télécharger le PDF ↗</a>
       </div>
       <Suspense fallback={<p role="status">Chargement du CV…</p>}>
         <ResumeDocument key={language} language={language} />

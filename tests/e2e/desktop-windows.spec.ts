@@ -9,7 +9,7 @@ test('shows the PDF on arrival, closes to its icon and reopens in either languag
   await expect(resume.getByRole('img', { name: 'CV — Français, page 1' })).toBeVisible();
   await resume.getByLabel('Langue du CV').selectOption('en');
   await expect(resume.getByRole('img', { name: 'CV — English, page 1' })).toBeVisible();
-  await expect(resume.locator('a[download]')).toHaveAttribute('href', '/CV_en.pdf');
+  await expect(resume.locator('a[download]')).toHaveAttribute('href', '/documents/cv-en.pdf');
   await expect(resume.getByRole('link', { name: 'Voir la page du CV' })).toHaveAttribute('href', '/cv/en/');
   await page.screenshot({ path: '/tmp/portfolio-desktop-cv.png' });
   await resume.getByRole('button', { name: 'Fermer la fenetre' }).click();

@@ -63,7 +63,7 @@ self.addEventListener('fetch', (event) => {
   // Revalidate mutable CV files instead of retaining an old version indefinitely.
   // Text exports are deliberately not stored in the offline cache.
   if (url.origin === self.location.origin &&
-      ['/agent/profile.md', '/agent/profile.json', '/agent/context.txt', '/CV_en.pdf', '/CV_fr.pdf'].includes(url.pathname)) {
+      ['/agent/profile.md', '/agent/profile.json', '/agent/context.txt', '/documents/cv-en.pdf', '/documents/cv-fr.pdf'].includes(url.pathname)) {
     event.respondWith(fetch(request));
     return;
   }

@@ -60,7 +60,7 @@ const SCENES: { id: string; titre: string; note: string; contenu: ReactNode }[] 
   {
     id: '1',
     titre: 'Le chat, vide',
-    note: 'Le début : la barre de Mikky, dans le dossier alpine A110, avec deepseek 4.1.',
+    note: 'Le début : la barre de Mikky, dans le dossier alpine A110, avec mistral.',
     contenu: <Chat etat="vide" />,
   },
   {

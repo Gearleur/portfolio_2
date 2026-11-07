@@ -5,8 +5,8 @@ for (const language of ['fr', 'en']) {
     await page.goto(`/cv/${language}/`);
     await expect(page.locator('html')).toHaveAttribute('lang', language);
     await expect(page.getByRole('img', { name: `CV — ${language === 'fr' ? 'Français' : 'English'}, page 1` })).toBeVisible();
-    await expect(page.locator('a[download]')).toHaveAttribute('href', `/CV_${language}.pdf`);
-    const pdf = await request.get(`/CV_${language}.pdf`);
+    await expect(page.locator('a[download]')).toHaveAttribute('href', `/documents/cv-${language}.pdf`);
+    const pdf = await request.get(`/documents/cv-${language}.pdf`);
     expect(pdf.headers()['content-type']).toContain('application/pdf');
     expect((await pdf.body()).subarray(0, 5).toString()).toBe('%PDF-');
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);

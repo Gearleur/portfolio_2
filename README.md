@@ -17,8 +17,12 @@ src/
   agent/         profil et pages pour les agents IA
 scripts/         plugins Vite (pages agent, garde des assets publics) et leurs tests
 tests/e2e/       tests Playwright
-public/          fichiers servis tels quels
-docs/            documentation
+public/
+  documents/     CV (cv-fr, cv-en, et leurs versions completes) et rapport de stage
+  fonts/         polices servies telles quelles (Inter en latin, Instrument Serif...)
+  assets/        images, icones, curseurs
+docs/            documentation (atelier/, sources/ : les affiches d'origine)
+scenes/          page de travail des scenes de la video Alpine (dev seulement, a supprimer)
 mise.toml        versions de Node et de pnpm
 ```
 

@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
+import { lazy, Suspense, useEffect, useRef, useState } from 'react';
+import { ChoixLangueContext, LangueContext } from '../atelier/langue';
+import type { Langue } from '../atelier/langue';
 import { Maquette, MaquetteMobile } from '../atelier/Maquettes';
 import { MiniatureAlpine } from '../atelier/MiniatureAlpine';
 import { Miniature } from '../atelier/Miniature';
-import { ProjetMaquette, ProjetMobile } from '../atelier/Projet';
-import { PROJETS } from '../atelier/projets';
 import { Specimen } from '../atelier/Specimen';
 import { FOND, FOND_LECTURE } from '../atelier/tokens';
 
@@ -16,8 +16,35 @@ import { FOND, FOND_LECTURE } from '../atelier/tokens';
  */
 
 const ADRESSES: Record<string, string> = { '01': 'sncf-gpt', '02': 'whiteboard-amdec' };
+const NOMS: Record<string, string> = { '01': 'SNCF GPT', '02': 'Whiteboard AMDEC' };
+
+// The project pages (texts, diagrams, logos) are a chunk of their own, fetched when the home is idle.
+const chargerProjet = () => import('./PageProjet');
+const PageProjet = lazy(chargerProjet);
 
 const lireAdresse = () => window.location.hash.replace(/^#/, '');
+
+/** The page's language: the one chosen before, else the browser's (French for French, English otherwise). */
+function useLangueChoisie() {
+  const [langue, setLangue] = useState<Langue>(() => {
+    try {
+      const gardee = window.localStorage.getItem('langue');
+      if (gardee === 'fr' || gardee === 'en') return gardee;
+    } catch {
+      /* storage blocked: the browser's language will do */
+    }
+    return navigator.language.toLowerCase().startsWith('fr') ? 'fr' : 'en';
+  });
+  useEffect(() => {
+    document.documentElement.lang = langue;
+    try {
+      window.localStorage.setItem('langue', langue);
+    } catch {
+      /* not kept, still works */
+    }
+  }, [langue]);
+  return [langue, setLangue] as const;
+}
 
 function useTelephone() {
   const query = '(max-width: 720px)';
@@ -33,6 +60,7 @@ function useTelephone() {
 
 export function Vitrine() {
   const telephone = useTelephone();
+  const [langue, setLangue] = useLangueChoisie();
   const [adresse, setAdresse] = useState(lireAdresse);
   const [menu, setMenu] = useState(false);
   // Whether the project page was opened from the Vitrine, in this visit.
@@ -48,14 +76,19 @@ export function Vitrine() {
   }, []);
 
   const numero = Object.keys(ADRESSES).find((n) => ADRESSES[n] === adresse);
-  const projet = numero ? PROJETS[numero] : undefined;
+  const projet = numero !== undefined;
 
   useEffect(() => {
-    document.title = projet ? `${projet.nom} — Alexandre Teixeira` : 'Alexandre Teixeira — Portfolio';
-  }, [projet]);
+    document.title = numero ? `${NOMS[numero]} — Alexandre Teixeira` : 'Alexandre Teixeira — Portfolio';
+  }, [numero]);
+
+  useEffect(() => {
+    const repos = window.requestIdleCallback ?? ((f: () => void) => window.setTimeout(f, 2500));
+    repos(() => void chargerProjet());
+  }, []);
 
   const ouvrir = (n: string) => {
-    if (!PROJETS[n] || !ADRESSES[n]) return;
+    if (!ADRESSES[n]) return;
     depuisVitrine.current = true;
     window.location.hash = ADRESSES[n];
   };
@@ -74,11 +107,11 @@ export function Vitrine() {
   };
 
   let page;
-  if (projet) {
-    page = telephone ? (
-      <ProjetMobile key={adresse} projet={projet} onRetour={retour} menuOpen={menu} onMenu={setMenu} />
-    ) : (
-      <ProjetMaquette key={adresse} projet={projet} onRetour={retour} />
+  if (numero) {
+    page = (
+      <Suspense fallback={null}>
+        <PageProjet key={adresse} numero={numero} telephone={telephone} onRetour={retour} menuOpen={menu} onMenu={setMenu} />
+      </Suspense>
     );
   } else {
     page = telephone ? (
@@ -90,10 +123,14 @@ export function Vitrine() {
 
   return (
     <main className="vitrine">
-      {/* A new stage for each kind of page: a wave under way on the Vitrine stops at a project page. */}
-      <Specimen key={projet ? 'lecture' : 'vitrine'} settings={projet ? FOND_LECTURE : FOND} reelle={!telephone}>
-        {page}
-      </Specimen>
+      <LangueContext.Provider value={langue}>
+        <ChoixLangueContext.Provider value={setLangue}>
+          {/* A new stage for each kind of page: a wave under way on the Vitrine stops at a project page. */}
+          <Specimen key={projet ? 'lecture' : 'vitrine'} settings={projet ? FOND_LECTURE : FOND} reelle={!telephone}>
+            {page}
+          </Specimen>
+        </ChoixLangueContext.Provider>
+      </LangueContext.Provider>
     </main>
   );
 }
