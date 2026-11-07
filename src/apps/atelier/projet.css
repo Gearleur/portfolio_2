@@ -496,12 +496,20 @@
 }
 
 /* On a project page the name stands upright at the middle of the right edge, as on the phone: on the
-   accent, in the display serif of the headline. */
+   accent, in the display serif of the headline. Its box is rounded to whole pixels and it is turned by the
+   writing mode, not by a transform, so that the text stays on the pixel grid and renders sharp. */
 .maquette.projet .m-side .m-name {
-  top: 50%;
-  right: calc(var(--margin) * var(--u));
+  --h: round(calc(236 * var(--u)), 1px);
+
+  top: round(calc((100cqh - var(--h)) / 2), 1px);
+  right: round(calc(var(--margin) * var(--u)), 1px);
+  bottom: auto;
   left: auto;
-  padding: calc(14 * var(--u)) calc(5 * var(--u));
+  display: grid;
+  width: round(calc(38 * var(--u)), 1px);
+  height: var(--h);
+  padding: 0;
+  place-items: center;
   background: var(--accent);
   color: var(--on-accent);
   font-family: var(--font-display);
@@ -509,7 +517,15 @@
   font-weight: 400;
   letter-spacing: 0.01em;
   line-height: 1;
-  translate: 0 -50%;
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
   writing-mode: vertical-rl;
   rotate: 180deg;
+}
+
+@supports (writing-mode: sideways-lr) {
+  .maquette.projet .m-side .m-name {
+    writing-mode: sideways-lr;
+    rotate: none;
+  }
 }
