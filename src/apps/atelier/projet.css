@@ -282,7 +282,7 @@
   align-self: start;
 }
 
-/* Back to the projects, top left, level with the name on the right. */
+/* Back to the projects, top left, under the name (which sits above it, fixed). */
 .p-retour {
   margin: 0;
   color: var(--ink-soft);
@@ -493,4 +493,8 @@
 .projet--mobile .m-menu {
   overflow-y: auto;
   scrollbar-width: none;
+}
+
+.maquette .p-retour {
+  margin-top: calc(44 * var(--u));
 }
