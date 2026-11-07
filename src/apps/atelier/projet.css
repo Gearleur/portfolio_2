@@ -282,7 +282,7 @@
   align-self: start;
 }
 
-/* Back to the projects, top left, under the name (which sits above it, fixed). */
+/* Back to the projects, top left. */
 .p-retour {
   margin: 0;
   color: var(--ink-soft);
@@ -495,6 +495,16 @@
   scrollbar-width: none;
 }
 
-.maquette .p-retour {
-  margin-top: calc(44 * var(--u));
+/* On a project page the name stands upright at the middle of the right edge, as on the phone. */
+.maquette.projet .m-side .m-name {
+  top: 50%;
+  right: calc(var(--margin) * var(--u));
+  left: auto;
+  font-family: var(--font-text);
+  font-size: calc(15 * var(--u));
+  font-weight: 500;
+  letter-spacing: 0;
+  translate: 0 -50%;
+  writing-mode: vertical-rl;
+  rotate: 180deg;
 }
