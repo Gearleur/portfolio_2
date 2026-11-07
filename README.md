@@ -2,11 +2,35 @@
 
 Portfolio interactif en React + Vite, pense comme un bureau retro inspire des interfaces Mac/desktop annees 90-2000.
 
+## Structure du projet
+
+```
+index.html, atelier/, portfolio/, cv/{fr,en}/   points d'entree HTML (leur chemin = l'URL publique)
+middleware.ts, vercel.json                       configuration Vercel (imposee a la racine)
+src/
+  apps/
+    home/        bureau retro : main.tsx, App.tsx, styles/, features/<fonctionnalite>/
+    atelier/     l'Atelier (application autonome)
+    portfolio/   la Vitrine
+    cv/          pages CV dediees
+  shared/        code partage : data/, hooks/, types/, utils/
+  agent/         profil et pages pour les agents IA
+scripts/         plugins Vite (pages agent, garde des assets publics) et leurs tests
+tests/e2e/       tests Playwright
+public/          fichiers servis tels quels
+docs/            documentation
+mise.toml        versions de Node et de pnpm
+```
+
+Regle : une application importe depuis `shared/`, jamais depuis une autre application,
+sauf `cv`, qui reutilise `ResumeDocument` de `home`.
+
 ## Scripts
 
 - `pnpm dev` : lance le serveur de developpement
 - `pnpm build` : verifie TypeScript puis genere la version de production
 - `pnpm lint` : lance ESLint
+- `pnpm test` : tests unitaires (Vitest) ; `pnpm test:e2e` : tests Playwright
 - `pnpm preview` : sert le build localement
 
 ## Profil pour les agents IA
@@ -31,7 +55,7 @@ curl -fsSL 'http://localhost:4173/agent/context.txt'
 curl -fsSL 'http://localhost:4173/agent/profile.json'
 ```
 
-Le plugin `build/agentPages.ts` sert ces pages en développement et les génère dans
+Le plugin `scripts/agentPages.ts` sert ces pages en développement et les génère dans
 `dist` à chaque build, depuis les mêmes données que le mode Machine. Publier tout
 le dossier `dist` et laisser l’hébergeur servir les fichiers statiques avant toute
 règle de repli SPA ; `/agent` doit résoudre vers `agent.html` ou `agent/index.html`.
@@ -73,7 +97,7 @@ Les icones de test dans `public/assets/icons` viennent du repo
 artistique retro. Verifier/remplacer ces assets avant une publication publique si
 une licence explicite est necessaire.
 
-Les curseurs retro utilises dans `src/styles.css` viennent de `cursor.cc` :
+Les curseurs retro utilises dans `src/apps/home/styles.css` viennent de `cursor.cc` :
 
 - `Windows 1.0 - 3.1 cursor`
 - `windows xp hand`

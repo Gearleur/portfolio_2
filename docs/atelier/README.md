@@ -315,7 +315,7 @@ police :
   d'essai modifiable sert d'échantillon ;
 - les polices sont téléchargées depuis les paquets npm de Fontsource : un seul
   woff2 par famille (sous-ensemble latin, tous les axes quand c'est possible),
-  avec sa licence dans `src/atelier/fonts/licenses/`. Elles ne se chargent que
+  avec sa licence dans `src/apps/atelier/fonts/licenses/`. Elles ne se chargent que
   quand leur carte approche de l'écran ;
 - quand le choix sera fait, on retire les polices non retenues du repo.
 
@@ -596,7 +596,7 @@ remplacée par la vue de détail : journal n° 69 et 71.)
 
 Sur une carte, la planche est une texture qui donne envie de cliquer ; en gros
 plan, tout se lit. La géométrie (rails, traverses, cœurs) est calculée dans
-`src/atelier/voies.ts`, le dessin dans `Aiguillage.tsx`.
+`src/apps/atelier/voies.ts`, le dessin dans `Aiguillage.tsx`.
 
 **Sur téléphone, retenu : la vue de détail.** L'aiguillage est agrandi dans un
 cercle bordé de micro-texte. « SNCF GPT » est en haut, à la taille des
@@ -616,9 +616,9 @@ chacun, soit la largeur des trois cartes d'avant. Le troisième vient sous le
 deuxième, en diagonale. La page défile, et la nav reste en place à droite ; sur
 téléphone, la tranche aussi.
 
-Le tout se trouve dans `src/atelier/Miniature.tsx`.
+Le tout se trouve dans `src/apps/atelier/Miniature.tsx`.
 
-**La page projet** (`src/atelier/Projet.tsx`, textes dans `projets.ts`) est
+**La page projet** (`src/apps/atelier/Projet.tsx`, textes dans `projets.ts`) est
 construite comme celle de Rachel Chen :
 
 - **en tête** : le titre, l'accroche, **les trois chiffres clés** (les résultats
@@ -638,7 +638,7 @@ construite comme celle de Rachel Chen :
   le contact ;
 - **le fond sans l'onde**, qui gênait la lecture (`FOND_LECTURE`) ;
 - **les tailles** : texte à 15 px, titres de partie à 29 px, chiffres à 58 px ;
-- **les schémas** (`src/atelier/Schemas.tsx`) : techniques et à plat, sans
+- **les schémas** (`src/apps/atelier/Schemas.tsx`) : techniques et à plat, sans
   aluminium, pour qui veut comprendre. Traits à l'encre, typo de la page, accent
   sur le chemin qui compte. Tirés du rapport de stage : le parcours d'un ticket,
   l'écran de l'assistant (et ses quatre recadrages dans les cartes), la carte des
@@ -646,7 +646,7 @@ construite comme celle de Rachel Chen :
   le pipeline CI/CD. Le plan d'architecture en voies est retiré. Les flèches
   reprennent la pointe du curseur, dessinée droite comme celle du retour, et
   gardent la même taille quel que soit le trait ;
-- **les marques** (`src/atelier/logos.ts`) : le logo SNCF dans la ligne du
+- **les marques** (`src/apps/atelier/logos.ts`) : le logo SNCF dans la ligne du
   titre, à la hauteur des capitales ; des pastilles de marque sur les boîtes
   des schémas.
 - **sur téléphone** (`ProjetMobile`) : le cadre de la Vitrine, avec la tranche
@@ -663,7 +663,7 @@ construite comme celle de Rachel Chen :
   `docs/atelier/contenu/02-whiteboard-amdec.md`). Sa page suit le même modèle
   que SNCF GPT, avec le « A » d'Alpine (le fichier officiel que tu as fourni, en
   bleu #006FBA) collé au dernier mot du titre, et neuf parties. La miniature
-  est ton affiche, faite avec un autre agent (`src/atelier/medias/whiteboard-amdec.webp`),
+  est ton affiche, faite avec un autre agent (`src/apps/atelier/medias/whiteboard-amdec.webp`),
   sur la carte de la Vitrine et en tête de page. Huit schémas à plat, sur un fond
   à points comme un tableau blanc, comme ceux de SNCF GPT :
   - la grille AMDEC dans Excel ;
@@ -678,7 +678,7 @@ construite comme celle de Rachel Chen :
   Dans l'Atelier, un bouton choisit la page affichée, et chaque carte de la
   Vitrine ouvre la sienne.
 - **l'anglais, préparé** : les libellés des schémas existent en français et en
-  anglais (`src/atelier/langue.ts`). Le texte anglais de la page reste à brancher. Les logos viennent de Simple
+  anglais (`src/apps/atelier/langue.ts`). Le texte anglais de la page reste à brancher. Les logos viennent de Simple
   Icons (CC0), sauf Jenkins (CC BY-SA 3.0, le projet Jenkins). Azure, ServiceNow
   et OpenAI n'y sont pas, ils restent en texte. Les images du rapport de stage
   ne sont pas reprises : ce sont des documents internes SNCF.
@@ -690,7 +690,7 @@ manque, on revient d'abord dans l'Atelier.
 
 **Première version en ligne (journal n° 99)**, avant la fin de l'étape 7, pour
 que la page soit accessible. Elle est faite de `portfolio/index.html` et de
-`src/portfolio/` :
+`src/apps/portfolio/` :
 - la Vitrine en taille réelle sur ordinateur, et en version téléphone sous
   720 px ;
 - chaque page projet a sa propre adresse (`#sncf-gpt`, `#whiteboard-amdec`),
@@ -733,16 +733,16 @@ un bon argument dans un portfolio.
 | 10 | 2026-11-05 | Pas d'ombre de fenêtre | Jeté | 1 |
 | 11 | 2026-11-05 | Une **onde** de couleur traverse la page en diagonale, rarement et de façon organique, pour montrer que le fond vit. Ses couleurs s'inspirent de Feral UI. | Ta demande | 1 |
 | 12 | 2026-11-05 | Le grain doit être moins régulier : nouvelle recette à points de deux tailles | Ta critique du premier grain | 1 |
-| 13 | 2026-11-05 | **Réglages retenus** : fond `oklch(0.980 0.004 122)` · `#F8F9F6` ; grain 5 %, taille 75 %, irrégularité 75 % ; onde Neige vermillon, 55 %, environ toutes les 30 s, traversée 11 s. Source de vérité : `src/atelier/fondTokens.ts`. | Tes réglages, copiés depuis l'établi | 1 |
+| 13 | 2026-11-05 | **Réglages retenus** : fond `oklch(0.980 0.004 122)` · `#F8F9F6` ; grain 5 %, taille 75 %, irrégularité 75 % ; onde Neige vermillon, 55 %, environ toutes les 30 s, traversée 11 s. Source de vérité : `src/apps/atelier/fondTokens.ts`. | Tes réglages, copiés depuis l'établi | 1 |
 | 14 | 2026-11-05 | L'onde part du **coin haut droit** vers le bas à gauche. Elle est intense à l'arrivée et s'efface en traversant (environ 25 % de son intensité aux quatre cinquièmes du trajet). | Ta demande | 1 |
 | 15 | 2026-11-05 | L'établi de l'étape 1 **reste dans l'Atelier**. Les étapes suivantes s'ajoutent en dessous, sans le remplacer. | « Garde cette page, elle est cool » | 1 |
 | 16 | 2026-11-05 | Accent : **Cramoisi `#8E0F24`**, le rouge de la composition Neige vermillon. Il remplace le Vermillon (n° 8). Contraste 8,9:1 sur le fond, et 9,4:1 pour le texte blanc sélectionné. | « Remplace le orange par le rouge du Neige vermillon » | 1 |
 | 17 | 2026-11-05 | La **première onde**, à l'ouverture de la page (après 1,2 s), est forte (75 %) et s'efface vite (effacée à 55 % du trajet). Les **suivantes**, environ toutes les 30 s, passent à 20 %. | Ta demande | 1 |
 | 18 | 2026-11-05 | L'accent est **de nouveau à l'essai**. Un menu propose six teintes, du plus sombre à l'orange : Cramoisi `#8E0F24`, Carmin `#B0172F`, Cerise `#C81E32`, Rouge vif `#D7262B`, Coquelicot `#E0301F`, Vermillon `#EA3F1C`. Le contraste s'affiche en direct. | « L'orange d'avant était peut-être mieux, ou un rouge plus clair : laisse-moi choisir » | 1 |
-| 19 | 2026-11-05 | Accent validé : **Coquelicot `#E0301F`**. Contraste 4,3:1 sur le fond : le cube et la surbrillance sont bien visibles, mais il ne faut pas l'utiliser pour du petit texte. Le texte blanc sélectionné est à 4,6:1 (AA). Source : `src/atelier/tokens.ts` et `tokens.css`. | Ton choix dans le menu | 1 |
+| 19 | 2026-11-05 | Accent validé : **Coquelicot `#E0301F`**. Contraste 4,3:1 sur le fond : le cube et la surbrillance sont bien visibles, mais il ne faut pas l'utiliser pour du petit texte. Le texte blanc sélectionné est à 4,6:1 (AA). Source : `src/apps/atelier/tokens.ts` et `tokens.css`. | Ton choix dans le menu | 1 |
 | 20 | 2026-11-05 | **Étape 1 validée** (BAT) | « On valide, on passe à l'étape deux » | 1 |
 | 21 | 2026-11-05 | L'Atelier s'ouvre sur **la charte** (brief et décisions validées), puis une **barre d'étapes**. Chaque étape garde son établi, à son adresse (`/atelier/#etape-1`, `#etape-2`…). | « Je veux pouvoir revenir à l'étape 1 sans tout perdre, avec en haut tout ce qu'on a validé » | 2 |
-| 22 | 2026-11-05 | Encres validées, direction **Noir** : encre `#161614` (17,1:1), encre douce `#636361` (5,7:1), filet `#DEDEDD`. Source : `INKS` dans `src/atelier/tokens.ts` et `--ink`, `--ink-soft`, `--line` dans `tokens.css`. | « L'encre noire, on peut la garder » | 2 |
+| 22 | 2026-11-05 | Encres validées, direction **Noir** : encre `#161614` (17,1:1), encre douce `#636361` (5,7:1), filet `#DEDEDD`. Source : `INKS` dans `src/apps/atelier/tokens.ts` et `--ink`, `--ink-soft`, `--line` dans `tokens.css`. | « L'encre noire, on peut la garder » | 2 |
 | 23 | 2026-11-05 | **Palette d'appoint** gardée en plus, d'après Snow crimson (Feral UI) : Moonwash Blue `#DBEAF4`, Misted Sky `#E5EDF3`, Moonwash Blue `#CADCE4`, Deep Hanada `#354050`, Orchid Grey `#392932`, Smoked Beni `#7F1727` et `#8E0A1F`. Les clairs servent de surfaces sous l'encre, les profonds de texte ou de blocs. Les rôles se décident à l'étape 6. | « Je veux quand même garder ces couleurs en plus » | 2 |
 | 24 | 2026-11-05 | L'onde Neige vermillon reprend les valeurs exactes de Snow crimson : Moonwash Blue `#DBEAF4`, Deep Hanada `#354050`, Smoked Beni `#8E0A1F`. Le vermillon reste en bord d'attaque. | Ton « vas-y » | 2 |
 | 25 | 2026-11-05 | **Étape 2 validée** (BAT) | « On continue, vas-y » | 2 |

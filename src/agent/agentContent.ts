@@ -1,7 +1,7 @@
-import { profile } from '../data/profile';
-import { professionalExperiences } from '../data/professionalExperience';
-import { machineProfile, machineProjects, machineSkillGroups } from '../components/machine/machineResumeData';
-import { getMachineResumeMarkdown } from '../components/machine/machineResumeMarkdown';
+import { profile } from '../shared/data/profile';
+import { professionalExperiences } from '../shared/data/professionalExperience';
+import { machineProfile, machineProjects, machineSkillGroups } from '../apps/home/features/machine/machineResumeData';
+import { getMachineResumeMarkdown } from '../apps/home/features/machine/machineResumeMarkdown';
 
 export const agentPrompt = `Use the following profile as context about Alexandre Teixeira, an AI engineer who builds AI products from business needs through deployment and adoption.
 

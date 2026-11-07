@@ -1,7 +1,7 @@
 import { expect, it } from 'vitest';
 import { getAgentProfile } from './agentContent';
-import { professionalExperiences } from '../data/professionalExperience';
-import { machineProjects } from '../components/machine/machineResumeData';
+import { professionalExperiences } from '../shared/data/professionalExperience';
+import { machineProjects } from '../apps/home/features/machine/machineResumeData';
 
 it('only publishes explicitly selected fields even if source records gain private metadata', () => {
   const experience = professionalExperiences[0];
