@@ -16,7 +16,7 @@ export type ProfessionalExperience = {
 export const professionalExperiences: ProfessionalExperience[] = [
   {
     company: 'SNCF',
-    imageSrc: '/assets/profesional_experience/sncf.svg.webp',
+    imageSrc: '/assets/professional_experience/sncf.svg.webp',
     duration: '6 months',
     impact: [
       '90% of audio processed in under 5 minutes.',
@@ -69,7 +69,7 @@ export const professionalExperiences: ProfessionalExperience[] = [
       '3,000+ monthly users.',
       'Featured on BFM Business.',
     ],
-    imageSrc: '/assets/profesional_experience/esncf.jpg',
+    imageSrc: '/assets/professional_experience/esncf.jpg',
     monogram: 'SNCF',
     period: 'Sep. 2023 - Feb. 2024 · Lyon',
     role: 'AI Engineer · Internship',

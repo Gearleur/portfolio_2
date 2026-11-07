@@ -11,7 +11,7 @@ describe('public publication guard', () => {
     expect(publicationRisk('settings.json', `{"token":"ghp_${'x'.repeat(36)}"}`)).not.toBeNull();
   });
 
-  it.each(['CV_fr.pdf', 'CV_en.pdf', 'assets/profesional_experience/esncf.jpg', 'fonts/DepartureMono-Regular.woff2', 'sw.js'])('allows intended public asset %s', (path) => {
+  it.each(['CV_fr.pdf', 'CV_en.pdf', 'assets/professional_experience/esncf.jpg', 'fonts/DepartureMono-Regular.woff2', 'sw.js'])('allows intended public asset %s', (path) => {
     expect(publicationRisk(path)).toBeNull();
   });
 });

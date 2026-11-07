@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { DesktopShell, MobileShell } from './components';
+import { DesktopShell } from './components/desktop/DesktopShell';
+import { MobileShell } from './components/mobile/MobileShell';
 import { MachineResume } from './components/machine/MachineResume';
 import { PortfolioModeToggle } from './components/machine/PortfolioModeToggle';
 import type { PortfolioMode } from './components/machine/PortfolioModeToggle';
