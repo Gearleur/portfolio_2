@@ -1,0 +1,433 @@
+/* The Mikky kit, taken from design/prototypes/mikky-ui.css (Alexandre's own
+   project, Mikky) and scoped to .mk so it leaks nowhere. Every size is
+   « N * --u »: the scene sets --u (the width of its frame over 640), so a
+   scene is drawn once and fits a desktop card and a phone card alike.
+   Geist: SIL OFL 1.1, fonts/Geist-OFL.txt. */
+
+@font-face {
+  font-family: 'Geist';
+  src: url('./fonts/Geist-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Geist';
+  src: url('./fonts/Geist-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Geist';
+  src: url('./fonts/Geist-SemiBold.woff2') format('woff2');
+  font-weight: 600 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Geist Mono';
+  src: url('./fonts/GeistMono-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-display: swap;
+}
+
+.mk {
+  --u: 1px;
+
+  --board: #f9f8f9;
+  --island: #fff;
+  --well: #f4f3f5;
+  --raise: rgb(244 243 244 / 0.84);
+  --track: #e8e7e9;
+  --thumb: #fff;
+  --ctl-a: #f1f0f2;
+  --ctl-b: #e4e3e5;
+  --ink: #050406;
+  --on-ink: #fff;
+  --text: #111012;
+  --text-2: #6e6d72;
+  --text-3: #a2a1a6;
+  --line: rgb(0 0 0 / 0.07);
+  --hl: rgb(255 255 255 / 0.95);
+  --hl-edge: rgb(255 255 255 / 0.9);
+  --sh-ctl: 0 1px 2px rgb(0 0 0 / 0.08), 0 3px 8px rgb(0 0 0 / 0.05);
+  --sh-bar: 0 10px 30px rgb(20 18 24 / 0.1), 0 2px 6px rgb(20 18 24 / 0.06);
+  --sh-ink: 0 6px 16px rgb(5 4 6 / 0.2), 0 1px 2px rgb(5 4 6 / 0.25);
+  --inset: inset 0 1px 2px rgb(0 0 0 / 0.06);
+  --island-sh: 0 0 0 0.5px rgb(0 0 0 / 0.08), 0 24px 60px rgb(20 18 24 / 0.12), 0 4px 14px rgb(20 18 24 / 0.06);
+  --blue: #007aff;
+  --purple: #af52de;
+  --amber: #ff9500;
+  --green: #34c759;
+  --red: #ff3b30;
+
+  color: var(--text);
+  font-family: Geist, Inter, system-ui, sans-serif;
+  font-size: calc(14 * var(--u));
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+}
+
+.mk *,
+.mk *::before,
+.mk *::after {
+  box-sizing: border-box;
+}
+
+.mk svg {
+  flex: none;
+}
+
+/* An icon, 24 viewBox, drawn in the current colour. */
+.mk-icon {
+  display: block;
+  width: calc(16 * var(--u));
+  height: calc(16 * var(--u));
+  fill: none;
+  stroke: currentcolor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* The white island: a window of the app. */
+.mk-island {
+  color: var(--text);
+  background: var(--island);
+  border-radius: calc(22 * var(--u));
+  box-shadow: var(--island-sh);
+}
+
+/* Buttons. */
+.mk-round {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: calc(30 * var(--u));
+  height: calc(30 * var(--u));
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: linear-gradient(var(--ctl-a), var(--ctl-b));
+  box-shadow: inset 0 1px 0 var(--hl), var(--sh-ctl);
+  color: var(--text);
+}
+
+.mk-round--ink {
+  background: var(--ink);
+  box-shadow: var(--sh-ink);
+  color: var(--on-ink);
+}
+
+.mk-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(6 * var(--u));
+  height: calc(30 * var(--u));
+  padding: 0 calc(14 * var(--u));
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(var(--ctl-a), var(--ctl-b));
+  box-shadow: inset 0 1px 0 var(--hl), var(--sh-ctl);
+  color: var(--text);
+  font: 600 calc(13 * var(--u)) / 1 Geist, Inter, sans-serif;
+  white-space: nowrap;
+}
+
+.mk-btn--ink {
+  background: var(--ink);
+  box-shadow: var(--sh-ink);
+  color: var(--on-ink);
+}
+
+/* The three dots, drawn as dots. */
+.mk-icon--points {
+  stroke-width: 3.6;
+}
+
+/* The prompt bar of Mikky: a grey pill, the text, a mic, the send button
+   inside it; under it, overlapping its edge, the folder and the model. */
+.mk-bar-chat {
+  position: relative;
+}
+
+.mk-pill {
+  display: flex;
+  align-items: center;
+  gap: calc(10 * var(--u));
+  height: calc(46 * var(--u));
+  padding: 0 calc(6 * var(--u)) 0 calc(18 * var(--u));
+  border-radius: 999px;
+  background: var(--track);
+  box-shadow: var(--inset);
+}
+
+.mk-pill__text {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  font-size: calc(15 * var(--u));
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mk-pill__text[data-vide] {
+  color: var(--text-3);
+}
+
+.mk-pill > .mk-icon {
+  width: calc(15 * var(--u));
+  height: calc(15 * var(--u));
+  color: var(--text-3);
+}
+
+.mk-send {
+  width: calc(34 * var(--u));
+  height: calc(34 * var(--u));
+}
+
+.mk-caret {
+  display: inline-block;
+  width: calc(1.6 * var(--u));
+  height: 1.1em;
+  margin-left: calc(1 * var(--u));
+  background: var(--text);
+  vertical-align: calc(-3 * var(--u));
+}
+
+.mk-chips {
+  position: relative;
+  display: flex;
+  gap: calc(8 * var(--u));
+  margin: calc(-10 * var(--u)) 0 0 calc(14 * var(--u));
+}
+
+.mk-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(5 * var(--u));
+  height: calc(27 * var(--u));
+  padding: 0 calc(11 * var(--u));
+  border-radius: 999px;
+  background: var(--island);
+  box-shadow:
+    0 0 0 calc(0.5 * var(--u)) var(--line),
+    0 calc(2 * var(--u)) calc(7 * var(--u)) rgb(20 18 24 / 0.1);
+  font: 600 calc(12 * var(--u)) / 1 Geist, Inter, sans-serif;
+  white-space: nowrap;
+}
+
+.mk-chip .mk-icon {
+  width: calc(13 * var(--u));
+  height: calc(13 * var(--u));
+}
+
+.mk-chip .mk-icon:last-child:not(:first-child) {
+  width: calc(11 * var(--u));
+  height: calc(11 * var(--u));
+  color: var(--text-3);
+}
+
+.mk-chip__logo {
+  color: var(--c);
+}
+
+.mk-grow {
+  flex: 1;
+}
+
+/* The thread. The user's message has a bubble; the agent's words have none. */
+.mk-thread {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: calc(9 * var(--u));
+}
+
+.mk-thread::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 1px;
+  background: var(--line);
+}
+
+.mk-user {
+  align-self: flex-end;
+  text-align: right;
+}
+
+.mk-bubble {
+  display: inline-flex;
+  align-items: center;
+  height: calc(34 * var(--u));
+  padding: 0 calc(15 * var(--u));
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--on-ink);
+  font-size: calc(14 * var(--u));
+  font-weight: 500;
+}
+
+.mk-time {
+  margin: calc(3 * var(--u)) calc(6 * var(--u)) 0 0;
+  color: var(--text-3);
+  font-size: calc(11 * var(--u));
+}
+
+.mk-agent {
+  padding-left: calc(14 * var(--u));
+  font-size: calc(14 * var(--u));
+  line-height: 1.45;
+}
+
+.mk-tool {
+  display: flex;
+  align-items: center;
+  gap: calc(8 * var(--u));
+  padding-left: calc(14 * var(--u));
+  color: var(--text-2);
+  font-size: calc(12.5 * var(--u));
+}
+
+.mk-tool .mk-icon {
+  width: calc(13 * var(--u));
+  height: calc(13 * var(--u));
+  color: var(--c, var(--text-3));
+}
+
+.mk-tool .mk-icon:last-child {
+  margin-left: auto;
+  color: var(--text-3);
+}
+
+.mk-tool--now {
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* The back button, top left of a window. */
+.mk-back {
+  width: calc(28 * var(--u));
+  height: calc(28 * var(--u));
+}
+
+/* A row of a list: an agent at work. */
+.mk-row {
+  display: flex;
+  align-items: center;
+  gap: calc(10 * var(--u));
+  padding: calc(10 * var(--u));
+  border-radius: calc(16 * var(--u));
+  background: var(--well);
+}
+
+.mk-row__main {
+  flex: 1;
+  min-width: 0;
+}
+
+.mk-row__title {
+  font-size: calc(14 * var(--u));
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.mk-row__sub {
+  display: flex;
+  align-items: center;
+  gap: calc(6 * var(--u));
+  color: var(--text-2);
+  font-size: calc(12 * var(--u));
+  white-space: nowrap;
+}
+
+.mk-tag {
+  padding: calc(1 * var(--u)) calc(7 * var(--u));
+  border-radius: 999px;
+  background: var(--track);
+  color: var(--text);
+  font-size: calc(11 * var(--u));
+  font-weight: 600;
+}
+
+/* An agent's state: a dot, with the ring of « working ». */
+.mk-status {
+  position: relative;
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: calc(26 * var(--u));
+  height: calc(26 * var(--u));
+}
+
+.mk-status::before,
+.mk-status::after {
+  content: '';
+  grid-area: 1 / 1;
+  border-radius: 50%;
+  background: var(--c, var(--blue));
+}
+
+.mk-status::before {
+  width: calc(10 * var(--u));
+  height: calc(10 * var(--u));
+}
+
+.mk-status::after {
+  width: calc(22 * var(--u));
+  height: calc(22 * var(--u));
+  opacity: 0.18;
+}
+
+/* The capsule bar. */
+.mk-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(4 * var(--u));
+  padding: calc(4 * var(--u));
+  border-radius: 999px;
+  background: var(--raise);
+  box-shadow: inset 0 0 0 1px var(--hl-edge), var(--sh-bar);
+  backdrop-filter: blur(calc(10 * var(--u))) saturate(1.5);
+}
+
+.mk-bar__title {
+  padding: 0 calc(10 * var(--u)) 0 calc(8 * var(--u));
+  font-size: calc(13 * var(--u));
+  font-weight: 600;
+}
+
+/* The dark theme of the kit (design/prototypes/mikky-ui.css, .t-dark). */
+.mk-dark {
+  --island: #070708;
+  --well: #17171a;
+  --track: #212125;
+  --ctl-a: #26262a;
+  --ctl-b: #1b1b1e;
+  --ink: #f7f7f7;
+  --on-ink: #070708;
+  --text: #f5f5f7;
+  --text-2: #8e8e93;
+  --text-3: #66666c;
+  --line: rgb(255 255 255 / 0.09);
+  --hl: rgb(255 255 255 / 0.07);
+  --hl-edge: rgb(255 255 255 / 0.07);
+  --sh-ctl: 0 1px 2px rgb(0 0 0 / 0.6), 0 3px 8px rgb(0 0 0 / 0.3);
+  --sh-ink: 0 6px 18px rgb(0 0 0 / 0.5), 0 1px 2px rgb(0 0 0 / 0.5);
+  --inset: inset 0 1px 2px rgb(0 0 0 / 0.5);
+  --island-sh: inset 0 0 0 1.3px rgb(255 255 255 / 0.08), 0 24px 60px rgb(0 0 0 / 0.6);
+}
+
+/* Frosted glass: the window lets the background through. */
+.mk-verre {
+  --island: rgb(255 255 255 / 0.55);
+  --track: rgb(255 255 255 / 0.62);
+  --island-sh: inset 0 0 0 1px rgb(255 255 255 / 0.7), 0 20px 50px rgb(40 50 120 / 0.18);
+
+  backdrop-filter: blur(calc(18 * var(--u))) saturate(1.5);
+}
