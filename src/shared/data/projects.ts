@@ -1,6 +1,6 @@
 import type { WindowFrame } from '../types/window';
 
-export type CaseStudyChallenge = {
+type CaseStudyChallenge = {
   /** Short label shown in the lattice readout, e.g. "Grounding". */
   tag: string;
   problem: string;
@@ -191,7 +191,7 @@ export const selectedProjects: SelectedProject[] = [
         'This TN09 project reframes my 2022 professional experience as an early RAG case study: how to turn scattered knowledge into a system that can retrieve, reason and answer with traceable context.',
       links: [
         {
-          href: '/Rapport_de_Stage_TN09.pdf',
+          href: '/documents/rapport-de-stage-tn09.pdf',
           label: 'Open TN09 report',
         },
       ],

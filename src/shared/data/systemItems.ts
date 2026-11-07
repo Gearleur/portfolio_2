@@ -1,6 +1,6 @@
 import { profile } from './profile';
 
-export type SystemItemVariant =
+type SystemItemVariant =
   | 'professional'
   | 'projects'
   | 'skills'

@@ -4,7 +4,6 @@
  */
 
 import type { LogoId } from './logos';
-import whiteboardAmdec from './medias/whiteboard-amdec.webp';
 import type { Ecran, SchemaId } from './Schemas';
 
 /** A run of text, opened by a bold lead; `href` links the whole of it. */
@@ -23,9 +22,9 @@ export type Bloc =
   /** A diagram (`schema`), or a placeholder described by its caption. */
   | { type: 'visuel'; schema?: SchemaId; legende: string };
 
-export type Section = { id: string; nav: string; titre: string; blocs: Bloc[] };
+type Section = { id: string; nav: string; titre: string; blocs: Bloc[] };
 
-export type Chiffre = { value: string; text: string };
+type Chiffre = { value: string; text: string };
 
 export type Projet = {
   nom: string;
@@ -322,10 +321,10 @@ export const SNCF_GPT: Projet = {
 };
 
 /** Whiteboard AMDEC, the Vitrine's second project (journal n° 96). */
-export const WHITEBOARD_AMDEC: Projet = {
+const WHITEBOARD_AMDEC: Projet = {
   nom: 'Whiteboard AMDEC',
   logo: 'alpine',
-  miniature: { image: whiteboardAmdec, affiche: 'alpine', legende: 'Whiteboard AMDEC, l’affiche du projet.' },
+  miniature: { affiche: 'alpine', legende: 'Whiteboard AMDEC, l’affiche du projet.' },
   accroche: 'Un tableau blanc où des agents IA aident les ingénieurs d’Alpine à construire leurs analyses de risques.',
   chiffres: [
     { value: '6 mois', text: 'd’ateliers pour une AMDEC, au départ' },
