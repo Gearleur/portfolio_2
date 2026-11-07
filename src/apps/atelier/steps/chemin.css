@@ -318,12 +318,21 @@
   justify-content: flex-start;
   gap: calc(var(--space-6) * var(--u));
   width: calc(44 * var(--u));
-  padding: calc(var(--space-5) * var(--u)) 0;
+  padding: calc(var(--space-4) * var(--u)) 0;
 }
 
-/* « Menu » at the top right, the name under it. */
+/* « Menu » at the top right, the name under it, and between the two, at the
+   start, the headline's first line, which runs over the strip: the name begins
+   where that line ends (its top padding, the line's height and a small gap). */
 .m-strip > .m-label {
   order: -1;
+}
+
+.m-strip > .m-name {
+  position: absolute;
+  top: calc((var(--space-8) + var(--space-4) + var(--size-display) * var(--display-leading) + var(--space-2)) * var(--u));
+  left: 50%;
+  translate: -50% 0;
 }
 
 .m-strip > * {

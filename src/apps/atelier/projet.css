@@ -230,13 +230,13 @@
   background: color-mix(in oklch, var(--ink) 7%, var(--fond));
 }
 
-.p-visuel__image:has(.miniature) {
-  aspect-ratio: 4 / 3;
+/* The hero thumbnail, 16:9 like the Vitrine's cards, on a phone and a desktop
+   (journal n° 101). A thumbnail made outside the Atelier is a picture. */
+.p-entete .p-visuel__image:is(:has(.miniature), :has(> img), :has(> .alpine)) {
+  aspect-ratio: 16 / 9;
 }
 
-/* A thumbnail made outside the Atelier, as a picture (journal n° 97). */
 .p-visuel__image:has(> img) {
-  aspect-ratio: 4 / 3;
   background: none;
 }
 
@@ -443,11 +443,6 @@
 
 .mobile.projet--mobile .p-chiffre {
   font-size: calc(48 * var(--u));
-}
-
-/* The thumbnail upright, as on the Vitrine's phone cards. */
-.p-visuel__image:has(.miniature[data-cadrage='portrait']) {
-  aspect-ratio: 210 / 262;
 }
 
 /* The pictures and diagrams run over the strip to the screen's edge, like the

@@ -3,6 +3,7 @@ import type { CSSProperties, ReactNode, RefObject } from 'react';
 import { Contact, Name, NavList, T } from './Maquettes';
 import { Marque } from './Marque';
 import { Miniature } from './Miniature';
+import { MiniatureAlpine } from './MiniatureAlpine';
 import { EcranCadre, Schema } from './Schemas';
 import type { Bloc, Phrase, Projet } from './projets';
 import { useTranche } from './tranche';
@@ -270,7 +271,11 @@ function Article({ projet, cadrage }: { projet: Projet; cadrage: 'paysage' | 'po
         </dl>
         <Visuel legende={projet.miniature.legende} n={1}>
           {projet.miniature.aiguillage && <Miniature cadrage={cadrage} />}
-          {projet.miniature.image && <img src={projet.miniature.image} alt="" />}
+          {projet.miniature.affiche === 'alpine' ? (
+            <MiniatureAlpine />
+          ) : (
+            projet.miniature.image && <img src={projet.miniature.image} alt="" />
+          )}
         </Visuel>
       </header>
 
@@ -367,7 +372,7 @@ export function ProjetMobile({
         </button>
       </div>
       <Retour nom={projet.nom} onRetour={onRetour} />
-      <Article projet={projet} cadrage="portrait" />
+      <Article projet={projet} cadrage="paysage" />
       <div className="m-menu" data-open={menuOpen ? '' : undefined} inert={!menuOpen}>
         <button type="button" className="m-label" onClick={() => onMenu?.(false)}>
           <T>Fermer</T>

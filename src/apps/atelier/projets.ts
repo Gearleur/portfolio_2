@@ -31,8 +31,8 @@ export type Projet = {
   nom: string;
   /** The company's mark, in the title line (journal n° 85). */
   logo: LogoId;
-  /** The thumbnail at the top of the page: drawn in the Atelier (the turnout) or a picture; its caption. */
-  miniature: { aiguillage?: boolean; image?: string; legende: string };
+  /** The thumbnail at the top of the page: drawn in the Atelier (the turnout), a picture, or a picture brought to life (affiche); its caption. */
+  miniature: { aiguillage?: boolean; image?: string; affiche?: 'alpine'; legende: string };
   accroche: string;
   /** The key figures, first thing under the line (journal n° 81). */
   chiffres: Chiffre[];
@@ -325,7 +325,7 @@ export const SNCF_GPT: Projet = {
 export const WHITEBOARD_AMDEC: Projet = {
   nom: 'Whiteboard AMDEC',
   logo: 'alpine',
-  miniature: { image: whiteboardAmdec, legende: 'Whiteboard AMDEC, l’affiche du projet.' },
+  miniature: { image: whiteboardAmdec, affiche: 'alpine', legende: 'Whiteboard AMDEC, l’affiche du projet.' },
   accroche: 'Un tableau blanc où des agents IA aident les ingénieurs d’Alpine à construire leurs analyses de risques.',
   chiffres: [
     { value: '6 mois', text: 'd’ateliers pour une AMDEC, au départ' },
