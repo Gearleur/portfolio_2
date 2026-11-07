@@ -1,0 +1,203 @@
+/* The thumbnail as a short film: the layout of the whole scene, at 640 × 360 in
+   u. The motion is in chrono.ts; nothing here moves except the caret. */
+
+.as {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  container-type: inline-size;
+}
+
+.as-stage {
+  --u: calc(100cqw / 640);
+
+  position: absolute;
+  inset: 0;
+}
+
+/* The windows are never there by default: only the choreography shows them, so
+   that nothing blank can be seen before it is in place or between two turns. */
+.as :is(.as-chat, .fe) {
+  opacity: 0;
+}
+
+.as-affiche {
+  position: absolute;
+  inset: 0;
+}
+
+.as-affiche .alpine {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.as-voile {
+  position: absolute;
+  inset: 0;
+  background: rgb(255 255 255 / 0.12);
+  opacity: 0;
+}
+
+/* The chat window: 212 u tall to welcome, 286 u for the thread; the bar is
+   pinned to the bottom, the thread hangs from the top. At the end it widens to
+   560 × 288 u, the sheet's window, and hands over to it. */
+.as-chat {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: calc(460 * var(--u));
+  height: calc(212 * var(--u));
+  translate: -50% -50%;
+}
+
+.as-chat p {
+  margin: 0;
+}
+
+.as-chevron {
+  position: absolute;
+  top: calc(12 * var(--u));
+  left: calc(12 * var(--u));
+  display: inline-flex;
+  color: var(--text-2);
+}
+
+.as-chevron .mk-icon {
+  width: calc(20 * var(--u));
+  height: calc(20 * var(--u));
+}
+
+.as-accueil {
+  position: absolute;
+  top: calc(38 * var(--u));
+  right: calc(16 * var(--u));
+  left: calc(16 * var(--u));
+  display: grid;
+  height: calc(92 * var(--u));
+  place-items: center;
+  color: var(--text-2);
+  font-size: calc(15 * var(--u));
+}
+
+.as-fil {
+  position: absolute;
+  top: calc(46 * var(--u));
+  right: calc(16 * var(--u));
+  left: calc(16 * var(--u));
+}
+
+.as-fil .mk-thread {
+  gap: calc(11 * var(--u));
+}
+
+.as-fil .mk-user {
+  transform-origin: 100% 100%;
+}
+
+.as-mot {
+  display: inline-block;
+  white-space: pre;
+}
+
+.as-barre {
+  position: absolute;
+  right: calc(16 * var(--u));
+  bottom: calc(16 * var(--u));
+  left: calc(16 * var(--u));
+}
+
+/* The text of the bar: the placeholder, the typed question, the next placeholder. */
+.as-texte {
+  position: relative;
+  min-height: 1.45em;
+}
+
+.as-ph {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  color: var(--text-3);
+}
+
+.as-ph + .as-saisie + .as-ph {
+  opacity: 0;
+}
+
+.as-saisie {
+  position: relative;
+  display: block;
+  line-height: 1.45;
+  white-space: pre;
+}
+
+.as-ch {
+  position: relative;
+  display: inline-block;
+  opacity: 0;
+}
+
+.as-car {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 100%;
+  width: 0;
+  opacity: 0;
+}
+
+.as-saisie > .as-car {
+  left: 0;
+}
+
+.as-car i {
+  position: absolute;
+  top: 50%;
+  left: calc(1 * var(--u));
+  width: calc(1.6 * var(--u));
+  height: 1.15em;
+  background: var(--text);
+  translate: 0 -50%;
+}
+
+/* Only the caret that waits blinks: before the first letter, after the last. */
+.as-saisie > .as-car:first-child i,
+.as-ch:last-child .as-car i {
+  animation: as-clignote 1.1s steps(1) infinite;
+}
+
+@keyframes as-clignote {
+  50% {
+    opacity: 0;
+  }
+}
+
+.as-fleche {
+  display: grid;
+}
+
+.mk-send {
+  position: relative;
+}
+
+.as-onde {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--ink);
+  opacity: 0;
+}
+
+.as-logo {
+  display: inline-flex;
+  color: #4d6bfe;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .as-car i {
+    animation: none;
+  }
+}

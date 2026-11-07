@@ -1,0 +1,227 @@
+/* The sheet of the Whiteboard AMDEC scene (Feuille.tsx). */
+
+/* The sheet: a white window with a ground of fine dots (a 12 u lattice, so
+   the sheet's edges fall between two rows of dots), AMDEC.xlsx on its capsule,
+   and the grid of cells lifted over the dots. */
+.fe {
+  position: absolute;
+  top: calc(36 * var(--u));
+  left: calc(40 * var(--u));
+  width: calc(560 * var(--u));
+  height: calc(288 * var(--u));
+  overflow: hidden;
+  border-radius: calc(20 * var(--u));
+}
+
+.fe-pts {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--text) 20%, transparent) calc(0.6 * var(--u)),
+    transparent calc(1 * var(--u))
+  );
+  background-size: calc(12 * var(--u)) calc(12 * var(--u));
+}
+
+.fe-titre {
+  position: absolute;
+  top: calc(14 * var(--u));
+  left: 50%;
+  translate: -50% 0;
+}
+
+/* The capsule above the sheet: flat, a white pill with a hairline, a table
+   icon and the name (the « Plat » chosen). */
+.fe-titre .mk-bar {
+  gap: calc(6 * var(--u));
+  height: calc(30 * var(--u));
+  padding: 0 calc(14 * var(--u)) 0 calc(12 * var(--u));
+  background: #fff;
+  box-shadow:
+    0 0 0 1px var(--line),
+    0 calc(4 * var(--u)) calc(12 * var(--u)) rgb(20 18 24 / 0.06);
+  backdrop-filter: none;
+}
+
+.fe-titre .mk-bar .mk-icon {
+  width: calc(14 * var(--u));
+  height: calc(14 * var(--u));
+  color: var(--text-2);
+}
+
+.fe-titre .mk-bar__title {
+  padding: 0;
+  font-size: calc(12.5 * var(--u));
+}
+
+.fe-grille {
+  position: absolute;
+  overflow: hidden;
+  border-radius: calc(10 * var(--u));
+  background: var(--island);
+  box-shadow:
+    0 0 0 1px var(--line),
+    0 calc(1 * var(--u)) calc(3 * var(--u)) rgb(20 18 24 / 0.06),
+    0 calc(10 * var(--u)) calc(26 * var(--u)) rgb(20 18 24 / 0.08);
+}
+
+.fe-ligne {
+  display: flex;
+  border-top: 1px solid var(--line);
+}
+
+.fe-ligne:first-child {
+  border-top: 0;
+}
+
+.fe-ligne--lettres {
+  background: var(--well);
+}
+
+.fe-ligne--titres .fe-case {
+  background: color-mix(in srgb, var(--text) 3.5%, transparent);
+}
+
+.fe-num,
+.fe-lettre {
+  display: grid;
+  flex: none;
+  place-items: center;
+  color: var(--text-3);
+  font-size: calc(10.5 * var(--u));
+  font-weight: 500;
+}
+
+.fe-num {
+  background: var(--well);
+  border-right: 1px solid var(--line);
+}
+
+.fe-lettre {
+  border-right: 1px solid var(--line);
+}
+
+.fe-lettre:last-child,
+.fe-case:last-child {
+  border-right: 0;
+}
+
+.fe-case {
+  position: relative;
+  display: flex;
+  flex: none;
+  align-items: center;
+  padding: 0 calc(10 * var(--u));
+  border-right: 1px solid var(--line);
+}
+
+.fe-barre {
+  display: block;
+  transform-origin: left center;
+  height: calc(6 * var(--u));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--text) 13%, transparent);
+}
+
+.fe-barre--fort {
+  background: color-mix(in srgb, var(--text) 30%, transparent);
+}
+
+.fe-etiquette {
+  display: inline-flex;
+  align-items: center;
+  height: calc(15 * var(--u));
+  padding: 0 calc(7 * var(--u));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--c) 18%, white);
+}
+
+.fe-etiquette .fe-barre {
+  background: color-mix(in srgb, var(--c) 70%, transparent);
+}
+
+.fe-etat {
+  width: calc(9 * var(--u));
+  height: calc(9 * var(--u));
+  border-radius: 50%;
+  background: var(--c);
+}
+
+/* The agents: their cell, ringed in their colour, and their pointer. */
+.fe-cible {
+  position: absolute;
+  border-radius: calc(3 * var(--u));
+  background: color-mix(in srgb, var(--c) 12%, transparent);
+  box-shadow: 0 0 0 calc(1.5 * var(--u)) var(--c);
+}
+
+.fe-pointeur {
+  position: absolute;
+  display: block;
+  width: calc(18 * var(--u));
+  height: calc(22 * var(--u));
+  filter: drop-shadow(0 calc(2 * var(--u)) calc(3 * var(--u)) rgb(20 18 24 / 0.3));
+}
+
+.fe-pointeur svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  fill: var(--c);
+  stroke: #fff;
+  stroke-linejoin: round;
+  stroke-width: 1.6;
+}
+
+.fe-nom {
+  position: absolute;
+  top: calc(18 * var(--u));
+  left: calc(12 * var(--u));
+  display: block;
+  padding: calc(3 * var(--u)) calc(7 * var(--u));
+  border-radius: 999px;
+  background: var(--c);
+}
+
+.fe-nom span {
+  display: block;
+  width: calc(22 * var(--u));
+  height: calc(4 * var(--u));
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.85);
+}
+
+/* The live sheet: the agents' pointers are placed by the choreography, and
+   every cell has its ring of selection, lit while an agent writes in it. */
+.fe-pointeur--anime {
+  top: 0;
+  left: 0;
+  opacity: 0;
+  will-change: transform;
+}
+
+.fe-onde {
+  position: absolute;
+  top: calc(-5 * var(--u));
+  left: calc(-5 * var(--u));
+  width: calc(14 * var(--u));
+  height: calc(14 * var(--u));
+  border-radius: 50%;
+  background: var(--c);
+  opacity: 0;
+}
+
+.fe-sel {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--c) 12%, transparent);
+  box-shadow: inset 0 0 0 calc(1.5 * var(--u)) var(--c);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.fe-etiquette,
+.fe-etat {
+  transform-origin: center;
+}

@@ -2,7 +2,9 @@ import type { CSSProperties, ReactNode } from 'react';
 import { ChatBar } from '../../shared/mikky-ui/ChatBar';
 import { Icon } from '../../shared/mikky-ui/Icon';
 import fondAffiche from '../atelier/medias/whiteboard-amdec-fond.webp';
-import { Feuille } from './Feuille';
+import { MiniatureAlpine } from '../atelier/MiniatureAlpine';
+import { Feuille } from '../atelier/alpine-scene/Feuille';
+import { DOSSIER, MODELE, QUESTION } from '../atelier/alpine-scene/texte';
 
 /*
  * The scenes of the Whiteboard AMDEC thumbnail, each one still, on a page of
@@ -11,10 +13,6 @@ import { Feuille } from './Feuille';
  * this page goes once they are. Each scene is drawn once at 640 × 360 and
  * scales to the desktop card and the phone card.
  */
-
-const QUESTION = 'Mode de défaillance du lève-vitre';
-const DOSSIER = 'alpine A110';
-const MODELE = 'deepseek 4.1';
 
 type Etat = 'vide' | 'saisie' | 'envoi';
 
@@ -141,6 +139,20 @@ export function Scenes() {
         </section>
       ))}
 
+      <section className="sc-section">
+        <h2>
+          <span>▶</span> Le film, de bout en bout
+        </h2>
+        <p>Les scènes enchaînées sur la miniature : l’affiche, le chat, la feuille, puis l’affiche de nouveau. 22 s, en boucle.</p>
+        <div className="sc-paire">
+          <div className="sc-cadre sc-cadre--desktop">
+            <MiniatureAlpine />
+          </div>
+          <div className="sc-cadre sc-cadre--mobile">
+            <MiniatureAlpine />
+          </div>
+        </div>
+      </section>
     </main>
   );
 }
