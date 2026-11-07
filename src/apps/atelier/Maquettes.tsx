@@ -131,7 +131,17 @@ export const T = ({ children }: { children: ReactNode }) => <span className="m-t
 
 export const Name = () => (
   <p className="m-name">
-    <T>Alexandre Teixeira</T>
+    {/* Like a logo: back to the home from a project, else to the top of the page. */}
+    <a
+      href={window.location.pathname}
+      onClick={(event) => {
+        event.preventDefault();
+        if (window.location.hash) window.location.hash = '';
+        else defiler(event.currentTarget, 'haut');
+      }}
+    >
+      <T>Alexandre Teixeira</T>
+    </a>
   </p>
 );
 
