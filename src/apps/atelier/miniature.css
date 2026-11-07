@@ -15,6 +15,56 @@
   initial-value: 18%;
 }
 
+/* The idle drift: the reflections slide slowly on their own, on top of the
+   pointer's position, so the metal is never quite still. */
+@property --dx {
+  syntax: '<percentage>';
+  inherits: true;
+  initial-value: 0%;
+}
+
+@property --dy {
+  syntax: '<percentage>';
+  inherits: true;
+  initial-value: 0%;
+}
+
+@property --ang {
+  syntax: '<angle>';
+  inherits: true;
+  initial-value: 100deg;
+}
+
+@keyframes miniature-derive-x {
+  from {
+    --dx: -46%;
+  }
+
+  to {
+    --dx: 46%;
+  }
+}
+
+@keyframes miniature-derive-y {
+  from {
+    --dy: -30%;
+  }
+
+  to {
+    --dy: 30%;
+  }
+}
+
+@keyframes miniature-derive-angle {
+  from {
+    --ang: 84deg;
+  }
+
+  to {
+    --ang: 118deg;
+  }
+}
+
 .miniature {
   position: relative;
   display: block;
@@ -24,12 +74,16 @@
   isolation: isolate;
   color: #2b3035;
   background:
-    radial-gradient(ellipse 55% 75% at var(--mx) var(--my), rgb(255 255 255 / 0.9), rgb(255 255 255 / 0) 70%),
+    radial-gradient(ellipse 55% 75% at calc(var(--mx) + var(--dx)) calc(var(--my) + var(--dy)), rgb(255 255 255 / 0.9), rgb(255 255 255 / 0) 70%),
     var(--brushed) 0 0 / 100% 100%,
-    linear-gradient(100deg, #8c949b 0%, #e8ecee 16%, #a7afb6 32%, #fbfcfc 48%, #959da4 66%, #e3e7ea 82%, #9ba3aa 100%);
+    linear-gradient(var(--ang), #8c949b 0%, #e8ecee 16%, #a7afb6 32%, #fbfcfc 48%, #959da4 66%, #e3e7ea 82%, #9ba3aa 100%);
   transition:
     --mx 0.9s cubic-bezier(0.22, 1, 0.36, 1),
     --my 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  animation:
+    miniature-derive-x 9s ease-in-out infinite alternate,
+    miniature-derive-y 13s ease-in-out infinite alternate,
+    miniature-derive-angle 11s ease-in-out infinite alternate;
 }
 
 .miniature::before,
@@ -43,7 +97,7 @@
 /* The wave's colours in the metal; the arc shifts as the light moves. */
 .miniature::before {
   background: radial-gradient(
-    circle at calc(var(--mx) + 84%) calc(var(--my) - 40%),
+    circle at calc(var(--mx) + var(--dx) + 84%) calc(var(--my) + var(--dy) - 40%),
     transparent 34%,
     #dbeaf4 44%,
     #354050 53%,
@@ -60,9 +114,9 @@
   z-index: 2;
   background: linear-gradient(
     115deg,
-    transparent calc(var(--mx) - 30%),
-    rgb(255 255 255 / 0.35) calc(var(--mx) - 6%),
-    transparent calc(var(--mx) + 16%)
+    transparent calc(var(--mx) + var(--dx) - 30%),
+    rgb(255 255 255 / 0.35) calc(var(--mx) + var(--dx) - 6%),
+    transparent calc(var(--mx) + var(--dx) + 16%)
   );
   mix-blend-mode: soft-light;
 }
@@ -78,6 +132,104 @@
 
 .miniature__agent {
   fill: var(--accent, #e0301f);
+}
+
+/* The live thumbnail (journal n° 101): a light runs along the sleepers, the
+   axes flow, the angle's dimension is drawn and wiped, the ring of microprint
+   turns, and the agent breathes. Opacity, dashes and transforms only. */
+.aig--vivant .aig__traverses polygon {
+  animation: aig-balayage 6s ease-in-out infinite;
+  animation-delay: calc(var(--i, 0) * -0.14s);
+}
+
+@keyframes aig-balayage {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+
+  18% {
+    opacity: 1;
+    fill: rgb(43 48 53 / 0.22);
+  }
+
+  36% {
+    opacity: 0.35;
+  }
+}
+
+.aig--vivant .aig__axe {
+  animation: aig-flux 3.2s linear infinite;
+}
+
+@keyframes aig-flux {
+  to {
+    stroke-dashoffset: -10;
+  }
+}
+
+.aig--vivant .aig__mesure {
+  stroke-dasharray: 1 1;
+  stroke-dashoffset: 1;
+  animation: aig-mesure 7s ease-in-out infinite;
+}
+
+@keyframes aig-mesure {
+  0% {
+    stroke-dashoffset: 1;
+  }
+
+  35%,
+  70% {
+    stroke-dashoffset: 0;
+  }
+
+  100% {
+    stroke-dashoffset: -1;
+  }
+}
+
+.aig--vivant .aig__microprint {
+  transform-origin: 196px 176px;
+  animation: aig-anneau 120s linear infinite;
+}
+
+@keyframes aig-anneau {
+  to {
+    rotate: 360deg;
+  }
+}
+
+.aig--vivant .miniature__agent {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: aig-agent 2.8s ease-in-out infinite;
+}
+
+@keyframes aig-agent {
+  0%,
+  100% {
+    scale: 1;
+  }
+
+  50% {
+    scale: 1.3;
+  }
+}
+
+.aig--vivant :is(.aig__micro--bas, .aig__micro) {
+  /* readings re-render in place: no layout shift */
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aig--vivant * {
+    animation: none !important;
+  }
+
+  .aig--vivant .aig__mesure {
+    stroke-dashoffset: 0;
+  }
 }
 
 .miniature :is(.aig__titre, .aig__micro, .aig__microprint, .aig__marque, .aig__sigle text) {
@@ -178,10 +330,12 @@
 @media (prefers-reduced-motion: reduce) {
   .miniature {
     transition: none;
+    animation: none;
   }
 }
 
-/* On a phone the card takes the upright detail view's proportions. */
+/* On a phone the card takes the upright detail view's proportions, except on
+   the home screen, where every picture is 16:9. */
 .m-img:has(> .miniature[data-cadrage='portrait']) {
   aspect-ratio: 210 / 262;
 }

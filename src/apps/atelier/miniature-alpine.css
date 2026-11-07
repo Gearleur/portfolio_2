@@ -1,0 +1,219 @@
+/* Whiteboard AMDEC's thumbnail, alive (journal n° 101). Everything here is
+   light: opacity, transforms and dashes on a few dozen lines. */
+
+.alpine {
+  display: block;
+  width: 100%;
+  height: 100%;
+  --alpine-ink: #1b1b92;
+}
+
+.alpine text {
+  fill: var(--alpine-ink);
+  font:
+    500 20px/1 ui-monospace,
+    'SF Mono',
+    'JetBrains Mono',
+    Menlo,
+    Consolas,
+    monospace;
+}
+
+.alpine :is(line, path, circle):not(.alpine__point) {
+  fill: none;
+  stroke: var(--alpine-ink);
+}
+
+/* The graph. */
+.alpine__fil {
+  stroke-width: 1.2;
+  stroke-dasharray: 2.4 3.2;
+  opacity: 0.6;
+}
+
+.alpine__axe {
+  stroke-width: 2;
+}
+
+.alpine__courbe {
+  stroke-width: 2.4;
+  stroke-dasharray: 1 1;
+  stroke-dashoffset: 1;
+  animation: alpine-trace 8s ease-in-out infinite;
+}
+
+.alpine__point {
+  fill: var(--alpine-ink);
+  offset-distance: 0%;
+  opacity: 0;
+  animation: alpine-suit 8s ease-in-out infinite;
+}
+
+/* Drawn from the axis, held, then wiped from the axis; the point rides the end. */
+@keyframes alpine-trace {
+  0% {
+    stroke-dashoffset: 1;
+  }
+
+  40%,
+  72% {
+    stroke-dashoffset: 0;
+  }
+
+  100% {
+    stroke-dashoffset: -1;
+  }
+}
+
+@keyframes alpine-suit {
+  0% {
+    offset-distance: 0%;
+    opacity: 1;
+  }
+
+  40%,
+  72% {
+    offset-distance: 100%;
+    opacity: 1;
+  }
+
+  88% {
+    offset-distance: 100%;
+    opacity: 0;
+  }
+
+  100% {
+    offset-distance: 0%;
+    opacity: 0;
+  }
+}
+
+/* Some grid lines grow from their axis and fall back, out of step. */
+.alpine__fil--vive {
+  transform-box: fill-box;
+  animation-duration: 9s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-delay: calc(var(--i) * -1.3s);
+}
+
+.alpine__fil--h {
+  transform-origin: 0 50%;
+  animation-name: alpine-fil-h;
+}
+
+.alpine__fil--v {
+  transform-origin: 50% 100%;
+  animation-name: alpine-fil-v;
+}
+
+@keyframes alpine-fil-h {
+  0%,
+  100% {
+    opacity: 0;
+    scale: 0 1;
+  }
+
+  22%,
+  62% {
+    opacity: 0.6;
+    scale: 1 1;
+  }
+}
+
+@keyframes alpine-fil-v {
+  0%,
+  100% {
+    opacity: 0;
+    scale: 1 0;
+  }
+
+  22%,
+  62% {
+    opacity: 0.6;
+    scale: 1 1;
+  }
+}
+
+/* The sight. */
+.alpine__bague {
+  stroke-width: 2.2;
+  stroke-dasharray: 46 13;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: alpine-tour 14s linear infinite;
+}
+
+.alpine__bague--fixe {
+  stroke-width: 1.6;
+  stroke-dasharray: none;
+  animation: none;
+}
+
+.alpine__bras {
+  stroke-width: 2.2;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: alpine-bras 7s ease-in-out infinite;
+}
+
+.alpine__bras--v {
+  animation-delay: -3s;
+}
+
+@keyframes alpine-tour {
+  to {
+    rotate: 360deg;
+  }
+}
+
+@keyframes alpine-bras {
+  0%,
+  100% {
+    scale: 0.35;
+    opacity: 0.4;
+  }
+
+  45%,
+  70% {
+    scale: 1;
+    opacity: 1;
+  }
+}
+
+/* The readings. */
+.alpine__neuf {
+  animation: alpine-neuf 0.7s ease-out;
+}
+
+@keyframes alpine-neuf {
+  from {
+    opacity: 0;
+    translate: 0 5px;
+  }
+
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .alpine * {
+    animation: none !important;
+  }
+
+  .alpine__courbe {
+    stroke-dashoffset: 0;
+  }
+
+  .alpine__point {
+    offset-distance: 100%;
+    opacity: 1;
+  }
+
+  .alpine__fil--vive {
+    opacity: 0.6;
+    scale: 1 1;
+  }
+}

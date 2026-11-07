@@ -108,7 +108,7 @@
 
 .m-img {
   display: block;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 16 / 9;
   background: color-mix(in oklch, var(--ink) 7%, var(--fond));
 }
 
@@ -243,14 +243,18 @@
   position: fixed;
 }
 
-/* Phone, 390 × 844, on 4 columns. Text and labels keep their 15 px; the
-   headline stays imposing at 68 px. The side column folds into a 44 px strip
-   along the right edge. */
+/* Phone, 390 × 844, on 4 columns. Text and labels are 14 px and the headline
+   40 px, as on the references (journal n° 100); the pictures are 16:9 so they
+   leave room for the next line. The side column folds into a 44 px strip along
+   the right edge. */
 
 .mobile {
   --u: calc(100cqw / 390);
   --cols: 4;
-  --size-display: 68;
+  --size-display: 40;
+  --size-text: 14;
+  --size-label: 14;
+  --display-leading: 1.1;
 
   display: flex;
   flex-direction: column;
@@ -265,13 +269,13 @@
 
 .mobile .m-hero {
   display: grid;
-  row-gap: calc(var(--space-5) * var(--u));
-  padding-top: calc(var(--space-7) * var(--u));
+  row-gap: calc(var(--space-7) * var(--u));
+  padding-top: calc((var(--space-8) + var(--space-4)) * var(--u));
 }
 
 .mobile .m-facts {
   display: grid;
-  row-gap: calc(var(--space-3) * var(--u));
+  row-gap: calc(var(--space-6) * var(--u));
 }
 
 .mobile .m-visuals {
@@ -311,10 +315,15 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: flex-start;
   gap: calc(var(--space-6) * var(--u));
   width: calc(44 * var(--u));
   padding: calc(var(--space-5) * var(--u)) 0;
+}
+
+/* « Menu » at the top right, the name under it. */
+.m-strip > .m-label {
+  order: -1;
 }
 
 .m-strip > * {

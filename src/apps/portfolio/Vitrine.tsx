@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Maquette, MaquetteMobile } from '../atelier/Maquettes';
-import whiteboardAmdec from '../atelier/medias/whiteboard-amdec.webp';
+import { MiniatureAlpine } from '../atelier/MiniatureAlpine';
 import { Miniature } from '../atelier/Miniature';
 import { ProjetMaquette, ProjetMobile } from '../atelier/Projet';
 import { PROJETS } from '../atelier/projets';
@@ -69,8 +69,8 @@ export function Vitrine() {
   };
 
   const images = {
-    '01': <Miniature cadrage={telephone ? 'portrait' : 'paysage'} />,
-    '02': <img src={whiteboardAmdec} alt="" />,
+    '01': <Miniature cadrage="paysage" />,
+    '02': <MiniatureAlpine />,
   };
 
   let page;

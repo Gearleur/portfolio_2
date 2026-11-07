@@ -1,4 +1,5 @@
-import { useId } from 'react';
+import { useEffect, useId, useState } from 'react';
+import type { CSSProperties } from 'react';
 import { across, at, intersect, nearest, offset, polyline, sampleTrack, yAt } from './voies';
 import type { Pt, Sample } from './voies';
 
@@ -155,15 +156,42 @@ function Marquages({ at: [x, y] }: { at: Pt }) {
   );
 }
 
+/** The sheet's readings, which change one at a time on a live thumbnail. The first of each list is the sheet's own value. */
+const TG = ['0,91', '0,87', '0,94', '0,89', '0,96'];
+const PLANCHES = ['01/04', '02/04', '03/04', '04/04'];
+const ECHELLES = ['2:1', '3:1', '5:1', '4:1'];
+
+function useLectures(vivant: boolean) {
+  const [pas, setPas] = useState({ tg: 0, planche: 0, echelle: 0 });
+  useEffect(() => {
+    if (!vivant || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    let beat = 0;
+    const champs = ['tg', 'planche', 'tg', 'echelle'] as const;
+    const id = window.setInterval(() => {
+      if (document.hidden) return;
+      const champ = champs[beat % champs.length];
+      beat += 1;
+      setPas((p) => ({ ...p, [champ]: p[champ] + 1 }));
+    }, 1500);
+    return () => window.clearInterval(id);
+  }, [vivant]);
+  return {
+    tg: TG[pas.tg % TG.length],
+    planche: PLANCHES[pas.planche % PLANCHES.length],
+    echelle: ECHELLES[pas.echelle % ECHELLES.length],
+    pas,
+  };
+}
+
 /** The track: sleepers, axes, rails, blades, frogs, check rails, the agent, dimensions and destinations. */
-function Voie({ clip }: { clip: string }) {
+function Voie({ clip, tg, vivant }: { clip: string; tg: string; vivant: boolean }) {
   const arcEnd: Pt = [A[0] + ARC * Math.cos(ANGLE), A[1] - ARC * Math.sin(ANGLE)];
   return (
     <>
       <g clipPath={`url(#${clip})`}>
         <g className="aig__traverses">
           {SLEEPERS.map((corners, i) => (
-            <polygon key={i} points={corners.map(([x, y]) => `${x.toFixed(2)},${y.toFixed(2)}`).join(' ')} />
+            <polygon key={i} points={corners.map(([x, y]) => `${x.toFixed(2)},${y.toFixed(2)}`).join(' ')} style={vivant ? ({ '--i': i } as CSSProperties) : undefined} />
           ))}
         </g>
         <g className="aig__axe">
@@ -197,10 +225,14 @@ function Voie({ clip }: { clip: string }) {
           fill="none"
         />
         <path
+          className="aig__mesure"
           d={`M${A[0] + ARC} ${A[1]} A${ARC} ${ARC} 0 0 0 ${arcEnd[0].toFixed(2)} ${arcEnd[1].toFixed(2)}`}
           fill="none"
+          pathLength="1"
         />
         <path
+          className="aig__mesure"
+          pathLength="1"
           d={`M${A[0]} ${A[1]} L${(A[0] + (ARC + 6) * Math.cos(ANGLE)).toFixed(2)} ${(A[1] - (ARC + 6) * Math.sin(ANGLE)).toFixed(2)}`}
         />
       </g>
@@ -208,7 +240,7 @@ function Voie({ clip }: { clip: string }) {
         1 435
       </text>
       <text className="aig__micro aig__micro--bas" x={A[0] + 6} y={A[1] - 30}>
-        {`α · tg ${Math.tan(ANGLE).toFixed(2).replace('.', ',')}`}
+        {`α · tg ${tg}`}
       </text>
 
       <g className="aig__micro">
@@ -229,13 +261,14 @@ function Voie({ clip }: { clip: string }) {
   );
 }
 
-export function Aiguillage({ cadrage = 'paysage' }: { cadrage?: Cadrage }) {
+export function Aiguillage({ cadrage = 'paysage', vivant = false }: { cadrage?: Cadrage; vivant?: boolean }) {
   const id = useId().replace(/[^\w-]/g, '');
   const [sheet, lens, ring] = ['feuille', 'loupe', 'anneau'].map((name) => `${id}-${name}`);
   const { view, title, ref, marks } = LAYOUTS[cadrage];
+  const lecture = useLectures(vivant);
 
   return (
-    <svg className="miniature__plan aig" viewBox={view} aria-hidden="true">
+    <svg className={vivant ? 'miniature__plan aig aig--vivant' : 'miniature__plan aig'} viewBox={view} aria-hidden="true">
       <defs>
         <clipPath id={sheet}>
           <rect x="12" y="12" width="376" height="276" />
@@ -247,7 +280,7 @@ export function Aiguillage({ cadrage = 'paysage' }: { cadrage?: Cadrage }) {
       </defs>
 
       <g clipPath={`url(#${lens})`}>
-        <Voie clip={sheet} />
+        <Voie clip={sheet} tg={lecture.tg} vivant={vivant} />
       </g>
       <circle className="aig__trait" cx="196" cy="176" r="86" fill="none" />
       <circle className="aig__fin" cx="196" cy="176" r="90" fill="none" />
@@ -277,7 +310,7 @@ export function Aiguillage({ cadrage = 'paysage' }: { cadrage?: Cadrage }) {
         Réf. dossier 01-SNCF-GPT
       </text>
       <text className="aig__micro" x={ref[0]} y={ref[1] + 6}>
-        Détail A · 2:1 · Pl. 01/04
+        {`Détail A · ${lecture.echelle} · Pl. ${lecture.planche}`}
       </text>
       <Marquages at={marks} />
     </svg>

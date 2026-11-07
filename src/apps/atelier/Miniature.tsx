@@ -48,7 +48,7 @@ function Metal({ cadrage, children }: { cadrage?: Cadrage; children: ReactNode }
 export function Miniature({ cadrage = 'paysage' }: { cadrage?: Cadrage }) {
   return (
     <Metal cadrage={cadrage}>
-      <Aiguillage cadrage={cadrage} />
+      <Aiguillage cadrage={cadrage} vivant />
     </Metal>
   );
 }

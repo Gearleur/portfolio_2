@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { Maquette, MaquetteMobile } from '../Maquettes';
-import whiteboardAmdec from '../medias/whiteboard-amdec.webp';
+import { MiniatureAlpine } from '../MiniatureAlpine';
 import { Miniature } from '../Miniature';
 import { ProjetMaquette, ProjetMobile } from '../Projet';
 import { PROJETS, SNCF_GPT } from '../projets';
@@ -77,7 +77,7 @@ export function ContenuStep() {
   };
   const [waveSignal, playWave] = useWaveSignal();
   const close = useCallback(() => setPreview(null), []);
-  const images = { '01': <Miniature />, '02': <img src={whiteboardAmdec} alt="" /> };
+  const images = { '01': <Miniature />, '02': <MiniatureAlpine /> };
 
   return (
     <section className="atelier-step" aria-labelledby="step-contenu">
@@ -218,7 +218,7 @@ export function ContenuStep() {
               <figure className="phone">
                 <div className="phone__frame" ref={phone.scrolled ? scrollToPicture : undefined}>
                   <Specimen settings={FOND} waveSignal={waveSignal}>
-                    <MaquetteMobile blocks={false} menuOpen={false} images={{ '01': <Miniature cadrage="portrait" />, '02': <img src={whiteboardAmdec} alt="" /> }} />
+                    <MaquetteMobile blocks={false} menuOpen={false} images={{ '01': <Miniature cadrage="paysage" />, '02': <MiniatureAlpine /> }} />
                   </Specimen>
                 </div>
                 <figcaption>
