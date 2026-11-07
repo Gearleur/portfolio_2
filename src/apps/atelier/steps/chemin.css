@@ -629,14 +629,3 @@
 .m-contact a:focus-visible {
   text-decoration-color: var(--accent);
 }
-
-/* A thin vertical rule between FR and EN. */
-.m-lang__sep {
-  display: inline-block;
-  width: 1px;
-  height: 0.95em;
-  margin: 0 0.7em;
-  background: currentcolor;
-  opacity: 0.45;
-  vertical-align: -0.12em;
-}

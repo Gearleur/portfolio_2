@@ -184,7 +184,7 @@ export const NavList = ({ className, onChoix }: { className: string; onChoix?: (
       <li className="m-lang" style={{ '--i': items.length } as CSSProperties}>
         {(['fr', 'en'] as const).map((l, i) => (
           <span key={l}>
-            {i > 0 && <span className="m-lang__sep" aria-hidden="true" />}
+            {i > 0 && ' · '}
             <button type="button" className="m-lang__choix" aria-pressed={langue === l} lang={l} onClick={() => choisir(l)}>
               <T>{l.toUpperCase()}</T>
             </button>
