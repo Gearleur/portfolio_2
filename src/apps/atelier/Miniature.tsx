@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import type { CSSProperties, PointerEvent, ReactNode } from 'react';
 import { Aiguillage } from './Aiguillage';
 import type { Cadrage } from './Aiguillage';
+import { useVisible } from './useVisible';
 import './miniature.css';
 
 // Brushed metal: noise stretched along x, so it reads as fine streaks.
@@ -18,7 +19,7 @@ const BRUSHED = `url("data:image/svg+xml,${encodeURIComponent(
  * drawing engraved in it. The light and the wave's colours reflected in the
  * metal follow the pointer, and drift back when it leaves.
  */
-function Metal({ cadrage, children }: { cadrage?: Cadrage; children: ReactNode }) {
+function Metal({ cadrage, children }: { cadrage?: Cadrage; children: (actif: boolean) => ReactNode }) {
   const ref = useRef<HTMLSpanElement>(null);
   const move = (event: PointerEvent) => {
     const box = event.currentTarget.getBoundingClientRect();
@@ -30,25 +31,25 @@ function Metal({ cadrage, children }: { cadrage?: Cadrage; children: ReactNode }
     ref.current?.style.removeProperty('--my');
   };
 
+  const actif = useVisible(ref);
+
   return (
     <span
       ref={ref}
       className="miniature"
       data-cadrage={cadrage}
+      data-actif={actif ? '' : undefined}
       style={{ '--brushed': BRUSHED } as CSSProperties}
       onPointerMove={move}
       onPointerLeave={leave}
     >
-      {children}
+      <span className="miniature__point" />
+      {children(actif)}
     </span>
   );
 }
 
 /** SNCF GPT's thumbnail: the three-way turnout in a detail view, in iridescent aluminium. */
 export function Miniature({ cadrage = 'paysage' }: { cadrage?: Cadrage }) {
-  return (
-    <Metal cadrage={cadrage}>
-      <Aiguillage cadrage={cadrage} vivant />
-    </Metal>
-  );
+  return <Metal cadrage={cadrage}>{(actif) => <Aiguillage cadrage={cadrage} vivant={actif} />}</Metal>;
 }

@@ -47,8 +47,8 @@ export const FOND: FondSettings & { waveId: WaveCompositionId } = {
   waveId: 'neige-vermillon',
   wave: {
     colors: WAVE_COMPOSITIONS['neige-vermillon'],
-    first: 0.75,
-    echo: 0.2,
+    first: 0.16,
+    echo: 0.14,
     fade: 0.55,
     firstDelay: 1.2,
     every: 30,

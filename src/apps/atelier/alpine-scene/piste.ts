@@ -8,8 +8,6 @@
 
 export const OUT = 'cubic-bezier(0.22, 1, 0.36, 1)';
 export const IN_OUT = 'cubic-bezier(0.65, 0, 0.35, 1)';
-export const STD = 'cubic-bezier(0.4, 0, 0.2, 1)';
-export const IN = 'cubic-bezier(0.5, 0, 0.75, 0)';
 
 type Options = {
   /** Start, in ms on the timeline. */

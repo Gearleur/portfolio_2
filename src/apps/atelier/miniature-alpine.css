@@ -1,11 +1,35 @@
 /* Whiteboard AMDEC's thumbnail, alive (journal n° 101). Everything here is
    light: opacity, transforms and dashes on a few dozen lines. */
 
+.alpine-hote {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.alpine-fond {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .alpine {
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
   height: 100%;
   --alpine-ink: #1b1b92;
+}
+
+/* Out of view, nothing moves. */
+.alpine-hote:not([data-actif]) .alpine * {
+  animation-play-state: paused;
 }
 
 .alpine text {

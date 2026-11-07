@@ -56,8 +56,8 @@ function Pointeur({ couleur, style, anime = false }: { couleur: string; style?: 
       style={{ '--c': `var(--${couleur})`, ...style } as CSSProperties}
     >
       {anime && <span className="fe-onde" />}
-      <svg viewBox="0 0 20 24" aria-hidden="true">
-        <path d="M2 2v17l4.6-4.3 3.1 7 3-1.3-3.1-6.9H16z" />
+      <svg viewBox="0 0 10 14" aria-hidden="true">
+        <path d="M0 0V14L1.75 12.25L3.5 10.5L6.75 10.25L10 10L5 5Z" />
       </svg>
       <span className="fe-nom">
         <span />

@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { CSSProperties } from 'react';
 import fond from './medias/whiteboard-amdec-fond.webp';
+import { useVisible } from './useVisible';
 import './miniature-alpine.css';
 
 /*
@@ -32,12 +33,12 @@ const milliers = (n: number) => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, FI
 const CHAMPS = ['env', 'alt', 'charge', 'lat', 'lon'] as const;
 type Champ = (typeof CHAMPS)[number];
 
-function useLectures() {
+function useLectures(actif: boolean) {
   const [pas, setPas] = useState<Record<Champ, number>>({ env: 0, alt: 0, charge: 0, lat: 0, lon: 0 });
   const [dernier, setDernier] = useState<{ champ: Champ; n: number } | null>(null);
 
   useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (!actif || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     let beat = 0;
     const id = window.setInterval(() => {
       if (document.hidden) return;
@@ -47,7 +48,7 @@ function useLectures() {
       setDernier({ champ, n: beat });
     }, 1700);
     return () => window.clearInterval(id);
-  }, []);
+  }, [actif]);
 
   const at = <T,>(list: T[], champ: Champ) => list[pas[champ] % list.length];
   const [basse, haute] = at(ENV, 'env');
@@ -71,12 +72,17 @@ const COURBE = 'M417.5 894 C470 846 560 805 656.5 781.5';
 const VIVANTES = new Set(['c1', 'c4', 'c7', 'l1', 'l3', 'l5']);
 
 export function AfficheAlpine() {
-  const lecture = useLectures();
+  const racine = useRef<HTMLDivElement>(null);
+  const actif = useVisible(racine);
+  const lecture = useLectures(actif);
   const valeur = (champ: Champ) => (lecture.dernier?.champ === champ ? lecture.dernier.n : 0);
 
+  // The picture is a plain image, painted once; only the figures on top, a transparent SVG,
+  // are redrawn when they move. Both fill the card the same way (a centred crop).
   return (
-    <svg className="alpine" viewBox="0 0 1448 1086" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <image href={fond} width="1448" height="1086" />
+    <div ref={racine} className="alpine-hote" data-actif={actif ? '' : undefined}>
+      <img className="alpine-fond" src={fond} alt="" width="1200" height="900" decoding="async" />
+      <svg className="alpine" viewBox="0 0 1448 1086" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
 
       {/* Sight: a ring that turns, its arms that draw in and out. */}
       <g className="alpine__vise" transform="translate(670 203)">
@@ -118,6 +124,7 @@ export function AfficheAlpine() {
           {lecture.charge}
         </text>
       </g>
-    </svg>
+      </svg>
+    </div>
   );
 }

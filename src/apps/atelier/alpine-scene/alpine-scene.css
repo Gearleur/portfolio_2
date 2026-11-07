@@ -23,6 +23,16 @@
   opacity: 0;
 }
 
+.as-flou {
+  position: absolute;
+  inset: calc(-30 * var(--u));
+  width: calc(100% + 60 * var(--u));
+  height: calc(100% + 60 * var(--u));
+  object-fit: cover;
+  filter: blur(calc(9 * var(--u))) saturate(1.1);
+  opacity: 0;
+}
+
 .as-affiche {
   position: absolute;
   inset: 0;
@@ -193,7 +203,7 @@
 
 .as-logo {
   display: inline-flex;
-  color: #4d6bfe;
+  color: #fa520f;
 }
 
 @media (prefers-reduced-motion: reduce) {

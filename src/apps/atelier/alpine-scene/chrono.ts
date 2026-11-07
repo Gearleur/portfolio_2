@@ -10,7 +10,7 @@ import { QUESTION } from './texte';
  * grows in like a jelly; the question is typed; it is sent; the chat becomes
  * a thread; the window then reshapes itself into the sheet; four agents fill
  * the sheet, each in its own order and pace; the sheet leaves and the poster
- * comes back sharp. 22 s in all, then again, the agents' moves drawn anew
+ * comes back sharp. 22 s of film, 15 s of poster alone, then again, the agents' moves drawn anew
  * each time.
  *
  * Principles: a spring for what has weight (windows, bubbles, tags, the
@@ -21,8 +21,12 @@ import { QUESTION } from './texte';
  * durations are here, in ms.
  */
 
-/** The whole film lasts this long, and starts again: it is the loop's period. */
-export const PERIODE = 22000;
+/** The film itself lasts this long; the poster then rests a while before it starts again. */
+const FILM = 22000;
+const REPOS = 15000;
+
+/** The loop's period: the film, then the poster alone. */
+const PERIODE = FILM + REPOS;
 
 export type Options = {
   /** The seed of the agents' moves. */
@@ -100,11 +104,20 @@ export function monter(racine: HTMLElement, u: number, { graine = 1, suite }: Op
   const voile = $('voile');
   const A_FLOU = 1100;
   const A0 = 1700;
-  p.ajoute(affiche, [{ filter: `${flou(0)} saturate(1)`, transform: 'scale(1)' }, { filter: `${flou(9)} saturate(1.1)`, transform: 'scale(1.06)' }], {
-    a: A_FLOU,
-    d: 1500,
-    easing: OUT,
-  });
+  // The blur is not animated (a blur that changes is repainted every frame): the sharp, live poster
+  // fades into a blurred copy of the picture, which is painted once. Once it has gone, the live poster
+  // is hidden, so that its own movements cost nothing while the windows play.
+  const flouCouche = $('flou');
+  p.ajoute(flouCouche, [{ opacity: 0 }, { opacity: 1 }], { a: A_FLOU, d: 1500, easing: OUT });
+  p.ajoute(
+    affiche,
+    [
+      { opacity: 1, visibility: 'visible', transform: 'scale(1)' },
+      { opacity: 0, visibility: 'visible', transform: 'scale(1.03)', offset: 0.99 },
+      { opacity: 0, visibility: 'hidden', transform: 'scale(1.03)' },
+    ],
+    { a: A_FLOU, d: 1500, easing: OUT },
+  );
   p.ajoute(voile, [{ opacity: 0 }, { opacity: 1 }], { a: A_FLOU, d: 1500, easing: OUT });
 
   // 2 · The chat grows in like a jelly: wide quicker than tall, both on under-damped springs, the
@@ -230,8 +243,8 @@ export function monter(racine: HTMLElement, u: number, { graine = 1, suite }: Op
   // a mass on a spring, pulled toward the cell it means to reach; so it speeds up, bends, slows and
   // overshoots a little, and turns toward the next cell as it clicks, without ever stopping dead. It
   // lands off the middle of the cell, clicks, waits a moment (sometimes longer), and the cell fills.
-  // The agents' whole story is worked out first, then spread over the time that is left of the 22 s.
-  const POINTE = 1.8;
+  // The agents' whole story is worked out first, then spread over the time that is left of the film's 22 s.
+  const POINTE = 0;
   const W1 = FEUILLE + 1100;
   const PAS_MS = 1000 / 30;
   const DT = 1 / 240;
@@ -345,7 +358,7 @@ export function monter(racine: HTMLElement, u: number, { graine = 1, suite }: Op
 
   const plans = TRAVAIL.map((_, k) => planifie(k));
   const AIR = 2900; // the sheet's exit, the poster's return, and a moment of rest after
-  const echelle = Math.min(1.15, Math.max(0.7, (PERIODE - W1 - AIR) / Math.max(...plans.map((pl) => pl.debut + pl.fin))));
+  const echelle = Math.min(1.15, Math.max(0.7, (FILM - W1 - AIR) / Math.max(...plans.map((pl) => pl.debut + pl.fin))));
   let finAgents = 0;
 
   for (const { couleur, debut, positions, gestes, fin } of plans) {
@@ -378,12 +391,15 @@ export function monter(racine: HTMLElement, u: number, { graine = 1, suite }: Op
   const SORTIE_FEUILLE = finAgents + 350;
   const RETOUR = SORTIE_FEUILLE + 250;
   sort(feuille, SORTIE_FEUILLE, { y: -12, s: 0.97, f: 8, d: 900 });
-  p.ajoute(affiche, [{ filter: `${flou(9)} saturate(1.1)`, transform: 'scale(1.06)' }, { filter: `${flou(0)} saturate(1)`, transform: 'scale(1)' }], {
-    a: RETOUR,
-    d: 1500,
-    easing: IN_OUT,
-    fill: 'forwards',
-  });
+  p.ajoute(
+    affiche,
+    [
+      { opacity: 0, visibility: 'visible', transform: 'scale(1.03)' },
+      { opacity: 1, visibility: 'visible', transform: 'scale(1)' },
+    ],
+    { a: RETOUR, d: 1500, easing: IN_OUT, fill: 'forwards' },
+  );
+  p.ajoute(flouCouche, [{ opacity: 1 }, { opacity: 0 }], { a: RETOUR, d: 1500, easing: IN_OUT, fill: 'forwards' });
   p.ajoute(voile, [{ opacity: 1 }, { opacity: 0 }], { a: RETOUR, d: 1500, easing: IN_OUT, fill: 'forwards' });
   p.termine(Math.max(PERIODE, RETOUR + 1500 + 500), suite);
 
