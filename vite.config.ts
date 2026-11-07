@@ -1,7 +1,7 @@
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
-import { agentPages } from './build/agentPages';
-import { publicAssetsGuard } from './build/publicAssets';
+import { agentPages } from './scripts/agentPages';
+import { publicAssetsGuard } from './scripts/publicAssets';
 import vercelConfig from './vercel.json';
 
 export default defineConfig({

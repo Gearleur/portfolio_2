@@ -1,6 +1,6 @@
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { MachineResumeDocument } from '../components/machine/MachineResumeDocument';
+import { MachineResumeDocument } from '../apps/home/features/machine/MachineResumeDocument';
 import { AgentAccess } from './AgentAccess';
 import { getAgentContext, getAgentMarkdown, getAgentProfile } from './agentContent';
 
