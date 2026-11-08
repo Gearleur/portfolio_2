@@ -65,11 +65,21 @@ export default function FilmAlpine() {
     });
     vue.observe(el);
     document.addEventListener('visibilitychange', maj);
+    // iOS keeps a page it leaves (back/forward cache) and gives it back with its animations in an
+    // unknown state: on return the film starts again from the poster
+    const retour = (e: PageTransitionEvent) => {
+      if (e.persisted) monte();
+    };
+    const part = () => piste?.pause();
+    window.addEventListener('pageshow', retour);
+    window.addEventListener('pagehide', part);
 
     return () => {
       taille.disconnect();
       vue.disconnect();
       document.removeEventListener('visibilitychange', maj);
+      window.removeEventListener('pageshow', retour);
+      window.removeEventListener('pagehide', part);
       piste?.annule();
     };
   }, [immobile]);
@@ -79,7 +89,10 @@ export default function FilmAlpine() {
   return (
     <div ref={racine} className="as">
       <div className="as-stage mk">
-        <img className="as-flou" data-k="flou" src={fond} alt="" decoding="async" />
+        <div className="as-fond" data-k="flou">
+          <img className="as-flou" src={fond} alt="" decoding="async" />
+          <div className="as-grain" />
+        </div>
         <div className="as-affiche" data-k="affiche">
           <AfficheAlpine />
         </div>

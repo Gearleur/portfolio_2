@@ -8,6 +8,12 @@
   height: 100%;
   overflow: hidden;
   container-type: inline-size;
+
+  /* Safari lets a blurred or moving child bleed past overflow: hidden: paint containment
+     and an own stacking context hold it in. */
+  contain: paint;
+  isolation: isolate;
+  transform: translateZ(0);
 }
 
 .as-stage {
@@ -23,6 +29,12 @@
   opacity: 0;
 }
 
+.as-fond {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+
 .as-flou {
   position: absolute;
   inset: calc(-30 * var(--u));
@@ -30,7 +42,15 @@
   height: calc(100% + 60 * var(--u));
   object-fit: cover;
   filter: blur(calc(9 * var(--u))) saturate(1.1);
-  opacity: 0;
+}
+
+/* A fine grain over the blurred background (a still noise tile, black and white at a low
+   opacity): the colours stay, the gradient gets a printed, grainy texture. */
+.as-grain {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 4 -1.7 0 0 0 4 -1.7 0 0 0 4 -1.7 0 0 0 0 0.22'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 90px 90px;
 }
 
 .as-affiche {

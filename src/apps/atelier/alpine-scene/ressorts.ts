@@ -13,6 +13,9 @@ const simulations = new Map<string, Simulation>();
 const cache = new Map<string, Ressort>();
 const PAS = 1 / 240;
 
+let prise: boolean | undefined;
+const pris = () => (prise ??= typeof CSS !== 'undefined' && CSS.supports('animation-timing-function', 'linear(0, 1)'));
+
 function simule(raideur: number, amortissement: number, masse: number): Simulation {
   const cle = `${raideur}/${amortissement}/${masse}`;
   const connue = simulations.get(cle);
@@ -42,6 +45,13 @@ export function ressort(raideur: number, amortissement: number, masse = 1): Ress
   if (connu) return connu;
 
   const { points, duree } = simule(raideur, amortissement, masse);
+  // linear() easings arrive with Safari 17.2: an older iPhone gets a close cubic curve instead
+  // (an unknown easing would make the animation throw and stop the film)
+  if (!pris()) {
+    const repli = { easing: 'cubic-bezier(0.22, 1.25, 0.4, 1)', duree };
+    cache.set(cle, repli);
+    return repli;
+  }
   const n = Math.min(points.length, 64);
   const echantillons = Array.from({ length: n }, (_, i) => points[Math.round((i * (points.length - 1)) / (n - 1))]);
   echantillons[n - 1] = 1;
