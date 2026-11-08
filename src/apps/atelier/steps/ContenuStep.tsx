@@ -77,7 +77,7 @@ export function ContenuStep() {
   };
   const [waveSignal, playWave] = useWaveSignal();
   const close = useCallback(() => setPreview(null), []);
-  const images = { '01': <Miniature />, '02': <MiniatureAlpine /> };
+  const images = { '01': <MiniatureAlpine />, '02': <Miniature /> };
 
   return (
     <section className="atelier-step" aria-labelledby="step-contenu">
@@ -218,7 +218,7 @@ export function ContenuStep() {
               <figure className="phone">
                 <div className="phone__frame" ref={phone.scrolled ? scrollToPicture : undefined}>
                   <Specimen settings={FOND} waveSignal={waveSignal}>
-                    <MaquetteMobile blocks={false} menuOpen={false} images={{ '01': <Miniature cadrage="paysage" />, '02': <MiniatureAlpine /> }} />
+                    <MaquetteMobile blocks={false} menuOpen={false} images={{ '01': <MiniatureAlpine />, '02': <Miniature cadrage="paysage" /> }} />
                   </Specimen>
                 </div>
                 <figcaption>

@@ -16,8 +16,8 @@ import { FOND, FOND_LECTURE } from '../atelier/tokens';
  * back button works.
  */
 
-const ADRESSES: Record<string, string> = { '01': 'sncf-gpt', '02': 'whiteboard-amdec' };
-const NOMS: Record<string, string> = { '01': 'SNCF GPT', '02': 'Whiteboard AMDEC' };
+const ADRESSES: Record<string, string> = { '01': 'whiteboard-amdec', '02': 'sncf-gpt' };
+const NOMS: Record<string, string> = { '01': 'Whiteboard AMDEC', '02': 'SNCF GPT' };
 
 // The project pages (texts, diagrams, logos) are a chunk of their own, fetched when the home is idle.
 const chargerProjet = () => import('./PageProjet');
@@ -127,8 +127,8 @@ export function Vitrine() {
   };
 
   const images = {
-    '01': <Miniature cadrage="paysage" />,
-    '02': <MiniatureAlpine />,
+    '01': <MiniatureAlpine />,
+    '02': <Miniature cadrage="paysage" />,
   };
 
   let page;

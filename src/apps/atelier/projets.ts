@@ -574,4 +574,4 @@ const WHITEBOARD_AMDEC: Projet = {
 };
 
 /** The project pages, by their number on the Vitrine. */
-export const PROJETS: Partial<Record<string, Projet>> = { '01': SNCF_GPT, '02': WHITEBOARD_AMDEC };
+export const PROJETS: Partial<Record<string, Projet>> = { '01': WHITEBOARD_AMDEC, '02': SNCF_GPT };

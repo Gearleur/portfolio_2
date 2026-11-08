@@ -52,8 +52,8 @@ const entete = (tr: Tr): [string, Part[][]][] => [
 ];
 // Captioned like works in a museum, small and minimal: title in italics · organisation, year.
 const PROJECTS = [
-  { number: '01', name: 'SNCF GPT', org: 'SNCF', year: '2023' },
-  { number: '02', name: 'Whiteboard AMDEC', org: 'Renault / Alpine', year: '2025' },
+  { number: '01', name: 'Whiteboard AMDEC', org: 'Renault / Alpine', year: '2025' },
+  { number: '02', name: 'SNCF GPT', org: 'SNCF', year: '2023' },
   { number: '03', name: 'Synthèse de réunions', nameEn: 'Meeting summaries', org: 'SNCF', year: '2025' },
 ];
 
