@@ -23,7 +23,7 @@ import { QUESTION } from './texte';
 
 /** The film itself lasts this long; the poster then rests a while before it starts again. */
 const FILM = 22000;
-const REPOS = 15000;
+const REPOS = 8000;
 
 /** The loop's period: the film, then the poster alone. */
 const PERIODE = FILM + REPOS;
@@ -79,7 +79,9 @@ export function monter(racine: HTMLElement, u: number, { graine = 1, suite }: Op
 
   /** Comes in: opacity and blur together on a long ease-out, the shift on a spring if given. */
   const entre = (el: Element | null | undefined, a: number, { x = 0, y = 0, s = 1, f = 0, d = 600, r }: Entree = {}) => {
-    p.ajoute(el, [{ opacity: 0, filter: flou(f) }, { opacity: 1, filter: flou(0) }], { a, d: Math.min(d, 700) * 1.1, easing: OUT });
+    // With no blur asked, no filter at all: a filter left on text is what Safari paints as a grey smear.
+    const fondu = f ? [{ opacity: 0, filter: flou(f) }, { opacity: 1, filter: flou(0) }] : [{ opacity: 0 }, { opacity: 1 }];
+    p.ajoute(el, fondu, { a, d: Math.min(d, 700) * 1.1, easing: OUT });
     if (x || y || s !== 1) {
       p.ajoute(el, [{ transform: T(x, y, s) }, { transform: T() }], { a, d: r?.duree ?? d, easing: r?.easing ?? OUT });
     }
@@ -87,7 +89,9 @@ export function monter(racine: HTMLElement, u: number, { graine = 1, suite }: Op
 
   /** Leaves: ease-in-out, a little faster than it came. */
   const sort = (el: Element | null | undefined, a: number, { x = 0, y = 0, s = 1, f = 0, d = 500 }: Entree = {}) => {
-    p.ajoute(el, [{ opacity: 1, filter: flou(0), transform: T() }, { opacity: 0, filter: flou(f), transform: T(x, y, s) }], {
+    const de = f ? { filter: flou(0) } : {};
+    const vers = f ? { filter: flou(f) } : {};
+    p.ajoute(el, [{ opacity: 1, ...de, transform: T() }, { opacity: 0, ...vers, transform: T(x, y, s) }], {
       a,
       d: d * 1.1,
       easing: IN_OUT,
@@ -148,8 +152,8 @@ export function monter(racine: HTMLElement, u: number, { graine = 1, suite }: Op
     p.ajoute(
       lettre,
       [
-        { opacity: 0, transform: `translateY(${px(3)})`, filter: flou(2) },
-        { opacity: 1, transform: 'translateY(0px)', filter: flou(0) },
+        { opacity: 0, transform: `translateY(${px(3)})` },
+        { opacity: 1, transform: 'translateY(0px)' },
       ],
       { a: t, d: 150, easing: OUT },
     );
@@ -171,7 +175,7 @@ export function monter(racine: HTMLElement, u: number, { graine = 1, suite }: Op
     fill: 'forwards',
   });
   p.ajoute($('onde'), [{ opacity: 0.28, transform: 'scale(0.9)' }, { opacity: 0, transform: 'scale(2.1)' }], { a: ENVOI, d: 720, easing: OUT, fill: 'forwards' });
-  sort($('saisie'), ENVOI + 280, { y: -8, f: 3, d: 380 });
+  sort($('saisie'), ENVOI + 280, { y: -8, d: 380 });
 
   // 5 · The chat becomes a thread: it grows, the bubble flies in, the agent answers.
   const FIL = ENVOI + 380;
@@ -188,7 +192,7 @@ export function monter(racine: HTMLElement, u: number, { graine = 1, suite }: Op
   entre($('rail'), FIL + 200, { d: 500 });
   entre($('bulle'), FIL + 350, { y: 26, s: 0.9, r: ELAN });
   entre($('heure'), FIL + 950, { d: 400 });
-  $$('mot').forEach((mot, i) => entre(mot, FIL + 1100 + i * 50, { y: 5, f: 4, d: 520 }));
+  $$('mot').forEach((mot, i) => entre(mot, FIL + 1100 + i * 50, { y: 5, d: 520 }));
   const outils = $$('outil');
   entre(outils[0], FIL + 2000, { x: -8, d: 550 });
   entre(outils[1], FIL + 2450, { x: -8, d: 550 });
