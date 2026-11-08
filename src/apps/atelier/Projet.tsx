@@ -126,7 +126,7 @@ function Blocs({ blocs, figures }: { blocs: Bloc[]; figures: Map<Bloc, number> }
       case 'visuel':
         return (
           <Visuel key={index} legende={bloc.legende} n={figures.get(bloc) ?? 0}>
-            {bloc.schema && <Schema id={bloc.schema} />}
+            {bloc.schema ? <Schema id={bloc.schema} /> : bloc.image && <img className={bloc.large ? 'p-img--large' : undefined} src={bloc.image} alt={bloc.legende} loading="lazy" decoding="async" />}
           </Visuel>
         );
     }

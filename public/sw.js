@@ -1,10 +1,13 @@
 /* global URL, caches, fetch, self, Response */
 
-const CACHE_NAME = 'portfolio-pwa-v5';
+const CACHE_NAME = 'portfolio-pwa-v6';
 
 const APP_SHELL_URLS = [
   '/',
   '/index.html',
+  '/portfolio/',
+  '/portfolio/manifest.webmanifest',
+  '/portfolio/icon-192.png',
   '/agent/',
   '/agent/style.css',
   '/agent/copy.js',
@@ -78,6 +81,20 @@ self.addEventListener('fetch', (event) => {
         }
         return response;
       }).catch(async () => (await caches.match(cacheKey)) ?? Response.error()),
+    );
+    return;
+  }
+
+  // The Vitrine opens offline: its page is kept as it is visited, and is what an offline visit gets.
+  if (request.mode === 'navigate' && url.origin === self.location.origin && url.pathname.startsWith('/portfolio')) {
+    event.respondWith(
+      fetch(request).then(async (response) => {
+        if (response.ok) {
+          const cache = await caches.open(CACHE_NAME);
+          await cache.put('/portfolio/', response.clone());
+        }
+        return response;
+      }).catch(async () => (await caches.match('/portfolio/')) ?? Response.error()),
     );
     return;
   }

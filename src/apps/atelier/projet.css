@@ -247,6 +247,21 @@
   object-fit: cover;
 }
 
+/* A picture from the report, in the page: whole, at its own proportions, never cropped. */
+.p-section .p-visuel__image:has(> img) {
+  aspect-ratio: auto;
+}
+
+.p-section .p-visuel__image > img {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 80vh;
+  margin-inline: auto;
+  object-fit: contain;
+  background: #fff;
+}
+
 /* A drawn diagram keeps its own proportions, on the paper. */
 .p-visuel__image:has(.schema),
 .p-carte__image:has(.schema) {
@@ -303,8 +318,10 @@
   transition: text-decoration-color 0.2s;
 }
 
-.p-retour button:hover {
-  text-decoration-color: var(--accent);
+@media (hover: hover) {
+  .p-retour button:hover {
+    text-decoration-color: var(--accent);
+  }
 }
 
 /* The cursor's agent pointer, drawn straight: the same notched head, made
@@ -319,8 +336,10 @@
   transition: translate 0.25s cubic-bezier(0.34, 1.3, 0.64, 1);
 }
 
-.p-retour button:hover .p-retour__fleche {
-  translate: -0.25em -0.04em;
+@media (hover: hover) {
+  .p-retour button:hover .p-retour__fleche {
+    translate: -0.25em -0.04em;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -360,9 +379,11 @@
     text-decoration-color 0.2s;
 }
 
-.p-sommaire button:hover {
-  color: var(--ink);
-  text-decoration-color: var(--accent);
+@media (hover: hover) {
+  .p-sommaire button:hover {
+    color: var(--ink);
+    text-decoration-color: var(--accent);
+  }
 }
 
 .p-sommaire__n {
@@ -457,7 +478,7 @@
   background: var(--fond);
 }
 
-/* Diagrams keep a readable size (640 of their 720 units) and scroll sideways. */
+/* Diagrams keep a readable size (800 for their 720 units, so 11 px reads as 12) and scroll sideways. */
 .mobile.projet--mobile .p-visuel__image:has(.schema) {
   overflow-x: auto;
   scrollbar-width: none;
@@ -469,11 +490,34 @@
 }
 
 .mobile.projet--mobile .p-visuel__image .schema {
-  width: calc(640 * var(--u));
+  width: calc(800 * var(--u));
   max-width: none;
 }
 
 .mobile.projet--mobile .p-visuel:has(.schema) figcaption::after {
+  content: ' · ← glisser →';
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+/* A busy picture keeps a readable size and scrolls sideways, like a diagram. */
+.mobile.projet--mobile .p-visuel__image:has(> .p-img--large) {
+  overflow-x: auto;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+}
+
+.mobile.projet--mobile .p-visuel__image:has(> .p-img--large)::-webkit-scrollbar {
+  display: none;
+}
+
+.mobile.projet--mobile .p-visuel__image > .p-img--large {
+  width: calc(800 * var(--u));
+  max-width: none;
+  max-height: none;
+}
+
+.mobile.projet--mobile .p-visuel:has(.p-img--large) figcaption::after {
   content: ' · ← glisser →';
   color: var(--accent);
   white-space: nowrap;

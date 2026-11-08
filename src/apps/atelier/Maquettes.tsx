@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import type { CSSProperties, ReactNode } from 'react';
+import type { CSSProperties, KeyboardEvent, ReactNode } from 'react';
 import { profile } from '../../shared/data/profile';
 import { useChoixLangue, useLangue, useTr } from './langue';
 import { GridColumns } from './Temoin';
@@ -277,6 +277,14 @@ const Visuals = ({ images, onOuvrir }: Pick<MaquetteProps, 'images' | 'onOuvrir'
           data-cursor="projet"
           data-cursor-label={tr('Voir le projet', 'View project')}
           onClick={onOuvrir ? () => onOuvrir(project.number) : undefined}
+          // a card that opens a page is a link: reachable and opened from the keyboard
+          {...(onOuvrir && {
+            role: 'link',
+            tabIndex: 0,
+            onKeyDown: (e: KeyboardEvent<HTMLLIElement>) => {
+              if (e.key === 'Enter') onOuvrir(project.number);
+            },
+          })}
         >
           <span className="m-img">{images?.[project.number]}</span>
           <span className="m-work">

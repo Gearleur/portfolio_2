@@ -1,0 +1,87 @@
+/* The Vitrine as a phone app would be (journal n° 104): touch targets, feedback under the
+   finger, the screen's safe areas, no rubber-banding of the page behind, a cross-fade
+   between pages. The look is not changed; only how it answers a finger. */
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  overscroll-behavior: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.vitrine {
+  -webkit-touch-callout: none;
+}
+
+/* The pages scroll on their own and keep the bounce to themselves. */
+.vitrine :is(.mobile, .maquette, .projet) {
+  overscroll-behavior: contain;
+}
+
+/* The menu open: the page under it stays still. */
+.vitrine .mobile:has(.m-menu[data-open]) {
+  overflow: hidden;
+}
+
+/* Touch screens: every link and button answers inside at least 44 × 44 px (Apple's minimum),
+   by a hidden area around it that does not move anything. */
+@media (pointer: coarse) {
+  .vitrine :where(a, button, summary, [role='button']) {
+    position: relative;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .vitrine :is(a, button, summary, [role='button'])::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: max(100%, 44px);
+    height: max(100%, 44px);
+    translate: -50% -50%;
+  }
+
+  /* Under the finger: the word dims, as iOS does for a link. */
+  .vitrine :is(a, button):active {
+    opacity: 0.55;
+    transition: opacity 0.06s;
+  }
+
+  .vitrine :is(a, button) {
+    transition: opacity 0.25s;
+  }
+}
+
+/* The safe areas of a notched phone, and of a landscape one: the page's edges and the menu
+   keep clear of the notch, the rounded corners and the home bar. */
+@supports (padding: env(safe-area-inset-top)) {
+  .mobile {
+    padding-bottom: calc(var(--space-8) * var(--u) + env(safe-area-inset-bottom));
+  }
+
+  .m-menu {
+    padding-top: calc(var(--space-5) * var(--u) + env(safe-area-inset-top));
+    padding-bottom: calc(var(--space-6) * var(--u) + env(safe-area-inset-bottom));
+    padding-right: calc(var(--margin) * var(--u) + env(safe-area-inset-right));
+  }
+}
+
+/* One page gives way to the next with a short cross-fade (View Transitions). */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.22s;
+  animation-timing-function: ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none;
+  }
+}

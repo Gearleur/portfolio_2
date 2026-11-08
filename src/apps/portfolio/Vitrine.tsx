@@ -1,4 +1,5 @@
-import { lazy, Suspense, useEffect, useRef, useState } from 'react';
+import { lazy, Suspense, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { flushSync } from 'react-dom';
 import { ChoixLangueContext, LangueContext } from '../atelier/langue';
 import type { Langue } from '../atelier/langue';
 import { Maquette, MaquetteMobile } from '../atelier/Maquettes';
@@ -66,10 +67,20 @@ export function Vitrine() {
   // Whether the project page was opened from the Vitrine, in this visit.
   const depuisVitrine = useRef(false);
 
+  // The home's scroll on the phone, kept while a project page is open, and given back on return.
+  const defil = useRef(0);
+
   useEffect(() => {
-    const change = () => {
+    const applique = () => {
       setAdresse(lireAdresse());
       setMenu(false);
+    };
+    // A page change cross-fades where the browser can (View Transitions), and cuts where it cannot
+    // or where motion is reduced.
+    const change = () => {
+      const transition = document.startViewTransition?.bind(document);
+      if (!transition || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return applique();
+      transition(() => flushSync(applique));
     };
     window.addEventListener('hashchange', change);
     return () => window.removeEventListener('hashchange', change);
@@ -77,6 +88,13 @@ export function Vitrine() {
 
   const numero = Object.keys(ADRESSES).find((n) => ADRESSES[n] === adresse);
   const projet = numero !== undefined;
+
+  // Back on the home, the phone's page is where it was left.
+  useLayoutEffect(() => {
+    if (numero) return;
+    const page = document.querySelector<HTMLElement>('.mobile');
+    if (page) page.scrollTop = defil.current;
+  }, [numero, telephone]);
 
   useEffect(() => {
     document.title = numero ? `${NOMS[numero]} — Alexandre Teixeira` : 'Alexandre Teixeira — Portfolio';
@@ -90,6 +108,7 @@ export function Vitrine() {
   const ouvrir = (n: string) => {
     if (!ADRESSES[n]) return;
     depuisVitrine.current = true;
+    defil.current = document.querySelector<HTMLElement>('.mobile')?.scrollTop ?? 0;
     window.location.hash = ADRESSES[n];
   };
   const retour = () => {
@@ -101,6 +120,12 @@ export function Vitrine() {
     depuisVitrine.current = false;
   };
 
+  // The menu opening or closing is felt on the phones that can (not iOS, which keeps this to apps).
+  const ouvreMenu = (ouvert: boolean) => {
+    navigator.vibrate?.(8);
+    setMenu(ouvert);
+  };
+
   const images = {
     '01': <Miniature cadrage="paysage" />,
     '02': <MiniatureAlpine />,
@@ -110,12 +135,12 @@ export function Vitrine() {
   if (numero) {
     page = (
       <Suspense fallback={null}>
-        <PageProjet key={adresse} numero={numero} telephone={telephone} onRetour={retour} menuOpen={menu} onMenu={setMenu} />
+        <PageProjet key={adresse} numero={numero} telephone={telephone} onRetour={retour} menuOpen={menu} onMenu={ouvreMenu} />
       </Suspense>
     );
   } else {
     page = telephone ? (
-      <MaquetteMobile blocks={false} glisse menuOpen={menu} onMenu={setMenu} images={images} onOuvrir={ouvrir} />
+      <MaquetteMobile blocks={false} glisse menuOpen={menu} onMenu={ouvreMenu} images={images} onOuvrir={ouvrir} />
     ) : (
       <Maquette blocks={false} images={images} onOuvrir={ouvrir} />
     );

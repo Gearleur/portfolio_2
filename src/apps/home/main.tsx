@@ -1,7 +1,7 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App';
-import { registerServiceWorker } from './registerServiceWorker';
+import { registerServiceWorker } from '../../shared/utils/registerServiceWorker';
 import './styles/yc-da.css';
 import './styles.css';
 import './styles/retro-glass.css';

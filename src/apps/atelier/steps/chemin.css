@@ -98,8 +98,10 @@
   text-underline-offset: 0.2em;
 }
 
-.m-link:hover {
-  text-decoration-color: var(--accent);
+@media (hover: hover) {
+  .m-link:hover {
+    text-decoration-color: var(--accent);
+  }
 }
 
 .m-facts dd + dd {
@@ -436,9 +438,11 @@
   text-underline-offset: 0.12em;
 }
 
-:is(.m-nav, .m-menu__nav) li:hover {
-  color: var(--ink);
-  text-decoration-color: var(--accent);
+@media (hover: hover) {
+  :is(.m-nav, .m-menu__nav) li:hover {
+    color: var(--ink);
+    text-decoration-color: var(--accent);
+  }
 }
 
 /* Step 6 · The phone menu. Still pages show it or not; with data-glisse it
@@ -639,9 +643,11 @@
   color: var(--ink);
 }
 
-:is(.m-nav, .m-menu__nav, .m-contact) a:hover,
-.m-lang__choix:hover {
-  color: var(--ink);
+@media (hover: hover) {
+  :is(.m-nav, .m-menu__nav, .m-contact) a:hover,
+  .m-lang__choix:hover {
+    color: var(--ink);
+  }
 }
 
 /* The contact links are underlined, in the accent, under the pointer (as the nav is). */

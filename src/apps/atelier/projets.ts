@@ -4,6 +4,10 @@
  */
 
 import type { LogoId } from './logos';
+import architecture from './medias/sncf-architecture.webp';
+import hybride from './medias/sncf-hybride.webp';
+import langfuse from './medias/sncf-langfuse.webp';
+import react from './medias/sncf-react.webp';
 import type { Ecran, SchemaId } from './Schemas';
 
 /** A run of text, opened by a bold lead; `href` links the whole of it. */
@@ -20,7 +24,7 @@ export type Bloc =
   | { type: 'compromis'; text: string }
   | { type: 'decision'; n: number; lead: string; text: string; visuel: string; schema?: SchemaId }
   /** A diagram (`schema`), or a placeholder described by its caption. */
-  | { type: 'visuel'; schema?: SchemaId; legende: string };
+  | { type: 'visuel'; schema?: SchemaId; image?: string; large?: boolean; legende: string };
 
 type Section = { id: string; nav: string; titre: string; blocs: Bloc[] };
 
@@ -62,7 +66,7 @@ export const SNCF_GPT: Projet = {
       blocs: [
         {
           type: 'texte',
-          text: 'L’Usine Logicielle d’e.SNCF fournit l’intégration et le déploiement continus à tous les projets du groupe : plus de 1 200 projets et 4 500 utilisateurs. J’ai été le premier membre de sa nouvelle équipe IA, pendant 24 semaines. Au début, j’étais seul sur le projet ; à partir de SNCF Groupe GPT, j’ai travaillé en équipe.',
+          text: 'L’Usine Logicielle d’e.SNCF fournit l’intégration et le déploiement continus à plus de 1 200 projets et 4 500 utilisateurs. J’ai été le premier membre de sa nouvelle équipe IA, pendant 24 semaines : seul au début, en équipe à partir de SNCF Groupe GPT.',
         },
         {
           type: 'colonnes',
@@ -100,6 +104,14 @@ export const SNCF_GPT: Projet = {
           type: 'texte',
           text: 'Il ne remplace pas le support : il lui fait gagner la recherche. Chaque réponse dit d’où elle vient, et le support peut la corriger en continuant la conversation.',
         },
+        { type: 'intertitre', text: 'Sous le capot, deux chaînes.' },
+        { type: 'texte', text: 'L’une prépare la documentation, l’autre répond avec.' },
+        {
+          type: 'visuel',
+          image: architecture,
+          large: true,
+          legende: 'L’architecture : à gauche l’ingestion, à droite l’agent et ses outils. En vert ce qui était réalisé, en bleu les priorités suivantes.',
+        },
       ],
     },
     {
@@ -130,7 +142,7 @@ export const SNCF_GPT: Projet = {
         {
           type: 'texte',
           lead: 'Écouter.',
-          text: 'J’ai travaillé main dans la main avec les équipes DevOps et le support. Avant d’écrire du code, je leur ai demandé quels tickets reviennent, où se trouve la réponse et ce qu’ils attendent d’un outil. Leurs retours ont guidé chaque version. L’outil en garde trois partis pris : rester dans le flux des tickets, toujours montrer ses sources, laisser la main à l’humain.',
+          text: 'Avant d’écrire du code, j’ai demandé aux équipes DevOps et au support quels tickets reviennent, où se trouve la réponse et ce qu’ils attendent d’un outil. L’outil en garde trois partis pris : rester dans le flux des tickets, toujours montrer ses sources, laisser la main à l’humain.',
         },
         {
           type: 'texte',
@@ -218,6 +230,11 @@ export const SNCF_GPT: Projet = {
           schema: 'recherche',
         },
         {
+          type: 'visuel',
+          image: hybride,
+          legende: 'Mots-clés, vecteurs, hybride, hybride avec reclassement : la part des requêtes bien servies selon le nombre de résultats.',
+        },
+        {
           type: 'decision',
           n: 3,
           lead: 'Lire les PDF avec un modèle, pas avec des règles.',
@@ -232,6 +249,12 @@ export const SNCF_GPT: Projet = {
           text: 'Au début, le système cherchait avant chaque réponse. À la fin, un agent ReAct choisit ses outils, reformule la question et suit les liens d’une documentation organisée en graphe.',
           visuel: 'Avant, après : la recherche systématique, puis la boucle de l’agent.',
           schema: 'agent',
+        },
+        {
+          type: 'visuel',
+          image: react,
+          large: true,
+          legende: 'L’article ReAct (Yao et al.) : raisonner, agir, observer résout ce que ni la réponse directe ni l’action seule ne résolvent.',
         },
       ],
     },
@@ -315,6 +338,7 @@ export const SNCF_GPT: Projet = {
           lead: 'Mesurer dès le premier jour.',
           text: 'J’ai testé Langfuse pour suivre la qualité, les coûts et les conversations, sans avoir le temps de le brancher. Aujourd’hui, je commencerais par là.',
         },
+        { type: 'visuel', image: langfuse, legende: 'Langfuse sur mes tests : les traces, le coût par modèle, la consommation par utilisateur.' },
       ],
     },
   ],
