@@ -64,6 +64,9 @@ export function useWave(ref: RefObject<HTMLElement | null>, settings: WaveSettin
       const stage = wave?.parentElement;
       if (!wave || !stage) return;
       const { first, echo, fade, duration } = settingsRef.current;
+      const peak = kind === 'first' ? first : echo;
+      // An invisible wave (the project pages' stage) is not played: nothing to draw for 11 s.
+      if (peak <= 0) return;
 
       const width = stage.clientWidth;
       const height = stage.clientHeight;
@@ -82,7 +85,6 @@ export function useWave(ref: RefObject<HTMLElement | null>, settings: WaveSettin
       const at = (distance: number) => `${width / 2 + ux * distance}px ${height / 2 + uy * distance}px`;
       const turn = (heading * 180) / Math.PI;
 
-      const peak = kind === 'first' ? first : echo;
       const gone = Math.min(1, Math.max(ENTER + 0.1, fade));
       const span = gone - ENTER;
       const frames: Keyframe[] = [

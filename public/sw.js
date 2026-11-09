@@ -6,12 +6,17 @@ const APP_SHELL_URLS = [
   '/',
   '/manifest.webmanifest',
   '/icon-192.png',
-  '/desktop/',
-  '/desktop/manifest.webmanifest',
   '/agent/',
   '/agent/style.css',
   '/agent/copy.js',
   '/llms.txt',
+];
+
+// The retro desktop's shell (about 890 KB of pictures) is only fetched for the desktop: when it is
+// the desktop that installs the worker, or once it is visited. A visit to the Vitrine never pays for it.
+const DESKTOP_SHELL_URLS = [
+  '/desktop/',
+  '/desktop/manifest.webmanifest',
   '/assets/pwa-icon.svg',
   '/assets/iphone6_top.svg',
   '/assets/iphone6_bottom.svg',
@@ -38,11 +43,26 @@ const OFFLINE_PAGES = new Map([
   ['/desktop/index.html', '/desktop/'],
 ]);
 
+const isDesktopPath = (pathname) => pathname === '/desktop' || pathname.startsWith('/desktop/');
+
+/** Stores the desktop's shell, skipping what is already there. */
+const cacheDesktopShell = async () => {
+  const cache = await caches.open(CACHE_NAME);
+  await Promise.allSettled(
+    DESKTOP_SHELL_URLS.map(async (url) => {
+      if (!(await cache.match(url))) await cache.add(url);
+    }),
+  );
+};
+
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) =>
-      Promise.allSettled(APP_SHELL_URLS.map((url) => cache.add(url))),
-    ),
+    (async () => {
+      const cache = await caches.open(CACHE_NAME);
+      await Promise.allSettled(APP_SHELL_URLS.map((url) => cache.add(url)));
+      const windows = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
+      if (windows.some((client) => isDesktopPath(new URL(client.url).pathname))) await cacheDesktopShell();
+    })(),
   );
   self.skipWaiting();
 });
@@ -96,6 +116,8 @@ self.addEventListener('fetch', (event) => {
   // and is what an offline visit gets.
   const page = url.origin === self.location.origin ? OFFLINE_PAGES.get(url.pathname) : undefined;
   if (request.mode === 'navigate' && page) {
+    // A worker installed from the Vitrine fetches the desktop's shell on the first visit to the desktop.
+    if (page === '/desktop/') event.waitUntil(cacheDesktopShell());
     event.respondWith(
       fetch(request).then(async (response) => {
         if (response.ok) {

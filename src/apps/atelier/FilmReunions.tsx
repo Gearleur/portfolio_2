@@ -17,6 +17,16 @@ import './reunions-scene/reunions.css';
 /** The moment the poster was taken: the film starts there, so the poster gives way without a jump. */
 const DEPART = 6;
 
+/*
+ * The paper, the current and the glass move slowly: they are drawn 30 times a
+ * second, which halves the GPU's work without a visible difference. The
+ * voices, on their own canvas, keep the screen's pace up to 60 frames a
+ * second (not 120 on a fast screen). A quarter of a 240 Hz frame of slack
+ * keeps the rhythm steady whatever the screen's rate.
+ */
+const PAS_VERRE = 1 / 30 - 1 / 240;
+const PAS_VOIX = 1 / 60 - 1 / 240;
+
 export default function FilmReunions() {
   const hote = useRef<HTMLDivElement>(null);
   const toileVerre = useRef<HTMLCanvasElement>(null);
@@ -39,6 +49,9 @@ export default function FilmReunions() {
     let raf = 0;
     let dernier = 0;
     let ecoule = 0;
+    // when each layer was last drawn; -Infinity makes the next frame draw it
+    let tVerre = -Infinity;
+    let tVoix = -Infinity;
 
     const image = (ms: number) => {
       raf = 0;
@@ -47,10 +60,16 @@ export default function FilmReunions() {
       ecoule += dernier ? Math.min(0.1, (ms - dernier) / 1000) : 0;
       dernier = ms;
       const t = DEPART + ecoule;
-      verre.rendre(t);
-      g.setTransform(dpr, 0, 0, dpr, 0, 0);
-      g.clearRect(0, 0, W, H);
-      dessinerVoix(g, W, H, t);
+      if (t - tVerre >= PAS_VERRE) {
+        verre.rendre(t);
+        tVerre = t;
+      }
+      if (t - tVoix >= PAS_VOIX) {
+        g.setTransform(dpr, 0, 0, dpr, 0, 0);
+        g.clearRect(0, 0, W, H);
+        dessinerVoix(g, W, H, t);
+        tVoix = t;
+      }
       el.dataset.pret = '';
       lance();
     };
@@ -75,7 +94,8 @@ export default function FilmReunions() {
       cVerre.width = cVoix.width = Math.round(W * dpr);
       cVerre.height = cVoix.height = Math.round(H * dpr);
       verre?.dimensionner(W, H, dpr);
-      // a resized canvas is blank until the next frame
+      // a resized canvas is blank until the next frame, which draws both layers
+      tVerre = tVoix = -Infinity;
       arrete();
       maj();
     });
@@ -100,6 +120,7 @@ export default function FilmReunions() {
     const retrouve = () => {
       verre = creerVerre(cVerre);
       if (verre && W) verre.dimensionner(W, H, dpr);
+      tVerre = -Infinity;
       maj();
     };
     cVerre.addEventListener('webglcontextlost', perdu);
