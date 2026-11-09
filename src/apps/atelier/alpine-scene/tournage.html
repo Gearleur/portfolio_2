@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="noindex" />
+    <title>Tournage — Whiteboard AMDEC</title>
+  </head>
+  <body style="margin: 0; background: #fff">
+    <!-- The set where Whiteboard AMDEC's film is shot (journal n° 106), at a Vitrine card's size.
+         Served by `pnpm dev` only (not built); scripts/tournerAlpine.mjs films it frame by frame. -->
+    <!-- 512 × 288 at a pixel ratio of 2: 1024 × 576, 16:9 and multiples of 16 (no padded edge). -->
+    <div id="plateau" style="width: 512px; height: 288px"></div>
+    <script type="module" src="./tournage.tsx"></script>
+  </body>
+</html>

@@ -85,7 +85,9 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const { request } = event;
 
-  if (request.method !== 'GET') {
+  // Videos are read in ranges, which the cache cannot answer (Safari then refuses to play them):
+  // they go straight to the network, which the browser's own cache serves.
+  if (request.method !== 'GET' || request.destination === 'video' || request.headers.has('range')) {
     return;
   }
 

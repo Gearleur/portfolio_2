@@ -14,7 +14,13 @@
  * Lengths are given for a 518 px wide card (the Vitrine's) and scale with the
  * picture; only the grain stays at the screen's scale. Coordinates are in px,
  * y up, as in GL.
+ *
+ * Since journal n° 105 the site no longer runs these shaders: they film the
+ * thumbnail's background as a loop (tournage.html), which the card plays as a
+ * video.
  */
+
+import { BOUCLE } from './vitre';
 
 export const SOMMET = `#version 300 es
 in vec2 a_pos;
@@ -102,6 +108,7 @@ vec3 rampe(float s) {
 
 /** 1. The current, at a quarter of the resolution, every frame: the place in the gradient. */
 export const FS_FLUX = `#version 300 es
+// u_temps: seconds into the loop
 precision highp float;
 uniform vec2 u_taille;
 uniform float u_temps;
@@ -111,10 +118,15 @@ out vec4 o;
 void main() {
   float aspect = u_taille.x / u_taille.y;
   vec2 p = v_uv * vec2(aspect, 1.0) * 1.6;
-  float t = u_temps;
+  // the film loops (journal n° 105): each drift turns in a small circle once per loop, at its own speed
+  float a = 6.2831853 * u_temps / ${BOUCLE.toFixed(1)};
+  float R = ${BOUCLE.toFixed(1)} / 6.2831853;
   // a domain warp (Inigo Quilez): noise bends noise, and the colours flow
-  vec2 q = vec2(fbm(p + vec2(0.0, 0.07 * t)), fbm(p + vec2(5.2, 1.3) - 0.06 * t));
-  vec2 r = vec2(fbm(p + 2.6 * q + vec2(1.7, 9.2) + 0.05 * t), fbm(p + 2.6 * q + vec2(8.3, 2.8) - 0.045 * t));
+  vec2 q = vec2(fbm(p + 0.07 * R * vec2(cos(a), sin(a))), fbm(p + vec2(5.2, 1.3) - 0.06 * R * vec2(sin(a + 1.0), cos(a + 1.0))));
+  vec2 r = vec2(
+    fbm(p + 2.6 * q + vec2(1.7, 9.2) + 0.05 * R * vec2(cos(a + 2.0), sin(a + 2.0))),
+    fbm(p + 2.6 * q + vec2(8.3, 2.8) - 0.045 * R * vec2(sin(a + 3.0), cos(a + 3.0)))
+  );
   float f = fbm(p + 2.4 * r);
   float s = (1.0 - v_uv.y) * 0.8 + (f - 0.5) * 1.1 + 0.08;
   o = vec4(clamp(s, 0.0, 1.0), 0.0, 0.0, 1.0);

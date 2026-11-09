@@ -113,6 +113,7 @@ export function MaquetteMobile({ menuOpen, onMenu, glisse, blocks, columns, imag
         <Name />
         <button type="button" className="m-label" onClick={() => onMenu?.(true)}>
           <T>Menu</T>
+          <Accent>Menu</Accent>
         </button>
       </div>
       <Hero />
@@ -129,6 +130,18 @@ export function MaquetteMobile({ menuOpen, onMenu, glisse, blocks, columns, imag
 /** A run of words, which the blocks view turns into grey bars. */
 export const T = ({ children }: { children: ReactNode }) => <span className="m-t">{children}</span>;
 
+/**
+ * The accent copy of a word of the phone strip (journal n° 70): it shows, through the
+ * mask useTranche sets, where a picture passes under the word. A real element rather
+ * than a ::after: in a vertical button, Chrome put the pseudo-element beside « Menu »
+ * instead of over it. Shown only in the strip.
+ */
+export const Accent = ({ children }: { children: string }) => (
+  <span className="m-accent" aria-hidden="true">
+    {children}
+  </span>
+);
+
 export const Name = () => (
   <p className="m-name">
     {/* Like a logo: back to the home from a project, else to the top of the page. */}
@@ -142,6 +155,7 @@ export const Name = () => (
     >
       <T>Alexandre Teixeira</T>
     </a>
+    <Accent>Alexandre Teixeira</Accent>
   </p>
 );
 

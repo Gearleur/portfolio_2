@@ -4,7 +4,7 @@ import type { RefObject } from 'react';
 /**
  * On a phone page, the name and « Menu » stay over the pictures that run over
  * the strip; where one passes under them, and only there, they take an accent
- * background (journal n° 70): an accent copy of the word (data-text) shows
+ * background (journal n° 70): an accent copy of the word (<Accent>) shows
  * through a mask (--over). `pictures` selects what runs over the strip.
  */
 export function useTranche(ref: RefObject<HTMLElement | null>, pictures: string) {
@@ -12,7 +12,6 @@ export function useTranche(ref: RefObject<HTMLElement | null>, pictures: string)
     const page = ref.current;
     if (!page) return;
     const words = [...page.querySelectorAll<HTMLElement>('.m-strip > *')];
-    for (const word of words) word.dataset.text = word.textContent ?? '';
     const update = () => {
       const boxes = [...page.querySelectorAll(pictures)].map((picture) => picture.getBoundingClientRect());
       for (const word of words) {

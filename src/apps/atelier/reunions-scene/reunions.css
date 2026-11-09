@@ -1,36 +1,11 @@
-/* Synthèse de réunions' thumbnail (journal n° 103): the poster, then the glass
-   and the voices over it once their first frame is drawn. */
+/* Synthèse de réunions' thumbnail (journal n° 103 and 105): the film's layers
+   are in film.css; here, its colour while the first frame loads. */
 
 .reunions {
-  position: relative;
-  display: block;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
   background: #7fdcc4;
 }
 
-.reunions__affiche,
-.reunions__verre,
-.reunions__voix {
-  position: absolute;
-  inset: 0;
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-.reunions__affiche {
-  object-fit: cover;
-}
-
-.reunions__verre,
-.reunions__voix {
-  opacity: 0;
-  transition: opacity 0.4s ease;
-}
-
-.reunions[data-pret] .reunions__verre,
-.reunions[data-pret] .reunions__voix {
-  opacity: 1;
+/* The voices' canvas covers the glass only; its place is set with the card's size. */
+.film > .reunions__voix {
+  inset: auto;
 }

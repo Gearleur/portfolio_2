@@ -346,19 +346,25 @@
 
 /* Over a picture, the name and « Menu » take an accent background, like a
    hover, only where the picture is under them (step 7, journal n° 70): an
-   accent copy of the word, masked to the parts over a picture. MaquetteMobile
-   sets --over (the mask) as the page scrolls. */
-.m-strip > [data-text]::after {
-  content: attr(data-text);
+   accent copy of the word (<Accent>), laid exactly over it and masked to the
+   parts over a picture. useTranche sets --over (the mask) as the page scrolls.
+   It lets clicks through to the word. */
+.m-accent {
+  display: none;
+}
+
+.m-strip > * > .m-accent {
+  display: block;
   position: absolute;
   inset: 0;
   padding: inherit;
   background: var(--accent);
   color: var(--on-accent);
   mask-image: var(--over, linear-gradient(transparent, transparent));
+  pointer-events: none;
 }
 
-:is(.maquette, .mobile)[data-blocks] .m-strip > [data-text]::after {
+:is(.maquette, .mobile)[data-blocks] .m-strip .m-accent {
   display: none;
 }
 

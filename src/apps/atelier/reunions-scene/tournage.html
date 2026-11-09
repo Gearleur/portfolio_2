@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="noindex" />
+    <title>Tournage — Synthèse de réunions</title>
+  </head>
+  <body style="margin: 0; background: #111">
+    <canvas id="verre"></canvas>
+    <script type="module">
+      /*
+       * The set where Synthèse de réunions' background is filmed (journal n° 105):
+       * paper, fingerprint, current and glass, without the voices, which the card
+       * draws live. Served by `pnpm dev` only (not built). scripts/tournerReunions.mjs
+       * asks it for each frame, raw RGBA rows from the bottom up, in base64.
+       */
+      import { creerVerre } from './verre.ts';
+      import { BOUCLE } from './vitre.ts';
+
+      const p = new URLSearchParams(location.search);
+      // 1024 × 576 at a pixel ratio of 2: 16:9 like the cards, and multiples of 16, so that no
+      // decoder pads the picture (a hardware one then showed the padding as a dark line).
+      const W = Number(p.get('w') ?? 512);
+      const H = Number(p.get('h') ?? 288);
+      const DPR = Number(p.get('dpr') ?? 2);
+      const canvas = document.getElementById('verre');
+      canvas.width = Math.round(W * DPR);
+      canvas.height = Math.round(H * DPR);
+      canvas.style.width = `${W}px`;
+      const verre = creerVerre(canvas);
+      const gl = canvas.getContext('webgl2');
+      verre.dimensionner(W, H, DPR);
+      const px = new Uint8Array(canvas.width * canvas.height * 4);
+
+      window.image = (t) => {
+        verre.rendre(t);
+        gl.readPixels(0, 0, canvas.width, canvas.height, gl.RGBA, gl.UNSIGNED_BYTE, px);
+        let s = '';
+        for (let i = 0; i < px.length; i += 0x8000) s += String.fromCharCode.apply(null, px.subarray(i, i + 0x8000));
+        return btoa(s);
+      };
+      window.plateau = { largeur: canvas.width, hauteur: canvas.height, boucle: BOUCLE };
+      document.body.dataset.pret = '';
+    </script>
+  </body>
+</html>

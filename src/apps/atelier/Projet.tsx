@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useRef, useState } from 'react';
 import type { CSSProperties, ReactNode, RefObject } from 'react';
-import { Contact, Name, NavList, T } from './Maquettes';
+import { Accent, Contact, Name, NavList, T } from './Maquettes';
 import { Marque } from './Marque';
 import { Miniature } from './Miniature';
 import { MiniatureAlpine } from './MiniatureAlpine';
@@ -272,7 +272,8 @@ function Article({ projet, cadrage }: { projet: Projet; cadrage: 'paysage' | 'po
         <Visuel legende={projet.miniature.legende} n={1}>
           {projet.miniature.aiguillage && <Miniature cadrage={cadrage} />}
           {projet.miniature.affiche === 'alpine' ? (
-            <MiniatureAlpine />
+            // large and alone here: the live film, sharp at any size (journal n° 106)
+            <MiniatureAlpine direct />
           ) : (
             projet.miniature.image && <img src={projet.miniature.image} alt="" />
           )}
@@ -369,6 +370,7 @@ export function ProjetMobile({
         <Name />
         <button type="button" className="m-label" onClick={() => onMenu?.(true)}>
           <T>Menu</T>
+          <Accent>Menu</Accent>
         </button>
       </div>
       <Retour nom={projet.nom} onRetour={onRetour} />

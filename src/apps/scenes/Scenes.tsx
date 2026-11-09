@@ -146,10 +146,10 @@ export function Scenes() {
         <p>Les scènes enchaînées sur la miniature : l’affiche, le chat, la feuille, puis l’affiche de nouveau. 22 s, en boucle.</p>
         <div className="sc-paire">
           <div className="sc-cadre sc-cadre--desktop">
-            <MiniatureAlpine />
+            <MiniatureAlpine direct />
           </div>
           <div className="sc-cadre sc-cadre--mobile">
-            <MiniatureAlpine />
+            <MiniatureAlpine direct />
           </div>
         </div>
       </section>
