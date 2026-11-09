@@ -9,12 +9,13 @@ Ce document sert de règle du jeu. On le complète à chaque étape validée.
 
 ## 1. L'idée
 
-Deux nouvelles pages, séparées du bureau rétro (qui ne change pas) :
+Deux nouvelles pages, séparées du bureau rétro (qui ne change pas, et vit
+depuis le journal n° 100 sur `/desktop/`) :
 
 | Page | URL proposée | Rôle |
 | --- | --- | --- |
 | **L'Atelier** | `/atelier/` | Notre Figma en code : moodboard, couleurs, typos, espaces, grille, composants, chemin de fer. Tout y est cliquable. C'est la **source de vérité**. |
-| **La Vitrine** | `/portfolio/` | Le portfolio lui-même, construit **uniquement** avec ce qui a été validé dans l'Atelier. |
+| **La Vitrine** | `/` (d'abord `/portfolio/`) | Le portfolio lui-même, construit **uniquement** avec ce qui a été validé dans l'Atelier. |
 
 L'Atelier s'ouvre sur **la charte**, qui rassemble le brief et toutes les
 décisions validées. Elle se remplit à chaque étape. En dessous, une **barre
@@ -685,18 +686,19 @@ construite comme celle de Rachel Chen :
 
 ### Étape 8 — La Vitrine
 
-On assemble `/portfolio/` avec uniquement les pièces validées. Si quelque chose
+On assemble la Vitrine (`/`) avec uniquement les pièces validées. Si quelque chose
 manque, on revient d'abord dans l'Atelier.
 
 **Première version en ligne (journal n° 99)**, avant la fin de l'étape 7, pour
-que la page soit accessible. Elle est faite de `portfolio/index.html` et de
-`src/apps/portfolio/` :
+que la page soit accessible. Elle est faite de `index.html` (d'abord
+`portfolio/index.html`) et de `src/apps/portfolio/` :
 - la Vitrine en taille réelle sur ordinateur, et en version téléphone sous
   720 px ;
 - chaque page projet a sa propre adresse (`#sncf-gpt`, `#whiteboard-amdec`),
   qu'on peut partager ;
 - le retour ramène là où on était ;
-- en `noindex` tant que la page n'est pas finie.
+- en `noindex` tant que la page n'est pas finie ; indexée depuis le journal
+  n° 100, quand elle devient la page d'accueil.
 
 Ce qui reste :
 - Synthèse de réunions ;
@@ -820,6 +822,7 @@ un bon argument dans un portfolio.
 | 97 | 2026-11-06 | Whiteboard AMDEC : le **logo Alpine** remplace celui de Renault dans le titre (le « A » du fichier officiel fourni, sans le mot), collé au dernier mot pour ne jamais passer seul à la ligne. Ta **miniature** est sur la carte de la Vitrine et en tête de page. Tous les schémas des pages projet ont un **fond à points**. | « Mets le logo d'Alpine plutôt que Renault en haut » · « Pour les schémas, c'est pas bête, tu peux mettre un fond avec des points » · « Je t'ai donné aussi la miniature à mettre » · « Va chercher le logo d'Alpine propre » | 7 |
 | 98 | 2026-11-06 | Les **grands titres suivent la largeur de la page**, comme la mise en page : 72 px à 1440 px, 96 px à 1920 px, 128 px à 2560 px, jamais moins de 72 px. Le titre de l'accueil tient ainsi sur deux lignes en taille réelle, comme dans la vue ×1,33. Les titres des pages projet suivent la même règle ; le texte courant reste à 15 px. | « En taille réelle le titre est trop petit, il doit être sur deux lignes comme en ×1,33 » | 7 |
 | 99 | 2026-11-06 | **La Vitrine est en ligne sur `/portfolio/`**, même inachevée : l'accueil et les deux pages projet, en taille réelle et sur téléphone. Chaque projet a son adresse (`#sncf-gpt`, `#whiteboard-amdec`). La page est en `noindex` pour l'instant. Le travail est commité et poussé. | « Commit et push, et fais en sorte pour l'instant d'avoir cette page sur /portfolio et qu'elle soit accessible même si ce n'est pas fini ; on reprendra la suite plus tard » | 8 |
+| 100 | 2026-11-09 | **La Vitrine devient la page d'accueil (`/`)** et le bureau rétro part sur **`/desktop/`**. `/portfolio/` renvoie vers `/` (redirection temporaire), les CV, l'Atelier et le profil pour les agents gardent leur adresse. En local, `/portfolio` sans barre finale ouvrait le bureau : le serveur de dev applique maintenant les routes de `vercel.json`. La Vitrine **n'est plus en `noindex`** : c'est la page principale ; le bureau sera « autre chose à utiliser plus tard ». | « Mettre mon /portfolio en premier et déplacer tout le reste dans /desktop » ; « Tu peux indexer la page, c'est elle qui est la page main maintenant » | 8 |
 
 ---
 
@@ -834,7 +837,7 @@ un bon argument dans un portfolio.
 | **En 5 secondes** | Ce que je sais faire en IA, surtout les dernières technologies mises en service, avec une vraie adoption grâce à l'UI/UX |
 | **On refuse** | Le fouillis, les idées en vrac. La page doit être construite. |
 | **Langues** | La Vitrine en français et en anglais. L'Atelier reste en français (outil interne). |
-| **URL** | `/atelier/` et `/portfolio/` |
+| **URL** | `/atelier/` et `/portfolio/` ; la Vitrine passe sur `/` au journal n° 100 |
 
 ### Ce que le brief implique (pistes, pas encore des décisions)
 

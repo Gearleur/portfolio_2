@@ -119,7 +119,7 @@ test('shares Machine typography, colors and layout on desktop and mobile', async
     });
     const agentStyles = await styles();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-    await page.goto('/');
+    await page.goto('/desktop/');
     if (width > 640) {
       await page.getByRole('button', { name: 'Machine', exact: true }).click();
     } else {

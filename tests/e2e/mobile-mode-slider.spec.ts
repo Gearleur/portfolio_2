@@ -18,7 +18,7 @@ async function dragModeSlider(page: import('@playwright/test').Page, direction: 
 }
 
 test('reuses the Human slider without lag and shows classic controls in Machine mode', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/desktop/');
   await expect(page.locator('.mobile-shell')).toBeVisible();
 
   for (let cycle = 0; cycle < 3; cycle += 1) {
@@ -33,7 +33,7 @@ test('reuses the Human slider without lag and shows classic controls in Machine 
 });
 
 test('remains usable while the Projects screen is open', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/desktop/');
   await page.getByRole('button', { name: 'Projects' }).click();
   await expect(page.locator('.yc-projects')).toBeVisible();
 
@@ -42,7 +42,7 @@ test('remains usable while the Projects screen is open', async ({ page }) => {
 });
 
 test('closes nested project dialogs one level at a time with Escape', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/desktop/');
   await page.getByRole('button', { name: 'Projects' }).click();
   await page.getByRole('button', { name: /Open project/ }).first().click();
   await expect(page.locator('.yc-immersive')).toBeVisible();

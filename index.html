@@ -1,30 +1,27 @@
 <!doctype html>
-<html lang="en">
+<html lang="fr">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" media="(max-width: 640px)" content="#000000" />
-    <meta name="theme-color" media="(min-width: 641px)" content="#9fb5ae" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#f8f9f6" />
+    <meta name="format-detection" content="telephone=no" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-title" content="Portfolio" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Alexandre T." />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="/icon-180.png" />
     <link rel="alternate" type="text/html" href="/agent/" title="Profile for AI agents" />
     <link rel="alternate" type="text/markdown" href="/agent/profile.md" title="Alexandre Teixeira — profile" />
     <link rel="describedby" type="text/plain" href="/llms.txt" />
+    <meta name="description" content="Alexandre Teixeira, AI engineer : du prototype à la production." />
+    <title>Alexandre Teixeira — Portfolio</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="apple-touch-icon" href="/assets/icons/mobile/CV.png" />
-    <link rel="preload" href="/fonts/DepartureMono-Regular.woff2" as="font" type="font/woff2" crossorigin />
-    <meta
-      name="description"
-      content="Interactive AI engineering portfolio inspired by retro desktop interfaces."
-    />
-    <title>Portfolio Desktop</title>
+    <link rel="preload" href="/fonts/Inter-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/InstrumentSerif-Regular.woff2" as="font" type="font/woff2" crossorigin />
   </head>
   <body>
-    <div id="root"></div>
-    <noscript><p>Alexandre Teixeira — AI Engineer. <a href="/agent/">Read my complete profile</a> or <a href="/agent/profile.md">open the text version</a>.</p></noscript>
-    <script type="module" src="/src/apps/home/main.tsx"></script>
+    <div id="vitrine"></div>
+    <script type="module" src="/src/apps/portfolio/main.tsx"></script>
   </body>
 </html>

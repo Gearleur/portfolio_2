@@ -25,7 +25,7 @@ test('CV language navigation and PDF links work without JavaScript', async ({ br
   await page.getByRole('link', { name: 'English', exact: true }).click();
   await expect(page).toHaveURL(/\/cv\/en\/$/);
   await expect(page.getByRole('link', { name: 'Open the English CV as a PDF' })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'View the interface' })).toHaveAttribute('href', '/');
+  await expect(page.getByRole('link', { name: 'View the interface' })).toHaveAttribute('href', '/desktop/');
   await context.close();
 });
 
@@ -37,7 +37,7 @@ test('production browser policy permits PDF rendering, profile copy and the desk
     Object.assign(window, { policyViolations: violations });
     document.addEventListener('securitypolicyviolation', (event) => violations.push(`${event.violatedDirective}: ${event.blockedURI}`));
   });
-  for (const path of ['/cv/fr/', '/cv/en/', '/agent/', '/']) {
+  for (const path of ['/cv/fr/', '/cv/en/', '/agent/', '/', '/desktop/']) {
     const response = await page.goto(path);
     expect(response!.headers()['content-security-policy']).toContain("script-src 'self'");
     expect(response!.headers()['x-content-type-options']).toBe('nosniff');

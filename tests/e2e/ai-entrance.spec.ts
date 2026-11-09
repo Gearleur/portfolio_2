@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test';
 test.use({ viewport: { width: 1440, height: 900 }, isMobile: false, hasTouch: false });
 
 test('opens the AI scene and restores the desktop and keyboard focus', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/desktop/');
   const launch = page.getByRole('button', { name: 'Parlons de l’IA' });
   await expect(launch).toBeVisible();
   await page.screenshot({ path: '/tmp/ai-desktop.png' });
@@ -27,7 +27,7 @@ test('opens the AI scene and restores the desktop and keyboard focus', async ({ 
 });
 
 test('can return while the entrance is still moving', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/desktop/');
   const launch = page.getByRole('button', { name: 'Parlons de l’IA' });
   await launch.click();
   await page.waitForTimeout(250);
@@ -39,7 +39,7 @@ test('can return while the entrance is still moving', async ({ page }) => {
 
 test('supports reduced motion without a long transition', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  await page.goto('/');
+  await page.goto('/desktop/');
   await page.getByRole('button', { name: 'Parlons de l’IA' }).click();
   await expect(page.getByRole('heading', { name: 'Parlons de l’IA.' })).toBeFocused({ timeout: 1000 });
   await page.getByRole('button', { name: 'Retour au bureau' }).click();

@@ -9,8 +9,8 @@ import { Specimen } from '../atelier/Specimen';
 import { FOND, FOND_LECTURE } from '../atelier/tokens';
 
 /*
- * The Vitrine at /portfolio/ (step 8, a first version put online early,
- * journal n° 99): the pieces validated in the Atelier, at real size on a
+ * The Vitrine, the home page at / (step 8, a first version put online early,
+ * journal n° 99, moved to / at n° 100): the pieces validated in the Atelier, at real size on a
  * desktop and on the phone layout below 720 px. Each project page has its
  * own address, #sncf-gpt or #whiteboard-amdec, so it can be shared and the
  * back button works.

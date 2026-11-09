@@ -5,13 +5,14 @@ Portfolio interactif en React + Vite, pense comme un bureau retro inspire des in
 ## Structure du projet
 
 ```
-index.html, atelier/, portfolio/, cv/{fr,en}/   points d'entree HTML (leur chemin = l'URL publique)
+index.html, desktop/, atelier/, cv/{fr,en}/     points d'entree HTML (leur chemin = l'URL publique) :
+                                                 / la Vitrine, /desktop/ le bureau retro
 middleware.ts, vercel.json                       configuration Vercel (imposee a la racine)
 src/
   apps/
-    home/        bureau retro : main.tsx, App.tsx, styles/, features/<fonctionnalite>/
+    home/        bureau retro (/desktop/) : main.tsx, App.tsx, styles/, features/<fonctionnalite>/
     atelier/     l'Atelier (application autonome)
-    portfolio/   la Vitrine
+    portfolio/   la Vitrine (la page d'accueil, /)
     cv/          pages CV dediees
   shared/        code partage : data/, hooks/, types/, utils/
   agent/         profil et pages pour les agents IA

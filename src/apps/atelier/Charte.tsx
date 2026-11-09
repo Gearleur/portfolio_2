@@ -9,7 +9,7 @@ const BRIEF: [string, string][] = [
   ['En 5 secondes', 'Ce que je sais faire en IA : les dernières technologies mises en service, avec une vraie adoption grâce à l’UI/UX'],
   ['On refuse', 'Le fouillis et les idées en vrac : la page est construite'],
   ['Langues', 'La Vitrine en français et en anglais'],
-  ['Adresses', '/portfolio/ pour la Vitrine, /atelier/ pour l’Atelier'],
+  ['Adresses', '/ pour la Vitrine, /atelier/ pour l’Atelier, /desktop/ pour le bureau rétro'],
 ];
 
 const px = (value: number) => `${String(value).replace('.', ',')} px`;

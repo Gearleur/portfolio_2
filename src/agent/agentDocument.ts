@@ -46,7 +46,7 @@ function getAgentHtml() {
     ${document}
   </main>
   <nav class="portfolio-mode-toggle portfolio-mode-toggle--machine agent-human-navigation" aria-label="Return to portfolio">
-    <a class="portfolio-mode-toggle__option agent-human-link" href="/" aria-label="Return to the human interface"><span>← Human interface</span></a>
+    <a class="portfolio-mode-toggle__option agent-human-link" href="/desktop/" aria-label="Return to the human interface"><span>← Human interface</span></a>
   </nav>
 </body>
 </html>`;

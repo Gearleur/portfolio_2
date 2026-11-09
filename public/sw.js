@@ -1,18 +1,17 @@
 /* global URL, caches, fetch, self, Response */
 
-const CACHE_NAME = 'portfolio-pwa-v6';
+const CACHE_NAME = 'portfolio-pwa-v7';
 
 const APP_SHELL_URLS = [
   '/',
-  '/index.html',
-  '/portfolio/',
-  '/portfolio/manifest.webmanifest',
-  '/portfolio/icon-192.png',
+  '/manifest.webmanifest',
+  '/icon-192.png',
+  '/desktop/',
+  '/desktop/manifest.webmanifest',
   '/agent/',
   '/agent/style.css',
   '/agent/copy.js',
   '/llms.txt',
-  '/manifest.webmanifest',
   '/assets/pwa-icon.svg',
   '/assets/iphone6_top.svg',
   '/assets/iphone6_bottom.svg',
@@ -30,6 +29,14 @@ const APP_SHELL_URLS = [
   '/assets/icons/mobile/Mail.png',
   '/assets/icons/mobile/Apple-Music.png'
 ];
+
+const OFFLINE_PAGES = new Map([
+  ['/', '/'],
+  ['/index.html', '/'],
+  ['/desktop', '/desktop/'],
+  ['/desktop/', '/desktop/'],
+  ['/desktop/index.html', '/desktop/'],
+]);
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -85,23 +92,25 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // The Vitrine opens offline: its page is kept as it is visited, and is what an offline visit gets.
-  if (request.mode === 'navigate' && url.origin === self.location.origin && url.pathname.startsWith('/portfolio')) {
+  // The Vitrine (/) and the desktop (/desktop/) open offline: each page is kept as it is visited,
+  // and is what an offline visit gets.
+  const page = url.origin === self.location.origin ? OFFLINE_PAGES.get(url.pathname) : undefined;
+  if (request.mode === 'navigate' && page) {
     event.respondWith(
       fetch(request).then(async (response) => {
         if (response.ok) {
           const cache = await caches.open(CACHE_NAME);
-          await cache.put('/portfolio/', response.clone());
+          await cache.put(page, response.clone());
         }
         return response;
-      }).catch(async () => (await caches.match('/portfolio/')) ?? Response.error()),
+      }).catch(async () => (await caches.match(page)) ?? Response.error()),
     );
     return;
   }
 
   if (request.mode === 'navigate') {
     event.respondWith(
-      fetch(request).catch(() => url.pathname.startsWith('/cv/') ? Response.error() : caches.match('/index.html')),
+      fetch(request).catch(async () => (url.pathname.startsWith('/cv/') ? undefined : await caches.match('/')) ?? Response.error()),
     );
     return;
   }

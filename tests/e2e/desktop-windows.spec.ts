@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test';
 test.use({ viewport: { width: 1440, height: 900 }, isMobile: false, hasTouch: false });
 
 test('shows the PDF on arrival, closes to its icon and reopens in either language', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/desktop/');
   const resume = page.getByRole('dialog', { name: 'Curriculum Vitae' });
   await expect(resume).toHaveAttribute('data-window-phase', 'open');
   await expect(resume.getByRole('img', { name: 'CV — Français, page 1' })).toBeVisible();
@@ -22,7 +22,7 @@ test('shows the PDF on arrival, closes to its icon and reopens in either languag
 });
 
 test('all desktop windows open and minimize back to their own icons', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/desktop/');
   await page.getByRole('dialog', { name: 'Curriculum Vitae' }).getByRole('button', { name: 'Fermer la fenetre' }).click();
   await expect(page.locator('.retro-window')).toHaveCount(0);
   for (const name of ['Education', 'Professional Experience', 'Technical Skills', 'Languages', 'Extracurricular Experience']) {
@@ -46,7 +46,7 @@ test('all desktop windows open and minimize back to their own icons', async ({ p
 test('keeps the small flat AI button clear of windows on a shorter desktop', async ({ page }) => {
   await page.setViewportSize({ width: 1024, height: 640 });
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  await page.goto('/');
+  await page.goto('/desktop/');
   const launch = page.getByRole('button', { name: 'Parlons de l’IA' });
   const box = await launch.boundingBox();
   expect(box!.width).toBeLessThan(150);
@@ -63,7 +63,7 @@ test('keeps the small flat AI button clear of windows on a shorter desktop', asy
 
 test('Machine displays and copies the updated CV', async ({ page, context }) => {
   await context.grantPermissions(['clipboard-read', 'clipboard-write']);
-  await page.goto('/');
+  await page.goto('/desktop/');
   await page.getByRole('button', { name: 'Machine', exact: true }).click();
   await expect(page.locator('.machine-resume')).toContainText('SNCF GPT');
   await expect(page.locator('.machine-resume')).toContainText('Psychology of Learning');
