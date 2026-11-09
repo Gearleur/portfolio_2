@@ -87,8 +87,8 @@ export function Charte() {
     { label: 'Menu téléphone', value: 'Glisse · 0,5 s', note: 'Le panneau arrive du bord droit, là où est la tranche, et repart de même.', step: 6 },
     {
       label: 'Miniatures',
-      value: 'Alu irisé',
-      note: 'Un détail de planche d’ingénierie ferroviaire en micrographie, dans un cercle (SNCF GPT : un aiguillage à trois voies), gravé dans de l’aluminium brossé où se reflètent les couleurs de l’onde ; la lumière suit la souris.',
+      value: 'Alu irisé · verre liquide',
+      note: 'Un détail de planche d’ingénierie ferroviaire en micrographie, dans un cercle (SNCF GPT : un aiguillage à trois voies), gravé dans de l’aluminium brossé où se reflètent les couleurs de l’onde ; la lumière suit la souris. Synthèse de réunions : trois voix en couleurs sous une loupe de verre liquide, sur une empreinte gaufrée.',
       step: 7,
     },
     { label: 'Lumière', value: 'Aucune', note: 'Pas d’ombre de fenêtre', step: 1 },

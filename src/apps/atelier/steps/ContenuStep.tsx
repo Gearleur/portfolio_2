@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
 import { Maquette, MaquetteMobile } from '../Maquettes';
 import { MiniatureAlpine } from '../MiniatureAlpine';
+import { MiniatureReunions } from '../MiniatureReunions';
 import { Miniature } from '../Miniature';
 import { ProjetMaquette, ProjetMobile } from '../Projet';
 import { PROJETS, SNCF_GPT } from '../projets';
@@ -77,7 +78,7 @@ export function ContenuStep() {
   };
   const [waveSignal, playWave] = useWaveSignal();
   const close = useCallback(() => setPreview(null), []);
-  const images = { '01': <MiniatureAlpine />, '02': <Miniature /> };
+  const images = { '01': <MiniatureAlpine />, '02': <Miniature />, '03': <MiniatureReunions /> };
 
   return (
     <section className="atelier-step" aria-labelledby="step-contenu">
@@ -218,7 +219,7 @@ export function ContenuStep() {
               <figure className="phone">
                 <div className="phone__frame" ref={phone.scrolled ? scrollToPicture : undefined}>
                   <Specimen settings={FOND} waveSignal={waveSignal}>
-                    <MaquetteMobile blocks={false} menuOpen={false} images={{ '01': <MiniatureAlpine />, '02': <Miniature cadrage="paysage" /> }} />
+                    <MaquetteMobile blocks={false} menuOpen={false} images={{ '01': <MiniatureAlpine />, '02': <Miniature cadrage="paysage" />, '03': <MiniatureReunions /> }} />
                   </Specimen>
                 </div>
                 <figcaption>

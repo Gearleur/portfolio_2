@@ -4,6 +4,7 @@ import { ChoixLangueContext, LangueContext } from '../atelier/langue';
 import type { Langue } from '../atelier/langue';
 import { Maquette, MaquetteMobile } from '../atelier/Maquettes';
 import { MiniatureAlpine } from '../atelier/MiniatureAlpine';
+import { MiniatureReunions } from '../atelier/MiniatureReunions';
 import { Miniature } from '../atelier/Miniature';
 import { Specimen } from '../atelier/Specimen';
 import { FOND, FOND_LECTURE } from '../atelier/tokens';
@@ -129,6 +130,7 @@ export function Vitrine() {
   const images = {
     '01': <MiniatureAlpine />,
     '02': <Miniature cadrage="paysage" />,
+    '03': <MiniatureReunions />,
   };
 
   let page;
