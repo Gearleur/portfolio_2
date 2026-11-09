@@ -71,6 +71,12 @@ export function Vitrine() {
   // The home's scroll on the phone, kept while a project page is open, and given back on return.
   const defil = useRef(0);
 
+  // The live page takes the place of the copies rendered at build time (journal n° 107), before
+  // the browser paints: the same picture, now alive.
+  useLayoutEffect(() => {
+    document.getElementById('vitrine-statique')?.remove();
+  }, []);
+
   useEffect(() => {
     const applique = () => {
       setAdresse(lireAdresse());

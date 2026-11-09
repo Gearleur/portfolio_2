@@ -23,3 +23,29 @@ body {
     display: none;
   }
 }
+
+/* The copies of the Vitrine rendered at build time (journal n° 107,
+   scripts/prerendre.mjs): only the one for this screen and this language is
+   shown, until the live page takes its place. public/langue.js sets the
+   language, and hides them all when the address opens a project page. */
+#vitrine-statique > div {
+  display: none;
+}
+
+@media (min-width: 721px) {
+  html:lang(fr) #vitrine-statique > [data-langue='fr'][data-ecran='bureau'],
+  html:lang(en) #vitrine-statique > [data-langue='en'][data-ecran='bureau'] {
+    display: block;
+  }
+}
+
+@media (max-width: 720px) {
+  html:lang(fr) #vitrine-statique > [data-langue='fr'][data-ecran='telephone'],
+  html:lang(en) #vitrine-statique > [data-langue='en'][data-ecran='telephone'] {
+    display: block;
+  }
+}
+
+html[data-projet] #vitrine-statique {
+  display: none;
+}

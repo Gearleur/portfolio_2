@@ -56,8 +56,41 @@ export const offset = (samples: Sample[], d: number): Pt[] =>
     return [p[0] + n[0] * d, p[1] + n[1] * d];
   });
 
+/**
+ * Drops the points that lie within EPS of the line through their neighbours
+ * (Ramer–Douglas–Peucker): a straight rail sampled every half unit is two
+ * points, not eight hundred. EPS is about 0.03 px on a card: the drawing is the
+ * same, the page much lighter (journal n° 107).
+ */
+const EPS = 0.01;
+function simplifie(points: Pt[]): Pt[] {
+  if (points.length < 3) return points;
+  const garde = new Uint8Array(points.length);
+  garde[0] = garde[points.length - 1] = 1;
+  const pile: [number, number][] = [[0, points.length - 1]];
+  while (pile.length) {
+    const [a, b] = pile.pop()!;
+    const [ax, ay] = points[a];
+    const [bx, by] = points[b];
+    const dx = bx - ax;
+    const dy = by - ay;
+    const l = Math.hypot(dx, dy) || 1;
+    let loin = 0;
+    let k = -1;
+    for (let i = a + 1; i < b; i++) {
+      const d = Math.abs((points[i][0] - ax) * dy - (points[i][1] - ay) * dx) / l;
+      if (d > loin) [loin, k] = [d, i];
+    }
+    if (loin > EPS) {
+      garde[k] = 1;
+      pile.push([a, k], [k, b]);
+    }
+  }
+  return points.filter((_, i) => garde[i]);
+}
+
 export const polyline = (points: Pt[]) =>
-  `M${points.map(([x, y]) => `${x.toFixed(2)} ${y.toFixed(2)}`).join(' L')}`;
+  `M${simplifie(points).map(([x, y]) => `${x.toFixed(2)} ${y.toFixed(2)}`).join(' L')}`;
 
 /** The point and tangent at distance `s` along the centre line. */
 export function at(samples: Sample[], s: number): Sample {

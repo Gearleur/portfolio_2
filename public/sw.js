@@ -92,10 +92,11 @@ self.addEventListener('fetch', (event) => {
   }
 
   const url = new URL(request.url);
-  // Revalidate mutable CV files instead of retaining an old version indefinitely.
+  // Revalidate mutable CV files instead of retaining an old version indefinitely; /langue.js too,
+  // whose name never changes (offline, the page falls back to French).
   // Text exports are deliberately not stored in the offline cache.
   if (url.origin === self.location.origin &&
-      ['/agent/profile.md', '/agent/profile.json', '/agent/context.txt', '/documents/cv-en.pdf', '/documents/cv-fr.pdf'].includes(url.pathname)) {
+      ['/agent/profile.md', '/agent/profile.json', '/agent/context.txt', '/documents/cv-en.pdf', '/documents/cv-fr.pdf', '/langue.js'].includes(url.pathname)) {
     event.respondWith(fetch(request));
     return;
   }
