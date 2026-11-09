@@ -35,7 +35,7 @@ export type Projet = {
   /** The company's mark, in the title line (journal n° 85). */
   logo: LogoId;
   /** The thumbnail at the top of the page: drawn in the Atelier (the turnout), a picture, or a picture brought to life (affiche); its caption. */
-  miniature: { aiguillage?: boolean; image?: string; affiche?: 'alpine'; legende: string };
+  miniature: { aiguillage?: boolean; image?: string; affiche?: 'alpine' | 'reunion'; legende: string };
   accroche: string;
   /** The key figures, first thing under the line (journal n° 81). */
   chiffres: Chiffre[];
@@ -573,5 +573,266 @@ const WHITEBOARD_AMDEC: Projet = {
   ],
 };
 
+/** Synthèse de réunions, the Vitrine's third project, from the TN10 internship report. */
+const SYNTHESE_REUNIONS: Projet = {
+  nom: 'Synthèse de réunions',
+  logo: 'sncf',
+  miniature: { affiche: 'reunion', legende: 'Synthèse de réunions : trois voix sous une loupe de verre.' },
+  accroche:
+    'Un outil qui transforme une réunion Teams en transcription, en rapport et en conversation, pour retrouver une décision sans réécouter une heure.',
+  chiffres: [
+    { value: '24 semaines', text: 'dans l’équipe IA d’e.SNCF, de l’exploration au déploiement' },
+    { value: '3', text: 'modèles de transcription comparés : Whisper, Faster-Whisper et Voxtral' },
+    { value: '2', text: 'Web Apps déployées sur Azure, le front et le back, avec authentification SSO' },
+  ],
+  cartel: [
+    ['Équipe', 'Seul sur la réalisation et le déploiement, dans l’équipe IA d’e.SNCF'],
+    ['Période', 'Septembre 2025 – février 2026, à Saint-Denis'],
+    ['Rôle', 'Ingénieur IA stagiaire : transcription, LLM, backend, frontend, déploiement Azure'],
+  ],
+  sections: [
+    {
+      id: 'vue',
+      nav: 'Vue d’ensemble',
+      titre: 'Comment retrouver ce qui s’est décidé dans une réunion, sans la réécouter ?',
+      blocs: [
+        {
+          type: 'texte',
+          text: 'Dans une grande entreprise, l’information utile se perd dans des réunions d’une heure. J’ai passé mon stage dans l’équipe IA d’e.SNCF, autour de SNCF GPT, à explorer la voix et l’IA générative. J’y ai construit, de l’idée au déploiement, un outil de synthèse de réunions Teams.',
+        },
+        {
+          type: 'colonnes',
+          items: [
+            { lead: 'Explorer', text: 'Comparer les modèles de transcription et chercher des usages.' },
+            { lead: 'Prototyper', text: 'Un résumé de réunion de bout en bout, puis un second cas d’usage sur le terrain.' },
+            { lead: 'Déployer', text: 'Un backend et un frontend séparés, sur Azure.' },
+          ],
+        },
+        {
+          type: 'texte',
+          lead: 'Le problème : l’essentiel d’une réunion est dit, pas écrit.',
+          text: 'Une réunion longue éparpille décisions et actions. Pour les retrouver, il faut la réécouter, ou compter sur quelqu’un qui a pris des notes.',
+        },
+        {
+          type: 'texte',
+          lead: 'L’opportunité : la transcription est devenue assez fiable pour servir de base.',
+          text: 'Avec une transcription qui dit qui parle, un modèle de langage peut résumer, répondre aux questions et extraire les tâches. L’enjeu, pour la SNCF : le faire chez elle, avec des données qui restent chez elle, à un coût maîtrisé.',
+        },
+      ],
+    },
+    {
+      id: 'sujet',
+      nav: 'Le sujet change',
+      titre: 'Le sujet de départ n’était pas faisable, alors j’ai changé de piste.',
+      blocs: [
+        {
+          type: 'texte',
+          text: 'La convention de stage parlait d’explorer les modèles temps réel. Pour des raisons de sécurité et de déploiement, certains environnements et modèles n’étaient pas utilisables en Europe. Plutôt que d’attendre, nous avons réorienté le stage vers la transcription et la synthèse vocale, pour trouver des usages concrets et déployables.',
+        },
+        {
+          type: 'texte',
+          lead: 'Comparer avant de choisir.',
+          text: 'J’ai fait des tests comparatifs de Whisper, Faster-Whisper et Voxtral, de Mistral, et ajouté la diarisation avec pyannote pour savoir qui parle. En passant à Voxtral, une partie de cette complexité a disparu : le modèle rend directement des segments exploitables.',
+        },
+        {
+          type: 'texte',
+          lead: 'Choisir la réunion.',
+          text: 'Parmi les usages repérés, c’était le plus structurant : un contenu long, éparpillé, que tout le monde subit.',
+        },
+      ],
+    },
+    {
+      id: 'solution',
+      nav: 'La solution',
+      titre: 'Une réunion entre, un rapport sort, et on peut lui poser des questions.',
+      blocs: [
+        {
+          type: 'visuel',
+          schema: 'reunion',
+          legende: 'La page d’une réunion, redessinée : la vidéo et sa chronologie, le transcript par locuteur, et les onglets Report et Chat.',
+        },
+        {
+          type: 'texte',
+          text: 'On importe une vidéo, ou on récupère une réunion Teams. L’outil produit la transcription avec ses locuteurs, puis un rapport structuré : résumé, points clés, actions. Reste à chatter avec la réunion, pour retrouver un chiffre ou une décision, et assigner des tâches.',
+        },
+        { type: 'intertitre', text: 'Sous le capot, une chaîne en deux temps.' },
+        { type: 'texte', text: 'D’abord on prépare le son, ensuite le modèle lit.' },
+        {
+          type: 'visuel',
+          schema: 'chaine',
+          legende: 'De l’enregistrement au transcript par locuteur, puis, par la passerelle LiteLLM, au rapport et au chat.',
+        },
+      ],
+    },
+    {
+      id: 'decisions',
+      nav: 'Décisions',
+      titre: 'Les décisions techniques',
+      blocs: [
+        {
+          type: 'texte',
+          lead: 'Normaliser le son avant tout.',
+          text: 'Les modèles de transcription se comportent mieux sur un signal standard. Tout média est converti dans un même format audio, ce qui rend la chaîne reproductible.',
+        },
+        {
+          type: 'texte',
+          lead: 'Découper selon les limites de chaque fournisseur.',
+          text: 'Une limite de durée pour l’un, de taille pour l’autre : je coupe avec une marge de sécurité plutôt que de subir l’erreur de l’API.',
+        },
+        {
+          type: 'texte',
+          lead: 'Passer par une passerelle, pas par un fournisseur.',
+          text: 'Les appels de modèles passent par LiteLLM, compatible avec le format OpenAI et routé vers Azure ou Mistral. Le backend ne dépend d’aucune API, et le modèle change sans toucher à l’architecture.',
+        },
+        {
+          type: 'texte',
+          lead: 'Un chat qui raisonne, pas seulement qui répond.',
+          text: 'Il suit le motif ReAct : il alterne raisonnement et action, ce qui garde sous contrôle ce que le backend exécute. Le transcript entier est dans le contexte : suffisant pour une réunion, à revoir pour les plus longues.',
+        },
+        {
+          type: 'compromis',
+          text: 'La transcription est longue, alors l’API répond tout de suite et le traitement continue derrière, avec le mécanisme de tâche de fond de FastAPI plutôt qu’une file dédiée. C’est moins robuste, mais livrable seul et à temps : l’orchestration est isolée pour pouvoir changer ça.',
+        },
+      ],
+    },
+    {
+      id: 'ecran',
+      nav: 'Ce que dit l’écran',
+      titre: 'Un transcript ne dit pas ce qui est affiché à l’écran.',
+      blocs: [
+        {
+          type: 'texte',
+          text: 'Dans une présentation, un titre ou un chiffre n’est parfois jamais prononcé. J’ai ajouté au chat le texte vu à l’écran, pour répondre à des questions que la seule transcription ne permet pas.',
+        },
+        {
+          type: 'visuel',
+          schema: 'images',
+          legende: 'Les images sont choisies avant d’être lues ; les modèles vision-langage sont restés une piste à part.',
+        },
+        {
+          type: 'texte',
+          lead: 'Choisir les images avant de les lire.',
+          text: 'Une présentation change de slide, puis reste stable. J’échantillonne régulièrement, je densifie autour des changements et j’écarte les doublons avec un hash perceptuel. La sélection compte plus que le moteur d’OCR : un bon OCR ne rattrape pas une image floue.',
+        },
+        {
+          type: 'texte',
+          lead: 'Ce qui n’est pas allé plus loin.',
+          text: 'J’ai testé Mistral OCR après un outil local, et regardé des modèles vision-langage. Ils ouvrent des usages plus riches, mais sur une vidéo longue il faut décider quand les interroger sans faire exploser latence et coût. La piste est restée à part du pipeline principal.',
+        },
+      ],
+    },
+    {
+      id: 'deploiement',
+      nav: 'Déploiement',
+      titre: 'Passer du « ça marche en local » à un outil que l’entreprise accepte.',
+      blocs: [
+        { type: 'question', text: 'Comment faire entrer l’application dans le cadre de sécurité de l’entreprise ?' },
+        {
+          type: 'texte',
+          lead: 'Deux Web Apps sur Azure,',
+          text: 'une pour le front, une pour le back, dans le même groupe de ressources, par la chaîne GitLab, Jenkins et Artifactory de l’entreprise. Chaque brique est une image Docker, le back avec ffmpeg inclus.',
+        },
+        {
+          type: 'visuel',
+          schema: 'azure',
+          legende: 'Le front envoie /api vers le back, qui parle à la base, au stockage et à la passerelle de modèles.',
+        },
+        {
+          type: 'liste',
+          items: [
+            {
+              lead: 'Le proxy.',
+              text: 'Front et back sont sur deux domaines : Nginx redirige /api vers le back, avec les en-têtes qui lui disent qu’il est derrière du HTTPS.',
+            },
+            {
+              lead: 'Le SSO et les cookies.',
+              text: 'En local tout passait ; une fois déployé, le navigateur devient strict. J’ai réglé SameSite et le mode sécurisé, un CORS limité à l’origine du front, et l’adresse de retour du SSO.',
+            },
+            {
+              lead: 'Les certificats internes.',
+              text: 'Sans eux, les appels vers la passerelle échouaient sur une erreur TLS peu évidente. Le bundle est dans l’image Docker.',
+            },
+            {
+              lead: 'Pas de clé dans le code.',
+              text: 'Le back accède au stockage avec une identité managée Azure et les bons rôles.',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: 'resultats',
+      nav: 'Résultats',
+      titre: 'Résultats',
+      blocs: [
+        {
+          type: 'liste',
+          items: [
+            { text: 'Une application complète : un front React, un back FastAPI, une base SQL et un stockage de fichiers, déployée sur Azure.' },
+            { text: 'De l’import ou de la réunion Teams jusqu’au rapport, au chat et aux tâches, sur un même écran, avec un enregistrement micro ou écran en picture-in-picture.' },
+            { text: 'La voix n’est pas conservée : on garde le transcript et les sorties utiles, comme les résumés.' },
+            { text: 'Resté en presque production : stabiliser le déploiement et brancher l’outil sur SNCF GPT sont les étapes suivantes.' },
+          ],
+        },
+      ],
+    },
+    {
+      id: 'cote',
+      nav: 'À côté',
+      titre: 'À côté, quatre autres missions.',
+      blocs: [
+        {
+          type: 'liste',
+          items: [
+            {
+              lead: 'Un prototype mobile pour les contre-visites.',
+              text: 'Une application Flutter où la voix remplace la rédaction : détection de parole, transcription, puis un rapport. Resté un prototype.',
+            },
+            {
+              lead: 'Un hackathon de trois jours sur MCP.',
+              text: 'Un assistant qui cherche dans Confluence et GitLab grâce à des outils exposés par un serveur MCP, limité à la lecture.',
+            },
+            {
+              lead: 'Des RFI avec des entreprises d’IA européennes.',
+              text: 'Illuin, Gladia, Vespa AI, Galadrim, Hugging Face, Mistral et IBM : plusieurs fois par semaine pendant deux à trois mois, j’ai challengé ce qu’elles font et les technologies derrière, et je me suis projeté à six mois. Ces échanges devaient nourrir un appel d’offres.',
+            },
+            {
+              lead: 'De l’agentique et de l’automatisation.',
+              text: 'J’ai agencé des pipelines avec des bibliothèques internes et des modèles Azure : des rapports quotidiens sur l’actualité de la SNCF, des newsletters connectées à plusieurs sources, et des rapports d’audit automatisés des systèmes numériques.',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: 'apports',
+      nav: 'Ce que ça m’a apporté',
+      titre: 'Ce que ça m’a apporté',
+      blocs: [
+        {
+          type: 'texte',
+          lead: 'Un sujet se cadre en route.',
+          text: 'Le sujet de départ n’était pas déployable. Le réorienter, prioriser et rendre une idée démontrable m’a appris autant que le code.',
+        },
+        {
+          type: 'texte',
+          lead: 'Le plus gros du travail est en amont du modèle.',
+          text: 'Normaliser le son, découper, choisir les bonnes images : la qualité se joue avant l’appel au LLM.',
+        },
+        {
+          type: 'texte',
+          lead: 'L’entreprise commence au déploiement.',
+          text: 'Proxy, cookies, certificats, identités : pour l’équipe, un prototype n’existe que s’il passe tout cela.',
+        },
+        {
+          type: 'texte',
+          lead: 'Traiter moins est aussi une qualité.',
+          text: 'Des images choisies plutôt que toute la vidéo, pas de voix conservée : moins de calcul et moins de données sensibles.',
+        },
+      ],
+    },
+  ],
+};
+
 /** The project pages, by their number on the Vitrine. */
-export const PROJETS: Partial<Record<string, Projet>> = { '01': WHITEBOARD_AMDEC, '02': SNCF_GPT };
+export const PROJETS: Partial<Record<string, Projet>> = { '01': WHITEBOARD_AMDEC, '02': SNCF_GPT, '03': SYNTHESE_REUNIONS };

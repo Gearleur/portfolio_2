@@ -29,7 +29,11 @@ export type SchemaId =
   | 'agents'
   | 'nuage'
   | 'ragcag'
-  | 'outils';
+  | 'outils'
+  | 'reunion'
+  | 'chaine'
+  | 'images'
+  | 'azure';
 
 /**
  * A part of a screen, for the four cards of a project page: the SNCF GPT
@@ -1189,6 +1193,233 @@ function Outils() {
   );
 }
 
+/* ——— Synthèse de réunions (TN10), from Alexandre's internship report ——— */
+
+/* 17 · A meeting's page: the video and its timeline, the transcript's
+   segments by speaker, the tabs for transcript, report and chat. */
+function Reunion() {
+  const tr = useTr();
+  const segments = [
+    { qui: tr('Intervenant 1', 'Speaker 1'), t: '00:00', w: [210, 150], agent: false },
+    { qui: tr('Intervenant 2', 'Speaker 2'), t: '00:27', w: [190, 96], agent: true },
+    { qui: tr('Intervenant 1', 'Speaker 1'), t: '00:48', w: [215, 170], agent: false },
+    { qui: tr('Intervenant 3', 'Speaker 3'), t: '01:12', w: [180, 120], agent: true },
+  ];
+  return (
+    <Svg
+      h={320}
+      label={tr('La page d’une réunion : la vidéo avec sa chronologie, le transcript découpé en segments par locuteur, et les onglets Transcript, Report et Chat', 'A meeting’s page: the video with its timeline, the transcript split into segments by speaker, and the Transcript, Report and Chat tabs')}
+    >
+      {() => (
+        <>
+          <rect className="sc-cadre" x="0.5" y="0.5" width="719" height="319" rx="6" />
+          <path className="sc-filet-encre" d="M150 1 V319" />
+          {/* The side column: start a meeting, then the lists. */}
+          <rect className="sc-agent" x="14" y="24" width="122" height="30" rx="3" />
+          <text className="sc-titre" x="75" y="43" textAnchor="middle" style={{ fill: 'var(--on-accent)' }}>
+            {tr('Démarrer', 'Start meeting')}
+          </text>
+          <text className="sc-sous" x="18" y="88">
+            {tr('Accueil', 'Home')}
+          </text>
+          <text className="sc-sous" x="18" y="112">
+            Teams
+          </text>
+          {/* The title and the three tabs. */}
+          <text className="sc-titre" x="170" y="34">
+            {tr('Point d’équipe · 1 h 03', 'Team meeting · 1 h 03')}
+          </text>
+          {[
+            ['Transcript', 508],
+            ['Report', 584],
+            ['Chat', 646],
+          ].map(([nom, x]) => (
+            <text key={nom} className={nom === 'Transcript' ? 'sc-titre' : 'sc-sous'} x={x} y="34">
+              {nom}
+            </text>
+          ))}
+          <path className="sc-trait sc-trait--accent" d="M508 41 H564" />
+          {/* The video and its timeline. */}
+          <rect className="sc-zone" x="170" y="56" width="250" height="188" rx="3" />
+          <polygon className="sc-noeud" points="283,132 283,168 313,150" />
+          <path className="sc-trait sc-trait--faible" d="M170 268 H420" />
+          <path className="sc-trait sc-trait--accent" d="M170 268 H236" />
+          <rect className="sc-agent" x="233" y="264" width="8" height="8" />
+          <text className="sc-petit" x="170" y="296">
+            {tr('survol : aperçu · clic : aller à ce moment', 'hover: preview · click: seek')}
+          </text>
+          {/* The segments, each with its speaker and its time. */}
+          <g className="sc-boite">
+            <rect x="440" y="56" width="262" height="248" rx="3" />
+          </g>
+          <text className="sc-titre" x="452" y="76">
+            Segments
+          </text>
+          {segments.map((s, i) => {
+            const y = 88 + i * 52;
+            return (
+              <g key={i}>
+                <rect className="sc-bloc" x="450" y={y} width="242" height="46" rx="3" />
+                <circle className={s.agent ? 'sc-agent' : 'sc-noeud'} cx="462" cy={y + 12} r="4" />
+                <text className="sc-micro-encre" x="472" y={y + 15}>
+                  {s.qui}
+                </text>
+                <text className="sc-micro-encre" x="682" y={y + 15} textAnchor="end">
+                  {s.t}
+                </text>
+                {s.w.map((w, j) => (
+                  <rect key={j} className="sc-barre" x="458" y={y + 24 + j * 9} width={w} height="4" rx="2" />
+                ))}
+              </g>
+            );
+          })}
+        </>
+      )}
+    </Svg>
+  );
+}
+
+/* 18 · The chain: from a recording to a transcript told by speaker, then to a
+   report and a chat through the LiteLLM gateway. */
+function Chaine() {
+  const tr = useTr();
+  const audio: { titre: string; sous: string; logos?: LogoId[] }[] = [
+    { titre: tr('Enregistrement', 'Recording'), sous: tr('Teams ou fichier', 'Teams or file') },
+    { titre: tr('Audio normalisé', 'Normalised audio'), sous: tr('format unique', 'one format') },
+    { titre: tr('Découpage', 'Chunking'), sous: tr('limites de l’API', 'API limits') },
+    { titre: 'Transcription', sous: 'Whisper, Voxtral', logos: ['mistral'] },
+    { titre: 'Diarisation', sous: tr('qui parle quand', 'who speaks when') },
+  ];
+  const x = (i: number) => 10 + i * 141;
+  return (
+    <Svg
+      h={236}
+      label={tr('La chaîne : l’enregistrement est converti en audio normalisé, découpé, transcrit, puis attribué aux locuteurs ; le transcript passe par la passerelle LiteLLM pour produire le rapport et nourrir le chat', 'The chain: the recording is converted to normalised audio, chunked, transcribed, then attributed to speakers; the transcript goes through the LiteLLM gateway to produce the report and feed the chat')}
+    >
+      {(id) => (
+        <>
+          <text className="sc-sous" x="10" y="18">
+            {tr('Préparer le son', 'Preparing the sound')}
+          </text>
+          {audio.map((box, i) => (
+            <Boite key={box.titre} x={x(i)} y={30} w={124} h={52} {...box} />
+          ))}
+          {[0, 1, 2, 3].map((i) => (
+            <Fleche key={i} id={id} d={`M${x(i) + 124} 56 H${x(i + 1)}`} />
+          ))}
+          <Fleche id={id} d={`M${x(4) + 62} 82 V108 H85 V136`} ton="accent" />
+
+          <text className="sc-sous" x="98" y="124">
+            {tr('Faire lire le modèle', 'Having the model read')}
+          </text>
+          <Boite x={10} y={136} w={150} h={52} titre="Transcript" sous={tr('segments par locuteur', 'segments by speaker')} ton="accent" />
+          <Boite x={210} y={136} w={170} h={52} titre={tr('Passerelle LiteLLM', 'LiteLLM gateway')} sous={tr('Azure · Mistral', 'Azure · Mistral')} />
+          <Fleche id={id} d="M160 162 H210" ton="accent" />
+          <Boite x={420} y={128} w={130} h={34} titre="Report" />
+          <Boite x={420} y={176} w={130} h={34} titre="Chat" />
+          <Fleche id={id} d="M380 162 H400 V145 H420" ton="accent" />
+          <Fleche id={id} d="M400 162 V193 H420" ton="accent" />
+          <text className="sc-petit" x="562" y="149">
+            {tr('résumé, points clés, actions', 'summary, key points, actions')}
+          </text>
+          <text className="sc-petit" x="562" y="197">
+            {tr('raisonne, agit, répond', 'reasons, acts, answers')}
+          </text>
+        </>
+      )}
+    </Svg>
+  );
+}
+
+/* 19 · What the screen shows: frames picked before they are read. */
+function Images() {
+  const tr = useTr();
+  const etapes: { titre: string; sous: string }[] = [
+    { titre: 'Images', sous: tr('régulières + transitions', 'regular + transitions') },
+    { titre: tr('Doublons', 'Duplicates'), sous: tr('hash perceptuel', 'perceptual hash') },
+    { titre: tr('Sélection', 'Selection'), sous: tr('nettes, stables', 'sharp, stable') },
+    { titre: 'OCR', sous: 'local, Mistral OCR' },
+  ];
+  const x = (i: number) => 10 + i * 141;
+  return (
+    <Svg
+      h={150}
+      label={tr('Les images : échantillonnées, dédoublonnées par hash perceptuel, sélectionnées pour leur netteté, lues par OCR, puis ajoutées au contexte du chat ; les modèles vision-langage restent à part', 'The frames: sampled, deduplicated by perceptual hash, selected for sharpness, read by OCR, then added to the chat’s context; vision-language models stay apart')}
+    >
+      {(id) => (
+        <>
+          <text className="sc-sous" x="10" y="18">
+            {tr('Ce qui est montré à l’écran', 'What the screen shows')}
+          </text>
+          {etapes.map((box, i) => (
+            <Boite key={box.titre} x={x(i)} y={30} w={124} h={52} {...box} />
+          ))}
+          <Boite x={x(4)} y={30} w={144} h={52} titre={tr('Contexte du chat', 'Chat context')} sous={tr('texte vu à l’écran', 'text seen on screen')} ton="accent" />
+          {[0, 1, 2].map((i) => (
+            <Fleche key={i} id={id} d={`M${x(i) + 124} 56 H${x(i + 1)}`} />
+          ))}
+          <Fleche id={id} d={`M${x(3) + 124} 56 H${x(4)}`} ton="accent" />
+          <Boite x={10} y={104} w={300} h={34} titre={tr('VLM · exploré, pas industrialisé', 'VLM · explored, not industrialised')} ton="faible" pointille />
+        </>
+      )}
+    </Svg>
+  );
+}
+
+/* 20 · The deployment: two Web Apps in one resource group, Nginx forwarding
+   /api, and what each hop needed. */
+function Azure() {
+  const tr = useTr();
+  return (
+    <Svg
+      h={296}
+      label={tr('Le déploiement : le navigateur appelle la Web App du front, dont Nginx envoie /api vers la Web App du back ; le back parle à la base SQL, au stockage Blob et à la passerelle LiteLLM ; le SSO est assuré par Keycloak', 'The deployment: the browser calls the front-end Web App, whose Nginx sends /api to the back-end Web App; the back end talks to the SQL database, Blob storage and the LiteLLM gateway; SSO is provided by Keycloak')}
+    >
+      {(id) => (
+        <>
+          <Boite x={10} y={50} w={110} h={58} titre={tr('Navigateur', 'Browser')} sous={tr('l’utilisateur', 'the user')} />
+          <Boite x={10} y={164} w={110} h={58} titre="SSO" sous="Keycloak" pointille />
+          <Fleche id={id} d="M65 108 V164" pointille />
+
+          <g className="sc-boite sc-boite--pointille">
+            <rect x="140" y="14" width="570" height="212" rx="3" />
+          </g>
+          <text className="sc-sous" x="152" y="32">
+            {tr('Azure · un même groupe de ressources', 'Azure · one resource group')}
+          </text>
+          <Boite x={160} y={50} w={150} h={58} titre="Web App · front" sous="React · Nginx" logos={['typescript', 'docker']} ton="accent" />
+          <Boite x={370} y={50} w={150} h={58} titre="Web App · back" sous="FastAPI · ffmpeg" logos={['python', 'docker']} ton="accent" />
+          <Boite x={560} y={50} w={140} h={58} titre="LiteLLM" sous={tr('modèles Azure, Mistral', 'Azure, Mistral models')} />
+          <Boite x={370} y={160} w={130} h={46} titre="SQL" sous={tr('réunions, transcripts', 'meetings, transcripts')} />
+          <Boite x={530} y={160} w={160} h={46} titre="Blob Storage" sous={tr('médias, résumés', 'media, summaries')} />
+          <Fleche id={id} d="M120 79 H160" ton="accent" />
+          <text className="sc-petit" x="124" y="72">
+            https
+          </text>
+          <Fleche id={id} d="M310 79 H370" ton="accent" />
+          <text className="sc-petit sc-accent-texte" x="326" y="72">
+            /api
+          </text>
+          <Fleche id={id} d="M520 79 H560" />
+          <Fleche id={id} d="M435 108 V160" />
+          <Fleche id={id} d="M490 108 V134 H610 V160" />
+
+          {[
+            [tr('cookie de session : SameSite, HTTPS', 'session cookie: SameSite, HTTPS'), 10, 252],
+            [tr('CORS : l’origine du front, rien d’autre', 'CORS: the front end’s origin, nothing else'), 10, 272],
+            [tr('certificats internes dans l’image', 'internal certificates in the image'), 370, 252],
+            [tr('identité managée, aucune clé dans le code', 'managed identity, no key in the code'), 370, 272],
+          ].map(([texte, px, py]) => (
+            <text key={texte as string} className="sc-petit sc-accent-texte" x={px as number} y={py as number}>
+              {texte}
+            </text>
+          ))}
+        </>
+      )}
+    </Svg>
+  );
+}
+
 const SCHEMAS: Record<SchemaId, () => ReactNode> = {
   parcours: Parcours,
   assistant: () => <EcranAssistant />,
@@ -1206,6 +1437,10 @@ const SCHEMAS: Record<SchemaId, () => ReactNode> = {
   nuage: Nuage,
   ragcag: RagCag,
   outils: Outils,
+  reunion: Reunion,
+  chaine: Chaine,
+  images: Images,
+  azure: Azure,
 };
 
 /** One of the project page's diagrams. */

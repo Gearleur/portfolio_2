@@ -4,6 +4,7 @@ import { Accent, Contact, Name, NavList, T } from './Maquettes';
 import { Marque } from './Marque';
 import { Miniature } from './Miniature';
 import { MiniatureAlpine } from './MiniatureAlpine';
+import { MiniatureReunions } from './MiniatureReunions';
 import { EcranCadre, Schema } from './Schemas';
 import type { Bloc, Phrase, Projet } from './projets';
 import { useTranche } from './tranche';
@@ -274,6 +275,8 @@ function Article({ projet, cadrage }: { projet: Projet; cadrage: 'paysage' | 'po
           {projet.miniature.affiche === 'alpine' ? (
             // large and alone here: the live film, sharp at any size (journal n° 106)
             <MiniatureAlpine direct />
+          ) : projet.miniature.affiche === 'reunion' ? (
+            <MiniatureReunions />
           ) : (
             projet.miniature.image && <img src={projet.miniature.image} alt="" />
           )}
