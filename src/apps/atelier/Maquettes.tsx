@@ -4,6 +4,7 @@ import { profile } from '../../shared/data/profile';
 import { useChoixLangue, useLangue, useTr } from './langue';
 import { GridColumns } from './Temoin';
 import { useTranche } from './tranche';
+import './steps/navmobile.css';
 
 // The Vitrine's first screen, drafted from the CV: the sentence, then only
 // « Actuellement », « Précédemment » and « Formation », as on Rachel Chen's
@@ -95,19 +96,27 @@ type MaquetteMobileProps = MaquetteProps & {
   onMenu?: (open: boolean) => void;
   /** Slides the menu in from the right edge (step 6); without it the menu just appears. */
   glisse?: boolean;
+  /** A proposal for the phone's navigation (step 7), drawn by steps/navmobile.css; without it, the strip on the right. */
+  variante?: 'notch';
 };
 
 /**
  * The same first screen on a 390 × 844 phone. The side column folds into a thin
  * strip along the right edge; the project images run over it.
  */
-export function MaquetteMobile({ menuOpen, onMenu, glisse, blocks, columns, images, onOuvrir }: MaquetteMobileProps) {
+export function MaquetteMobile({ menuOpen, onMenu, glisse, variante, blocks, columns, images, onOuvrir }: MaquetteMobileProps) {
   const ref = useRef<HTMLDivElement>(null);
 
   useTranche(ref, '.m-img');
 
   return (
-    <div ref={ref} className="mobile" data-blocks={blocks ? '' : undefined} data-glisse={glisse ? '' : undefined}>
+    <div
+      ref={ref}
+      className="mobile"
+      data-blocks={blocks ? '' : undefined}
+      data-glisse={glisse ? '' : undefined}
+      data-nav={variante}
+    >
       {columns && <GridColumns count={columns} />}
       <div className="m-strip">
         <Name />

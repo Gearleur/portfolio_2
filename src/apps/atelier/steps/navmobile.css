@@ -1,0 +1,101 @@
+/* The phone's navigation, chosen at step 7 (journal n° 107): a notch at the top of every page,
+   the home and the articles, in refracting glass (B3). It holds the name and « Menu » on the
+   home, « ‹ Projets » and « Menu » on an article. The menu drops from the top and holds only
+   the nav and the contact: no table of contents. It replaces the strip on the right. */
+
+.mobile[data-nav='notch'] {
+  padding-right: calc(var(--margin) * var(--u));
+}
+
+.mobile[data-nav='notch']::after,
+.mobile[data-nav='notch'] .p-retour,
+.mobile[data-nav='notch'] .m-strip .m-accent,
+.mobile.projet--mobile[data-nav='notch'] .m-strip > .m-name {
+  display: none;
+}
+
+/* Nothing sits on the right any more: the headline and the pictures run to the page's edge. */
+.mobile[data-nav='notch'] .m-title {
+  margin-right: 0;
+}
+
+.mobile[data-nav='notch'] .m-img,
+.mobile.projet--mobile[data-nav='notch'] .p-visuel__image {
+  margin-right: calc(var(--margin) * -1 * var(--u));
+}
+
+.mobile.projet--mobile[data-nav='notch'] .p-entete {
+  padding-top: calc((var(--space-8) + var(--space-2)) * var(--u));
+}
+
+/* The notch: a pill of glass, centred, fixed under the status bar. */
+.mobile[data-nav='notch'] .m-strip {
+  inset: calc(10 * var(--u) + env(safe-area-inset-top, 0px)) auto auto 50%;
+  translate: -50% 0;
+  width: auto;
+  height: calc(42 * var(--u));
+  flex-direction: row;
+  align-items: center;
+  gap: calc(28 * var(--u));
+  padding: 0 calc(22 * var(--u));
+  border-radius: 999px;
+  background: color-mix(in oklch, var(--fond) 80%, transparent);
+  -webkit-backdrop-filter: blur(14px) saturate(1.7);
+  backdrop-filter: blur(14px) saturate(1.7);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.7),
+    inset 0 -1px 0 rgb(0 0 0 / 0.06),
+    0 10px 30px color-mix(in oklch, var(--ink) 16%, transparent);
+}
+
+/* B3 · Refraction: the page bends at the glass's edge, as in the loupe of the thumbnail. Where the
+   browser can use an SVG filter in a backdrop (Chromium), the paper behind the words lightens so the
+   bend shows; elsewhere the frosted glass above stays. */
+@supports (backdrop-filter: url('#a')) {
+  .mobile[data-nav='notch'] .m-strip {
+    background: color-mix(in oklch, var(--fond) 38%, transparent);
+    backdrop-filter: url('#verre-refraction') blur(2px) saturate(1.7) brightness(1.05);
+  }
+}
+
+.mobile[data-nav='notch'] .m-strip > * {
+  padding: calc(10 * var(--u)) 0;
+  white-space: nowrap;
+  writing-mode: horizontal-tb;
+  rotate: none;
+}
+
+.mobile[data-nav='notch'] .m-strip > .m-label {
+  order: 1;
+}
+
+.mobile[data-nav='notch'] .m-strip > .m-name {
+  position: static;
+  translate: none;
+  font-family: var(--font-display);
+  font-size: calc(24 * var(--u));
+  line-height: 1;
+}
+
+/* The menu drops from the top, under the notch, over the full width. */
+.mobile[data-nav='notch'] .m-menu {
+  inset: 0 0 auto 0;
+  width: auto;
+  max-height: 86%;
+  overflow-y: auto;
+  border-left: 0;
+  border-bottom: 1px solid var(--line);
+  padding-top: calc(66 * var(--u) + env(safe-area-inset-top, 0px));
+}
+
+.mobile[data-nav='notch'][data-glisse] .m-menu {
+  translate: 0 -100%;
+}
+
+.mobile[data-nav='notch'][data-glisse] .m-menu[data-open] {
+  translate: 0 0;
+}
+
+.mobile[data-nav='notch'] .m-menu .m-contact {
+  margin-top: calc(var(--space-5) * var(--u));
+}

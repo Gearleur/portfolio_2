@@ -24,7 +24,7 @@ export default function PageProjet({
   const projet = PROJETS[numero];
   if (!projet) return null;
   return telephone ? (
-    <ProjetMobile projet={projet} onRetour={onRetour} menuOpen={menuOpen} onMenu={onMenu} />
+    <ProjetMobile projet={projet} variante="notch" onRetour={onRetour} menuOpen={menuOpen} onMenu={onMenu} />
   ) : (
     <ProjetMaquette projet={projet} onRetour={onRetour} />
   );

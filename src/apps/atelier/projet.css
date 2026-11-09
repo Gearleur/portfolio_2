@@ -478,49 +478,10 @@
   background: var(--fond);
 }
 
-/* Diagrams keep a readable size (800 for their 720 units, so 11 px reads as 12) and scroll sideways. */
-.mobile.projet--mobile .p-visuel__image:has(.schema) {
-  overflow-x: auto;
-  scrollbar-width: none;
-  overscroll-behavior-x: contain;
-}
-
-.mobile.projet--mobile .p-visuel__image:has(.schema)::-webkit-scrollbar {
-  display: none;
-}
-
+/* Diagrams and busy pictures are shown whole, at the width of the screen: to read them, a tap opens them
+   large (see .p-zoom below). */
 .mobile.projet--mobile .p-visuel__image .schema {
-  width: calc(800 * var(--u));
-  max-width: none;
-}
-
-.mobile.projet--mobile .p-visuel:has(.schema) figcaption::after {
-  content: ' · ← glisser →';
-  color: var(--accent);
-  white-space: nowrap;
-}
-
-/* A busy picture keeps a readable size and scrolls sideways, like a diagram. */
-.mobile.projet--mobile .p-visuel__image:has(> .p-img--large) {
-  overflow-x: auto;
-  scrollbar-width: none;
-  overscroll-behavior-x: contain;
-}
-
-.mobile.projet--mobile .p-visuel__image:has(> .p-img--large)::-webkit-scrollbar {
-  display: none;
-}
-
-.mobile.projet--mobile .p-visuel__image > .p-img--large {
-  width: calc(800 * var(--u));
-  max-width: none;
-  max-height: none;
-}
-
-.mobile.projet--mobile .p-visuel:has(.p-img--large) figcaption::after {
-  content: ' · ← glisser →';
-  color: var(--accent);
-  white-space: nowrap;
+  width: 100%;
 }
 
 /* The table of contents, in the menu panel above the nav. */
@@ -537,4 +498,101 @@
 .projet--mobile .m-menu {
   overflow-y: auto;
   scrollbar-width: none;
+}
+
+/* A figure that opens large: the diagrams and the pictures of the report. A click or a tap on it opens a
+   dialog over the page, where it is drawn at a size to read; Escape, the button or a click outside closes it. */
+.p-visuel--zoom .p-visuel__image {
+  cursor: zoom-in;
+}
+
+.p-visuel--zoom .p-visuel__image:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.p-visuel--zoom figcaption::after {
+  content: ' · toucher pour agrandir';
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+@media (hover: hover) {
+  .p-visuel--zoom figcaption::after {
+    content: ' · cliquer pour agrandir';
+  }
+}
+
+.p-zoom {
+  width: 100vw;
+  max-width: none;
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: var(--fond);
+  color: var(--ink);
+}
+
+.p-zoom::backdrop {
+  background: var(--fond);
+}
+
+.p-zoom[open] {
+  display: block;
+}
+
+/* The figure scrolls in its own box when it is wider than the screen (a phone). */
+.p-zoom__vue {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  place-items: center;
+  padding: 64px 20px 28px;
+  box-sizing: border-box;
+  cursor: zoom-out;
+}
+
+.p-zoom__vue > figure {
+  display: grid;
+  gap: 14px;
+  margin: 0;
+  cursor: default;
+}
+
+.p-zoom__vue .schema {
+  display: block;
+  width: max(min(1320px, 100vw - 80px), 880px);
+  height: auto;
+}
+
+.p-zoom__vue img {
+  display: block;
+  width: max(min(1400px, 100vw - 80px), 880px);
+  max-width: none;
+  height: auto;
+  background: #fff;
+}
+
+.p-zoom__vue figcaption {
+  max-width: 70ch;
+  color: var(--ink-soft);
+  font-size: 14px;
+}
+
+.p-zoom__fermer {
+  position: fixed;
+  top: 14px;
+  right: 18px;
+  z-index: 1;
+  padding: 8px 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--fond);
+  color: var(--ink);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
 }

@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react';
 import { Maquette, MaquetteMobile } from '../Maquettes';
+import { MenuMobile } from '../MenuMobile';
 import { MiniatureAlpine } from '../MiniatureAlpine';
 import { MiniatureReunions } from '../MiniatureReunions';
 import { Miniature } from '../Miniature';
@@ -251,6 +252,8 @@ export function ContenuStep() {
           ))}
         </ul>
       </div>
+
+      <MenuMobile />
 
       {preview && (
         <SpecimenPreview

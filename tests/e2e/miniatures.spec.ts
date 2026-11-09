@@ -29,14 +29,22 @@ test('the home thumbnails show their films and the meeting voices', async ({ pag
   expect(erreurs).toEqual([]);
 });
 
-// The phone strip (journal n° 70): each word's accent copy lies exactly over it, and lets « Menu » be clicked.
-test('the phone strip keeps its accent copies on the words, and Menu opens', async ({ page }) => {
+// The phone's notch (journal n° 107): at the top of the home and of an article, « Menu » opens a menu
+// that holds the nav and the contact, with no table of contents.
+test('the phone notch is at the top, and Menu opens the nav only', async ({ page }) => {
   await page.goto('/');
-  for (const mot of await page.locator('.m-strip > *').all()) {
-    const boite = await mot.boundingBox();
-    const copie = await mot.locator('.m-accent').boundingBox();
-    expect(copie).toEqual(boite);
-  }
+  const notch = page.locator('.m-strip');
+  const boite = await notch.boundingBox();
+  expect(boite && boite.y < 30 && boite.width < 340).toBe(true);
   await page.locator('.m-strip > button').click();
   await expect(page.locator('.m-menu[data-open]')).toBeVisible();
+  await expect(page.locator('.m-menu .p-sommaire')).toHaveCount(0);
+});
+
+test('an article has the notch too, with the back link and no table of contents', async ({ page }) => {
+  await page.goto('/#synthese-reunions');
+  await expect(page.locator('.m-strip .p-notch__retour')).toBeVisible();
+  await page.locator('.m-strip > button', { hasText: 'Menu' }).click();
+  await expect(page.locator('.m-menu[data-open]')).toBeVisible();
+  await expect(page.locator('.m-menu .p-sommaire')).toHaveCount(0);
 });

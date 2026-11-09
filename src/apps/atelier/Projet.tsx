@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useRef, useState } from 'react';
-import type { CSSProperties, ReactNode, RefObject } from 'react';
+import type { CSSProperties, KeyboardEvent, ReactNode, RefObject } from 'react';
 import { Accent, Contact, Name, NavList, T } from './Maquettes';
 import { Marque } from './Marque';
 import { Miniature } from './Miniature';
@@ -9,6 +9,7 @@ import { EcranCadre, Schema } from './Schemas';
 import type { Bloc, Phrase, Projet } from './projets';
 import { useTranche } from './tranche';
 import './projet.css';
+import './steps/navmobile.css';
 
 const two = (n: number) => String(n).padStart(2, '0');
 
@@ -35,10 +36,58 @@ function Texte({ lead, text, href }: Phrase) {
 }
 
 /** A picture: a diagram or the thumbnail, or a grey placeholder with what it will show. */
-function Visuel({ children, legende, n }: { children?: ReactNode; legende: string; n: number }) {
+function Visuel({ children, legende, n, zoom }: { children?: ReactNode; legende: string; n: number; zoom?: ReactNode }) {
+  const [ouvert, setOuvert] = useState(false);
+  const ferme = () => setOuvert(false);
   return (
-    <figure className="p-visuel">
-      <span className="p-visuel__image">{children}</span>
+    <figure className={zoom ? 'p-visuel p-visuel--zoom' : 'p-visuel'}>
+      <span
+        className="p-visuel__image"
+        {...(zoom && {
+          role: 'button',
+          tabIndex: 0,
+          'aria-label': `Agrandir la figure ${two(n)}`,
+          onClick: () => setOuvert(true),
+          onKeyDown: (event: KeyboardEvent<HTMLElement>) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+              event.preventDefault();
+              setOuvert(true);
+            }
+          },
+        })}
+      >
+        {children}
+      </span>
+      {zoom && ouvert && (
+        // The native dialog sits in the top layer: over the page, its strip and its stage, and Escape closes it.
+        <dialog
+          className="p-zoom"
+          aria-label={legende}
+          ref={(dialog) => {
+            if (dialog && !dialog.open) dialog.showModal();
+          }}
+          onClose={ferme}
+        >
+          <button type="button" className="p-zoom__fermer" onClick={ferme}>
+            Fermer ✕
+          </button>
+          <div
+            className="p-zoom__vue"
+            onClick={(event) => {
+              if (event.target === event.currentTarget) ferme();
+            }}
+          >
+            <figure>
+              {zoom}
+              <figcaption>
+                <T>
+                  Fig. {two(n)} — {legende}
+                </T>
+              </figcaption>
+            </figure>
+          </div>
+        </dialog>
+      )}
       <figcaption className="m-label">
         <T>
           Fig. {two(n)} — {children || n === 1 ? '' : 'À dessiner : '}
@@ -119,14 +168,19 @@ function Blocs({ blocs, figures }: { blocs: Bloc[]; figures: Map<Bloc, number> }
             <p className="p-texte">
               <Texte lead={bloc.lead} text={bloc.text} />
             </p>
-            <Visuel legende={bloc.visuel} n={figures.get(bloc) ?? 0}>
+            <Visuel legende={bloc.visuel} n={figures.get(bloc) ?? 0} zoom={bloc.schema && <Schema id={bloc.schema} />}>
               {bloc.schema && <Schema id={bloc.schema} />}
             </Visuel>
           </Fragment>
         );
       case 'visuel':
         return (
-          <Visuel key={index} legende={bloc.legende} n={figures.get(bloc) ?? 0}>
+          <Visuel
+            key={index}
+            legende={bloc.legende}
+            n={figures.get(bloc) ?? 0}
+            zoom={bloc.schema ? <Schema id={bloc.schema} /> : bloc.image && <img src={bloc.image} alt={bloc.legende} decoding="async" />}
+          >
             {bloc.schema ? <Schema id={bloc.schema} /> : bloc.image && <img className={bloc.large ? 'p-img--large' : undefined} src={bloc.image} alt={bloc.legende} loading="lazy" decoding="async" />}
           </Visuel>
         );
@@ -339,11 +393,14 @@ export function ProjetMobile({
   onRetour,
   menuOpen,
   onMenu,
+  variante,
 }: {
   projet: Projet;
   onRetour?: () => void;
   menuOpen: boolean;
   onMenu?: (open: boolean) => void;
+  /** A proposal for the phone's navigation (step 7, steps/navmobile.css); without it, the strip on the right. */
+  variante?: 'notch';
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const { active, go } = useSommaire(ref, projet.sections[0].id);
@@ -368,8 +425,13 @@ export function ProjetMobile({
   }, []);
 
   return (
-    <div ref={ref} className="mobile projet projet--mobile" data-glisse="">
+    <div ref={ref} className="mobile projet projet--mobile" data-glisse="" data-nav={variante}>
       <div className="m-strip">
+        {variante === 'notch' && (
+          <button type="button" className="m-label p-notch__retour" onClick={onRetour}>
+            <T>‹ Projets</T>
+          </button>
+        )}
         <Name />
         <button type="button" className="m-label" onClick={() => onMenu?.(true)}>
           <T>Menu</T>
@@ -382,14 +444,17 @@ export function ProjetMobile({
         <button type="button" className="m-label" onClick={() => onMenu?.(false)}>
           <T>Fermer</T>
         </button>
-        <Sommaire
-          projet={projet}
-          active={active}
-          onGo={(id) => {
-            onMenu?.(false);
-            go(id);
-          }}
-        />
+        {/* With the notch, the menu is the nav and the contact only: no table of contents. */}
+        {variante !== 'notch' && (
+          <Sommaire
+            projet={projet}
+            active={active}
+            onGo={(id) => {
+              onMenu?.(false);
+              go(id);
+            }}
+          />
+        )}
         <NavList className="m-menu__nav" />
         <Contact />
       </div>

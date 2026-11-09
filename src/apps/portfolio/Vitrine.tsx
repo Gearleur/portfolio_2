@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect, useLayoutEffect, useRef, useState } from 're
 import { flushSync } from 'react-dom';
 import { ChoixLangueContext, LangueContext } from '../atelier/langue';
 import type { Langue } from '../atelier/langue';
+import { FiltreVerre } from '../atelier/FiltreVerre';
 import { Maquette, MaquetteMobile } from '../atelier/Maquettes';
 import { MiniatureAlpine } from '../atelier/MiniatureAlpine';
 import { MiniatureReunions } from '../atelier/MiniatureReunions';
@@ -148,7 +149,7 @@ export function Vitrine() {
     );
   } else {
     page = telephone ? (
-      <MaquetteMobile blocks={false} glisse menuOpen={menu} onMenu={ouvreMenu} images={images} onOuvrir={ouvrir} />
+      <MaquetteMobile blocks={false} glisse variante="notch" menuOpen={menu} onMenu={ouvreMenu} images={images} onOuvrir={ouvrir} />
     ) : (
       <Maquette blocks={false} images={images} onOuvrir={ouvrir} />
     );
@@ -156,6 +157,7 @@ export function Vitrine() {
 
   return (
     <main className="vitrine">
+      {telephone && <FiltreVerre />}
       <LangueContext.Provider value={langue}>
         <ChoixLangueContext.Provider value={setLangue}>
           {/* A new stage for each kind of page: a wave under way on the Vitrine stops at a project page. */}

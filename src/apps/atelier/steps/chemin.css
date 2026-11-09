@@ -193,6 +193,13 @@
   margin-top: auto;
 }
 
+/* Too short for the menu, the name and the contact together: the contact gives way. */
+@container (max-height: 470px) {
+  .maquette .m-contact {
+    display: none;
+  }
+}
+
 .maquette .m-hero {
   display: grid;
   grid-area: 1 / 1 / 2 / 13;
@@ -393,6 +400,7 @@
   align-items: flex-end;
   gap: calc(var(--space-7) * var(--u));
   width: 82%;
+  overflow-y: auto;
   padding: calc(var(--space-5) * var(--u)) calc(var(--margin) * var(--u)) calc(var(--space-6) * var(--u));
   border-left: 1px solid var(--line);
   background: var(--fond);
@@ -590,11 +598,14 @@
    is turned by the writing mode, not by a transform, so that the text stays on the pixel grid and renders
    sharp. The menu on the right starts lower, level with the headline. */
 .maquette .m-side .m-name {
-  --h: round(calc(236 * var(--u)), 1px);
+  /* 236 tall at most, centred. On a short window it first slides below the menu (it starts under it, 251),
+     then shrinks, text and all, to stay between the menu above and the contact below (380 = 251 + 105 +
+     24 of air); under 110 it stops shrinking. */
+  --h: round(clamp(calc(110 * var(--u)), calc(100cqh - 380 * var(--u)), calc(236 * var(--u))), 1px);
 
   position: fixed;
   z-index: 6;
-  top: round(calc((100cqh - var(--h)) / 2), 1px);
+  top: round(max(calc((100cqh - var(--h)) / 2), calc(251 * var(--u))), 1px);
   right: round(calc(var(--margin) * var(--u)), 1px);
   display: grid;
   width: round(calc(38 * var(--u)), 1px);
@@ -603,7 +614,7 @@
   background: var(--accent);
   color: var(--on-accent);
   font-family: var(--font-display);
-  font-size: calc(28 * var(--u));
+  font-size: calc(var(--h) / 236 * 28);
   font-weight: 400;
   letter-spacing: 0.01em;
   line-height: 1;
