@@ -1,5 +1,5 @@
 /* A thumbnail's film (journal n° 105 and 106, useFilm.ts): its poster at once,
-   the video over it, faded in when it plays so the grain does not flicker. */
+   the film's frames over it on a canvas, faded in when it plays so the grain does not flicker. */
 
 .film {
   position: relative;
@@ -17,16 +17,21 @@
   height: 100%;
 }
 
-.film__affiche,
-.film__video {
+.film__affiche {
   object-fit: cover;
 }
 
-.film__video {
+/* The video is only read, never shown: useFilm copies its frames onto the canvas. */
+.film > .film__video {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.film__image {
   opacity: 0;
   transition: opacity 0.6s ease;
 }
 
-.film[data-film] .film__video {
+.film[data-film] .film__image {
   opacity: 1;
 }

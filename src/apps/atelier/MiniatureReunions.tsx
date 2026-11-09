@@ -33,7 +33,8 @@ export function MiniatureReunions() {
   const hote = useRef<HTMLDivElement>(null);
   const film = useRef<HTMLVideoElement>(null);
   const toile = useRef<HTMLCanvasElement>(null);
-  useFilm(hote, film, FILM);
+  const image = useRef<HTMLCanvasElement>(null);
+  useFilm(hote, film, image, FILM);
 
   // the voices
   useEffect(() => {
@@ -125,6 +126,7 @@ export function MiniatureReunions() {
     <div ref={hote} className="film reunions">
       <img className="film__affiche" src={fond} alt="" decoding="async" />
       <video ref={film} className="film__video" muted loop playsInline disablePictureInPicture preload="auto" aria-hidden="true" />
+      <canvas ref={image} className="film__image" aria-hidden="true" />
       <canvas ref={toile} className="reunions__voix" aria-hidden="true" />
     </div>
   );

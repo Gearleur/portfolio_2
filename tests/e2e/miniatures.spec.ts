@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 
 // The Vitrine's filmed thumbnails (journal n° 105 and 106): the page opens without an error, each card
-// has its poster and its video, and Synthèse de réunions draws its live voices over its film.
+// has its poster, its video and the canvas its frames are copied onto, and Synthèse de réunions draws its live voices over its film.
 test('the home thumbnails show their films and the meeting voices', async ({ page }) => {
   const erreurs: string[] = [];
   page.on('pageerror', (error) => erreurs.push(error.message));
@@ -12,12 +12,13 @@ test('the home thumbnails show their films and the meeting voices', async ({ pag
   for (const film of await page.locator('.film').all()) {
     await expect(film.locator('img.film__affiche')).toHaveCount(1);
     await expect(film.locator('video.film__video')).toHaveCount(1);
+    await expect(film.locator('canvas.film__image')).toHaveCount(1);
   }
 
   // the voices' canvas covers the glass and has ink on it
   await expect
     .poll(() =>
-      reunions.locator('canvas').evaluate((canvas: HTMLCanvasElement) => {
+      reunions.locator('canvas.reunions__voix').evaluate((canvas: HTMLCanvasElement) => {
         const data = canvas.getContext('2d')!.getImageData(0, 0, canvas.width, canvas.height).data;
         let ink = 0;
         for (let i = 3; i < data.length; i += 4) if (data[i] > 40) ink += 1;

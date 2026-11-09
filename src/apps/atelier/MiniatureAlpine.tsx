@@ -28,11 +28,13 @@ const FILM = { av1, h264, depart: 20, relance: 8000 };
 function EnVideo() {
   const hote = useRef<HTMLDivElement>(null);
   const film = useRef<HTMLVideoElement>(null);
-  useFilm(hote, film, FILM);
+  const toile = useRef<HTMLCanvasElement>(null);
+  useFilm(hote, film, toile, FILM);
   return (
     <div ref={hote} className="film">
       <img className="film__affiche" src={affiche} alt="" decoding="async" />
       <video ref={film} className="film__video" muted loop playsInline disablePictureInPicture preload="auto" aria-hidden="true" />
+      <canvas ref={toile} className="film__image" aria-hidden="true" />
     </div>
   );
 }

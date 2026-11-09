@@ -33,16 +33,56 @@ async function choisir(video: HTMLVideoElement, { av1, h264 }: Film) {
   return video.canPlayType(H264) ? h264 : av1;
 }
 
-export function useFilm(hote: RefObject<HTMLElement | null>, film: RefObject<HTMLVideoElement | null>, { av1, h264, depart = 0, relance }: Film) {
+export function useFilm(
+  hote: RefObject<HTMLElement | null>,
+  film: RefObject<HTMLVideoElement | null>,
+  toile: RefObject<HTMLCanvasElement | null>,
+  { av1, h264, depart = 0, relance }: Film,
+) {
   useEffect(() => {
     const el = hote.current;
     const video = film.current;
-    if (!el || !video || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const canvas = toile.current;
+    const g = canvas?.getContext('2d', { alpha: false });
+    if (!el || !video || !canvas || !g || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     let visible = false;
     let pret = false;
     let fini = false;
     let sorti = 0;
+
+    /*
+     * The video itself is never shown: each of its frames is copied onto a canvas,
+     * drawn like the rest of the page. A <video> on screen is composited apart on a
+     * desktop, which left a thin dark band under it (gone while scrolling or in a
+     * screenshot); a canvas has no such layer. Its frame is cropped like object-fit: cover.
+     */
+    const peint = () => {
+      const vw = video.videoWidth;
+      const vh = video.videoHeight;
+      if (!vw || !vh || !canvas.width || video.readyState < 2) return false;
+      const s = Math.max(canvas.width / vw, canvas.height / vh);
+      g.drawImage(video, (canvas.width - vw * s) / 2, (canvas.height - vh * s) / 2, vw * s, vh * s);
+      return true;
+    };
+    const taille = new ResizeObserver(() => {
+      const d = Math.min(2, window.devicePixelRatio || 1);
+      const w = Math.round(el.clientWidth * d);
+      const h = Math.round(el.clientHeight * d);
+      if (!w || !h || (w === canvas.width && h === canvas.height)) return;
+      canvas.width = w;
+      canvas.height = h;
+      peint();
+    });
+    taille.observe(el);
+
+    // each new frame, as the decoder gives it (or every screen frame where that is not known)
+    let boucle = 0;
+    const image = () => {
+      if (fini) return;
+      if (peint()) el.dataset.film = '';
+      boucle = 'requestVideoFrameCallback' in video ? video.requestVideoFrameCallback(image) : requestAnimationFrame(image);
+    };
 
     const maj = () => {
       if (!pret) return;
@@ -65,6 +105,7 @@ export function useFilm(hote: RefObject<HTMLElement | null>, film: RefObject<HTM
       video.muted = true;
       video.src = depart ? `${src}#t=${depart}` : src;
       pret = true;
+      image();
       maj();
     };
     const proche = new IntersectionObserver(
@@ -78,22 +119,22 @@ export function useFilm(hote: RefObject<HTMLElement | null>, film: RefObject<HTM
     );
     proche.observe(el);
 
-    const joue = () => (el.dataset.film = '');
     const part = () => video.pause();
-    video.addEventListener('playing', joue, { once: true });
     document.addEventListener('visibilitychange', maj);
     window.addEventListener('pagehide', part);
     window.addEventListener('pageshow', maj);
     return () => {
       fini = true;
+      if ('cancelVideoFrameCallback' in video) video.cancelVideoFrameCallback(boucle);
+      cancelAnimationFrame(boucle);
+      taille.disconnect();
       vue.disconnect();
       proche.disconnect();
       video.pause();
-      video.removeEventListener('playing', joue);
       window.removeEventListener('load', charge);
       document.removeEventListener('visibilitychange', maj);
       window.removeEventListener('pagehide', part);
       window.removeEventListener('pageshow', maj);
     };
-  }, [hote, film, av1, h264, depart, relance]);
+  }, [hote, film, toile, av1, h264, depart, relance]);
 }
