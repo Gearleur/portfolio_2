@@ -56,6 +56,7 @@ const PROJECTS = [
   { number: '01', name: 'Whiteboard AMDEC', org: 'Renault / Alpine', year: '2025' },
   { number: '02', name: 'SNCF GPT', org: 'SNCF', year: '2023' },
   { number: '03', name: 'Synthèse de réunions', nameEn: 'Meeting summaries', org: 'SNCF', year: '2025' },
+  { number: '04', name: 'Dessiner avec l’IA', nameEn: 'Designing with AI', org: 'Méthode', year: '2026' },
 ];
 
 type MaquetteProps = {

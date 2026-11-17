@@ -7,6 +7,31 @@ import type { LogoId } from './logos';
 import architecture from './medias/sncf-architecture.webp';
 import hybride from './medias/sncf-hybride.webp';
 import langfuse from './medias/sncf-langfuse.webp';
+import pCharte from './medias/processus-charte.webp';
+import pChemin from './medias/processus-chemin.webp';
+import pFond from './medias/processus-fond.webp';
+import pTypo from './medias/processus-typo.webp';
+import pPistes from './medias/processus-pistes.webp';
+import pMikkyLogos from './medias/processus-mikky-logos.webp';
+import pMikkyPouvoirs from './medias/processus-mikky-pouvoirs.webp';
+import pMikkyAffiche from './medias/processus-mikky-planches.webp';
+import pSaifySommaire from './medias/processus-saify-sommaire.webp';
+import pSaifyParloa from './medias/processus-saify-parloa.webp';
+import pSaifyClones from './medias/processus-saify-clones.webp';
+import pSaifyComposants from './medias/processus-saify-composants.webp';
+import pSaifyVerre from './medias/processus-saify-verre.webp';
+import pSaifyFonds from './medias/processus-saify-fonds.webp';
+import pSaifyPiliers from './medias/processus-saify-piliers.webp';
+import pSaifyDispositions from './medias/processus-saify-dispositions.webp';
+import pSaifyLabo from './medias/processus-saify-labo.webp';
+import pSaifyJournal from './medias/processus-saify-journal.webp';
+import pSaifyChamps from './medias/processus-saify-champs.webp';
+import pSaifySysteme from './medias/processus-saify-systeme.webp';
+import pSaifyCarnet from './medias/processus-saify-carnet.webp';
+import pSaifyAffiches from './medias/processus-saify-affiches.webp';
+import pSaifyEnsemble from './medias/processus-saify-ensemble.webp';
+import pMikkyAv1 from './medias/processus-mikky-planches-av1.mp4';
+import pMikkyH264 from './medias/processus-mikky-planches-h264.mp4';
 import react from './medias/sncf-react.webp';
 import type { Ecran, SchemaId } from './Schemas';
 
@@ -24,7 +49,7 @@ export type Bloc =
   | { type: 'compromis'; text: string }
   | { type: 'decision'; n: number; lead: string; text: string; visuel: string; schema?: SchemaId }
   /** A diagram (`schema`), or a placeholder described by its caption. */
-  | { type: 'visuel'; schema?: SchemaId; image?: string; large?: boolean; legende: string };
+  | { type: 'visuel'; schema?: SchemaId; image?: string; large?: boolean; legende: string; film?: { av1: string; h264: string; affiche: string } };
 
 type Section = { id: string; nav: string; titre: string; blocs: Bloc[] };
 
@@ -32,8 +57,8 @@ type Chiffre = { value: string; text: string };
 
 export type Projet = {
   nom: string;
-  /** The company's mark, in the title line (journal n° 85). */
-  logo: LogoId;
+  /** The company's mark, in the title line (journal n° 85); none on an article that is not about one company. */
+  logo?: LogoId;
   /** The thumbnail at the top of the page: drawn in the Atelier (the turnout), a picture, or a picture brought to life (affiche); its caption. */
   miniature: { aiguillage?: boolean; image?: string; affiche?: 'alpine' | 'reunion'; legende: string };
   accroche: string;
@@ -834,5 +859,267 @@ const SYNTHESE_REUNIONS: Projet = {
   ],
 };
 
+/** Not a project: how Alexandre designs a product with AI, told through this portfolio, Mikky and SAIFY's site (docs/atelier/contenu/04-processus-design.md). */
+export const PROCESSUS_DESIGN: Projet = {
+  nom: 'Comment je dessine un produit avec l’IA',
+  miniature: { image: pPistes, legende: 'Les dix-sept mises en page explorées pour ce portfolio. Celle encadrée a été retenue.' },
+  accroche: 'L’IA produit, je dirige. Des ateliers en code, des références, des clones qui marchent vraiment, des curseurs, et une décision à la fois.',
+  chiffres: [
+    { value: '3', text: 'produits dessinés ainsi : ce portfolio, Mikky et le site de SAIFY' },
+    { value: '17', text: 'mises en page explorées pour ce portfolio avant d’en garder une' },
+    { value: '560+', text: 'décisions datées et justifiées, dans les trois journaux' },
+  ],
+  cartel: [
+    ['Rôle', 'Direction artistique et arbitrage. L’IA propose, construit et consigne'],
+    ['Outils', 'Claude Code, des pages d’atelier en code, des clones de vrais produits'],
+    ['Période', 'Septembre – novembre 2026'],
+  ],
+  sections: [
+    {
+      id: 'vision',
+      nav: 'Ma vision',
+      titre: 'L’IA propose, je dirige.',
+      blocs: [
+        {
+          type: 'texte',
+          text: 'Je ne demande pas à un modèle « fais-moi un beau site ». Je travaille avec lui comme une équipe artistique : il ouvre des pistes, je ferme en choisissant. Le goût, les idées et la décision restent à moi. La production, les variantes et la mémoire des choix, c’est son travail.',
+        },
+        {
+          type: 'colonnes',
+          items: [
+            { lead: 'Ouvrir', text: 'Des références, des propositions, des variantes qui marchent.' },
+            { lead: 'Régler', text: 'Des curseurs bornés sur ce qui reste à décider.' },
+            { lead: 'Fermer', text: 'Je tranche, c’est écrit, on passe à la suite.' },
+          ],
+        },
+        {
+          type: 'texte',
+          lead: 'Le problème : une IA laissée seule produit du générique.',
+          text: 'Une page propre, moyenne, qui ressemble à toutes les autres. Ma première refonte de ce portfolio, faite d’un bloc par un agent, était exactement ça : je l’ai jetée.',
+        },
+        {
+          type: 'texte',
+          lead: 'L’opportunité : produire ne coûte presque plus rien.',
+          text: 'Dix variantes vivantes coûtent quelques minutes. Ce qui devient rare, c’est de savoir choisir et de garder le cap. C’est là que je me place.',
+        },
+      ],
+    },
+    {
+      id: 'atelier',
+      nav: 'L’atelier',
+      titre: 'Avant le produit, je construis l’atelier.',
+      blocs: [
+        {
+          type: 'texte',
+          text: 'Chaque produit commence par une page qui n’est pas le produit : un atelier, mon Figma en code. Tout y est vivant et cliquable, et c’est la source de vérité. Ce qui n’est pas dans l’atelier n’existe pas dans le produit.',
+        },
+        { type: 'visuel', image: pCharte, legende: 'L’atelier de ce portfolio s’ouvre sur la charte : le brief, puis chaque décision validée, avec son étape.' },
+        {
+          type: 'liste',
+          items: [
+            { lead: 'Ce portfolio.', text: 'Dix étapes, du fond et de l’accent jusqu’à la mise en ligne. Chaque étape garde son établi, à son adresse, pour y revenir sans rien perdre.' },
+            { lead: 'Mikky.', text: 'Des planches comme dans Figma : la marque, chaque composant une fois, chaque écran dans chacun de ses états, en clair et en sombre, qui bougent et qu’on clique. Chaque cadre porte une étiquette : Dans l’app, Essai ou À essayer.' },
+            { lead: 'SAIFY.', text: 'Le Studio, un atelier par question, du diagnostic au branding. Chaque page pose une seule question, propose deux ou trois réponses, fait parler des voix contraires, puis je tranche.' },
+          ],
+        },
+        { type: 'visuel', film: { av1: pMikkyAv1, h264: pMikkyH264, affiche: pMikkyAffiche }, legende: 'Les neuf planches de Mikky, de la marque à la technique : chaque composant, chaque écran dans chacun de ses états, chaque essai étiqueté.' },
+        { type: 'visuel', image: pSaifySommaire, legende: 'Le Studio SAIFY : « Rebâtir SAIFY, un atelier à la fois. »' },
+        {
+          type: 'texte',
+          lead: 'On va du large au précis.',
+          text: 'On ne choisit jamais le survol d’un bouton avant d’avoir fixé le fond de la page : fond et accent, couleurs, typo, grille, chemin de fer, composants, contenu, puis la page assemblée.',
+        },
+      ],
+    },
+    {
+      id: 'references',
+      nav: 'Les références',
+      titre: 'Je pars de références, jamais d’une page blanche.',
+      blocs: [
+        {
+          type: 'texte',
+          text: 'Un modèle sans référence revient à la moyenne. Avec des références, il a une direction. Mais je les annote : pas « j’aime », mais « on prend ça, pour ça ».',
+        },
+        {
+          type: 'liste',
+          items: [
+            { lead: 'Ce portfolio.', text: 'rachelchen.tech pour la phrase-titre et les paires étiquette et valeur, paulkalkbrenner.net pour un seul moment énorme, clintonvanarnam.net pour la hiérarchie sans changer de taille, les dégradés granuleux de Feral UI pour l’onde qui traverse la page.' },
+            { lead: 'Mikky.', text: 'La matrice de points de Nothing, les couleurs système d’Apple, l’ambiance sonore de la PSP, et mes propres captures.' },
+            { lead: 'SAIFY.', text: '57 captures de studios (Pentagram, Studio Dumbar, Collins, Koto…) et un banc d’essai de 8 agences et 12 startups, mesurées dans le navigateur plutôt qu’à l’œil.' },
+          ],
+        },
+        { type: 'visuel', image: pSaifyParloa, legende: 'Une référence lue, pas copiée : ce qu’on prend à Parloa Drive pour les carrousels de SAIFY, et ce qu’on change.' },
+        {
+          type: 'texte',
+          lead: 'On reprend des principes, pas des pixels.',
+          text: 'La référence donne la direction, la page reste la nôtre.',
+        },
+      ],
+    },
+    {
+      id: 'clones',
+      nav: 'Des clones qui marchent',
+      titre: 'Je travaille sur des clones qui marchent, pas sur des maquettes.',
+      blocs: [
+        {
+          type: 'texte',
+          text: 'Une maquette ment : elle ne bouge pas, ne charge pas, ne casse pas sur un téléphone. Je préfère partir de vrais produits, reconstruits en front et qui fonctionnent, puis garder ce qui marche le mieux.',
+        },
+        { type: 'visuel', image: pSaifyClones, legende: 'Onze premiers écrans pour SAIFY, chacun agencé comme un produit connu : Signal comme Thrad, Pipeline comme Linear. Ils tournent pour de vrai, avec le contenu de SAIFY.' },
+        {
+          type: 'liste',
+          items: [
+            { lead: 'Des agencements éprouvés.', text: 'Linear, Vercel, Attio, une page produit d’Apple, Raycast : chacun a déjà fait ses preuves. On les reconstruit avec nos couleurs et notre contenu, puis on compare.' },
+            { lead: 'Des composants éprouvés.', text: 'Ils reprennent l’anatomie et les états de shadcn/ui et de Base UI, puis prennent nos couleurs.' },
+            { lead: 'La maquette est le prototype.', text: 'Dans l’atelier de ce portfolio, chaque mise en page est un vrai premier écran, avec la vraie grille et la vraie typo. Un bouton remplace chaque mot par un pavé gris pour ne juger que la place.' },
+          ],
+        },
+        { type: 'visuel', image: pSaifyComposants, legende: 'La même scène dans quatre familles de formes. Seuls les rayons et la surface des panneaux changent.' },
+        { type: 'visuel', image: pSaifyVerre, legende: 'Du vrai verre liquide, calculé pixel par pixel, d’après une bibliothèque libre (liquid-glass-studio, MIT) : on reprend une technique qui marche, pas une image.' },
+        {
+          type: 'texte',
+          lead: 'Juger en vrai.',
+          text: 'Une fois, tout me paraissait juste dans l’atelier, et trop gros en ligne : l’atelier agrandissait la page pour remplir l’écran. Depuis, on juge en taille réelle.',
+        },
+      ],
+    },
+    {
+      id: 'idees',
+      nav: 'Demander des idées',
+      titre: 'Je demande des idées, pas une réponse.',
+      blocs: [
+        {
+          type: 'texte',
+          text: 'Ma règle : deux ou trois propositions, côte à côte et cliquables. Pas une seule option imposée, pas dix non plus. Quand aucune ne me plaît, je ne corrige pas : je demande d’autres idées, ailleurs.',
+        },
+        { type: 'visuel', image: pChemin, legende: 'Le chemin de fer de ce portfolio : les pistes rangées par famille, chacune un vrai premier écran.' },
+        {
+          type: 'liste',
+          items: [
+            { lead: 'Chercher ailleurs.', text: 'Les trois premières compositions ne me suffisaient pas. J’ai demandé des pistes venues des magazines de mode et des cabinets d’architectes : Couverture, Lookbook, Agence, Affiche suisse, puis Journal, Cartel, Plan, Manuel. Dix-sept au total. J’ai gardé la nav latérale, à droite.' },
+            { lead: 'Savoir arrêter.', text: 'Pour la miniature de Whiteboard AMDEC, quatre tours (vue éclatée, scan holographique, motion à la Apple, planche de turboréacteur), puis une affiche fixe. Aucune n’était juste : je l’ai faite à part, avec un autre agent.' },
+            { lead: 'Faire contester.', text: 'Pour SAIFY, chaque proposition arrive avec son constat, son idée, son rendu et son coût. Puis des voix contraires la contestent avant que je tranche : le directeur financier d’un client, le fondateur, un designer qui n’est pas d’accord.' },
+          ],
+        },
+        { type: 'visuel', image: pSaifyFonds, legende: 'Les fonds de SAIFY : six matières calculées en direct. Le point rouge marque ma préférée.' },
+        { type: 'visuel', image: pSaifyPiliers, legende: 'Une idée à creuser : les cinq pièces du S deviennent cinq piliers, une façade de banque à nos couleurs.' },
+        { type: 'visuel', image: pSaifyDispositions, legende: 'Douze dispositions du premier écran de SAIFY, en rectangles seulement. Trois retenues, dans l’ordre ; les neuf autres écartées.' },
+        { type: 'visuel', image: pMikkyPouvoirs, legende: 'Mikky en pixels : huit couleurs, avec ou sans ses bras, en sprite ou en magicien. Des essais côte à côte, pour choisir d’un regard.' },
+        {
+          type: 'texte',
+          lead: 'Quand quelqu’un dit « je n’aime aucune ».',
+          text: 'Cinq identités de plus ne servent à rien. Il faut passer à des variations de réglages (densité, verre, arrondis, accent) sur une base qu’il aime déjà.',
+        },
+      ],
+    },
+    {
+      id: 'curseurs',
+      nav: 'Les curseurs',
+      titre: 'Les curseurs donnent une direction, pas la mainmise.',
+      blocs: [
+        {
+          type: 'texte',
+          text: 'J’aime régler moi-même, mais dans un cadre. Chaque établi part de préréglages, et chaque curseur est borné : on ajuste sans sortir de la direction choisie.',
+        },
+        { type: 'visuel', image: pFond, legende: 'L’établi du fond : trois directions, puis teinte, saturation et clarté bornées pour rester dans le « clair et uni ».' },
+        {
+          type: 'liste',
+          items: [
+            { lead: 'Le fond de ce portfolio.', text: 'Une saturation entre 0 et 0,03 et une clarté entre 88 et 98 %. « Copier mes réglages » me donne un résumé à coller à l’agent, qui en fait la valeur retenue.' },
+            { lead: 'La typo.', text: 'Six compositions de départ, puis une typothèque de 55 polices libres : chacune peut prendre un rôle (titre, texte, étiquettes), avec sa taille sur son curseur.' },
+            { lead: 'Le visage de Mikky.', text: 'Un écran de réglage, avec un bouton par état et par geste, et des curseurs pour ses proportions : les yeux, leur écart, les oreilles. On valide les expressions avant de les figer.' },
+            { lead: 'SAIFY.', text: 'Sept gammes, quinze contrepoints et trois doses : 315 façons de sortir du tout bleu sans toucher au logo. Douze styles prêts en un clic, « un effet principal et une ou deux touches, jamais plus ».' },
+          ],
+        },
+        { type: 'visuel', image: pTypo, legende: 'L’établi de la typo : la composition retenue, puis la police et la taille de chaque rôle.' },
+        { type: 'visuel', image: pSaifyLabo, legende: 'Le laboratoire de SAIFY : gamme, contrepoint, dose et police, réglés en haut de page et appliqués partout.' },
+      ],
+    },
+    {
+      id: 'decider',
+      nav: 'Décider',
+      titre: 'Je choisis vite, et j’écris pourquoi.',
+      blocs: [
+        {
+          type: 'texte',
+          text: 'Ma critique tient en trois mots : garde, jette, change, avec un mot de pourquoi (« trop chargé », « pas assez rouge », « ça fait too much »). Je réponds souvent par numéro : « le 1, et le 3 en plus foncé ».',
+        },
+        {
+          type: 'liste',
+          items: [
+            { lead: 'Une étape, une décision.', text: 'On ne passe à la suivante qu’après mon accord.' },
+            { lead: 'Chaque décision va dans un journal,', text: 'avec sa date, ma phrase exacte et sa raison : 107 pour ce portfolio, 102 pour SAIFY, plus de 350 notes datées dans le code de Mikky. Ce qui y est écrit ne se rediscute plus sans raison nouvelle.' },
+            { lead: 'Les pistes rejetées quittent le code', text: 'et restent dans l’historique Git. Pas de pistes mortes dans le produit, mais rien n’est perdu : les dix-sept mises en page en tête de cette page sont ressorties de là.' },
+            { lead: 'Les numéros ne changent jamais.', text: 'Une piste écartée laisse un trou dans la numérotation : on sait toujours de quoi on parle.' },
+          ],
+        },
+        { type: 'visuel', image: pMikkyLogos, legende: 'Le logo de Mikky : C, qui dépasse, est retenu ; C2, C3 et C4 restent à côté, étiquetés, pour y revenir.' },
+        { type: 'visuel', image: pSaifyJournal, legende: 'Le journal du Studio SAIFY : « La première maquette de la landing est rejetée et supprimée : “c’est pas beau”. »' },
+        {
+          type: 'texte',
+          lead: 'Le journal sert aussi l’IA.',
+          text: 'Une session neuve relit l’atelier et le journal avant de proposer : elle reprend au bon endroit, sans repartir de zéro.',
+        },
+      ],
+    },
+    {
+      id: 'resultat',
+      nav: 'Le résultat',
+      titre: 'Au bout de l’atelier, un système, pas une page.',
+      blocs: [
+        {
+          type: 'texte',
+          text: 'Pour SAIFY, j’ai demandé un branding complet, fait comme le ferait un grand studio, tiré de mes préférées et d’elles seules. Une règle : on ne change jamais le champ, on change l’écriture. Le résultat : cent quarante-cinq images prêtes à l’emploi et sept PDF, tous calculés par le code et exportés d’un seul geste.',
+        },
+        { type: 'visuel', image: pSaifySysteme, legende: 'Le système : six gestes, six écritures, trente-six champs. Chaque case est calculée, pas dessinée.' },
+        {
+          type: 'colonnes',
+          items: [
+            { lead: 'Identité', text: 'Un carnet de seize planches, au format d’un carrousel : la marque expliquée en une minute.' },
+            { lead: 'Publications', text: 'Cinq carrousels, dix affiches, les bannières et les images de lien.' },
+            { lead: 'Le reste', text: 'Une présentation de huit diapositives, des fonds d’écran, la papeterie.' },
+          ],
+        },
+        { type: 'visuel', image: pSaifyChamps, legende: 'Huit champs pour les carrousels : la même bande partout, quatre gestes, puis quatre formes tirées de la finance.' },
+        { type: 'visuel', image: pSaifyAffiches, legende: 'Dix affiches, une idée par affiche : c’est ici qu’est la folie.' },
+        { type: 'visuel', image: pSaifyCarnet, legende: 'Le carnet d’identité : la couverture, l’idée, le monogramme, le nom sur trois fonds.' },
+        { type: 'visuel', image: pSaifyEnsemble, legende: 'L’ensemble : vingt pièces côte à côte. Ce qui compte, c’est qu’on reconnaisse la maison d’une pièce à l’autre.' },
+      ],
+    },
+    {
+      id: 'modeles',
+      nav: 'Les modèles',
+      titre: 'Le modèle le plus fort, seulement pour créer.',
+      blocs: [
+        {
+          type: 'texte',
+          text: 'Les modèles réglés sur l’effort le plus élevé ne sont vraiment utiles qu’à un endroit : la création, l’UI et l’UX. Là, ils font la différence. Ailleurs, ils coûtent plus sans faire mieux.',
+        },
+        {
+          type: 'texte',
+          lead: 'Ma règle sur SAIFY.',
+          text: 'Toute génération créative (territoires, interface, composants, parcours) part sur le modèle le plus fort, à effort élevé, dans une session neuve qui relit d’abord le Studio. Le reste (brancher, déplacer, corriger, optimiser) se fait avec les réglages habituels.',
+        },
+        {
+          type: 'texte',
+          lead: 'Pourquoi ça reste propre.',
+          text: 'La création se fait dans l’atelier, avec ses tokens et ses composants validés. Le produit n’est assemblé qu’à partir de pièces déjà choisies.',
+        },
+      ],
+    },
+    {
+      id: 'apports',
+      nav: 'Ce que ça m’a appris',
+      titre: 'Ce que ça m’a appris',
+      blocs: [
+        { type: 'texte', lead: 'Le goût ne se délègue pas, la production si.', text: 'L’IA m’a rendu bien plus rapide pour explorer, pas pour décider.' },
+        { type: 'texte', lead: 'Ouvrir avant de fermer.', text: 'Les meilleures idées sont venues quand j’ai demandé ailleurs (magazines, architectes, studios), pas quand j’ai corrigé la première proposition.' },
+        { type: 'texte', lead: 'Simplifier, toujours.', text: 'Une barre de défilement en vague, un rang de logos, une ligne de trop : la plupart des retraits ont amélioré la page.' },
+        { type: 'texte', lead: 'Juger le vrai.', text: 'En taille réelle, sur un vrai téléphone, avec le vrai texte. Une maquette ne m’a jamais dit la vérité.' },
+      ],
+    },
+  ],
+};
+
 /** The project pages, by their number on the Vitrine. */
-export const PROJETS: Partial<Record<string, Projet>> = { '01': WHITEBOARD_AMDEC, '02': SNCF_GPT, '03': SYNTHESE_REUNIONS };
+export const PROJETS: Partial<Record<string, Projet>> = { '01': WHITEBOARD_AMDEC, '02': SNCF_GPT, '03': SYNTHESE_REUNIONS, '04': PROCESSUS_DESIGN };

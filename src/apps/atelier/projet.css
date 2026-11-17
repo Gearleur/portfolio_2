@@ -596,3 +596,8 @@
   font-size: 14px;
   cursor: pointer;
 }
+
+/* A film in a page: 16:9, its frames drawn on a canvas like the thumbnails' (film.css). */
+.p-visuel__image:has(> .p-film) {
+  aspect-ratio: 16 / 9;
+}

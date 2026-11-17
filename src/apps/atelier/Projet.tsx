@@ -8,6 +8,9 @@ import { MiniatureReunions } from './MiniatureReunions';
 import { EcranCadre, Schema } from './Schemas';
 import type { Bloc, Phrase, Projet } from './projets';
 import { useTranche } from './tranche';
+import { useFilm } from './useFilm';
+import type { Film } from './useFilm';
+import './film.css';
 import './projet.css';
 import './steps/navmobile.css';
 
@@ -36,6 +39,21 @@ function Texte({ lead, text, href }: Phrase) {
 }
 
 /** A picture: a diagram or the thumbnail, or a grey placeholder with what it will show. */
+/** A film in a page (a scroll through a product's boards): its poster at once, the video near the screen, played only on screen, the poster alone under reduced motion. */
+function FilmFigure({ film, affiche }: { film: Film; affiche: string }) {
+  const hote = useRef<HTMLDivElement>(null);
+  const video = useRef<HTMLVideoElement>(null);
+  const toile = useRef<HTMLCanvasElement>(null);
+  useFilm(hote, video, toile, film);
+  return (
+    <div ref={hote} className="film p-film">
+      <img className="film__affiche" src={affiche} alt="" loading="lazy" decoding="async" />
+      <video ref={video} className="film__video" muted loop playsInline disablePictureInPicture preload="none" aria-hidden="true" />
+      <canvas ref={toile} className="film__image" aria-hidden="true" />
+    </div>
+  );
+}
+
 function Visuel({ children, legende, n, zoom }: { children?: ReactNode; legende: string; n: number; zoom?: ReactNode }) {
   const [ouvert, setOuvert] = useState(false);
   const ferme = () => setOuvert(false);
@@ -179,9 +197,15 @@ function Blocs({ blocs, figures }: { blocs: Bloc[]; figures: Map<Bloc, number> }
             key={index}
             legende={bloc.legende}
             n={figures.get(bloc) ?? 0}
-            zoom={bloc.schema ? <Schema id={bloc.schema} /> : bloc.image && <img src={bloc.image} alt={bloc.legende} decoding="async" />}
+            zoom={bloc.film ? undefined : bloc.schema ? <Schema id={bloc.schema} /> : bloc.image && <img src={bloc.image} alt={bloc.legende} decoding="async" />}
           >
-            {bloc.schema ? <Schema id={bloc.schema} /> : bloc.image && <img className={bloc.large ? 'p-img--large' : undefined} src={bloc.image} alt={bloc.legende} loading="lazy" decoding="async" />}
+            {bloc.film ? (
+              <FilmFigure film={bloc.film} affiche={bloc.film.affiche} />
+            ) : bloc.schema ? (
+              <Schema id={bloc.schema} />
+            ) : (
+              bloc.image && <img className={bloc.large ? 'p-img--large' : undefined} src={bloc.image} alt={bloc.legende} loading="lazy" decoding="async" />
+            )}
           </Visuel>
         );
     }
@@ -295,7 +319,7 @@ function Article({ projet, cadrage }: { projet: Projet; cadrage: 'paysage' | 'po
           <T>{projet.nom.split(' ').slice(0, -1).join(' ')} </T>
           <span className="p-titre__fin">
             <T>{projet.nom.split(' ').at(-1)}</T>
-            <Marque id={projet.logo} className="p-titre__logo" />
+            {projet.logo && <Marque id={projet.logo} className="p-titre__logo" />}
           </span>
         </h1>
         <p className="p-accroche">
