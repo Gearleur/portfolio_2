@@ -96,10 +96,11 @@ export const PROPOSITIONS: Proposition[] = [
 
 /**
  * The switch retained at M3 (Alexandre, 2026-11-19): « Pétale » in glass, the knob carrying 0 / 1,
- * no label, and small: at 0.4 the pill is about 118 × 32 px, the size of the name in the page's
- * side laid flat. Discreet, at the bottom in the middle, 16 px from the edge.
+ * no label, all the coquelicot, drawn at 0.7: a pill of about 207 × 56 px at the bottom in the
+ * middle, 16 px from the edge. He first asked for 0.4, the size of the name in the page's side,
+ * then settled between the two.
  */
-export const RETENU: Reglages = { largeur: 296, hauteur: 80, echelle: 0.4, rayon: 1, relief: 0.6, matiere: 'verre', fenetre: 'petale', coquelicot: 0.8, forme: 'rond', porte: 'chiffre', libelles: 'aucun', bas: 16, terminal: 'arret', duree: 560, elasticite: 0.7, vibration: true };
+export const RETENU: Reglages = { largeur: 296, hauteur: 80, echelle: 0.7, rayon: 1, relief: 0.6, matiere: 'verre', fenetre: 'petale', coquelicot: 1, forme: 'rond', porte: 'chiffre', libelles: 'aucun', bas: 16, terminal: 'arret', duree: 580, elasticite: 0.7, vibration: true };
 
 /** The bench's state: the settings, and the proposition they started from. */
 export type Etat = { depart: string; reglages: Reglages };
