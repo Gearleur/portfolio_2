@@ -1,0 +1,251 @@
+/* Atelier 2 · M2, typo et grille: the terminal's screen inside M1's sheet of glass.
+   Its sizes are px of a 1440 px page (--u, from .m1); the bench sets the custom
+   properties on .m2-ecran, and the measured cell (--cw, --lh) on .m2-grille (Ecran.tsx). */
+
+/* JetBrains Mono and Geist Mono, SIL OFL 1.1 (../../atelier/fonts/licenses): the
+   typothèque's latin cuts, both variable in weight. */
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('../../atelier/fonts/jetbrains-mono.woff2') format('woff2');
+  font-weight: 100 800;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Geist Mono';
+  src: url('../../atelier/fonts/geist-mono.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+.m2-ecran {
+  --encre: 243 243 238;
+  /* the glass's own night blue, opaque: the ink of what is in reverse video */
+  --nuit: oklch(0.19 0.022 262);
+
+  position: absolute;
+  inset: 0;
+  color: rgb(var(--encre) / var(--g-sortie));
+  font-size: calc(var(--corps) * var(--u));
+  font-weight: var(--graisse);
+  font-kerning: none;
+  /* the cell is the face's advance, a little wider or narrower */
+  letter-spacing: calc((var(--chasse) - 1) * 1ch);
+  line-height: 1;
+}
+
+/* Fifty zeros to read the cell on, and 100 px of the page to read its scale. */
+.m2-sonde,
+.m2-etalon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  visibility: hidden;
+  white-space: pre;
+  pointer-events: none;
+}
+
+.m2-etalon {
+  width: calc(100 * var(--u));
+  height: 0;
+}
+
+/* The screen: whole cells only. A title line, the lines, a status line. */
+.m2-grille {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+}
+
+.m2-barre {
+  display: flex;
+  flex: none;
+  justify-content: space-between;
+  height: var(--lh);
+  margin: 0;
+  color: rgb(var(--encre) / var(--g-meta));
+  line-height: var(--lh);
+  white-space: pre;
+}
+
+/* Reverse video, at the grey of what stands beside: a bar that does not shout.
+   Its words keep one cell from its ends; the quiet line stays flush with the text. */
+.m2-ecran[data-habillage='cadre'] .m2-barre {
+  padding: 0 var(--cw);
+  background: rgb(var(--encre) / var(--g-meta));
+  color: var(--nuit);
+}
+
+/* Like a real terminal: the lines start at the top, and when there are too many the
+   oldest leave by the top, the prompt staying in view. */
+.m2-texte {
+  display: flex;
+  flex: 1;
+  flex-direction: column-reverse;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.m2-ecran[data-habillage='cadre'] .m2-texte {
+  padding-top: var(--lh);
+}
+
+.m2-lignes {
+  margin: 0 0 auto;
+  font: inherit;
+  white-space: pre;
+}
+
+.m2-ligne {
+  display: block;
+  height: var(--lh);
+  line-height: var(--lh);
+}
+
+/* Three greys: what is typed, what answers, what stands beside. Folders and titles in bold. */
+.m2-ecran :is([data-sorte='commande'], [data-sorte='titre']) {
+  color: rgb(var(--encre) / var(--g-commande));
+}
+
+.m2-ecran :is([data-sorte='invite'], [data-sorte='meta']) {
+  color: rgb(var(--encre) / var(--g-meta));
+}
+
+.m2-ecran :is([data-sorte='dossier'], [data-sorte='titre']) {
+  font-weight: 700;
+}
+
+/* The cursor: one cell, as high as the face. A block, a line under it, or a bar before it. */
+.m2-curseur {
+  position: relative;
+}
+
+.m2-curseur::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgb(var(--encre) / 0.85);
+}
+
+.m1-terminal[data-curseur='accent'] .m2-curseur::before {
+  background: var(--accent);
+}
+
+.m2-curseur[data-forme='souligne']::before {
+  top: auto;
+  height: max(1px, 0.13em);
+}
+
+.m2-curseur[data-forme='barre']::before {
+  right: auto;
+  width: max(1px, 0.13em);
+}
+
+.m2-curseur[data-clignote]::before {
+  animation: m2-clignote 1.06s steps(1) infinite;
+}
+
+@keyframes m2-clignote {
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .m2-curseur[data-clignote]::before {
+    animation: none;
+  }
+}
+
+/* The cells over the screen (key G): every column, every row, one column in ten
+   stronger, and a light line where the measure ends. */
+.m2-cellules {
+  --trait: rgb(224 48 31 / 0.3);
+
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, rgb(224 48 31 / 0.6) 0 1px, transparent 1px), linear-gradient(to right, var(--trait) 0 1px, transparent 1px),
+    linear-gradient(to bottom, var(--trait) 0 1px, transparent 1px);
+  background-size:
+    calc(var(--cw) * 10) 100%,
+    var(--cw) 100%,
+    100% var(--lh);
+  box-shadow: inset -1px -1px 0 var(--trait);
+  pointer-events: none;
+}
+
+.m2-cellules::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--cw) * var(--mesure));
+  width: 1px;
+  background: rgb(var(--encre) / 0.7);
+}
+
+/* The bench ------------------------------------------------------------------ */
+
+.m2-etabli .atelier-stage__bar button[aria-pressed='true'] {
+  background: #ffffff1f;
+}
+
+.m2-glyphe {
+  --l: linear-gradient(#d9d9d4, #d9d9d4);
+  --b: linear-gradient(#8d919b, #8d919b);
+
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background-color: #1c2233;
+  background-repeat: no-repeat;
+  box-shadow: 0 0 0 1px var(--atelier-line);
+}
+
+/* D’origine: small tight lines in the top left corner. */
+.m2-glyphe[data-id='origine'] {
+  background-image: var(--l), var(--l), var(--l), var(--l);
+  background-position:
+    4px 5px,
+    4px 8px,
+    4px 11px,
+    4px 14px;
+  background-size:
+    14px 1px,
+    21px 1px,
+    17px 1px,
+    8px 1px;
+}
+
+/* 80 colonnes: a centred measure between its two bars. */
+.m2-glyphe[data-id='colonnes'] {
+  background-image: var(--b), var(--l), var(--l), var(--l), var(--b);
+  background-position:
+    8px 5px,
+    8px 11px,
+    8px 15px,
+    8px 19px,
+    8px 29px;
+  background-size:
+    20px 2px,
+    15px 1px,
+    20px 1px,
+    11px 1px,
+    20px 2px;
+}
+
+/* Lecture: a narrow column of open lines on the left. */
+.m2-glyphe[data-id='lecture'] {
+  background-image: var(--l), var(--l), var(--l), var(--l);
+  background-position:
+    6px 7px,
+    6px 13px,
+    6px 19px,
+    6px 25px;
+  background-size:
+    13px 2px,
+    16px 2px,
+    11px 2px,
+    3px 2px;
+}

@@ -352,3 +352,14 @@
   box-shadow: 0 24px 60px -20px rgb(0 0 0 / 0.5);
   scrollbar-width: thin;
 }
+
+/* A bench that judges the top of the picture (M2) asks for the bar at the bottom. */
+.atelier-preview[data-barre='bas'] .atelier-preview__bar {
+  top: auto;
+  bottom: 16px;
+}
+
+.atelier-preview[data-barre='bas'] .m1-flottant {
+  top: 16px;
+  bottom: 72px;
+}

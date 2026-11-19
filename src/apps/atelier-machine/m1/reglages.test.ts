@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { BORNES, MANIERES, PROPOSITIONS, etatDe, origine, partieDe, provenance, resume, valider } from './reglages';
+import { BORNES, MANIERES, PROPOSITIONS, RETENU, etatDe, origine, partieDe, provenance, resume, valider } from './reglages';
 import type { Partie } from './reglages';
 
 const PARTIES = Object.keys(MANIERES) as Partie[];
@@ -33,6 +33,12 @@ describe('the three propositions', () => {
   it('give a part back as proposed, by its manner', () => {
     expect(partieDe('verre', 'dalle')).toBe(PROPOSITIONS[2].reglages.verre);
     expect(partieDe('gomme', 'passes')).toBe(PROPOSITIONS[1].reglages.gomme);
+  });
+});
+
+describe('the matter retained at M1', () => {
+  it('sits inside the sliders’ bounds, and is the bench’s start when nothing is kept', () => {
+    expect(valider({ depart: 'gomme', reglages: RETENU })?.reglages).toEqual(RETENU);
   });
 });
 

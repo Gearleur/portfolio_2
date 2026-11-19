@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import type { KeyboardEvent } from 'react';
+import type { KeyboardEvent, ReactNode } from 'react';
 import { useFullscreenDialog } from '../../../shared/hooks/useFullscreenDialog';
+import type { FondSettings } from '../../atelier/Fond';
 import { Specimen } from '../../atelier/Specimen';
 import { fondDe } from './fond';
 import { Machine } from './Machine';
@@ -20,53 +21,69 @@ function useLargeur() {
   return largeur;
 }
 
-type Props = { etat: Etat; onChange: (maj: (etat: Etat) => Etat) => void; onClose: () => void };
+/** A proposition in the bar: its name, its bet, whether it is the one shown, and how to take it. */
+type Choix = { nom: string; pari: string; active: boolean; prendre: () => void };
+
+type PleinEcranProps = {
+  fond: FondSettings;
+  /** The bench's propositions (keys 1 to 3). */
+  choix: Choix[];
+  /** The bench's own panel, which floats over the picture and hides (R). */
+  panneau: ReactNode;
+  /** More buttons for the bar, a bench's own. */
+  outils?: ReactNode;
+  /** The bar at the bottom, for a bench that judges the top of the picture. */
+  barreEnBas?: boolean;
+  onClose: () => void;
+  children: ReactNode;
+};
 
 /**
  * The Machine state in full screen, at its real size, as the Atelier's SpecimenPreview shows
  * a page: the same dialog and the same bar, without the wave's buttons (the Machine state has
- * no wave) and with the propositions (keys 1 to 3) and the bench's own panel, which floats
- * over the picture and hides (R).
+ * no wave) and with a bench's propositions and panel. Shared by the benches of Atelier 2.
  */
-export function Apercu({ etat, onChange, onClose }: Props) {
+export function PleinEcran({ fond, choix, panneau, outils, barreEnBas, onClose, children }: PleinEcranProps) {
   const ref = useRef<HTMLDivElement>(null);
   // Full screen shows the real px by default, as the deployed site does.
   const [reelle, setReelle] = useState(true);
   const [reglages, setReglages] = useState(false);
   const largeur = useLargeur();
   useFullscreenDialog({ backgroundSelector: '.atelier-canvas', onClose, ref });
-  const { intacte, seule } = provenance(etat.reglages);
-  const { papier, grain } = etat.reglages.page;
-  const fond = useMemo(() => fondDe({ papier, grain }), [papier, grain]);
 
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     // The arrows and digits of a slider stay the slider's.
     if (event.target instanceof HTMLInputElement || event.metaKey || event.ctrlKey || event.altKey) return;
-    const choisie = PROPOSITIONS[Number(event.key) - 1];
-    if (choisie) onChange(() => etatDe(choisie.id));
+    choix[Number(event.key) - 1]?.prendre();
     if (event.key.toLowerCase() === 'r') setReglages((ouvert) => !ouvert);
   };
 
   // Portalled out of the canvas, which the dialog makes inert while open.
   return createPortal(
-    <div ref={ref} className="atelier-preview" role="dialog" aria-modal="true" aria-label="Le mode Machine en plein écran" tabIndex={-1} onKeyDown={handleKeyDown}>
+    <div
+      ref={ref}
+      className="atelier-preview"
+      data-barre={barreEnBas ? 'bas' : undefined}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Le mode Machine en plein écran"
+      tabIndex={-1}
+      onKeyDown={handleKeyDown}
+    >
       <Specimen settings={fond} reelle={reelle}>
-        <Machine reglages={etat.reglages} />
+        {children}
       </Specimen>
-      {reglages && (
-        <div className="m1-flottant">
-          <Panneau etat={etat} onChange={onChange} />
-        </div>
-      )}
+      {reglages && <div className="m1-flottant">{panneau}</div>}
       <div className="atelier-preview__bar">
-        {PROPOSITIONS.map((p, i) => (
-          <button key={p.id} type="button" className="m1-choix" aria-pressed={p === (intacte ?? seule)} title={p.pari} onClick={() => onChange(() => etatDe(p.id))}>
-            {p.nom} <kbd>{i + 1}</kbd>
+        {choix.map((c, i) => (
+          <button key={c.nom} type="button" className="m1-choix" aria-pressed={c.active} title={c.pari} onClick={c.prendre}>
+            {c.nom} <kbd>{i + 1}</kbd>
           </button>
         ))}
         <button type="button" className="m1-choix" aria-pressed={reglages} onClick={() => setReglages(!reglages)}>
           Réglages <kbd>R</kbd>
         </button>
+        {outils}
         <button type="button" aria-pressed={reelle} onClick={() => setReelle(!reelle)}>
           {reelle ? 'Taille réelle' : `Mise à l’échelle ×${(largeur / 1440).toFixed(2).replace('.', ',')}`}
           <span className="atelier-preview__info">{largeur} px</span>
@@ -77,5 +94,25 @@ export function Apercu({ etat, onChange, onClose }: Props) {
       </div>
     </div>,
     document.body,
+  );
+}
+
+type Props = { etat: Etat; onChange: (maj: (etat: Etat) => Etat) => void; onClose: () => void };
+
+/** M1's bench in full screen: its three propositions and its panel. */
+export function Apercu({ etat, onChange, onClose }: Props) {
+  const { intacte, seule } = provenance(etat.reglages);
+  const { papier, grain } = etat.reglages.page;
+  const fond = useMemo(() => fondDe({ papier, grain }), [papier, grain]);
+
+  return (
+    <PleinEcran
+      fond={fond}
+      choix={PROPOSITIONS.map((p) => ({ nom: p.nom, pari: p.pari, active: p === (intacte ?? seule), prendre: () => onChange(() => etatDe(p.id)) }))}
+      panneau={<Panneau etat={etat} onChange={onChange} />}
+      onClose={onClose}
+    >
+      <Machine reglages={etat.reglages} />
+    </PleinEcran>
   );
 }

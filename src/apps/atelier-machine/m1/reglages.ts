@@ -167,6 +167,18 @@ export const PROPOSITIONS: Proposition[] = [
   },
 ];
 
+/**
+ * The matter retained at M1 (Alexandre, 2026-11-19): the ghost page and the rubbing of « Coup de
+ * gomme », the soft imprints of « À sec », the sheet of night-blue glass of « À plat » over the
+ * right of the screen; the screen does not scroll. The next steps start from it.
+ */
+export const RETENU: Reglages = {
+  page: { maniere: 'fantome', reste: 0.45, bavure: 2.3, accent: 0.45, papier: 0.98, grain: 1 },
+  gomme: { maniere: 'frottis', nombre: 6, largeur: 56, angle: 15, opacite: 0.22, irregularite: 0.35, graine: 4965 },
+  miniatures: { maniere: 'empreinte', profondeur: 0.55, formes: 0.1 },
+  verre: { maniere: 'lame', teinte: -0.65, opacite: 0.82, flou: 0, largeur: 1230, hauteur: 900, x: 1, y: 0.4, curseur: 'accent' },
+};
+
 /** The bench's state: the settings, and the proposition they started from. */
 export type Etat = { depart: string; reglages: Reglages };
 
@@ -255,9 +267,9 @@ export function lire(): Etat {
     const garde = valider(JSON.parse(localStorage.getItem(CLE) ?? 'null'));
     if (garde) return garde;
   } catch {
-    // Storage can be unavailable or hold an older shape; start from the first proposition.
+    // Storage can be unavailable or hold an older shape; start from what was retained.
   }
-  return etatDe(PROPOSITIONS[0].id);
+  return { depart: PROPOSITIONS[0].id, reglages: RETENU };
 }
 
 export function garder(etat: Etat) {

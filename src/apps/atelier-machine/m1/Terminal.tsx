@@ -1,5 +1,5 @@
 import { useId, useMemo } from 'react';
-import type { CSSProperties } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import { GRAIN_TILE, grainImage } from '../../atelier/grain';
 import { FOND } from '../../atelier/tokens';
 import { pleine } from './reglages';
@@ -90,7 +90,30 @@ function Refraction({ id, largeur, hauteur, u }: { id: string; largeur: number; 
 // The frost of the glass: the paper's own grain recipe, in light specks.
 const GIVRE = grainImage(FOND.grain);
 
-export function Terminal({ verre, u }: { verre: Verre; u: number }) {
+/** The screen of step M1: the files at hand, with a plain `ls`. */
+function Fichiers() {
+  return (
+    <div className="m1-terminal__ecran">
+      <pre className="m1-terminal__texte" aria-hidden="true">
+        {ECRAN.map((ligne, i) => (
+          <span key={i} className="m1-terminal__ligne">
+            {ligne.map(([sorte, texte], j) => (
+              <span key={j} data-sorte={sorte}>
+                {texte}
+              </span>
+            ))}
+            {'\n'}
+          </span>
+        ))}
+        <span data-sorte="invite">{INVITE[1]}</span>
+        <span className="m1-terminal__curseur" />
+      </pre>
+    </div>
+  );
+}
+
+/** The pane of glass. Its `children` are another screen than M1's (the next steps' own). */
+export function Terminal({ verre, u, children }: { verre: Verre; u: number; children?: ReactNode }) {
   const id = `${useId().replace(/[^\w-]/g, '')}-dalle`;
   const dalle = verre.maniere === 'dalle' && COURBE;
   const flou = 'blur(calc(var(--flou) * var(--u)))';
@@ -113,22 +136,7 @@ export function Terminal({ verre, u }: { verre: Verre; u: number }) {
     <div className="m1-terminal" data-verre={verre.maniere} data-curseur={verre.curseur} style={style} role="img" aria-label="Terminal : la liste des fichiers à disposition">
       {dalle && <Refraction id={id} largeur={verre.largeur} hauteur={verre.hauteur} u={u} />}
       {verre.maniere === 'depoli' && <p className="m1-terminal__barre">visiteur@alexandre-teixeira: ~</p>}
-      <div className="m1-terminal__ecran">
-        <pre className="m1-terminal__texte" aria-hidden="true">
-          {ECRAN.map((ligne, i) => (
-            <span key={i} className="m1-terminal__ligne">
-              {ligne.map(([sorte, texte], j) => (
-                <span key={j} data-sorte={sorte}>
-                  {texte}
-                </span>
-              ))}
-              {'\n'}
-            </span>
-          ))}
-          <span data-sorte="invite">{INVITE[1]}</span>
-          <span className="m1-terminal__curseur" />
-        </pre>
-      </div>
+      {children ?? <Fichiers />}
     </div>
   );
 }

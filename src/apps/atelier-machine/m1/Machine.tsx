@@ -1,5 +1,5 @@
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
-import type { CSSProperties } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import { Maquette } from '../../atelier/Maquettes';
 import { Enfoncee } from './Enfoncee';
 import { Gomme } from './Gomme';
@@ -14,7 +14,7 @@ import './m1.css';
  * The Vitrine in its Machine state (step M1), as a still: the real first screen (Maquette),
  * erased; the eraser's strokes over it; its thumbnails sunk into the paper; and the terminal
  * of smoked glass on top. Nothing here answers a click: the page under the terminal is inert,
- * and only scrolls under the wheel, to see the thumbnails further down.
+ * and does not scroll: in Machine mode the screen is still (M1, validated).
  *
  * It goes inside a Specimen, which brings the paper, its grain and the page's scale.
  */
@@ -99,7 +99,8 @@ function Filtres({ id, reste, bavure, u }: { id: string; reste: number; bavure: 
   );
 }
 
-export function Machine({ reglages }: { reglages: Reglages }) {
+/** `ecran` replaces what the terminal shows (the next steps' own screens); without it, M1's plain `ls`. */
+export function Machine({ reglages, ecran }: { reglages: Reglages; ecran?: ReactNode }) {
   const { page, gomme, miniatures, verre } = reglages;
   const racine = useRef<HTMLDivElement>(null);
   const id = useId().replace(/[^\w-]/g, '');
@@ -122,20 +123,8 @@ export function Machine({ reglages }: { reglages: Reglages }) {
     // the headline wraps once its face has loaded
     void document.fonts?.ready.then(relever);
 
-    // The wheel scrolls the erased page under the terminal; the strokes follow their paper.
-    const rouler = (event: WheelEvent) => {
-      const maquette = el.querySelector<HTMLElement>('.maquette');
-      if (!maquette) return;
-      const avant = maquette.scrollTop;
-      maquette.scrollTop += event.deltaY;
-      if (maquette.scrollTop === avant) return;
-      event.preventDefault();
-      el.style.setProperty('--defil', `${-maquette.scrollTop}px`);
-    };
-    el.addEventListener('wheel', rouler, { passive: false });
     return () => {
       taille.disconnect();
-      el.removeEventListener('wheel', rouler);
     };
   }, []);
 
@@ -164,7 +153,9 @@ export function Machine({ reglages }: { reglages: Reglages }) {
         <Maquette blocks={page.maniere === 'blocs'} images={images} />
       </div>
       <Gomme gomme={gomme} mesure={mesure} />
-      <Terminal verre={verre} u={mesure.u} />
+      <Terminal verre={verre} u={mesure.u}>
+        {ecran}
+      </Terminal>
       <span className="m1__etalon" aria-hidden="true" />
     </div>
   );

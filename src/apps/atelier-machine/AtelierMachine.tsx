@@ -11,8 +11,8 @@ import type { ComponentType } from 'react';
 type Etape = { id: string; nom: string; fichier: string; decide: string; statut: 'valide' | 'en-cours' | 'a-venir' };
 
 const ETAPES: Etape[] = [
-  { id: 'm1', nom: 'La matière', fichier: 'M1Matiere', decide: 'La page effacée, les miniatures enfoncées, le terminal en verre fumé.', statut: 'en-cours' },
-  { id: 'm2', nom: 'Typo et grille', fichier: 'M2Typo', decide: 'La mono de base du terminal et sa grille de cellules.', statut: 'a-venir' },
+  { id: 'm1', nom: 'La matière', fichier: 'M1Matiere', decide: 'Retenu : la page fantôme et le frottis de « Coup de gomme », les empreintes de « À sec », la lame de verre bleu nuit de « À plat » ; l’écran ne défile pas.', statut: 'valide' },
+  { id: 'm2', nom: 'Typo et grille', fichier: 'M2Typo', decide: 'Retenu : la police de console du système à 14 px, pleine lame, trois gris étagés, bloc clignotant, invite « $ » et une ligne d’état.', statut: 'valide' },
   { id: 'm3', nom: 'Le curseur', fichier: 'M3Curseur', decide: 'L’interrupteur Humain / Machine en bas de page.', statut: 'a-venir' },
   { id: 'm4', nom: 'Le passage', fichier: 'M4Passage', decide: 'L’animation de 0 à 1 : on doit sentir qu’on perd de l’âme.', statut: 'a-venir' },
   { id: 'm5', nom: 'Le contenu', fichier: 'M5Contenu', decide: 'Les dossiers et les fichiers, les langues, les images en [image].', statut: 'a-venir' },

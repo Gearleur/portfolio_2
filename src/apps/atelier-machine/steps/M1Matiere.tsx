@@ -53,8 +53,7 @@ export function M1Matiere(): JSX.Element {
           </div>
           <div className="atelier-stage__bar">
             <p>
-              {intacte ? `« ${intacte.nom} »` : seule ? `« ${seule.nom} », réglée` : 'Mélange'} · premier écran à 1440 × 900 · la molette fait défiler la
-              page sous le terminal
+              {intacte ? `« ${intacte.nom} »` : seule ? `« ${seule.nom} », réglée` : 'Mélange'} · premier écran à 1440 × 900, sans défilement
             </p>
             <div>
               <button type="button" onClick={() => setOuvert(true)}>
