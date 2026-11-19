@@ -112,8 +112,8 @@ function Fichiers() {
   );
 }
 
-/** The pane of glass. Its `children` are another screen than M1's (the next steps' own). */
-export function Terminal({ verre, u, children }: { verre: Verre; u: number; children?: ReactNode }) {
+/** The pane of glass. Its `children` are another screen than M1's (the next steps' own); `vivant`, a screen that works. */
+export function Terminal({ verre, u, children, vivant }: { verre: Verre; u: number; children?: ReactNode; vivant?: boolean }) {
   const id = `${useId().replace(/[^\w-]/g, '')}-dalle`;
   const dalle = verre.maniere === 'dalle' && COURBE;
   const flou = 'blur(calc(var(--flou) * var(--u)))';
@@ -133,7 +133,7 @@ export function Terminal({ verre, u, children }: { verre: Verre; u: number; chil
   } as CSSProperties;
 
   return (
-    <div className="m1-terminal" data-verre={verre.maniere} data-curseur={verre.curseur} style={style} role="img" aria-label="Terminal : la liste des fichiers à disposition">
+    <div className="m1-terminal" data-verre={verre.maniere} data-curseur={verre.curseur} style={style} role={vivant ? 'region' : 'img'} aria-label={vivant ? 'Terminal' : 'Terminal : la liste des fichiers à disposition'}>
       {dalle && <Refraction id={id} largeur={verre.largeur} hauteur={verre.hauteur} u={u} />}
       {verre.maniere === 'depoli' && <p className="m1-terminal__barre">visiteur@alexandre-teixeira: ~</p>}
       {children ?? <Fichiers />}

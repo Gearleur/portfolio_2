@@ -99,8 +99,11 @@ function Filtres({ id, reste, bavure, u }: { id: string; reste: number; bavure: 
   );
 }
 
-/** `ecran` replaces what the terminal shows (the next steps' own screens); without it, M1's plain `ls`. */
-export function Machine({ reglages, ecran }: { reglages: Reglages; ecran?: ReactNode }) {
+/**
+ * `ecran` replaces what the terminal shows (the next steps' own screens); without it, M1's plain `ls`.
+ * `vivant` says that screen answers the keys and the pointer (M5): the terminal is then a region, not a picture.
+ */
+export function Machine({ reglages, ecran, vivant }: { reglages: Reglages; ecran?: ReactNode; vivant?: boolean }) {
   const { page, gomme, miniatures, verre } = reglages;
   const racine = useRef<HTMLDivElement>(null);
   const id = useId().replace(/[^\w-]/g, '');
@@ -153,7 +156,7 @@ export function Machine({ reglages, ecran }: { reglages: Reglages; ecran?: React
         <Maquette blocks={page.maniere === 'blocs'} images={images} />
       </div>
       <Gomme gomme={gomme} mesure={mesure} />
-      <Terminal verre={verre} u={mesure.u}>
+      <Terminal verre={verre} u={mesure.u} vivant={vivant}>
         {ecran}
       </Terminal>
       <span className="m1__etalon" aria-hidden="true" />

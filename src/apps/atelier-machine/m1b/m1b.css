@@ -1,0 +1,221 @@
+/* Atelier 2 · M1 bis, « Brut »: a plain-text index, one ink on black. */
+
+.m1b-outils {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 28px;
+  margin: 0 0 16px;
+}
+
+.m1b-choix {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+}
+
+.m1b-choix > span {
+  margin-right: 6px;
+  opacity: 0.55;
+}
+
+.m1b-choix button,
+.m1b-plein {
+  padding: 5px 10px;
+  border: 1px solid rgb(255 255 255 / 0.16);
+  border-radius: 999px;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.m1b-choix button[aria-pressed='true'] {
+  border-color: transparent;
+  background: rgb(255 255 255 / 0.14);
+}
+
+.m1b-plein {
+  margin-left: auto;
+}
+
+.m1b {
+  --encre: #e0301f;
+  --nuit: #000;
+  --sourd: color-mix(in oklch, var(--encre) 64%, var(--nuit));
+
+  position: relative;
+  aspect-ratio: 1440 / 900;
+  overflow: hidden;
+  border-radius: 8px;
+  background: var(--nuit);
+  color: var(--encre);
+  font: 600 12.5px/1.6 Menlo, Consolas, 'DejaVu Sans Mono', 'Liberation Mono', monospace;
+  letter-spacing: 0.04em;
+}
+
+.m1b:fullscreen {
+  aspect-ratio: auto;
+  border-radius: 0;
+}
+
+.m1b[data-casse='capitales'] {
+  text-transform: uppercase;
+}
+
+.m1b ::selection {
+  background: var(--encre);
+  color: var(--nuit);
+}
+
+.m1b-page {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.m1b-colonne {
+  width: min(640px, 100% - 48px);
+  margin: 0 auto;
+  padding: 48px 0 120px;
+}
+
+.m1b p,
+.m1b dl,
+.m1b dd,
+.m1b ul {
+  margin: 0;
+  padding: 0;
+}
+
+/* The name in blocks: each cell is a small brick, with the trace of a second print behind. */
+.m1b-nom {
+  display: grid;
+  width: max-content;
+  gap: 2px;
+  margin-bottom: 28px !important;
+  filter: drop-shadow(4px 4px 0 color-mix(in oklch, var(--encre) 38%, var(--nuit)));
+}
+
+.m1b-nom span {
+  display: flex;
+  gap: 2px;
+}
+
+.m1b-nom i {
+  width: 11px;
+  height: 20px;
+}
+
+.m1b-nom i[data-plein] {
+  background:
+    linear-gradient(var(--nuit), var(--nuit)) 0 50% / 100% 1px no-repeat,
+    linear-gradient(var(--nuit), var(--nuit)) 50% 0 / 1px 100% no-repeat,
+    var(--encre);
+}
+
+.m1b-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  margin-bottom: 20px !important;
+  list-style: none;
+}
+
+.m1b-nav li {
+  padding: 0 4px;
+  margin-left: -4px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.m1b-nav li[aria-current] {
+  background: var(--encre);
+  color: var(--nuit);
+  text-decoration: none;
+}
+
+.m1b-titre {
+  margin-bottom: 14px !important;
+  color: color-mix(in oklch, var(--encre) 55%, white);
+}
+
+.m1b-sourd {
+  color: var(--sourd);
+}
+
+.m1b u {
+  text-underline-offset: 4px;
+}
+
+.m1b-filet {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 40px 0 16px;
+  color: var(--sourd);
+  font: inherit;
+  font-weight: 600;
+}
+
+.m1b-filet::before,
+.m1b-filet::after {
+  content: '';
+  height: 1px;
+  background: currentColor;
+}
+
+.m1b-filet::before {
+  width: 16px;
+}
+
+.m1b-filet::after {
+  flex: 1;
+}
+
+.m1b-fiche > div {
+  display: grid;
+  grid-template-columns: 17ch 1fr;
+  margin-bottom: 4px;
+}
+
+.m1b-fiche dt {
+  color: var(--sourd);
+  white-space: nowrap;
+}
+
+.m1b-projet {
+  max-width: 64ch;
+  margin-bottom: 16px;
+}
+
+.m1b-projet p + p {
+  margin-top: 2px;
+}
+
+/* The switch, as a still: M3 decides its form. */
+.m1b-mode {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid color-mix(in oklch, var(--encre) 30%, var(--nuit));
+  border-radius: 999px;
+  background: var(--nuit);
+  translate: -50% 0;
+}
+
+.m1b-mode span {
+  padding: 2px 10px;
+  border-radius: 999px;
+  color: #fff;
+}
+
+.m1b-mode span[data-actif] {
+  color: var(--encre);
+}

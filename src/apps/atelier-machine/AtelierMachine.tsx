@@ -12,10 +12,11 @@ type Etape = { id: string; nom: string; fichier: string; decide: string; statut:
 
 const ETAPES: Etape[] = [
   { id: 'm1', nom: 'La matière', fichier: 'M1Matiere', decide: 'Retenu : la page fantôme et le frottis de « Coup de gomme », les empreintes de « À sec », la lame de verre bleu nuit de « À plat » ; l’écran ne défile pas.', statut: 'valide' },
+  { id: 'm1b', nom: 'Brut', fichier: 'M1Brut', decide: 'Une autre matière à comparer, d’après basement.studio/ai : un index en texte brut, une encre sur noir.', statut: 'en-cours' },
   { id: 'm2', nom: 'Typo et grille', fichier: 'M2Typo', decide: 'Retenu : la police de console du système à 14 px, pleine lame, trois gris étagés, bloc clignotant, invite « $ » et une ligne d’état.', statut: 'valide' },
   { id: 'm3', nom: 'Le curseur', fichier: 'M3Curseur', decide: 'L’interrupteur Humain / Machine en bas de page.', statut: 'a-venir' },
   { id: 'm4', nom: 'Le passage', fichier: 'M4Passage', decide: 'L’animation de 0 à 1 : on doit sentir qu’on perd de l’âme.', statut: 'a-venir' },
-  { id: 'm5', nom: 'Le contenu', fichier: 'M5Contenu', decide: 'Les dossiers et les fichiers, les langues, les images en [image].', statut: 'a-venir' },
+  { id: 'm5', nom: 'Le contenu', fichier: 'M5Contenu', decide: 'Retenu : « Touches », flèche de retour, le menu du dossier redonné sous chaque fichier lu, Markdown un peu agencé et sans images, 128 colonnes ; la souris marche partout.', statut: 'valide' },
   { id: 'm6', nom: 'Se déplacer', fichier: 'M6Deplacer', decide: 'Clavier et souris ; le téléphone ensuite.', statut: 'a-venir' },
   { id: 'm7', nom: 'Finitions', fichier: 'M7Finitions', decide: 'Mouvement réduit, accessibilité, poids, tests.', statut: 'a-venir' },
 ];

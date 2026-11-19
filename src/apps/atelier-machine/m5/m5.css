@@ -1,0 +1,193 @@
+/* Atelier 2 · M5, le contenu: the terminal that works, on M2's grid (m2.css) inside M1's
+   sheet of glass. Everything stays on the cells: the first line (the way back), the lines
+   that scroll, the last line (the keys, or where one is). No colour but the cursor's. */
+
+.m5 :is(button, a) {
+  all: unset;
+  cursor: pointer;
+}
+
+.m5 button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+/* The lines scroll inside the glass; the page behind never does. The scrollbar sits in the
+   glass's margin, off the grid. */
+.m5-defile {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  margin-right: calc(var(--marge) * -1);
+  padding-right: var(--marge);
+  overflow: hidden auto;
+  overscroll-behavior: contain;
+  white-space: pre;
+  scrollbar-width: thin;
+  scrollbar-color: rgb(var(--encre) / 0.2) transparent;
+}
+
+.m5-neuf {
+  height: calc(100% - var(--lh));
+}
+
+/* A name that opens, a link that leaves: underlined under the pointer, framed under the keys. */
+.m5-nom:not(:disabled):hover {
+  text-decoration: underline;
+  text-underline-offset: 0.22em;
+}
+
+.m5 :is(button, a):focus-visible {
+  outline: 1px solid rgb(var(--encre) / 0.9);
+  outline-offset: 1px;
+}
+
+/* The chosen name: in reverse video, as a terminal's menu shows it, or behind a chevron. */
+.m5[data-selection='inverse'] .m5-nom[data-elue] {
+  background: rgb(var(--encre) / var(--g-sortie));
+  color: var(--nuit);
+}
+
+.m5[data-selection='chevron'] :is(.m5-nom[data-elue], .m5-chevron) {
+  color: rgb(var(--encre) / var(--g-commande));
+}
+
+/* The command ↵ would run, fainter than anything typed. */
+.m5-suggestion {
+  color: rgb(var(--encre) / calc(var(--g-meta) * 0.72));
+}
+
+/* The field that takes the keys is not seen: the cursor is. Solid while the terminal has the
+   keyboard, hollow when it does not, as a terminal's window out of focus. */
+.m5-champ {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  border: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.m1-terminal .m5:not([data-actif]) .m2-curseur::before {
+  background: none;
+  box-shadow: inset 0 0 0 1px rgb(var(--encre) / 0.55);
+}
+
+/* The first line and the last, each one line of the grid, an empty line from the text. */
+.m5-fil {
+  margin-bottom: var(--lh);
+}
+
+.m5-bas {
+  margin-top: var(--lh);
+}
+
+.m5-touches {
+  display: flex;
+  gap: calc(var(--cw) * 3);
+}
+
+.m5-touche:not(:disabled):hover {
+  color: rgb(var(--encre) / var(--g-commande));
+}
+
+/* A key, in reverse video like the keys of a console editor's last line. */
+.m5-touche kbd {
+  padding: 0 var(--cw);
+  border: 0;
+  border-radius: 0;
+  background: rgb(var(--encre) / var(--g-meta));
+  box-shadow: none;
+  color: var(--nuit);
+  font: inherit;
+}
+
+/* The bench ------------------------------------------------------------------ */
+
+/* In full screen the bench's bar stands in the top right corner, over the part of the glass
+   the text never reaches, and fades until it is asked for: the first and last lines stay free. */
+.atelier-preview:has(.m5) .atelier-preview__bar {
+  right: 16px;
+  left: auto;
+  justify-content: flex-end;
+  max-width: 300px;
+  opacity: 0.5;
+  transform: none;
+  transition: opacity 0.15s;
+}
+
+.atelier-preview:has(.m5) .atelier-preview__bar:is(:hover, :focus-within) {
+  opacity: 1;
+}
+
+.atelier-preview:has(.m5) .m1-flottant {
+  top: 200px;
+}
+
+.m5-glyphe {
+  --l: linear-gradient(#d9d9d4, #d9d9d4);
+  --b: linear-gradient(#8d919b, #8d919b);
+
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background-color: #1c2233;
+  background-repeat: no-repeat;
+  box-shadow: 0 0 0 1px var(--atelier-line);
+}
+
+/* Nu: lines, nothing else. */
+.m5-glyphe[data-id='nu'] {
+  background-image: var(--l), var(--l), var(--l), var(--l);
+  background-position:
+    6px 8px,
+    6px 13px,
+    6px 18px,
+    6px 23px;
+  background-size:
+    12px 1px,
+    20px 1px,
+    16px 1px,
+    5px 1px;
+}
+
+/* Touches: one line chosen, and the keys on the last line. */
+.m5-glyphe[data-id='touches'] {
+  background-image: var(--l), var(--l), var(--l), var(--b), var(--b), var(--b);
+  background-position:
+    6px 7px,
+    6px 11px,
+    6px 17px,
+    6px 28px,
+    14px 28px,
+    22px 28px;
+  background-size:
+    14px 1px,
+    18px 3px,
+    11px 1px,
+    5px 3px,
+    5px 3px,
+    5px 3px;
+}
+
+/* Fil d’Ariane: the path on the first line. */
+.m5-glyphe[data-id='fil'] {
+  background-image: var(--b), var(--b), var(--b), var(--l), var(--l), var(--l);
+  background-position:
+    6px 6px,
+    11px 6px,
+    19px 6px,
+    6px 14px,
+    6px 19px,
+    6px 24px;
+  background-size:
+    3px 2px,
+    6px 2px,
+    9px 2px,
+    18px 1px,
+    12px 1px,
+    20px 1px;
+}
