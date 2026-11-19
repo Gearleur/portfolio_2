@@ -1,0 +1,43 @@
+/* The embossed sheet (journal n° 109, MiniatureProcessus.tsx): two prints of the
+   same sheet, lit from the top left and from the top right, and the shade the
+   light leaves around it. The component fades the second print over the first
+   and slides the shade with it, so the light turns around the sheet. Like the
+   aluminium's reflections (miniature.css), these are layers that only fade and
+   slide: nothing is painted again. */
+
+.gaufrage {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  isolation: isolate;
+  background: #f1eee6;
+}
+
+.gaufrage > img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Lit from the right: over the first print, hidden until the light moves. */
+.gaufrage > .gaufrage__jour {
+  opacity: 0;
+  will-change: opacity;
+}
+
+/* The shade: nothing where the light falls, a warm grey that deepens away from it
+   (the paper is already as bright as it gets, so light shows by what it leaves
+   dark). Much larger than the card, so its edge never comes in as it slides. */
+.gaufrage__ombre {
+  position: absolute;
+  inset: -80%;
+  background: radial-gradient(ellipse 52% 54% at 39% 38%, rgb(88 74 58 / 0) 44%, rgb(88 74 58 / 0.22) 100%);
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  will-change: translate;
+}

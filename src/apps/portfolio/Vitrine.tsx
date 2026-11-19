@@ -5,6 +5,7 @@ import type { Langue } from '../atelier/langue';
 import { FiltreVerre } from '../atelier/FiltreVerre';
 import { Maquette, MaquetteMobile } from '../atelier/Maquettes';
 import { MiniatureAlpine } from '../atelier/MiniatureAlpine';
+import { MiniatureProcessus } from '../atelier/MiniatureProcessus';
 import { MiniatureReunions } from '../atelier/MiniatureReunions';
 import { Miniature } from '../atelier/Miniature';
 import { Specimen } from '../atelier/Specimen';
@@ -18,8 +19,8 @@ import { FOND, FOND_LECTURE } from '../atelier/tokens';
  * back button works.
  */
 
-const ADRESSES: Record<string, string> = { '01': 'whiteboard-amdec', '02': 'sncf-gpt', '03': 'synthese-reunions' };
-const NOMS: Record<string, string> = { '01': 'Whiteboard AMDEC', '02': 'SNCF GPT', '03': 'Synthèse de réunions' };
+const ADRESSES: Record<string, string> = { '01': 'whiteboard-amdec', '02': 'sncf-gpt', '03': 'synthese-reunions', '04': 'processus-design' };
+const NOMS: Record<string, string> = { '01': 'Whiteboard AMDEC', '02': 'SNCF GPT', '03': 'Synthèse de réunions', '04': 'Dessiner avec l’IA' };
 
 // The project pages (texts, diagrams, logos) are a chunk of their own, fetched when the home is idle.
 const chargerProjet = () => import('./PageProjet');
@@ -138,6 +139,7 @@ export function Vitrine() {
     '01': <MiniatureAlpine />,
     '02': <Miniature cadrage="paysage" />,
     '03': <MiniatureReunions />,
+    '04': <MiniatureProcessus />,
   };
 
   let page;

@@ -4,6 +4,7 @@ import { Accent, Contact, Name, NavList, T } from './Maquettes';
 import { Marque } from './Marque';
 import { Miniature } from './Miniature';
 import { MiniatureAlpine } from './MiniatureAlpine';
+import { MiniatureProcessus } from './MiniatureProcessus';
 import { MiniatureReunions } from './MiniatureReunions';
 import { EcranCadre, Schema } from './Schemas';
 import type { Bloc, Phrase, Projet } from './projets';
@@ -32,6 +33,51 @@ function Texte({ lead, text, href }: Phrase) {
     </a>
   ) : (
     words
+  );
+}
+
+/** Pictures of one size side by side, each under its name. */
+function Planche({ bloc }: { bloc: Extract<Bloc, { type: 'planche' }> }) {
+  const [largeur, hauteur] = bloc.taille;
+  return (
+    <ul className="p-planche" style={{ '--n': bloc.colonnes } as CSSProperties}>
+      {bloc.images.map((image) => (
+        <li key={image.nom}>
+          <img src={image.src} alt="" width={largeur} height={hauteur} loading="lazy" decoding="async" />
+          <span className="p-planche__nom">
+            <T>{image.nom}</T>
+            {image.note && (
+              <span>
+                <T> · {image.note}</T>
+              </span>
+            )}
+          </span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+/** Lines of a decision log: its number and date, what was decided, and the words that decided it. */
+function Journal({ bloc }: { bloc: Extract<Bloc, { type: 'journal' }> }) {
+  return (
+    <ol className="p-journal">
+      {bloc.lignes.map((ligne) => (
+        <li key={ligne.n}>
+          <span className="p-journal__n m-label">
+            <T>
+              n° {ligne.n} · {ligne.date}
+            </T>
+          </span>
+          <span className="p-journal__decision">
+            <T>{ligne.decision}</T>
+          </span>
+          <q className="p-journal__pourquoi">
+            <T>{ligne.pourquoi}</T>
+          </q>
+        </li>
+      ))}
+    </ol>
   );
 }
 
@@ -173,15 +219,43 @@ function Blocs({ blocs, figures }: { blocs: Bloc[]; figures: Map<Bloc, number> }
             </Visuel>
           </Fragment>
         );
-      case 'visuel':
+      case 'visuel': {
+        // With its size, a picture takes the figure's width and its place is kept before it loads.
+        const [largeur, hauteur] = bloc.taille ?? [];
         return (
           <Visuel
             key={index}
             legende={bloc.legende}
             n={figures.get(bloc) ?? 0}
-            zoom={bloc.schema ? <Schema id={bloc.schema} /> : bloc.image && <img src={bloc.image} alt={bloc.legende} decoding="async" />}
+            zoom={
+              bloc.schema ? (
+                <Schema id={bloc.schema} />
+              ) : (
+                // opened large, a capture is never drawn wider than it was taken (--l, projet.css)
+                bloc.image && <img src={bloc.image} alt={bloc.legende} width={largeur} height={hauteur} style={largeur ? ({ '--l': `${largeur}px` } as CSSProperties) : undefined} decoding="async" />
+              )
+            }
           >
-            {bloc.schema ? <Schema id={bloc.schema} /> : bloc.image && <img className={bloc.large ? 'p-img--large' : undefined} src={bloc.image} alt={bloc.legende} loading="lazy" decoding="async" />}
+            {bloc.schema ? (
+              <Schema id={bloc.schema} />
+            ) : (
+              bloc.image && (
+                <img className={bloc.taille ? 'p-img--plein' : bloc.large ? 'p-img--large' : undefined} src={bloc.image} alt={bloc.legende} width={largeur} height={hauteur} loading="lazy" decoding="async" />
+              )
+            )}
+          </Visuel>
+        );
+      }
+      case 'planche':
+        return (
+          <Visuel key={index} legende={bloc.legende} n={figures.get(bloc) ?? 0} zoom={<Planche bloc={bloc} />}>
+            <Planche bloc={bloc} />
+          </Visuel>
+        );
+      case 'journal':
+        return (
+          <Visuel key={index} legende={bloc.legende} n={figures.get(bloc) ?? 0}>
+            <Journal bloc={bloc} />
           </Visuel>
         );
     }
@@ -285,7 +359,7 @@ function Article({ projet, cadrage }: { projet: Projet; cadrage: 'paysage' | 'po
   const figures = new Map<Bloc, number>();
   let count = 1;
   for (const section of projet.sections)
-    for (const bloc of section.blocs) if (bloc.type === 'visuel' || bloc.type === 'decision') figures.set(bloc, ++count);
+    for (const bloc of section.blocs) if (bloc.type === 'visuel' || bloc.type === 'decision' || bloc.type === 'planche' || bloc.type === 'journal') figures.set(bloc, ++count);
 
   return (
     <article className="p-contenu">
@@ -295,7 +369,7 @@ function Article({ projet, cadrage }: { projet: Projet; cadrage: 'paysage' | 'po
           <T>{projet.nom.split(' ').slice(0, -1).join(' ')} </T>
           <span className="p-titre__fin">
             <T>{projet.nom.split(' ').at(-1)}</T>
-            <Marque id={projet.logo} className="p-titre__logo" />
+            {projet.logo && <Marque id={projet.logo} className="p-titre__logo" />}
           </span>
         </h1>
         <p className="p-accroche">
@@ -331,6 +405,9 @@ function Article({ projet, cadrage }: { projet: Projet; cadrage: 'paysage' | 'po
             <MiniatureAlpine direct />
           ) : projet.miniature.affiche === 'reunion' ? (
             <MiniatureReunions />
+          ) : projet.miniature.affiche === 'processus' ? (
+            // all seventeen layouts, where the card shows nine
+            <MiniatureProcessus entiere />
           ) : (
             projet.miniature.image && <img src={projet.miniature.image} alt="" />
           )}
