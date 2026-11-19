@@ -13,6 +13,6 @@ export default defineConfig(({ isSsrBuild }) => ({
   build: {
     sourcemap: false,
     // The pages; the server build (scripts/prerendre.mjs) has its own entry.
-    rolldownOptions: isSsrBuild ? {} : { input: ['index.html', 'desktop/index.html', 'cv/fr/index.html', 'cv/en/index.html', 'atelier/index.html'] },
+    rolldownOptions: isSsrBuild ? {} : { input: ['index.html', 'desktop/index.html', 'cv/fr/index.html', 'cv/en/index.html', 'atelier/index.html', 'atelier-machine/index.html'] },
   },
 }));

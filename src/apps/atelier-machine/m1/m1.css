@@ -1,0 +1,354 @@
+/* Atelier 2 · M1, la matière: the Vitrine's first screen in its Machine state.
+   The page is the real Maquette (steps/chemin.css), erased by the rules below;
+   its sizes are px of a 1440 px page (--u), as everywhere in the Atelier.
+   The bench sets the custom properties on .m1 (Machine.tsx). */
+
+.m1 {
+  --u: calc(100cqw / 1440);
+
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.specimen[data-echelle='reelle'] .m1 {
+  --u: 1px;
+}
+
+/* The Vitrine's cube rests beside the headline. Here, at rest, the only cube
+   is the prompt's: the pointer's waits off the stage and comes back with the
+   pointer (Specimen sets its place as it moves). */
+.specimen:has(> .m1) > .curseur {
+  translate: -200px -200px;
+}
+
+/* 100 px of the page, to read its scale. */
+.m1__etalon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(100 * var(--u));
+  height: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* The human page ----------------------------------------------------------
+   What is left of the coquelicot (--braise) fades into the grey of graphite. */
+
+.m1__page {
+  --accent: color-mix(in oklch, #e0301f calc(var(--braise) * 100%), #8f8f8c);
+  --trait: color-mix(in oklch, var(--ink) calc(var(--reste) * 100%), transparent);
+  /* what was in the accent keeps a darker stroke, and what coquelicot is left */
+  --trait-accent: color-mix(in oklch, var(--accent) calc(var(--reste) * 400%), transparent);
+
+  position: absolute;
+  inset: 0;
+}
+
+/* Fantôme: the ink pales, and drags where the eraser went. */
+.m1[data-page='fantome'] .m1__page :is(.m-hero, .m-side, .m-work) {
+  opacity: var(--reste);
+}
+
+.m1:is([data-page='fantome'], [data-page='blocs']) .m1__page :is(.m-title, .m-facts, .m-nav, .m-contact, .m-work) {
+  filter: var(--bavure);
+}
+
+/* Traits: the Atelier's « Blocs » view (step 5), each run of words a grey
+   stroke of its own length, at the height of the small letters. */
+.m1[data-page='blocs'] .m1__page .m-t {
+  background: linear-gradient(var(--trait), var(--trait)) 0 58% / 100% 36% no-repeat;
+}
+
+.m1[data-page='blocs'] .m1__page :is(mark, .m-name) .m-t {
+  background: none;
+}
+
+/* The highlighted word, the name's tag, the accent squares: the same stroke, darker. */
+.m1[data-page='blocs'] .m1__page mark {
+  background: linear-gradient(var(--trait-accent), var(--trait-accent)) 0 58% / 100% 36% no-repeat;
+}
+
+.m1[data-page='blocs'] .m1__page .m-name,
+.m1[data-page='blocs'] .m1__page .m-blink,
+.m1[data-page='blocs'] .m1__page [aria-current]::before {
+  background: var(--trait-accent);
+}
+
+.m1[data-page='blocs'] .m1__page .m-link {
+  text-decoration: none;
+}
+
+/* En creux: no ink at all, the words left as a hollow in the paper. */
+.m1[data-page='sec'] .m1__page :is(.m-title, .m-facts, .m-nav, .m-contact, .m-work, .m-name) {
+  filter: var(--sec);
+}
+
+/* The sunken thumbnails ---------------------------------------------------
+   The card keeps its place and its size; its picture is gone. The print
+   (Enfoncee.tsx) spills a little over the card's edges. */
+
+.m1 .m-img {
+  position: relative;
+  background: none;
+}
+
+.m1-creux {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+.m1-creux > canvas {
+  position: absolute;
+  max-width: none;
+  pointer-events: none;
+}
+
+/* The eraser's strokes -----------------------------------------------------
+   On the paper: they scroll with the page (--defil, set as it scrolls). The
+   more irregular the hand, the softer the streaks. */
+
+.m1__gomme {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.m1__gomme > canvas {
+  display: block;
+  filter: blur(calc(var(--irregularite) * 1.6 * var(--u)));
+  translate: 0 var(--defil, 0px);
+}
+
+/* The terminal -------------------------------------------------------------
+   A pane of dark smoked glass. Its size (--l, --h, set by Terminal.tsx) is px
+   of a 1440 × 900 screen, never more than the screen; its place is a share of
+   the room left around it. */
+
+.m1-terminal {
+  position: absolute;
+  top: calc((100cqh - var(--h)) * var(--y));
+  left: calc((100cqw - var(--l)) * var(--x));
+  width: var(--l);
+  height: var(--h);
+  overflow: hidden;
+  background: var(--fumee);
+  color: rgb(238 238 233 / 0.9);
+  /* The plainest terminal face of each system: Menlo, DejaVu Sans Mono, Consolas. */
+  font: 400 calc(13 * var(--u)) / 1.55 Menlo, 'DejaVu Sans Mono', Consolas, 'Liberation Mono', monospace;
+  font-variant-ligatures: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Dépoli: a window, frosted, with its title bar and its shadow on the page. */
+.m1-terminal[data-verre='depoli'] {
+  border-radius: calc(12 * var(--u));
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 0.09),
+    inset 0 1px 0 rgb(255 255 255 / 0.2),
+    0 calc(36 * var(--u)) calc(80 * var(--u)) calc(-28 * var(--u)) rgb(22 22 20 / 0.55),
+    0 calc(8 * var(--u)) calc(22 * var(--u)) rgb(22 22 20 / 0.14);
+}
+
+/* The frost: the paper's own grain (grain.ts), in light specks. */
+.m1-terminal[data-verre='depoli']::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--givre) 0 0 / var(--givre-taille);
+  opacity: 0.1;
+  filter: invert(1);
+  pointer-events: none;
+}
+
+/* Lame: a sheet of tinted glass, flat: sharp corners, no shadow. */
+.m1-terminal[data-verre='lame'] {
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.1);
+}
+
+/* Dalle: a thick slab. Its top edge catches the light, its thickness darkens
+   towards the bottom, and it weighs on the page. */
+.m1-terminal[data-verre='dalle'] {
+  border-radius: calc(26 * var(--u));
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 0.16),
+    inset 0 calc(2 * var(--u)) calc(1 * var(--u)) rgb(255 255 255 / 0.3),
+    inset 0 calc(-14 * var(--u)) calc(28 * var(--u)) calc(-10 * var(--u)) rgb(0 0 0 / 0.55),
+    inset 0 0 calc(46 * var(--u)) rgb(0 0 0 / 0.28),
+    0 calc(44 * var(--u)) calc(90 * var(--u)) calc(-30 * var(--u)) rgb(22 22 20 / 0.6),
+    0 calc(14 * var(--u)) calc(28 * var(--u)) calc(-8 * var(--u)) rgb(22 22 20 / 0.3);
+}
+
+.m1-terminal[data-verre='dalle']::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(112deg, rgb(255 255 255 / 0.09) 0%, rgb(255 255 255 / 0.02) 30%, transparent 46%);
+  pointer-events: none;
+}
+
+.m1-terminal__barre {
+  display: grid;
+  height: calc(36 * var(--u));
+  margin: 0;
+  place-items: center;
+  border-bottom: 1px solid rgb(255 255 255 / 0.07);
+  color: rgb(238 238 233 / 0.46);
+  font-size: calc(12 * var(--u));
+}
+
+/* Like a real terminal: the lines start at the top, and when the window is too
+   short the oldest leave by the top, the prompt staying in view. */
+.m1-terminal__ecran {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column-reverse;
+  overflow: hidden;
+  padding: calc(22 * var(--u)) calc(28 * var(--u));
+}
+
+.m1-terminal[data-verre='depoli'] .m1-terminal__ecran {
+  top: calc(36 * var(--u));
+}
+
+.m1-terminal[data-verre='lame'] .m1-terminal__ecran {
+  padding: calc(64 * var(--u)) calc(52 * var(--u));
+}
+
+.m1-terminal[data-verre='dalle'] .m1-terminal__ecran {
+  padding: calc(36 * var(--u)) calc(44 * var(--u));
+}
+
+.m1-terminal__texte {
+  margin: 0 0 auto;
+  font: inherit;
+  white-space: pre;
+}
+
+/* Rights, owner, size and date step back, so the eye goes to the names. */
+.m1-terminal [data-sorte='sourd'] {
+  color: rgb(238 238 233 / 0.6);
+}
+
+.m1-terminal [data-sorte='invite'] {
+  color: rgb(238 238 233 / 0.74);
+}
+
+.m1-terminal :is([data-sorte='commande'], [data-sorte='nom'], [data-sorte='dossier']) {
+  color: #f3f3ee;
+}
+
+.m1-terminal [data-sorte='dossier'] {
+  font-weight: 700;
+}
+
+/* The prompt's block: plain, or the page's accent cube, the one thing that kept its colour. */
+.m1-terminal__curseur {
+  display: inline-block;
+  width: 0.6em;
+  height: 1.2em;
+  background: rgb(238 238 233 / 0.85);
+  vertical-align: text-bottom;
+}
+
+.m1-terminal[data-curseur='accent'] .m1-terminal__curseur {
+  background: var(--accent);
+}
+
+/* The bench -----------------------------------------------------------------
+   The Atelier's panel and stage; only what they lack is here. */
+
+.m1-glyphe {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #f1f1ee;
+  box-shadow: 0 0 0 1px var(--atelier-line);
+}
+
+.m1-glyphe::after {
+  content: '';
+  position: absolute;
+  background: #2b2a28;
+}
+
+/* Coup de gomme: slanted streaks, a window in the middle. */
+.m1-glyphe[data-id='gomme'] {
+  background-image: repeating-linear-gradient(-24deg, transparent 0 4px, rgb(80 80 78 / 0.3) 4px 7px, transparent 7px 12px);
+}
+
+.m1-glyphe[data-id='gomme']::after {
+  inset: 14px 6px 5px 9px;
+  border-radius: 3px;
+  opacity: 0.86;
+}
+
+/* À plat: strokes for the lines, a sheet over the right half. */
+.m1-glyphe[data-id='plat'] {
+  background-image: linear-gradient(#b9b9b6, #b9b9b6), linear-gradient(#b9b9b6, #b9b9b6), linear-gradient(#b9b9b6, #b9b9b6);
+  background-repeat: no-repeat;
+  background-position:
+    4px 8px,
+    4px 15px,
+    4px 22px;
+  background-size:
+    22px 3px,
+    12px 3px,
+    9px 3px;
+}
+
+.m1-glyphe[data-id='plat']::after {
+  inset: 0 0 0 19px;
+}
+
+/* À sec: a hollow, and a rounded slab low on it. */
+.m1-glyphe[data-id='sec'] {
+  box-shadow:
+    0 0 0 1px var(--atelier-line),
+    inset 3px 3px 4px rgb(0 0 0 / 0.3),
+    inset -2px -2px 2px #fff;
+}
+
+.m1-glyphe[data-id='sec']::after {
+  inset: 17px 7px 4px;
+  border-radius: 5px;
+  opacity: 0.74;
+}
+
+.m1-pari {
+  color: var(--atelier-ink);
+}
+
+/* The eraser's draw: its seed, and the button for another. */
+.m1-tirage {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--atelier-dim);
+  font-size: 12px;
+}
+
+/* In full screen: the proposition in use, and the panel when it is open. */
+.atelier-preview__bar .m1-choix[aria-pressed='true'] {
+  background: #ffffff1f;
+}
+
+/* In full screen the same panel floats over the picture, and hides (R). */
+.m1-flottant {
+  position: absolute;
+  top: 72px;
+  right: 16px;
+  bottom: 16px;
+  width: 320px;
+  overflow-y: auto;
+  border-radius: 16px;
+  box-shadow: 0 24px 60px -20px rgb(0 0 0 / 0.5);
+  scrollbar-width: thin;
+}

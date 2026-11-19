@@ -1,0 +1,42 @@
+/* Atelier 2's own pieces; the rest is the Atelier's stylesheet. */
+
+.am-brief {
+  margin: 0 0 32px;
+  padding: 20px 24px;
+  border: 1px solid rgb(255 255 255 / 0.12);
+  border-radius: 6px;
+}
+
+.am-brief h2 {
+  margin: 0 0 16px;
+  font: 400 28px/1.1 var(--font-display);
+}
+
+.am-brief dl {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px 32px;
+  margin: 0;
+}
+
+.am-brief dt {
+  margin-bottom: 4px;
+  font-size: 12px;
+  opacity: 0.55;
+}
+
+.am-brief dd {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.am-decide {
+  margin: 16px 0 24px;
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+.atelier-head a {
+  color: inherit;
+}
