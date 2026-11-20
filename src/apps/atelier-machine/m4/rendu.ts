@@ -142,8 +142,11 @@ export type Rendu = {
   ecrire(calque: Calque, bloc: Bloc | null): void;
   dessiner(image: Image, matiere: Matiere, graine?: number): void;
   effacer(): void;
-  /** The context is gone: nothing more will be drawn. */
-  perdu(): boolean;
+  /**
+   * The context is gone, or the shader could not be built: nothing more will be drawn. The
+   * shader is built aside from the page; unless told not to wait, this waits for it to be known.
+   */
+  perdu(attendre?: boolean): boolean;
   liberer(): void;
 };
 
@@ -192,9 +195,7 @@ function compiler(gl: WebGL2RenderingContext, sorte: number, source: string) {
   if (!shader) return null;
   gl.shaderSource(shader, source);
   gl.compileShader(shader);
-  if (gl.getShaderParameter(shader, gl.COMPILE_STATUS)) return shader;
-  gl.deleteShader(shader);
-  return null;
+  return shader;
 }
 
 /** The bubble's renderer on this canvas, or null without WebGL 2: the passage is then a plain change of state. */
@@ -209,8 +210,25 @@ export function creerRendu(toile: HTMLCanvasElement): Rendu | null {
   gl.attachShader(programme, sommets);
   gl.attachShader(programme, fragments);
   gl.linkProgram(programme);
-  if (!gl.getProgramParameter(programme, gl.LINK_STATUS)) return null;
-  gl.useProgram(programme);
+  // The shader is sent to be built now, and nothing is asked of it yet: asking holds the page
+  // until it is built (some 10 ms here, far more on a phone or through Direct3D). It is built
+  // aside while the stage mounts and the page goes on; its state is read a moment later, when
+  // the page is idle (finir), or at the first need if that comes sooner.
+  gl.flush();
+  let pret = false;
+  let mort = false;
+  const finir = () => {
+    if (pret || mort) return;
+    if (!gl.getProgramParameter(programme, gl.LINK_STATUS)) {
+      mort = true;
+      return;
+    }
+    gl.useProgram(programme);
+    gl.uniform1i(lieu('u_avant'), calques.avant.unite);
+    gl.uniform1i(lieu('u_apres'), calques.apres.unite);
+    pret = true;
+  };
+  const repos = window.setTimeout(() => (window.requestIdleCallback ? window.requestIdleCallback(finir, { timeout: 1500 }) : finir()), 300);
 
   // One triangle that covers the stage.
   const triangle = gl.createBuffer();
@@ -241,11 +259,8 @@ export function creerRendu(toile: HTMLCanvasElement): Rendu | null {
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
   }
-  gl.uniform1i(lieu('u_avant'), calques.avant.unite);
-  gl.uniform1i(lieu('u_apres'), calques.apres.unite);
 
   let dpr = 1;
-  let mort = false;
   const perte = (event: Event) => {
     event.preventDefault();
     mort = true;
@@ -270,6 +285,7 @@ export function creerRendu(toile: HTMLCanvasElement): Rendu | null {
       gl.generateMipmap(gl.TEXTURE_2D);
     },
     dessiner(image, matiere, graine = 0) {
+      finir();
       if (mort) return;
       const d = dpr;
       const bulle = { cx: image.cx * d, cy: image.cy * d, rayon: image.rayon * d, lisere: Math.max(0.5, image.lisere * d) };
@@ -311,10 +327,20 @@ export function creerRendu(toile: HTMLCanvasElement): Rendu | null {
       gl.clearColor(0, 0, 0, 0);
       gl.clear(gl.COLOR_BUFFER_BIT);
     },
-    perdu: () => mort,
+    perdu(attendre = true) {
+      if (attendre) finir();
+      return mort;
+    },
     liberer() {
       toile.removeEventListener('webglcontextlost', perte);
-      // The context itself is left to the canvas: it is the same one if the bench mounts again.
+      window.clearTimeout(repos);
+      mort = true;
+      // The context is the canvas's: it is the same one if the bench mounts again on it. A canvas
+      // that has left the page (the Vitrine changes page) will not be drawn on again: its context
+      // is given back now, not when the canvas is collected; a browser only keeps so many.
+      window.setTimeout(() => {
+        if (!toile.isConnected) gl.getExtension('WEBGL_lose_context')?.loseContext();
+      }, 0);
       for (const { texture } of Object.values(calques)) gl.deleteTexture(texture);
       gl.deleteBuffer(triangle);
       gl.deleteProgram(programme);

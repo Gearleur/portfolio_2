@@ -2,8 +2,11 @@ import { memo } from 'react';
 import type { CSSProperties } from 'react';
 import { RETENU as MATIERE, pleine } from '../m1/retenu';
 import { RETENU as TYPO } from '../m2/retenu';
+import type { Reglages as Type } from '../m2/reglages';
 import { Console } from '../m5/Console';
+import type { ConsoleProps } from '../m5/Console';
 import { RETENU as CONTENU } from '../m5/retenu';
+import type { Reglages as Contenu } from '../m5/reglages';
 import { BANDE } from './retenu';
 import type { Depart } from '../m5/shell';
 import '../m1/verre.css';
@@ -24,13 +27,18 @@ type Props = {
   transparence: number;
   /** Where the console opens; another place starts another console, in the same glass. */
   depart?: Depart;
-};
+  /** The strip of black left bare beside the glass, px of a 1440 px page: the number's on a desktop; a phone has no room for one. */
+  bande?: number;
+  /** The type and the aids, when they are not the ones retained at M2 and M5 (the phone's, M6). */
+  type?: Type;
+  contenu?: Contenu;
+} & Pick<ConsoleProps, 'tactile' | 'entete' | 'pied'>;
 
 // It does not depend on the passage: it is not rendered again when one starts.
-export const Terminal = memo(function Terminal({ transparence, depart }: Props) {
+export const Terminal = memo(function Terminal({ transparence, depart, bande = BANDE, type = TYPO, contenu = CONTENU, ...tactile }: Props) {
   const style = {
     // all the screen but the number's strip, on the right
-    '--l': `calc(100cqw - ${BANDE} * var(--u))`,
+    '--l': bande ? `calc(100cqw - ${bande} * var(--u))` : '100cqw',
     '--h': pleine('hauteur', VERRE.hauteur) ? '100cqh' : `min(100cqh, calc(${VERRE.hauteur} * var(--u)))`,
     '--x': 1,
     '--y': VERRE.y,
@@ -39,7 +47,7 @@ export const Terminal = memo(function Terminal({ transparence, depart }: Props) 
   return (
     <div className="m1-terminal m4-terminal" data-verre="lame" data-curseur={VERRE.curseur} role="region" aria-label="Terminal" style={style}>
       <div className="m4-ecran">
-        <Console key={depart ? [depart.langue, ...(depart.fichier ?? [])].join('/') : ''} type={TYPO} reglages={CONTENU} depart={depart} />
+        <Console key={depart ? [depart.langue, ...(depart.fichier ?? [])].join('/') : ''} type={type} reglages={contenu} depart={depart} {...tactile} />
       </div>
     </div>
   );

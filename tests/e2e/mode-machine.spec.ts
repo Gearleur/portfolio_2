@@ -3,7 +3,8 @@ import type { Browser, BrowserContextOptions, Page } from '@playwright/test';
 
 // The Machine mode on the real Vitrine (journal n° 115, src/apps/portfolio/machine): on a desktop
 // a switch comes at the bottom of the page once it is idle; thrown, the page gives way to a
-// terminal that works, and comes back as it was left. Nothing of it below 721 px.
+// terminal that works, and comes back as it was left. Below 721 px the phone has its own
+// (mode-machine-telephone.spec.ts), and neither fetches the other's.
 
 const BUREAU: BrowserContextOptions = { viewport: { width: 1440, height: 900 }, isMobile: false, hasTouch: false, deviceScaleFactor: 1 };
 
@@ -152,7 +153,7 @@ test('with reduced motion and without WebGL 2 the mode still changes, at once, a
   await contexte.close();
 });
 
-test('going under 721 px on the Machine side gives the human page back, and the switch returns with the width', async ({ browser }) => {
+test('going under 721 px on the Machine side gives the human page back with the phone’s switch, and the desktop’s returns with the width', async ({ browser }) => {
   const { contexte, page, erreurs } = await ouvrir(browser, '/');
   await expect(interrupteur(page)).toBeVisible({ timeout: 15_000 });
   await interrupteur(page).click();
@@ -168,8 +169,13 @@ test('going under 721 px on the Machine side gives the human page back, and the 
   await expect(page.locator('.mobile .m-title')).toBeVisible();
   await expect(page.locator('.specimen')).not.toHaveAttribute('data-machine', '');
   expect(await page.locator('.specimen > *').evaluateAll((enfants: HTMLElement[]) => enfants.some((enfant) => enfant.inert))).toBe(false);
+  // the phone's own switch comes there, in the notch, on the human side
+  await expect(page.locator('.m6-scene [role="switch"]')).toBeVisible({ timeout: 15_000 });
+  await expect(page.locator('.m6-scene [role="switch"]')).toHaveAttribute('aria-checked', 'false');
 
   await page.setViewportSize({ width: 1440, height: 900 });
+  await expect(page.locator('.m6-scene')).toHaveCount(0);
+  await expect(page.locator('.specimen')).not.toHaveAttribute('data-m6-encoche', '');
   await expect(interrupteur(page)).toBeVisible();
   await expect(interrupteur(page)).toHaveAttribute('aria-checked', 'false');
   await expect(page.locator('.maquette .m-title')).toBeVisible();
@@ -177,16 +183,37 @@ test('going under 721 px on the Machine side gives the human page back, and the 
   await contexte.close();
 });
 
+// What is the desktop's own (its stage, its passage) and what is the phone's (its stage, the bench's
+// phone pieces): the files as the dev server names them, and the chunks a build names after them.
+const DU_BUREAU = /machine\/ModeMachine|portfolio\/machine\/Passage|machine\/machine\.css|\/ModeMachine-/;
+// (a build gathers the phone's pieces of the bench in the chunks machine-tel…, vite.config.ts)
+const DU_TELEPHONE = /machine\/Telephone|\/Telephone-|atelier-machine\/m6\/|\/machine-tel/;
+
 // The project's own screen: a phone, 390 px wide.
-test('on a phone there is no switch, and nothing of the Machine mode is fetched', async ({ page }) => {
+test('a phone fetches the phone’s Machine mode and nothing of the desktop’s', async ({ page }) => {
   const demandes: string[] = [];
-  page.on('request', (request) => {
-    if (/ModeMachine|Interrupteur|machine\/Passage|atelier-machine/.test(request.url())) demandes.push(request.url());
-  });
+  page.on('request', (request) => demandes.push(request.url()));
   await page.goto('/');
-  await page.waitForLoadState('load');
-  // the switch would come 2.5 s after the load at the latest
-  await page.waitForTimeout(3500);
+  const tel = page.locator('.m6-scene [role="switch"]');
+  await expect(tel).toBeVisible({ timeout: 15_000 });
+  await tel.tap();
+  await expect(page.locator('.m6-scene')).toHaveAttribute('data-terminal', '', { timeout: 15_000 });
   await expect(page.locator('.machine')).toHaveCount(0);
-  expect(demandes).toEqual([]);
+  expect(demandes.some((url) => DU_TELEPHONE.test(url))).toBe(true);
+  expect(demandes.filter((url) => DU_BUREAU.test(url))).toEqual([]);
+});
+
+test('a desktop fetches the desktop’s Machine mode and nothing of the phone’s', async ({ browser }) => {
+  const contexte = await browser.newContext({ ...BUREAU, locale: 'fr-FR' });
+  const page = await contexte.newPage();
+  const demandes: string[] = [];
+  page.on('request', (request) => demandes.push(request.url()));
+  await page.goto('/');
+  await expect(interrupteur(page)).toBeVisible({ timeout: 15_000 });
+  await interrupteur(page).click();
+  await attendreMachine(page);
+  await expect(page.locator('.m6-scene')).toHaveCount(0);
+  expect(demandes.some((url) => DU_BUREAU.test(url))).toBe(true);
+  expect(demandes.filter((url) => DU_TELEPHONE.test(url))).toEqual([]);
+  await contexte.close();
 });

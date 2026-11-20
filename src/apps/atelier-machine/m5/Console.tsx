@@ -1,8 +1,9 @@
 import { Fragment, useEffect, useLayoutEffect, useMemo, useReducer, useRef, useState } from 'react';
-import type { CSSProperties, KeyboardEvent as Touche, MouseEvent } from 'react';
+import type { CSSProperties, KeyboardEvent as Touche, MouseEvent, ReactNode } from 'react';
 import { famille } from '../m2/retenu';
 import type { Reglages as Type } from '../m2/reglages';
 import { ecrire } from './fichiers';
+import type { Langue } from './fichiers';
 import type { Reglages } from './reglages';
 import { commandeOuvrir, commandeRetour, completer, demarrer, invite, reduire } from './shell';
 import type { Depart, Morceau, Options } from './shell';
@@ -28,15 +29,43 @@ const MOTS = {
 
 const reduit = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-type Props = {
+/**
+ * Where the last answer starts in the scrolling zone and how far it can be read, px. Under a
+ * file, the folder's menu closes the reading (data-borne): once the file is longer than the
+ * screen, the room kept under the last line is given up (data-butee, m5.css), so the scroll ends
+ * with the menu. The stop is the browser's own end of scroll: a fling stops dead on it, where a
+ * position put back at each scroll event let the momentum run on under it.
+ */
+function lecture(el: HTMLElement) {
+  const debuts = el.querySelectorAll<HTMLElement>('[data-debut]');
+  const haut = debuts.length ? debuts[debuts.length - 1].offsetTop : 0;
+  const fin = el.querySelector<HTMLElement>('.m5-neuf')?.offsetTop ?? el.scrollHeight;
+  const course = fin - el.clientHeight - haut;
+  el.toggleAttribute('data-butee', el.hasAttribute('data-borne') && course > 1);
+  return { haut, course };
+}
+
+/** What the last line has to say, for one who draws it otherwise: where one is, how far, and which keys work there. */
+export type Pied = { langue: Langue; chemin: string; position: string; enListe: boolean; retour: boolean };
+
+export type ConsoleProps = {
   /** The type and grid retained at M2. */
   type: Type;
   reglages: Reglages;
   /** Where the terminal opens, when not at the root in French; read once, as it mounts. */
   depart?: Depart;
+  /**
+   * A touch screen (the phone, M6): the field that takes the keys would bring the keyboard out,
+   * so it is given them only by a touch on the line itself, and any other touch takes them back.
+   */
+  tactile?: boolean;
+  /** More on the first line, after the way back. */
+  entete?: ReactNode;
+  /** The last line, drawn otherwise: its keys answer by `data-touche`, like the bar's. */
+  pied?: (infos: Pied) => ReactNode;
 };
 
-export function Console({ type, reglages, depart }: Props) {
+export function Console({ type, reglages, depart, tactile, entete, pied }: ConsoleProps) {
   const { police, grille, gris, curseur } = type;
   const racine = useRef<HTMLDivElement>(null);
   const zone = useRef<HTMLDivElement>(null);
@@ -95,18 +124,17 @@ export function Console({ type, reglages, depart }: Props) {
   const fleches = reglages.selection !== 'aucune';
   const occupe = frappe !== null || ecran.cache > 0;
   // Under a file read to its end, the folder's menu is there again: the arrows choose in it.
-  const borne = useRef(false);
-  useEffect(() => {
-    borne.current = ecran.vue === 'fichier' && ecran.listing !== null;
-  });
-  const menuFin = ecran.vue === 'fichier' && ecran.listing !== null && (avance === null || avance >= 100);
+  const borne = ecran.vue === 'fichier' && ecran.listing !== null;
+  const menuFin = borne && (avance === null || avance >= 100);
   const enListe = (ecran.vue === 'liste' && ecran.listing !== null) || menuFin;
   const elue = fleches && enListe ? ecran.listing?.entrees[ecran.choix] : undefined;
   const proposee = elue ? commandeOuvrir(ecran.session, elue, options) : null;
   const retour = commandeRetour(ecran.session, ecran.vue, options);
   const { vitesse, sortie } = reglages;
 
-  const viser = () => champ.current?.focus({ preventScroll: true });
+  const viser = () => {
+    if (!tactile) champ.current?.focus({ preventScroll: true });
+  };
   const ecrireSaisie = (texte: string) => {
     setSaisie(texte);
     setCaret(texte.length);
@@ -153,6 +181,8 @@ export function Console({ type, reglages, depart }: Props) {
     const el = zone.current;
     if (!el) return;
     const debuts = el.querySelectorAll<HTMLElement>('[data-debut]');
+    // the room under the last line is what this answer has, not what the one before had
+    lecture(el);
     const fond = el.scrollHeight - el.clientHeight;
     el.scrollTop = debuts.length ? Math.min(debuts[debuts.length - 1].offsetTop, fond) : fond;
   }, [ecran.lignes, ecran.cache, g, reglages.ecran]);
@@ -163,12 +193,7 @@ export function Console({ type, reglages, depart }: Props) {
     const el = zone.current;
     if (!el || !pret) return;
     const relever = () => {
-      const debuts = el.querySelectorAll<HTMLElement>('[data-debut]');
-      const haut = debuts.length ? debuts[debuts.length - 1].offsetTop : 0;
-      const fin = el.querySelector<HTMLElement>('.m5-neuf')?.offsetTop ?? el.scrollHeight;
-      const course = fin - el.clientHeight - haut;
-      // Under a file, the folder's menu closes the reading: the screen does not scroll past it.
-      if (borne.current && course > 1 && el.scrollTop > haut + course) el.scrollTop = haut + course;
+      const { haut, course } = lecture(el);
       setAvance(course > 1 ? Math.min(100, Math.max(0, Math.round(((el.scrollTop - haut) / course) * 100))) : null);
     };
     const taille = new ResizeObserver(relever);
@@ -180,15 +205,18 @@ export function Console({ type, reglages, depart }: Props) {
     };
   }, [pret]);
 
-  // What is being typed is in view.
+  // What is being typed is in view; and on a touch screen the line that has the keys stays in
+  // view when the keyboard comes out and takes half the screen from under it.
+  const garde = tactile === true && actif;
+  const cellules = garde ? g : null;
   useLayoutEffect(() => {
     const el = zone.current;
     const ligne = el?.querySelector<HTMLElement>('.m5-invite');
-    if (!el || !ligne || !(saisie || frappe)) return;
+    if (!el || !ligne || !(saisie || frappe || garde)) return;
     const bas = ligne.offsetTop + ligne.offsetHeight;
     if (bas > el.scrollTop + el.clientHeight) el.scrollTop = bas - el.clientHeight;
     else if (ligne.offsetTop < el.scrollTop) el.scrollTop = ligne.offsetTop;
-  }, [saisie, frappe]);
+  }, [saisie, frappe, garde, cellules]);
 
   // Escape empties the line before it means anything else (in full screen, it closes it).
   useEffect(() => {
@@ -220,6 +248,8 @@ export function Console({ type, reglages, depart }: Props) {
   const defiler = (lignes: number) => zone.current?.scrollBy({ top: lignes * (g?.lh ?? 18) });
   const page = (sens: number) => defiler(sens * Math.max(1, Math.floor((zone.current?.clientHeight ?? 0) / (g?.lh ?? 18)) - 2));
   const ouvrir = () => lancer(proposee, !reglages.suggestion);
+  /** An arrow on an empty line: it chooses in the listing, and scrolls anything else. */
+  const fleche = (pas: number, lignes = 3) => (enListe && !(menuFin && pas < 0 && ecran.choix === 0) ? dispatch({ type: 'choisir', pas }) : defiler(lignes * pas));
 
   const surTouche = (event: Touche<HTMLInputElement>) => {
     const { key } = event;
@@ -246,7 +276,7 @@ export function Console({ type, reglages, depart }: Props) {
     else if (key === 'Tab' && !vide && !event.shiftKey) faire(() => ecrireSaisie(completer(ecran.session, saisie)));
     else if (key === 'ArrowUp' || key === 'ArrowDown') {
       const pas = key === 'ArrowUp' ? -1 : 1;
-      faire(() => (!libre ? rappeler(pas) : enListe && !(menuFin && pas < 0 && ecran.choix === 0) ? dispatch({ type: 'choisir', pas }) : defiler(3 * pas)));
+      faire(() => (!libre ? rappeler(pas) : fleche(pas)));
     } else if ((key === 'ArrowLeft' || key === 'Backspace') && libre) faire(() => lancer(retour));
     else if (key === 'ArrowRight' && libre && proposee) faire(ouvrir);
     else if (key === 'PageUp' || key === 'PageDown') faire(() => page(key === 'PageUp' ? -1 : 1));
@@ -256,7 +286,12 @@ export function Console({ type, reglages, depart }: Props) {
   // One listener for the whole screen: a name carries its command, a key of the bar its action;
   // a click anywhere else gives the keys to the terminal, unless it was selecting text.
   const surClic = (event: MouseEvent) => {
-    const cible = event.target instanceof Element ? event.target.closest<HTMLElement>('[data-commande], [data-touche], a') : null;
+    const touche = event.target instanceof Element ? event.target : null;
+    const cible = touche?.closest<HTMLElement>('[data-commande], [data-touche], a') ?? null;
+    if (tactile) {
+      if (!cible && touche?.closest('.m5-invite')) champ.current?.focus({ preventScroll: true });
+      else champ.current?.blur();
+    }
     if (!cible) {
       if (window.getSelection()?.isCollapsed !== false) viser();
       return;
@@ -265,6 +300,8 @@ export function Console({ type, reglages, depart }: Props) {
     const actions: Record<string, () => void> = {
       retour: () => lancer(retour),
       choisir: () => dispatch({ type: 'choisir', pas: 1 }),
+      haut: () => fleche(-1, 12),
+      bas: () => fleche(1, 12),
       ouvrir,
       defiler: () => defiler(12),
       page: () => page(1),
@@ -370,6 +407,7 @@ export function Console({ type, reglages, depart }: Props) {
         }}
         onSelect={(event) => setCaret(event.currentTarget.selectionStart ?? 0)}
         onKeyDown={surTouche}
+        enterKeyHint={tactile ? 'go' : undefined}
         onFocus={() => setActif(true)}
         onBlur={() => setActif(false)}
       />
@@ -397,12 +435,13 @@ export function Console({ type, reglages, depart }: Props) {
                   </Fragment>
                 ))}
               </span>
+              {entete}
             </nav>
           )}
-          <div ref={zone} className="m5-defile">
+          <div ref={zone} className="m5-defile" data-borne={borne ? '' : undefined}>
             <div role="log" aria-label={mots.sortie}>
               {visibles.map((ligne) => (
-                <div key={ligne.id} className="m2-ligne" data-debut={ligne.debut ? '' : undefined}>
+                <div key={ligne.id} className="m2-ligne" data-debut={ligne.debut ? '' : undefined} data-liste={ligne.liste === undefined ? undefined : ligne.liste === ecran.listing?.id ? 'vive' : ''}>
                   {ligne.morceaux.map((m, i) => piece(m, i, ligne.liste !== undefined && ligne.liste === ecran.listing?.id))}
                 </div>
               ))}
@@ -421,6 +460,9 @@ export function Console({ type, reglages, depart }: Props) {
             {/* room under the last line, so that each command can start at the top of the screen */}
             {reglages.ecran === 'neuf' && <div className="m5-neuf" aria-hidden="true" />}
           </div>
+          {pied ? (
+            pied({ langue: ecran.session.langue, chemin: ecrire(lu), position, enListe, retour: retour !== null })
+          ) : (
           <div className="m2-barre m5-bas">
             {reglages.touches ? (
               <span className="m5-touches">
@@ -435,6 +477,7 @@ export function Console({ type, reglages, depart }: Props) {
             )}
             <span>{reglages.touches ? `${etat} · ${position}` : position}</span>
           </div>
+          )}
         </div>
       )}
     </div>

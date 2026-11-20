@@ -17,7 +17,7 @@ const ETAPES: Etape[] = [
   { id: 'm3', nom: 'Le curseur', fichier: 'M3Curseur', decide: 'Retenu : « Pétale » en verre, le bouton porte 0 / 1, sans libellé, environ 207 × 56 px, en bas au milieu.', statut: 'valide' },
   { id: 'm4', nom: 'Le passage', fichier: 'M4Passage', decide: 'Retenu : une bulle noire au bord flou sort du bouton et y rentre, lente puis très rapide ; son noir porte ton numéro, qui reste sous le terminal.', statut: 'valide' },
   { id: 'm5', nom: 'Le contenu', fichier: 'M5Contenu', decide: 'Retenu : « Touches », flèche de retour, le menu du dossier redonné sous chaque fichier lu, Markdown un peu agencé et sans images, 128 colonnes ; la souris marche partout.', statut: 'valide' },
-  { id: 'm6', nom: 'Se déplacer', fichier: 'M6Deplacer', decide: 'Clavier et souris ; le téléphone ensuite.', statut: 'a-venir' },
+  { id: 'm6', nom: 'Le téléphone', fichier: 'M6Deplacer', decide: 'Retenu : l’interrupteur dans l’encoche de verre, entre le nom et « Menu », environ 59 × 28 px ; on touche les noms et on glisse vers la droite pour revenir ; les listes en feuille ; ton numéro en filigrane derrière les lignes ; texte à 13 px, ls -s ; le passage préchargé au repos.', statut: 'valide' },
   { id: 'm7', nom: 'Finitions', fichier: 'M7Finitions', decide: 'Mouvement réduit, accessibilité, poids, tests.', statut: 'a-venir' },
 ];
 

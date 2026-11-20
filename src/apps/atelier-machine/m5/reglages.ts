@@ -22,8 +22,8 @@ export type Reglages = {
   /** The folder is listed again under a file just read. */
   relister: boolean;
   invite: 'signe' | 'chemin';
-  /** `ls`, the names in a row; or `ls -l`, one per line with its weight and what it is. */
-  liste: 'ligne' | 'longue';
+  /** `ls`, the names in a row; or `ls -l`, one per line with its weight and what it is; or `ls -s`, the weight and the name alone (the phone's, M6: this bench does not offer it). */
+  liste: 'ligne' | 'longue' | 'courte';
   /** Characters per second of a command that types itself; 0, all at once. */
   vitesse: number;
   /** The answer comes line by line, or all at once. */
@@ -143,7 +143,7 @@ export const NOMS = {
   selection: { aucune: 'aucune', inverse: 'vidéo inverse', chevron: 'chevron' },
   retour: { aucun: 'aucun', entree: '« ../ » dans les listes', fleche: 'flèche en haut', fil: 'fil d’Ariane en haut' },
   invite: { signe: '$', chemin: 'chemin $' },
-  liste: { ligne: 'ls, en ligne', longue: 'ls -l, un par ligne' },
+  liste: { ligne: 'ls, en ligne', longue: 'ls -l, un par ligne', courte: 'ls -s, poids et nom' },
   sortie: { ligne: 'ligne à ligne', coup: 'd’un coup' },
   ecran: { suite: 'à la suite de la précédente', neuf: 'en haut d’un écran neuf' },
   markdown: { brut: 'brut', agence: 'agencé, sans les images' },

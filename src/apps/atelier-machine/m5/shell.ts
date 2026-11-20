@@ -27,7 +27,8 @@ export type Options = {
   numeros: boolean;
   /** The Markdown is arranged a little: its signs become underlined headings, bullets and bold; the pictures are left out. */
   agence: boolean;
-  liste: 'ligne' | 'longue';
+  /** `ls`, `ls -l`, or `ls -s`: a weight and a name per line, what a screen of forty columns has room for. */
+  liste: 'ligne' | 'longue' | 'courte';
   /** `../` in the listings: the way back as a name. */
   parent: boolean;
   /** The folder is listed again under a file just read. */
@@ -113,20 +114,20 @@ function legende(noeud: Noeud, langue: Langue) {
   return noeud.type === 'pdf' ? m.pdf : titreDe(noeud.contenu);
 }
 
-/** A folder's listing: its names in a row, or one per line with its weight and what it is. */
-function lister(dossier: Dossier, chemin: string[], { long, parent }: { long: boolean; parent: boolean }, session: Session, colonnes: number, liste: number) {
+/** A folder's listing: its names in a row, or one per line with its weight, and what it is if there is room to say it. */
+function lister(dossier: Dossier, chemin: string[], { forme, parent }: { forme: Options['liste']; parent: boolean }, session: Session, colonnes: number, liste: number) {
   const entrees = [
     ...(parent && chemin.length ? [{ nom: '../', cible: chemin.slice(0, -1), noeud: undefined as Noeud | undefined }] : []),
     ...dossier.enfants.map((noeud) => ({ nom: noeud.type === 'dossier' ? `${noeud.nom}/` : noeud.nom, cible: [...chemin, noeud.nom], noeud })),
   ];
   const nom = (entree: (typeof entrees)[number], rang: number): Morceau => ({ sorte: entree.nom.endsWith('/') ? 'dossier' : 'sortie', texte: entree.nom, cible: entree.cible, rang });
   const lignes: Ligne[] = [];
-  if (long) {
+  if (forme !== 'ligne') {
     const large = Math.max(...entrees.map((entree) => entree.nom.length));
     entrees.forEach((entree, rang) => {
       const avant = `${poids(entree.noeud ? octets(entree.noeud) : null, session.langue).padStart(5)}  `;
       const place = Math.max(0, colonnes - avant.length - large - 2);
-      const dit = entree.noeud ? legende(entree.noeud, session.langue) : '';
+      const dit = forme === 'longue' && entree.noeud ? legende(entree.noeud, session.langue) : '';
       lignes.push({
         liste,
         morceaux: [
@@ -171,9 +172,13 @@ function morceaux(ligne: string, titre: boolean, dossier: string[]): Morceau[] {
   return pieces;
 }
 
+/** A line that is not folded (a fenced block's), cut where the screen ends, as a terminal wraps what is too long for it. */
+const couper = (ligne: string, n: number) => (ligne.length <= n ? [ligne] : Array.from({ length: Math.ceil(ligne.length / n) }, (_, i) => ligne.slice(i * n, (i + 1) * n)));
+
 /**
  * A Markdown file as the terminal prints it: raw, folded at word spaces. The lines of a list or a
- * quote hang under their text, a fenced block is left as it is, and `-n` numbers the file's own lines.
+ * quote hang under their text, a fenced block is left as it is (cut only where a narrow screen
+ * ends, a phone's), and `-n` numbers the file's own lines.
  * Arranged (`agence`), its signs give way to what they mean: a heading is underlined, a list has
  * bullets, a lead is bold, and the pictures, which a terminal cannot show, are left out.
  */
@@ -212,14 +217,14 @@ export function lignesDe(contenu: string, largeur: number, dossier: string[], nu
       return lignes;
     }
     const retrait = telle ? '' : (/^\s*(?:[-*>] |\d+\. )?/.exec(brute)?.[0] ?? '');
-    const plis = telle ? [brute] : plier(brute.slice(retrait.length), Math.max(20, largeur - gouttiere - retrait.length));
+    const plis = telle ? couper(brute, Math.max(20, largeur - gouttiere)) : plier(brute.slice(retrait.length), Math.max(20, largeur - gouttiere - retrait.length));
     return plis.map((pli, k): Ligne => ({ morceaux: [...marge(i, k), ...morceaux(`${k ? ' '.repeat(retrait.length) : retrait}${pli}`, titre, dossier)] }));
   });
 }
 
 /** The command that lists a folder the way the bench asks. */
 export const commandeLs = ({ liste, parent }: Pick<Options, 'liste' | 'parent'>) => {
-  const drapeaux = `${liste === 'longue' ? 'l' : ''}${parent ? 'a' : ''}`;
+  const drapeaux = `${liste === 'longue' ? 'l' : liste === 'courte' ? 's' : ''}${parent ? 'a' : ''}`;
   return drapeaux ? `ls -${drapeaux}` : 'ls';
 };
 
@@ -267,14 +272,15 @@ export function executer(depart: Session, saisie: string, options: Options): Res
     const m = MESSAGES[r.session.langue];
     const chemin = resoudre(r.session.cwd, premier ?? '.');
     const noeud = trouver(chemin);
-    const dire = (...lignes: string[]) => r.lignes.push(...lignes.map((ligne) => texte('sortie', ligne)));
+    // what the shell says folds like the files do: a phone's screen has forty columns
+    const dire = (...lignes: string[]) => r.lignes.push(...lignes.flatMap((ligne) => plier(ligne, options.colonnes)).map((ligne) => texte('sortie', ligne)));
     let echec = false;
     const refuser = (message: string) => {
       dire(`${nom}: ${message}`);
       echec = true;
     };
-    const imprimerListe = (dossier: Dossier, ou: string[], long: boolean, parent: boolean) => {
-      const { lignes, entrees } = lister(dossier, ou, { long, parent }, r.session, options.colonnes, ++r.liste);
+    const imprimerListe = (dossier: Dossier, ou: string[], forme: Options['liste'], parent: boolean) => {
+      const { lignes, entrees } = lister(dossier, ou, { forme, parent }, r.session, options.colonnes, ++r.liste);
       r.lignes.push(...lignes);
       r.entrees = entrees;
     };
@@ -287,7 +293,7 @@ export function executer(depart: Session, saisie: string, options: Options): Res
       if (!noeud) refuser(m.introuvable(premier));
       else if (noeud.type !== 'dossier') dire(premier);
       else {
-        imprimerListe(noeud, chemin, drapeaux.includes('l'), drapeaux.includes('a'));
+        imprimerListe(noeud, chemin, drapeaux.includes('l') ? 'longue' : drapeaux.includes('s') ? 'courte' : 'ligne', drapeaux.includes('a'));
         [r.vue, r.fichier] = ['liste', null];
       }
     } else if (nom === 'cd') {
@@ -303,7 +309,7 @@ export function executer(depart: Session, saisie: string, options: Options): Res
         if (redemarre) {
           // the terminal starts again in the folder's language; what is left of the chain is typed again
           const suite = commandes.slice(n + 1).join(' && ');
-          r.lignes = [{ ...texte('meta', MESSAGES[langue].redemarrage), debut: true }, VIDE, ...(suite ? [{ ...echo(r.session, suite, options), debut: false }] : [])];
+          r.lignes = [...plier(MESSAGES[langue].redemarrage, options.colonnes).map((pli, i) => ({ ...texte('meta', pli), debut: i === 0 })), VIDE, ...(suite ? [{ ...echo(r.session, suite, options), debut: false }] : [])];
           [r.efface, r.entrees] = [true, null];
         }
       }
@@ -314,7 +320,14 @@ export function executer(depart: Session, saisie: string, options: Options): Res
       else if (noeud.type === 'pdf' && nom === 'cat') refuser(m.binaire(premier));
       else if (noeud.type === 'pdf') {
         r.ouvre = noeud.href;
-        r.lignes.push({ morceaux: [{ sorte: 'sortie', texte: m.ouverture(noeud.nom) }, { sorte: 'meta', texte: noeud.href, href: noeud.href }] });
+        const dit = m.ouverture(noeud.nom);
+        const lien: Morceau = { sorte: 'meta', texte: noeud.href, href: noeud.href };
+        // where the screen has no room for both, the address is on a line of its own
+        if (dit.length + noeud.href.length <= options.colonnes) r.lignes.push({ morceaux: [{ sorte: 'sortie', texte: dit }, lien] });
+        else {
+          dire(dit.trimEnd());
+          r.lignes.push({ morceaux: [lien] });
+        }
       } else {
         const dossier = chemin.slice(0, -1);
         r.lignes.push(...lignesDe(noeud.contenu, largeur, dossier, drapeaux.includes('n'), options.agence));
@@ -322,7 +335,7 @@ export function executer(depart: Session, saisie: string, options: Options): Res
         const ici = trouver(r.session.cwd);
         if (options.relister && ici?.type === 'dossier') {
           r.lignes.push(VIDE, { ...echo(r.session, commandeLs(options), options), debut: false });
-          imprimerListe(ici, r.session.cwd, options.liste === 'longue', options.parent);
+          imprimerListe(ici, r.session.cwd, options.liste, options.parent);
         }
       }
     } else refuser(m.inconnue(nom));
@@ -428,7 +441,8 @@ export function demarrer(options: Options, depart?: Depart): Ecran {
   const commande = (fichier && commandeOuvrir(session, fichier, options)) ?? commandeLs(options);
   const ecran = appliquer({ ...NEUF, session, depart }, commande, options, false, false);
   // the welcome is where this first screen starts, not the first command
-  return { ...ecran, lignes: [{ ...texte('meta', MESSAGES[langue].accueil), id: 0, debut: true }, { ...VIDE, id: 1 }, ...ecran.lignes.map((ligne) => ({ ...ligne, debut: false }))] };
+  const accueil = plier(MESSAGES[langue].accueil, options.colonnes).map((pli, id) => ({ ...texte('meta', pli), id, debut: id === 0 }));
+  return { ...ecran, lignes: [...accueil, { ...VIDE, id: accueil.length }, ...ecran.lignes.map((ligne) => ({ ...ligne, debut: false }))] };
 }
 
 export function reduire(ecran: Ecran, action: Action): Ecran {

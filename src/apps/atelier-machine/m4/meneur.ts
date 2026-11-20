@@ -46,6 +46,11 @@ type Options = {
   humain?: () => Iterable<HTMLElement>;
   /** The whole screen has just turned black, or the page shows again: what runs under the black can stop, or start again. */
   onCouvert?: (couvert: boolean) => void;
+  /**
+   * The most px of the canvas per px of the page, 2 unless said otherwise: a phone's screen has
+   * 3, and nothing of the bubble is that fine. Read each time the stage is measured.
+   */
+  densite?: () => number;
 };
 
 const MONO = { famille: famille(TYPO.police), graisse: TYPO.police.graisse };
@@ -54,7 +59,7 @@ const reduit = () => window.matchMedia('(prefers-reduced-motion: reduce)').match
 
 const doux = (x: number) => x * x * (3 - 2 * x);
 
-export function creerMeneur({ racine, toile, onFin, humain, onCouvert }: Options): Meneur {
+export function creerMeneur({ racine, toile, onFin, humain, onCouvert, densite }: Options): Meneur {
   const rendu = creerRendu(toile);
   const couches = [...racine.querySelectorAll<HTMLElement>('.m4-couche')];
   const etalon = racine.querySelector<HTMLElement>('.m4-etalon');
@@ -108,7 +113,7 @@ export function creerMeneur({ racine, toile, onFin, humain, onCouvert }: Options
     const cadre = racine.getBoundingClientRect();
     const u = (etalon?.getBoundingClientRect().width ?? 0) / 100;
     if (cadre.width < 1 || cadre.height < 1 || !u) return null;
-    return { l: cadre.width, h: cadre.height, u, bouton: bouton(cadre), dpr: Math.min(2, window.devicePixelRatio || 1) };
+    return { l: cadre.width, h: cadre.height, u, bouton: bouton(cadre), dpr: Math.min(densite?.() ?? 2, window.devicePixelRatio || 1) };
   };
 
   /** The number's two drawings, made again when what sets them has changed. */
@@ -167,7 +172,8 @@ export function creerMeneur({ racine, toile, onFin, humain, onCouvert }: Options
     fige = null;
     cote = machine;
     atteindre(machine ? 'machine' : 'humain');
-    const nu = !rendu || rendu.perdu();
+    // on the human side nothing is drawn: the shader, still being built, is not waited for
+    const nu = !rendu || rendu.perdu(machine);
     racine.toggleAttribute('data-nu', nu);
     secourir(machine && nu);
     // The black side at rest: the whole screen black, the number under the terminal.

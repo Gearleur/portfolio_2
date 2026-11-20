@@ -13,8 +13,8 @@ import type { Etat, Foyer, Reglages } from './reglages';
 
 type Maj = (maj: (etat: Etat) => Etat) => void;
 
-/** One of a few values. */
-function Choix<T extends string>({ titre, options, valeur, onChoix }: { titre: string; options: [T, string][]; valeur: T; onChoix: (valeur: T) => void }) {
+/** One of a few values. Shared with the bench of M6. */
+export function Choix<T extends string>({ titre, options, valeur, onChoix }: { titre: string; options: [T, string][]; valeur: T; onChoix: (valeur: T) => void }) {
   return (
     <div className="atelier-segment" role="group" aria-label={titre}>
       <span className="atelier-segment__legend">{titre}</span>

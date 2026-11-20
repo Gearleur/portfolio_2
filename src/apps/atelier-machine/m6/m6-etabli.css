@@ -1,0 +1,152 @@
+/* Atelier 2 · M6, le téléphone: the bench's own. What a phone would fetch is in m6.css. */
+
+/* The phone at its real size, framed like the phones of Atelier 1 (chemin.css: .phone__frame);
+   in a window too short for its 844 px, it is a shorter phone, never a scaled one. */
+.m6-plan {
+  justify-items: center;
+}
+
+.m6-plan .atelier-stage__bar {
+  width: 100%;
+}
+
+.m6-cadre.phone__frame {
+  width: 390px;
+  height: min(844px, 100vh - 96px);
+  aspect-ratio: auto;
+}
+
+/* The bench does not load the Vitrine's own touch styles (natif.css): the page keeps its bounce to itself here too. */
+.m6-cadre .mobile {
+  overscroll-behavior: contain;
+}
+
+/* In full screen: the same phone in the middle of the window, on the Atelier's dark ground. */
+.m6-plein {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  background: #12100f;
+}
+
+.specimen > .m6-plein {
+  cursor: default;
+}
+
+.m6-plein .m6-cadre.phone__frame {
+  height: min(844px, 100dvh - 32px);
+}
+
+.specimen:has(> .m6-plein) > .curseur {
+  display: none;
+}
+
+/* The bar stands beside the phone, not over its notch; « Taille réelle » has no meaning here. */
+.atelier-preview:has(.m6-plein) .atelier-preview__bar {
+  left: 16px;
+  justify-content: flex-start;
+  max-width: max(260px, 50% - 227px);
+  transform: none;
+}
+
+.atelier-preview:has(.m6-plein) .atelier-preview__bar > button[aria-pressed]:not(.m1-choix) {
+  display: none;
+}
+
+/* On a real phone, full screen is the phone: the stage takes the window, and the bar waits,
+   faint, at mid-height, clear of the notch and of the thumb's keys. */
+@media (max-width: 720px) {
+  .m6-plein .m6-cadre.phone__frame {
+    width: 100vw;
+    height: 100dvh;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .atelier-preview:has(.m6-plein) .atelier-preview__bar {
+    top: 44%;
+    right: 8px;
+    left: auto;
+    max-width: 150px;
+    opacity: 0.4;
+  }
+
+  .atelier-preview:has(.m6-plein) .atelier-preview__bar:is(:hover, :focus-within) {
+    opacity: 1;
+  }
+}
+
+/* A proposition, drawn small: the terminal's lines, the switch in coquelicot. */
+.m6-glyphe {
+  --l: linear-gradient(#d9d9d4, #d9d9d4);
+  --b: linear-gradient(#8d919b, #8d919b);
+  --c: linear-gradient(#e0301f, #e0301f);
+
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background-color: #1c2233;
+  background-repeat: no-repeat;
+  box-shadow: 0 0 0 1px var(--atelier-line);
+}
+
+/* Encoche: the pill at the top, between two words. */
+.m6-glyphe[data-id='encoche'] {
+  background-image: var(--b), var(--c), var(--b), var(--l), var(--l), var(--l);
+  background-position:
+    6px 6px,
+    15px 5px,
+    25px 6px,
+    6px 15px,
+    6px 20px,
+    6px 25px;
+  background-size:
+    7px 2px,
+    8px 4px,
+    5px 2px,
+    14px 1px,
+    20px 1px,
+    11px 1px;
+}
+
+/* Pouce: four keys, and the pill under them. */
+.m6-glyphe[data-id='pouce'] {
+  background-image: var(--l), var(--l), var(--b), var(--b), var(--b), var(--b), var(--c);
+  background-position:
+    6px 7px,
+    6px 12px,
+    5px 20px,
+    12px 20px,
+    19px 20px,
+    26px 20px,
+    14px 28px;
+  background-size:
+    14px 1px,
+    20px 1px,
+    5px 4px,
+    5px 4px,
+    5px 4px,
+    5px 4px,
+    8px 4px;
+}
+
+/* Feuille: rows across the screen, a hairline under each. */
+.m6-glyphe[data-id='feuille'] {
+  background-image: var(--l), var(--b), var(--l), var(--b), var(--l), var(--b);
+  background-position:
+    6px 8px,
+    6px 13px,
+    6px 17px,
+    6px 22px,
+    6px 26px,
+    6px 31px;
+  background-size:
+    12px 2px,
+    24px 1px,
+    17px 2px,
+    24px 1px,
+    9px 2px,
+    24px 1px;
+}

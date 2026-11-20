@@ -27,7 +27,9 @@ body {
 }
 
 /* Touch screens: every link and button answers inside at least 44 × 44 px (Apple's minimum),
-   by a hidden area around it that does not move anything. */
+   by a hidden area around it that does not move anything. The Machine mode's terminal is out of
+   this rule, by its own styles (atelier-machine/m5/m5.css): its names are not positioned, and
+   the area of each would cover its whole screen. */
 @media (pointer: coarse) {
   .vitrine :where(a, button, summary, [role='button']) {
     position: relative;

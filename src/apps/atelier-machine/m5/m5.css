@@ -12,6 +12,19 @@
   cursor: default;
 }
 
+/* On the Vitrine a touch screen gives every link and button a hidden area of 44 px, anchored on
+   the link itself (portfolio/natif.css). Here `all: unset` leaves it nothing to be anchored on:
+   each would lie over the whole scrolling zone, and the last name would take every touch. The
+   terminal is out of that rule: what a finger hits in it is its rows (m6.css). Nor does a name
+   dim under the finger as a link of the page does: it has its own answer. */
+.m2-ecran.m5 :is(button, a)::after {
+  content: none;
+}
+
+.m2-ecran.m5 :is(button, a):not(:disabled):active {
+  opacity: 1;
+}
+
 /* The lines scroll inside the glass; the page behind never does. The scrollbar sits in the
    glass's margin, off the grid. */
 .m5-defile {
@@ -29,6 +42,12 @@
 
 .m5-neuf {
   height: calc(100% - var(--lh));
+}
+
+/* Under a file longer than the screen, the folder's menu closes the reading (Console.tsx): no
+   room is kept under it, and the scroll ends there, on the browser's own stop. */
+.m5-defile[data-butee] > .m5-neuf {
+  height: 0;
 }
 
 /* A name that opens, a link that leaves: underlined under the pointer, framed under the keys. */

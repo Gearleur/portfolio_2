@@ -1,0 +1,375 @@
+/* Atelier 2 · M6, le téléphone: the Machine mode's stage on a phone, laid over the phone's page
+   inside its Specimen. The switch is M3's and the passage M4's (.m4-scene, m4.css); the console
+   is M5's. Only what a screen of 390 px and a finger ask is here. Mobile.tsx sets the measures
+   on .m6-scene: the pill's height (--m6-taille, px of a 390 px page), the height of what can be
+   touched (--m6-cible) and of the pad's keys (--m6-touche). */
+
+.m6-scene {
+  /* The terminal's sizes are true px on a phone, as its text is; the switch's are the page's
+     own, px of a 390 px page, like the notch it lives in. */
+  --u: 1px;
+  --u0: calc(100cqw / 390);
+  /* the notch's middle (navmobile.css: 10 + 42 / 2, under the safe area): the terminal's first line takes it */
+  --m6-rang: calc(env(safe-area-inset-top, 0px) + 31 * var(--u0));
+  /* where a pill at the bottom stands: clear of the home bar */
+  --m6-sol: max(12px, env(safe-area-inset-bottom, 0px) + 2px);
+
+  position: absolute;
+  inset: 0;
+  /* over the page's own layers and under its cursor, as on a desktop (machine.css) */
+  z-index: 8;
+  overflow: hidden;
+  pointer-events: none;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.m6-scene > .m4-couche,
+.m6-inter > .m3-inter {
+  pointer-events: auto;
+}
+
+/* Once the whole screen is black (Passage.tsx sets data-machine on the Specimen), the page has
+   nothing to show and is taken off the screen, as on a desktop: what plays only in view stops. */
+.specimen[data-machine] > :not(.m6-scene, .machine) {
+  visibility: hidden;
+}
+
+.specimen[data-machine] > :not(.m6-scene, .machine, .fond, .curseur) {
+  translate: -300vw 0;
+}
+
+/* The switch ----------------------------------------------------------------
+   A point of the stage, on which the pill stands (its bottom, in its middle): at the bottom of
+   the screen, or on the notch's line. */
+
+.m6-inter {
+  position: absolute;
+  bottom: var(--m6-sol);
+  left: 50%;
+  z-index: 5;
+  width: 0;
+  height: 0;
+  transition:
+    opacity 0.2s ease,
+    visibility 0s;
+}
+
+/* The switch comes once the page is alive and idle: it fades in (not again when a page change
+   mounts the stage anew, Mobile.tsx). In the notch it waits for the room the notch makes. */
+.m6-scene[data-arrive] > .m6-inter {
+  animation: m6-arrive 0.6s ease-out backwards;
+}
+
+.m6-scene[data-arrive][data-inter='encoche'] > .m6-inter {
+  animation: m6-arrive 0.42s ease-out 0.18s backwards;
+}
+
+/* Under the finger the pill does not dim as a link of the Vitrine does (portfolio/natif.css): its knob answers. */
+.m6-scene .m3-pilule:active {
+  opacity: 1;
+}
+
+/* In the notch, between the name and « Menu » (Mobile.tsx measures where); in the menu, in the
+   middle of the band its sheet leaves empty over the notch. On the black side it has not moved. */
+.m6-scene:is([data-inter='encoche'], [data-inter='menu']) > .m6-inter {
+  top: calc(var(--m6-iy, var(--m6-rang)) + var(--m6-taille) * var(--u0) / 2);
+  bottom: auto;
+  left: var(--m6-ix, 50%);
+}
+
+/* On the human side, a switch in the notch gives way to the menu's sheet, and one that lives in
+   the menu shows only with it. While a passage lasts and on the black side it is always there. */
+.m6-scene[data-efface]:not([data-passage], [data-couvert]) > .m6-inter {
+  visibility: hidden;
+  opacity: 0;
+  transition:
+    opacity 0.2s ease,
+    visibility 0s 0.2s;
+}
+
+@keyframes m6-arrive {
+  from {
+    opacity: 0;
+  }
+}
+
+/* The notch opens between the name and « Menu »: --m6-trou is the pill's width, 10 px of glass on
+   each side. It opens gently the first time, the name and « Menu » drawing apart around a middle
+   that stays still; a page that comes later is drawn open. */
+.specimen[data-m6-encoche] .mobile[data-nav='notch'] .m-strip {
+  gap: calc((var(--m6-trou) + 20) * var(--u));
+  transition: gap 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.specimen:has(> .m6-scene) .mobile[data-nav='notch'] .m-strip {
+  transition: gap 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* The terminal --------------------------------------------------------------
+   The whole screen. Its first line, the way back, is 44 px high on the notch's line; its last
+   stands clear of the home bar, and of a pill at the bottom. 16 px is its grid's margin
+   (derives.ts). */
+
+.m6-scene .m1-terminal {
+  box-shadow: none;
+}
+
+.m6-scene .m2-ecran {
+  top: calc(var(--m6-rang) - 22px - 16px);
+  bottom: max(0px, env(safe-area-inset-bottom, 0px) - 10px);
+}
+
+.m6-scene[data-inter='bas'] .m2-ecran {
+  bottom: calc(var(--m6-sol) + var(--m6-taille) * var(--u0) - 4px);
+}
+
+.m6-scene .m5 :is(button, a) {
+  touch-action: manipulation;
+}
+
+/* A finger scrolls the terminal's lines and nothing else: from its first line, its last or its
+   margins it would take the page behind with it, or make it bounce. What goes sideways is left to
+   the swipe back (glisser.ts). */
+.m6-scene > .m4-couche {
+  touch-action: none;
+}
+
+.m6-scene .m5-defile {
+  touch-action: pan-y;
+  /* the end of what scrolls is a stop, not a spring: a fling ends on it at once */
+  overscroll-behavior: none;
+  /* and the lines never run under the last one: they fade out over the end of their zone */
+  -webkit-mask-image: linear-gradient(#000 calc(100% - 16px), transparent);
+  mask-image: linear-gradient(#000 calc(100% - 16px), transparent);
+}
+
+/* A phone-wide window on a desktop has a mouse: on the black side the page's drawn cursor has
+   stopped, and the pointer is the system's own, as on a desktop (portfolio/machine/machine.css). */
+.specimen[data-machine] .m6-scene,
+.specimen[data-machine] .m6-scene * {
+  cursor: auto;
+}
+
+.specimen[data-machine] .m6-scene :is(a, button:not(:disabled)) {
+  cursor: pointer;
+}
+
+/* The keyboard is out (clavier.ts): the terminal and the switch keep to what it leaves in view,
+   --m6-vh px from --m6-vy; the home bar is under the keys. */
+.m6-scene[data-clavier] > .m4-couche[data-cote='machine'] {
+  top: var(--m6-vy);
+  bottom: auto;
+  height: var(--m6-vh);
+}
+
+.m6-scene[data-clavier] > .m6-inter {
+  translate: 0 var(--m6-vy);
+}
+
+/* the glass is sized on the screen, not on its layer (m1/verre.css) */
+.m6-scene[data-clavier] .m1-terminal {
+  top: 0;
+  height: var(--m6-vh);
+}
+
+.m6-scene[data-clavier] .m2-ecran {
+  bottom: 0;
+}
+
+/* The field that takes the keys: 16 px, or iOS zooms into the page when it is given them; and at
+   the top of the screen, where no keyboard covers it, so the phone has no reason to slide the
+   page up to show it. */
+.m6-scene .m5-champ {
+  top: 64px;
+  bottom: auto;
+  font-size: 16px;
+}
+
+.m6-scene .m5-fil {
+  height: 44px;
+  margin-bottom: 4px;
+  line-height: 44px;
+}
+
+.m6-scene .m5-fil .m5-nom {
+  display: inline-block;
+  min-width: 44px;
+  padding-right: 2ch;
+}
+
+/* The number, put away on the first line: smaller than the cells, it has to pass beside the pill. */
+.m6-numero {
+  font-size: 12px;
+}
+
+/* What can be touched is at least 44 px high: a name of a listing with its whole row for a
+   target, a link in a text with its line, the line where one types. */
+.m6-scene .m2-ligne:is([data-liste], .m5-invite, :has(> .m5-nom)) {
+  position: relative;
+  height: var(--m6-cible);
+  line-height: var(--m6-cible);
+}
+
+.m6-scene .m2-ligne[data-liste] > .m5-nom::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+/* Under the finger: in reverse video, as the chosen name is under the keys. */
+.m6-scene .m5-nom:not(:disabled):active {
+  background: rgb(var(--encre) / var(--g-sortie));
+  color: var(--nuit);
+  text-decoration: none;
+}
+
+/* The last line: the number or the session, where one is, how far. */
+.m6-bas {
+  flex: none;
+}
+
+/* (.m2-barre, which comes later in the page, has no margin: this one has to weigh more) */
+.m6-scene .m6-etat {
+  gap: 2ch;
+  margin-top: 8px;
+}
+
+.m6-etat > * {
+  flex: none;
+}
+
+.m6-etat > .m6-chemin {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  direction: rtl;
+  text-align: right;
+  text-overflow: ellipsis;
+}
+
+/* The number, put away (ranger.ts): a copy of its figures comes from the middle of the screen,
+   where the bubble showed them large, to where the terminal writes them small; they show there
+   once it has landed. */
+.m6-vol {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: rgb(243 243 238);
+  white-space: pre;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.m4-couche[data-vol] .m6-pose {
+  opacity: 0;
+}
+
+/* The pad: four big keys under the thumb. */
+.m6-pave {
+  display: grid;
+  grid-template-columns: 5fr 4fr 4fr 5fr;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.m6-scene .m6-pave button {
+  display: flex;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  gap: 1ch;
+  height: var(--m6-touche);
+  border-radius: 10px;
+  background: rgb(var(--encre) / 0.07);
+  box-shadow: inset 0 0 0 1px rgb(var(--encre) / 0.16);
+  color: rgb(var(--encre) / var(--g-commande));
+  font-size: 1.2em;
+  line-height: 1;
+  white-space: pre;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.m6-scene .m6-pave button:not(:disabled):active {
+  background: rgb(var(--encre) / var(--g-sortie));
+  color: var(--nuit);
+}
+
+.m6-pave small {
+  font-size: 0.72em;
+  opacity: 0.7;
+}
+
+/* A swipe to the right goes back (glisser.ts): the browser keeps the scroll up and down, and
+   gives what goes sideways. « Feuille »: the terminal as a native list, a row per name across the
+   screen, a hairline under it, its weight on the right before a chevron; the command is no more
+   than a trace. */
+
+.m6-scene[data-gestes] .m4-couche[data-glisse] {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.m6-scene[data-rangs='feuille'] .m2-ligne[data-liste] {
+  display: flex;
+  align-items: center;
+  box-shadow: inset 0 -1px 0 rgb(var(--encre) / 0.12);
+}
+
+.m6-scene[data-rangs='feuille'] .m2-ligne:not([data-liste]) + .m2-ligne[data-liste] {
+  box-shadow:
+    inset 0 1px 0 rgb(var(--encre) / 0.12),
+    inset 0 -1px 0 rgb(var(--encre) / 0.12);
+}
+
+.m6-scene[data-rangs='feuille'] .m2-ligne[data-liste] > * {
+  flex: none;
+}
+
+.m6-scene[data-rangs='feuille'] .m2-ligne[data-liste] > .m5-nom + [data-sorte='meta'] {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.m6-scene[data-rangs='feuille'] .m2-ligne[data-liste] > [data-sorte='meta']:first-child {
+  order: 1;
+  margin-left: auto;
+}
+
+.m6-scene[data-rangs='feuille'] .m2-ligne[data-liste]::after {
+  content: '›';
+  order: 2;
+  color: rgb(var(--encre) / var(--g-meta));
+}
+
+.m6-scene[data-rangs='feuille'] .m2-ligne[data-liste]:has(> .m5-nom:active) {
+  background: rgb(var(--encre) / 0.1);
+}
+
+.m6-scene[data-rangs='feuille'] .m2-ligne[data-liste] > .m5-nom:active {
+  background: none;
+  color: inherit;
+}
+
+.m6-scene[data-rangs='feuille'] .m2-ligne:is([data-debut], .m5-invite) {
+  opacity: 0.6;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .m6-scene > .m6-inter {
+    transition: none;
+  }
+
+  .m6-scene[data-arrive][data-inter] > .m6-inter {
+    animation: none;
+  }
+
+  .specimen:has(> .m6-scene) .mobile[data-nav='notch'] .m-strip,
+  .specimen[data-m6-encoche] .mobile[data-nav='notch'] .m-strip {
+    transition: none;
+  }
+}

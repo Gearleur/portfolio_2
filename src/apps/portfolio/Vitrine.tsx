@@ -26,9 +26,11 @@ const NOMS: Record<string, string> = { '01': 'Whiteboard AMDEC', '02': 'SNCF GPT
 const chargerProjet = () => import('./PageProjet');
 const PageProjet = lazy(chargerProjet);
 
-// The Machine mode (Atelier 2, journal n° 115): its switch is a chunk of its own, on a desktop only,
-// fetched once the page has loaded and is idle. The terminal comes later still (machine/ModeMachine.tsx).
+// The Machine mode (Atelier 2, journal n° 115): its switch is a chunk of its own, fetched once the
+// page has loaded and is idle; the terminal comes later still. A desktop fetches its own
+// (machine/ModeMachine.tsx), a phone its own (machine/Telephone.tsx), neither the other's.
 const ModeMachine = lazy(() => import('./machine/ModeMachine'));
+const ModeMachineTelephone = lazy(() => import('./machine/Telephone'));
 
 const lireAdresse = () => window.location.hash.replace(/^#/, '');
 
@@ -176,9 +178,9 @@ export function Vitrine() {
           {/* A new stage for each kind of page: a wave under way on the Vitrine stops at a project page. */}
           <Specimen key={projet ? 'lecture' : 'vitrine'} settings={projet ? FOND_LECTURE : FOND} reelle={!telephone}>
             {page}
-            {repose && !telephone && (
+            {repose && (
               <Suspense fallback={null}>
-                <ModeMachine langue={langue} adresse={adresse} numero={numero} />
+                {telephone ? <ModeMachineTelephone langue={langue} adresse={adresse} numero={numero} menu={menu} /> : <ModeMachine langue={langue} adresse={adresse} numero={numero} />}
               </Suspense>
             )}
           </Specimen>
