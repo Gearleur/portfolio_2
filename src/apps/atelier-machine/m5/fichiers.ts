@@ -126,6 +126,12 @@ function langue(l: Langue): Dossier {
   };
 }
 
+/** The path of a project's file in a language's folder, from the project's number on the Vitrine (`02`), if it has one. */
+export function cheminProjet(numero: string, l: Langue): string[] | null {
+  const carte = ACCUEIL.projets.find((projet) => projet.numero === numero);
+  return carte && PROJETS[numero] ? [l, NOMS[l].projets, fichierProjet(carte)] : null;
+}
+
 /** As `ls` sorts in the C locale: capitals first, then the alphabet. */
 function trier<N extends Noeud>(noeuds: N[]) {
   return [...noeuds].sort((a, b) => (a.nom < b.nom ? -1 : a.nom > b.nom ? 1 : 0));

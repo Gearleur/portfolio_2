@@ -1,11 +1,11 @@
 import { Fragment, useEffect, useLayoutEffect, useMemo, useReducer, useRef, useState } from 'react';
 import type { CSSProperties, KeyboardEvent as Touche, MouseEvent } from 'react';
-import { famille } from '../m2/reglages';
+import { famille } from '../m2/retenu';
 import type { Reglages as Type } from '../m2/reglages';
 import { ecrire } from './fichiers';
 import type { Reglages } from './reglages';
 import { commandeOuvrir, commandeRetour, completer, demarrer, invite, reduire } from './shell';
-import type { Morceau, Options } from './shell';
+import type { Depart, Morceau, Options } from './shell';
 import '../m2/m2.css';
 import './m5.css';
 
@@ -32,9 +32,11 @@ type Props = {
   /** The type and grid retained at M2. */
   type: Type;
   reglages: Reglages;
+  /** Where the terminal opens, when not at the root in French; read once, as it mounts. */
+  depart?: Depart;
 };
 
-export function Console({ type, reglages }: Props) {
+export function Console({ type, reglages, depart }: Props) {
   const { police, grille, gris, curseur } = type;
   const racine = useRef<HTMLDivElement>(null);
   const zone = useRef<HTMLDivElement>(null);
@@ -72,7 +74,7 @@ export function Console({ type, reglages }: Props) {
   const parent = reglages.retour === 'entree';
   const options = useMemo<Options>(() => ({ colonnes, pliage, numeros, agence, liste, parent, relister, invite: maniere }), [colonnes, pliage, numeros, agence, liste, parent, relister, maniere]);
 
-  const [ecran, dispatch] = useReducer(reduire, options, demarrer);
+  const [ecran, dispatch] = useReducer(reduire, options, (premieres) => demarrer(premieres, depart));
   // When the settings change what is printed, the place one is at is printed again.
   const [imprime, setImprime] = useState(options);
   if (imprime !== options) {

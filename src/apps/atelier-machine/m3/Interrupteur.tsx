@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import type { CSSProperties, KeyboardEvent, PointerEvent, ReactNode } from 'react';
 import { grainImage, GRAIN_TILE } from '../../atelier/grain';
 import { FOND } from '../../atelier/tokens';
-import { elan, geometrie, retombe } from './reglages';
+import { elan, geometrie, retombe } from './retenu';
 import type { Reglages } from './reglages';
 import './m3.css';
 

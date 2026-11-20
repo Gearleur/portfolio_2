@@ -1,0 +1,56 @@
+/* The Machine mode on the Vitrine (journal n° 110 to 115): the stage of M3 and M4 (.m3-scene,
+   .m4-scene), laid over the page inside the Vitrine's Specimen. Only what the bench's styles
+   lack is here: on the bench the human page is a layer of the stage; here it is the Vitrine's
+   own, beside it. */
+
+/* Over the page's own layers (6 at most, chemin.css) and under its cursor (10). The page under
+   stays the page: only the switch, and the terminal once it is there, take the pointer. */
+.machine {
+  z-index: 8;
+  pointer-events: none;
+}
+
+.machine > .m3-inter,
+.machine > .m4-couche {
+  pointer-events: auto;
+}
+
+/* The switch comes once the page is alive and idle: it fades in, over the page, moving nothing. */
+@keyframes machine-arrive {
+  from {
+    opacity: 0;
+  }
+}
+
+.machine[data-arrive] > .m3-inter {
+  animation: machine-arrive 0.6s ease-out backwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .machine[data-arrive] > .m3-inter {
+    animation: none;
+  }
+}
+
+/* Once the whole screen is black (Passage.tsx sets data-machine on the Specimen), the page has
+   nothing to show: its ground, its cursor and itself are hidden. And the page is taken off the
+   screen: what plays only in view (the films, the thumbnails' canvases, the diagrams) stops by
+   itself, as when it is scrolled away, and starts again when the page is back. Nothing is laid
+   out again, and the page keeps its scroll. */
+.specimen[data-machine] > :not(.machine) {
+  visibility: hidden;
+}
+
+.specimen[data-machine] > :not(.machine, .fond, .curseur) {
+  translate: -300vw 0;
+}
+
+/* On the black side the pointer is the system's own: the page's cube has stopped. */
+.specimen[data-machine] .machine,
+.specimen[data-machine] .machine * {
+  cursor: auto;
+}
+
+.specimen[data-machine] .machine :is(a, button:not(:disabled)) {
+  cursor: pointer;
+}

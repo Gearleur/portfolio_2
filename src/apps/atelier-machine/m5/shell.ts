@@ -1,4 +1,4 @@
-import { plier } from '../m2/contenu';
+import { plier } from '../m2/plier';
 import type { Sorte } from '../m2/contenu';
 import { ecrire, langueDe, octets, relatif, resoudre, titreDe, trouver } from './fichiers';
 import type { Dossier, Langue, Noeud } from './fichiers';
@@ -371,7 +371,12 @@ export type Ecran = {
   ouvre: { url: string } | null;
   /** Commands run so far. */
   tour: number;
+  /** Where this terminal was asked to open, when not at the root in French. */
+  depart?: Depart;
 };
+
+/** Where a terminal opens: its language, and a Markdown file to read at once (a path from the root). The Vitrine opens it in the page's language, on the project being read. */
+export type Depart = { langue: Langue; fichier?: string[] };
 
 export type Action =
   | { type: 'executer'; commande: string; options: Options; progressif: boolean }
@@ -406,17 +411,24 @@ function appliquer(ecran: Ecran, commande: string, options: Options, progressif:
     pas: Math.max(1, Math.ceil(cache / 24)),
     ouvre: r.ouvre ? { url: r.ouvre } : ecran.ouvre,
     tour,
+    depart: ecran.depart,
   };
 }
 
 const NEUF = { lignes: [], listing: null, vue: 'autre', fichier: null, choix: 0, historique: [], cache: 0, pas: 1, ouvre: null, tour: 0 } satisfies Partial<Ecran>;
 
-/** The terminal as it opens: at the root, in French, one line of welcome and the root's listing. */
-export function demarrer(options: Options): Ecran {
-  const session: Session = { cwd: [], langue: 'fr' };
-  const ecran = appliquer({ ...NEUF, session }, commandeLs(options), options, false, false);
-  // the welcome is where this first screen starts, not the listing's command
-  return { ...ecran, lignes: [{ ...texte('meta', MESSAGES.fr.accueil), id: 0, debut: true }, { ...VIDE, id: 1 }, ...ecran.lignes.map((ligne) => ({ ...ligne, debut: false }))] };
+/**
+ * The terminal as it opens: at the root, in French, one line of welcome and the root's listing.
+ * Asked to (`depart`), it opens in another language, or in a file's folder with that file read.
+ */
+export function demarrer(options: Options, depart?: Depart): Ecran {
+  const langue = depart?.langue ?? 'fr';
+  const fichier = depart?.fichier && trouver(depart.fichier)?.type === 'md' ? depart.fichier : null;
+  const session: Session = { cwd: fichier ? fichier.slice(0, -1) : [], langue };
+  const commande = (fichier && commandeOuvrir(session, fichier, options)) ?? commandeLs(options);
+  const ecran = appliquer({ ...NEUF, session, depart }, commande, options, false, false);
+  // the welcome is where this first screen starts, not the first command
+  return { ...ecran, lignes: [{ ...texte('meta', MESSAGES[langue].accueil), id: 0, debut: true }, { ...VIDE, id: 1 }, ...ecran.lignes.map((ligne) => ({ ...ligne, debut: false }))] };
 }
 
 export function reduire(ecran: Ecran, action: Action): Ecran {
@@ -425,7 +437,7 @@ export function reduire(ecran: Ecran, action: Action): Ecran {
       return appliquer(ecran, action.commande, action.options, action.progressif, true);
     case 'rejouer': {
       // The settings changed what is printed: the same place, printed again on a clean screen.
-      if (!ecran.historique.length) return demarrer(action.options);
+      if (!ecran.historique.length) return demarrer(action.options, ecran.depart);
       const commande = ecran.vue === 'fichier' && ecran.fichier ? commandeOuvrir(ecran.session, ecran.fichier, action.options) : commandeLs(action.options);
       return appliquer({ ...ecran, lignes: [], fichier: ecran.vue === 'fichier' ? null : ecran.fichier }, commande ?? commandeLs(action.options), action.options, false, false);
     }

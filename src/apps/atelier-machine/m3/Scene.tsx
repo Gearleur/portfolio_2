@@ -12,6 +12,8 @@ import { RETENU as CONTENU } from '../m5/reglages';
 import { Interrupteur } from './Interrupteur';
 import { geometrie } from './reglages';
 import type { Reglages } from './reglages';
+import './m3.css';
+import './m3-etabli.css';
 
 /*
  * The two real states the switch goes between (step M3), one over the other in a Specimen: the

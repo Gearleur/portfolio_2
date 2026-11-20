@@ -15,7 +15,7 @@ const ETAPES: Etape[] = [
   { id: 'm1b', nom: 'Brut', fichier: 'M1Brut', decide: 'Une autre matière à comparer, d’après basement.studio/ai : un index en texte brut, une encre sur noir.', statut: 'en-cours' },
   { id: 'm2', nom: 'Typo et grille', fichier: 'M2Typo', decide: 'Retenu : la police de console du système à 14 px, pleine lame, trois gris étagés, bloc clignotant, invite « $ » et une ligne d’état.', statut: 'valide' },
   { id: 'm3', nom: 'Le curseur', fichier: 'M3Curseur', decide: 'Retenu : « Pétale » en verre, le bouton porte 0 / 1, sans libellé, environ 207 × 56 px, en bas au milieu.', statut: 'valide' },
-  { id: 'm4', nom: 'Le passage', fichier: 'M4Passage', decide: 'L’animation de 0 à 1 : on doit sentir qu’on perd de l’âme.', statut: 'a-venir' },
+  { id: 'm4', nom: 'Le passage', fichier: 'M4Passage', decide: 'Retenu : une bulle noire au bord flou sort du bouton et y rentre, lente puis très rapide ; son noir porte ton numéro, qui reste sous le terminal.', statut: 'valide' },
   { id: 'm5', nom: 'Le contenu', fichier: 'M5Contenu', decide: 'Retenu : « Touches », flèche de retour, le menu du dossier redonné sous chaque fichier lu, Markdown un peu agencé et sans images, 128 colonnes ; la souris marche partout.', statut: 'valide' },
   { id: 'm6', nom: 'Se déplacer', fichier: 'M6Deplacer', decide: 'Clavier et souris ; le téléphone ensuite.', statut: 'a-venir' },
   { id: 'm7', nom: 'Finitions', fichier: 'M7Finitions', decide: 'Mouvement réduit, accessibilité, poids, tests.', statut: 'a-venir' },

@@ -2,6 +2,8 @@ import { useCopyText } from '../../../shared/hooks/useCopyText';
 import { Range } from '../../atelier/controls';
 import { BORNES, PROPOSITIONS, etatDe, fois, geometrie, intacte, pourcent, proposition, resume } from './reglages';
 import type { Etat, Reglages } from './reglages';
+import './m3.css';
+import './m3-etabli.css';
 
 /*
  * The bench's panel (step M3), made like M5's: the three propositions to start from, then the

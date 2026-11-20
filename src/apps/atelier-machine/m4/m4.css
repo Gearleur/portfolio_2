@@ -1,0 +1,149 @@
+/* Atelier 2 · M4, le passage: a white side and a black side. From the bottom up, the human page,
+   the canvas where the bubble's black and the number are drawn, the terminal in its sheet of
+   glass, the switch. The stage is M3's (.m3-scene: the page's px, the switch's place, the room
+   the terminal leaves it); meneur.ts draws the canvas and says what shows: data-couvert once the
+   whole screen is black, data-terminal while the terminal is there. */
+
+.m4-couche {
+  position: absolute;
+  inset: 0;
+  /* each state is a layer of its own, whatever it stacks inside */
+  z-index: 0;
+}
+
+/* The page is seen wherever the bubble is not; once the black is whole it has nothing to show. */
+.m4-scene[data-couvert] .m4-couche[data-cote='humain'] {
+  visibility: hidden;
+}
+
+/* The bubble: over the page, under the terminal and the switch; it takes no click. Hidden on the
+   white side. */
+.m4-bulle {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* The terminal comes over the black, after the bubble: it has no bubble and no mask of its own. */
+.m4-couche[data-cote='machine'] {
+  z-index: 2;
+  visibility: hidden;
+}
+
+.m4-scene[data-terminal] .m4-couche[data-cote='machine'] {
+  visibility: visible;
+}
+
+/* Without WebGL there is no canvas to be the black: a plain ground stands in for it. */
+.m4-scene[data-nu] .m4-couche[data-cote='machine'] {
+  background: var(--m4-fond, #000);
+}
+
+/* And the number, which the shader cannot draw, is a picture laid on that ground, under the terminal (meneur.ts). */
+.m4-secours {
+  position: absolute;
+  pointer-events: none;
+}
+
+/* The terminal's lines, apart from its glass: one of its entrances prints them from the top down. */
+.m4-ecran {
+  position: absolute;
+  inset: 0;
+}
+
+/* While the passage lasts, the cube that rests beside the page's headline waits off the stage,
+   as it does on the Machine side (M3): it would sit on the black. It still follows the pointer. */
+.specimen:has(> .m4-scene[data-passage]) > .curseur {
+  translate: -200px -200px;
+}
+
+/* 100 px of the page, to read its scale. */
+.m4-etalon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(100 * var(--u));
+  height: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* The bench ------------------------------------------------------------------ */
+
+/* A proposition, drawn small: the paper, the bubble and its rim. */
+.m4-glyphe {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #f1f1ee;
+  box-shadow: 0 0 0 1px var(--atelier-line);
+}
+
+.m4-glyphe::before,
+.m4-glyphe::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+}
+
+/* the rim, then the black over it: from the right edge */
+.m4-glyphe::before {
+  inset: -8px -40px -8px 13px;
+  background: linear-gradient(180deg, #ff5a1f, #ffd9e6 50%, #14d8f2);
+}
+
+.m4-glyphe::after {
+  inset: -8px -42px -8px 15.5px;
+  background: #000;
+}
+
+/* from the knob, at the bottom */
+.m4-glyphe[data-id='pupille']::before {
+  inset: 12px 5px -14px;
+  background: linear-gradient(180deg, #ff8a70, #e0301f);
+}
+
+.m4-glyphe[data-id='pupille']::after {
+  inset: 14.5px 7.5px -11.5px;
+}
+
+/* from the middle */
+.m4-glyphe[data-id='encre']::before {
+  inset: 7px;
+  background: linear-gradient(180deg, #ea3f1c, #8e0a1f 40%, #dbeaf4);
+}
+
+.m4-glyphe[data-id='encre']::after {
+  inset: 9.5px;
+}
+
+/* The number's own field, in the panel. */
+.m4-numero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+
+.m4-numero span {
+  opacity: 0.6;
+}
+
+.m4-numero input {
+  width: 9ch;
+  padding: 4px 8px;
+  border: 1px solid rgb(255 255 255 / 0.18);
+  border-radius: 6px;
+  background: rgb(255 255 255 / 0.06);
+  color: inherit;
+  font: 500 14px/1.2 Menlo, Consolas, 'DejaVu Sans Mono', monospace;
+  text-align: right;
+}

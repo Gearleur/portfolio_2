@@ -65,8 +65,9 @@ export function useWave(ref: RefObject<HTMLElement | null>, settings: WaveSettin
       if (!wave || !stage) return;
       const { first, echo, fade, duration } = settingsRef.current;
       const peak = kind === 'first' ? first : echo;
-      // An invisible wave (the project pages' stage) is not played: nothing to draw for 11 s.
-      if (peak <= 0) return;
+      // An invisible wave (the project pages' stage) is not played: nothing to draw for 11 s. Nor
+      // one on a stage out of reach, under the Machine mode's black (portfolio/machine).
+      if (peak <= 0 || stage.inert) return;
 
       const width = stage.clientWidth;
       const height = stage.clientHeight;

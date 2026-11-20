@@ -8,6 +8,10 @@
  * proposition brings that part as it was proposed, to be tuned from there.
  */
 
+import { PLEIN, RETENU, pleine } from './retenu';
+
+export { RETENU, pleine };
+
 export type Borne = { min: number; max: number; step: number };
 
 export type Page = {
@@ -92,15 +96,12 @@ export const BORNES = {
     teinte: { min: -1, max: 1, step: 0.05 },
     opacite: { min: 0.5, max: 0.95, step: 0.01 },
     flou: { min: 0, max: 30, step: 1 },
-    largeur: { min: 600, max: 1440, step: 10 },
-    hauteur: { min: 320, max: 900, step: 10 },
+    largeur: { min: 600, max: PLEIN.largeur, step: 10 },
+    hauteur: { min: 320, max: PLEIN.hauteur, step: 10 },
     x: { min: 0, max: 1, step: 0.01 },
     y: { min: 0, max: 1, step: 0.01 },
   },
 } satisfies { [P in Partie]: Record<string, Borne> };
-
-/** At the end of its slider, a side of the window is the screen's own: it fills it, whatever the screen. */
-export const pleine = (cote: 'largeur' | 'hauteur', valeur: number) => valeur >= BORNES.verre[cote].max;
 
 type Choix<P extends Partie> = { id: Reglages[P]['maniere']; nom: string; note: string };
 
@@ -166,18 +167,6 @@ export const PROPOSITIONS: Proposition[] = [
     },
   },
 ];
-
-/**
- * The matter retained at M1 (Alexandre, 2026-11-19): the ghost page and the rubbing of « Coup de
- * gomme », the soft imprints of « À sec », the sheet of night-blue glass of « À plat » over the
- * right of the screen; the screen does not scroll. The next steps start from it.
- */
-export const RETENU: Reglages = {
-  page: { maniere: 'fantome', reste: 0.45, bavure: 2.3, accent: 0.45, papier: 0.98, grain: 1 },
-  gomme: { maniere: 'frottis', nombre: 6, largeur: 56, angle: 15, opacite: 0.22, irregularite: 0.35, graine: 4965 },
-  miniatures: { maniere: 'empreinte', profondeur: 0.55, formes: 0.1 },
-  verre: { maniere: 'lame', teinte: -0.65, opacite: 0.82, flou: 0, largeur: 1230, hauteur: 900, x: 1, y: 0.4, curseur: 'accent' },
-};
 
 /** The bench's state: the settings, and the proposition they started from. */
 export type Etat = { depart: string; reglages: Reglages };

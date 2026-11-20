@@ -1,4 +1,7 @@
 import type { Borne } from '../m1/reglages';
+import { RETENU } from './retenu';
+
+export { RETENU };
 
 /*
  * How much the terminal helps (Atelier 2, step M5): what the bench tunes. The terminal always
@@ -78,13 +81,6 @@ export const PROPOSITIONS: Proposition[] = [
     reglages: { selection: 'chevron', suggestion: false, touches: false, retour: 'fil', relister: false, invite: 'signe', liste: 'longue', vitesse: 120, sortie: 'coup', ecran: 'neuf', pliage: 72, numeros: true, markdown: 'brut' },
   },
 ];
-
-/**
- * What was retained at M5 (Alexandre, 2026-11-19): « Touches », with an arrow back in view, the
- * folder's menu offered again under every file read, the Markdown arranged a little and without
- * its pictures, folded at 128 columns. The mouse works throughout.
- */
-export const RETENU: Reglages = { selection: 'inverse', suggestion: true, touches: true, retour: 'fleche', relister: true, invite: 'signe', liste: 'longue', vitesse: 60, sortie: 'ligne', ecran: 'neuf', pliage: 128, numeros: false, markdown: 'agence' };
 
 /** The bench's state: the settings, and the proposition they started from. */
 export type Etat = { depart: string; reglages: Reglages };

@@ -26,6 +26,10 @@ const NOMS: Record<string, string> = { '01': 'Whiteboard AMDEC', '02': 'SNCF GPT
 const chargerProjet = () => import('./PageProjet');
 const PageProjet = lazy(chargerProjet);
 
+// The Machine mode (Atelier 2, journal n° 115): its switch is a chunk of its own, on a desktop only,
+// fetched once the page has loaded and is idle. The terminal comes later still (machine/ModeMachine.tsx).
+const ModeMachine = lazy(() => import('./machine/ModeMachine'));
+
 const lireAdresse = () => window.location.hash.replace(/^#/, '');
 
 /** The page's language: the one chosen before, else the browser's (French for French, English otherwise). */
@@ -67,6 +71,8 @@ export function Vitrine() {
   const [langue, setLangue] = useLangueChoisie();
   const [adresse, setAdresse] = useState(lireAdresse);
   const [menu, setMenu] = useState(false);
+  // The page has loaded and is idle: what is not needed to read it can come.
+  const [repose, setRepose] = useState(false);
   // Whether the project page was opened from the Vitrine, in this visit.
   const depuisVitrine = useRef(false);
 
@@ -112,6 +118,11 @@ export function Vitrine() {
   useEffect(() => {
     const repos = window.requestIdleCallback ?? ((f: () => void) => window.setTimeout(f, 2500));
     repos(() => void chargerProjet());
+    // …and the Machine mode's switch after the load, at the next idle moment (2.5 s at most: a machine kept busy by the films never rests).
+    const vient = () => setRepose(true);
+    const fini = () => (window.requestIdleCallback ? window.requestIdleCallback(vient, { timeout: 2500 }) : window.setTimeout(vient, 2500));
+    if (document.readyState === 'complete') fini();
+    else window.addEventListener('load', fini, { once: true });
   }, []);
 
   const ouvrir = (n: string) => {
@@ -165,6 +176,11 @@ export function Vitrine() {
           {/* A new stage for each kind of page: a wave under way on the Vitrine stops at a project page. */}
           <Specimen key={projet ? 'lecture' : 'vitrine'} settings={projet ? FOND_LECTURE : FOND} reelle={!telephone}>
             {page}
+            {repose && !telephone && (
+              <Suspense fallback={null}>
+                <ModeMachine langue={langue} adresse={adresse} numero={numero} />
+              </Suspense>
+            )}
           </Specimen>
         </ChoixLangueContext.Provider>
       </LangueContext.Provider>

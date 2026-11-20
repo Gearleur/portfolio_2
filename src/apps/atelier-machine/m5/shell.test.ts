@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { cheminProjet } from './fichiers';
 import { BORNES, PROPOSITIONS, RETENU, etatDe, intacte, resume, valider } from './reglages';
 import { commandeLs, commandeOuvrir, commandeRetour, completer, demarrer, executer, lignesDe, poids, reduire } from './shell';
 import type { Ecran, Ligne, Options, Session } from './shell';
@@ -229,5 +230,58 @@ describe('what was retained at M5', () => {
     ecran = reduire(ecran, { type: 'executer', commande: 'cd fr && cat a-propos.md', options: { ...OPTIONS, relister: true, liste: 'longue' }, progressif: false });
     expect(ecran.vue).toBe('fichier');
     expect(ecran.listing?.entrees[ecran.choix].at(-1)).toBe('contact.md');
+  });
+});
+
+describe('a terminal asked to open somewhere (the Vitrine’s Machine mode)', () => {
+  const options: Options = { ...OPTIONS, liste: 'longue', relister: true, agence: true };
+
+  it('opens at the root in the page’s language', () => {
+    const ecran = demarrer(options, { langue: 'en' });
+    expect(ecran.session).toEqual({ cwd: [], langue: 'en' });
+    expect(ecrit(ecran.lignes)[0]).toMatch(/^Alexandre Teixeira’s portfolio, as a machine reads it/);
+    expect(ecrit(ecran.lignes)[2]).toBe('$ ls -l');
+    expect(ecran.listing?.entrees).toEqual([['README.md'], ['en'], ['fr']]);
+    // going into the other language still restarts it there
+    expect(taper(ecran, 'cd fr', options).session.langue).toBe('fr');
+  });
+
+  it('opens on a project’s file, in its folder, with the folder’s menu under it', () => {
+    const fichier = cheminProjet('02', 'fr');
+    expect(fichier).toEqual(['fr', 'projets', '02-sncf-gpt.md']);
+    const ecran = demarrer(options, { langue: 'fr', fichier: fichier ?? undefined });
+    expect(ecran.session).toEqual({ cwd: ['fr', 'projets'], langue: 'fr' });
+    expect([ecran.vue, ecran.fichier]).toEqual(['fichier', fichier]);
+    const lignes = ecrit(ecran.lignes);
+    expect(lignes.slice(0, 4)).toEqual([expect.stringMatching(/^Le portfolio d’Alexandre Teixeira/), '', '$ cat 02-sncf-gpt.md', 'SNCF GPT']);
+    // only the welcome starts the screen: the file is read from its top
+    expect(ecran.lignes.filter((ligne) => ligne.debut).length).toBe(1);
+    expect(ecran.listing?.entrees).toContainEqual(['fr', 'projets', '03-synthese-de-reunions.md']);
+    expect(ecran.historique).toEqual([]);
+  });
+
+  it('every project of the Vitrine has its file in both languages; the English one says it is not translated', () => {
+    for (const numero of ['01', '02', '03', '04']) {
+      for (const langue of ['fr', 'en'] as const) {
+        const fichier = cheminProjet(numero, langue);
+        expect(fichier?.[1]).toBe(langue === 'fr' ? 'projets' : 'projects');
+        const ecran = demarrer(options, { langue, fichier: fichier ?? undefined });
+        expect(ecran.vue).toBe('fichier');
+        expect(ecrit(ecran.lignes).join('\n').includes('Not translated yet')).toBe(langue === 'en');
+      }
+    }
+    expect(cheminProjet('09', 'fr')).toBeNull();
+  });
+
+  it('falls back on the root when the file does not exist, and keeps its place when the screen changes size', () => {
+    expect(demarrer(options, { langue: 'en', fichier: ['en', 'projects', 'nope.md'] }).session.cwd).toEqual([]);
+    const depart = { langue: 'en' as const, fichier: cheminProjet('01', 'en') ?? undefined };
+    const etroit = reduire(demarrer(options, depart), { type: 'rejouer', options: { ...options, colonnes: 90 } });
+    expect(etroit.session).toEqual({ cwd: ['en', 'projects'], langue: 'en' });
+    expect(etroit.vue).toBe('fichier');
+    expect(etroit.depart).toEqual(depart);
+    // once the visitor has moved, the settings print again the place he is at, not the opening
+    const ailleurs = reduire(taper(demarrer(options, depart), 'cd ~/fr && ls', options), { type: 'rejouer', options: { ...options, colonnes: 90 } });
+    expect(ailleurs.session.cwd).toEqual(['fr']);
   });
 });

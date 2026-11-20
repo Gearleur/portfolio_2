@@ -9,6 +9,7 @@ import type { Reglages } from './reglages';
 import { Terminal } from './Terminal';
 import '../../atelier/steps/chemin.css';
 import './m1.css';
+import './verre.css';
 
 /*
  * The Vitrine in its Machine state (step M1), as a still: the real first screen (Maquette),

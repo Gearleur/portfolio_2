@@ -1,5 +1,8 @@
 import { INVITES } from './reglages';
 import type { Habillage } from './reglages';
+import { plier } from './plier';
+
+export { plier };
 
 /*
  * What the bench's screen shows (step M2): a plain `ls`, the projects in long form, and the top
@@ -33,27 +36,6 @@ const IMAGE: Morceau[] = [
   ['sortie', '[image: Le haut de la charte de ce portfolio\u00a0: chaque décision validée, avec l’étape où elle a été prise.]'],
   ['meta', '(medias/processus-charte.webp)'],
 ];
-
-/** Folds running text at its word spaces, as `fold -s` does; a word longer than the measure is cut. */
-export function plier(texte: string, colonnes: number): string[] {
-  const n = Math.max(1, Math.floor(colonnes));
-  const lignes: string[] = [];
-  let ligne = '';
-  for (let mot of texte.split(' ')) {
-    if (ligne && ligne.length + 1 + mot.length > n) {
-      lignes.push(ligne);
-      ligne = '';
-    }
-    if (ligne) {
-      ligne += ` ${mot}`;
-      continue;
-    }
-    for (; mot.length > n; mot = mot.slice(n)) lignes.push(mot.slice(0, n));
-    ligne = mot;
-  }
-  if (ligne || !lignes.length) lignes.push(ligne);
-  return lignes;
-}
 
 /** Lays pieces on lines of `colonnes` cells: at word spaces when `mots`, else cell by cell, as a terminal wraps. */
 function poser(morceaux: Morceau[], colonnes: number, mots = false): Ligne[] {

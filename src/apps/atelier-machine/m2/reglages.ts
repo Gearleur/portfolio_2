@@ -1,4 +1,7 @@
 import type { Borne } from '../m1/reglages';
+import { FACES, PILES, RETENU, famille, nomFace } from './retenu';
+
+export { FACES, PILES, RETENU, famille };
 
 /*
  * The terminal's type and its grid of cells (Atelier 2, step M2): what the bench tunes.
@@ -79,31 +82,6 @@ const OPTIONS: { [P in Partie]?: Record<string, readonly unknown[]> } = {
   curseur: { clignote: [true, false] },
   habillage: { invite: ['longue', 'courte', 'minimale'] },
 };
-
-/** The faces the site can serve: free, variable in weight, already in the typothèque (SIL OFL 1.1). */
-export const FACES: { id: Police['face']; nom: string }[] = [
-  { id: 'jetbrains', nom: 'JetBrains Mono' },
-  { id: 'geist', nom: 'Geist Mono' },
-];
-
-/**
- * What is asked of each system, in order: the first face it has is the one shown. « Classique » is
- * the console of the 2000s and 2010s (Mac, Windows, Linux); « courante » what a terminal opens with
- * today (Mac, Windows 11, Ubuntu), then the classics.
- */
-export const PILES: Record<Exclude<Police['maniere'], 'embarquee'>, string[]> = {
-  classique: ['Menlo', 'Consolas', 'DejaVu Sans Mono', 'Liberation Mono'],
-  courante: ['ui-monospace', 'SF Mono', 'Cascadia Mono', 'Ubuntu Sans Mono', 'Ubuntu Mono', 'Menlo', 'Consolas', 'DejaVu Sans Mono'],
-};
-
-const citee = (police: string) => (police === 'ui-monospace' ? police : `'${police}'`);
-const nomFace = (id: Police['face']) => FACES.find((face) => face.id === id)?.nom ?? FACES[0].nom;
-
-/** The CSS font-family of a face: the one the site serves falls back on the classics while it loads. */
-export function famille({ maniere, face }: Pick<Police, 'maniere' | 'face'>) {
-  const pile = maniere === 'embarquee' ? [nomFace(face), ...PILES.classique] : PILES[maniere];
-  return `${pile.map(citee).join(', ')}, monospace`;
-}
 
 /** The prompt, from the whole address to a single sign. */
 export const INVITES: Record<Habillage['invite'], string> = {
@@ -186,19 +164,6 @@ export const PROPOSITIONS: Proposition[] = [
 
 /** The bench's state: the settings, and the proposition they started from. */
 export type Etat = { depart: string; reglages: Reglages };
-
-/**
- * The type and grid retained at M2 (Alexandre, 2026-11-19): each system's own console face at
- * 14 px, the full sheet with a 32 px margin, three stepped greys, a blinking block, a « $ »
- * prompt and a discreet status line. The next steps start from it.
- */
-export const RETENU: Reglages = {
-  police: { maniere: 'classique', face: 'jetbrains', corps: 14, graisse: 410, chasse: 1.02 },
-  grille: { maniere: 'pleine', colonnes: 80, marge: 32, interligne: 1.3, aeree: true },
-  gris: { maniere: 'etage', commande: 1, sortie: 0.85, meta: 0.58 },
-  curseur: { maniere: 'bloc', clignote: true },
-  habillage: { maniere: 'etat', invite: 'minimale' },
-};
 
 /** What the screen measured once drawn: the face this computer shows, and the grid it makes. */
 export type Vu = { police: string; colonnes: number; lignes: number; cellule: [number, number] };

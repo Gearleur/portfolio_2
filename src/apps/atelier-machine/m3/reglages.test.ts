@@ -100,7 +100,7 @@ describe('les réglages gardés ou collés', () => {
 describe('the switch retained at M3', () => {
   it('is settings the bench accepts; the terminal gives up for it what it takes', () => {
     expect(valider({ depart: 'petale', reglages: RETENU })?.reglages).toEqual(RETENU);
-    expect(RETENU.hauteur * RETENU.echelle).toBe(56);
-    expect(geometrie(RETENU, 32).reserve).toBe(16 + 56 + ECART - 32);
+    expect(RETENU.hauteur * RETENU.echelle).toBe(48);
+    expect(geometrie(RETENU, 32).reserve).toBe(16 + 48 + ECART - 32);
   });
 });
